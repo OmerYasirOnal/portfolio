@@ -24,6 +24,10 @@ const dict: Record<string, Record<Locale, string>> = {
   'lang.switchToTr': { en: 'Switch to Turkish', tr: 'Türkçe’ye geç' },
   'lang.switchToEn': { en: 'Switch to English', tr: 'İngilizce’ye geç' },
   'social.opensNewTab': { en: 'opens in a new tab', tr: 'yeni sekmede açılır' },
+  'link.repo': { en: 'Source code', tr: 'Kaynak kod' },
+  'link.live': { en: 'Live site', tr: 'Canlı site' },
+  'link.appstore': { en: 'App Store', tr: 'App Store' },
+  'link.other': { en: 'Related link', tr: 'İlgili bağlantı' },
 };
 
 export function t(locale: Locale, key: string): string {

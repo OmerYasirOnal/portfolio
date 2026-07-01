@@ -1,13 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import LangToggle from '../components/LangToggle.astro';
 import ThemeToggle from '../components/ThemeToggle.tsx';
+import ProjectGrid from '../components/ProjectGrid.astro';
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
 
 const locale: Locale = 'en';
 const path = '/';
+
+// Featured, non-draft projects, in curated order — single source of truth.
+const featured = (
+  await getCollection('projects', (e) => e.data.featured && !e.data.draft)
+).sort((a, b) => a.data.order - b.data.order);
 
 // Home-section anchors; labels come from the i18n dictionary (no hard-coded copy).
 const navLinks = [
@@ -66,5 +73,16 @@ const navLinks = [
 
   <main>
     <Hero locale={locale} />
+
+    <section id="work" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">01</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.selectedWork')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <ProjectGrid locale={locale} items={featured} columns={3} />
+    </section>
   </main>
 </Base>
