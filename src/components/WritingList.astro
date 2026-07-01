@@ -20,11 +20,15 @@ import { t, localizePath, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
-  /** When set, show only the newest `limit` articles + a "See all writing" link. */
-  limit?: number;
+  /**
+   * When true, show only the curated home-page articles (those flagged
+   * `home: true`), newest-first, plus a "See all writing" link. When omitted,
+   * every article is listed (the `/writing` index).
+   */
+  home?: boolean;
 }
 
-const { locale, limit } = Astro.props;
+const { locale, home = false } = Astro.props;
 
 // Newest first (ISO date strings sort lexically); `order` breaks ties (e.g. the
 // TR/EN pair published the same day).
@@ -33,8 +37,8 @@ const allArticles = (await getCollection('writing')).sort((a, b) => {
   return a.data.order - b.data.order;
 });
 
-const articles = limit != null ? allArticles.slice(0, limit) : allArticles;
-const truncated = limit != null && allArticles.length > articles.length;
+const articles = home ? allArticles.filter((entry) => entry.data.home) : allArticles;
+const truncated = home && allArticles.length > articles.length;
 const seeAllHref = localizePath(locale, '/writing');
 
 // Publish month/year, rendered in the page's locale ("Dec 2025" / "Ara 2025").

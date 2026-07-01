@@ -5,4 +5,5 @@ source: Medium
 date: "2025-12-19"
 lang: tr
 order: 1
+home: true
 ---

@@ -93,12 +93,18 @@ describe('writing schema', () => {
     lang: 'en',
   };
 
-  it('requires a valid url and defaults order', () => {
+  it('requires a valid url and defaults order and home', () => {
     const parsed = writingSchema.parse(validWriting);
     expect(parsed.order).toBe(99);
+    expect(parsed.home).toBe(false);
     expect(parsed.date).toBe('2025-10-22');
     expect(parsed.lang).toBe('en');
     expect(writingSchema.safeParse({ ...validWriting, url: 'nope' }).success).toBe(false);
+  });
+
+  it('accepts the optional home flag', () => {
+    expect(writingSchema.parse({ ...validWriting, home: true }).home).toBe(true);
+    expect(writingSchema.safeParse({ ...validWriting, home: 'yes' }).success).toBe(false);
   });
 
   it('requires an ISO date and a valid lang', () => {

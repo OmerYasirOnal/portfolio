@@ -68,6 +68,12 @@ export const writingSchema = z.object({
   /** Language the article is written in. Surfaced as a TR/EN tag. */
   lang: z.enum(['tr', 'en']),
   order: z.number().default(99),
+  /**
+   * When true, this article is surfaced in the curated home-page writing
+   * section (newest-first among the flagged entries). `/writing` always lists
+   * every article regardless of this flag.
+   */
+  home: z.boolean().default(false),
 });
 
 export const publicationSchema = z.object({
