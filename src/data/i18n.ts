@@ -2,7 +2,7 @@ export const locales = ['en', 'tr'] as const;
 export type Locale = (typeof locales)[number];
 
 const dict: Record<string, Record<Locale, string>> = {
-  'a11y.skipToContent': { en: 'Skip to content', tr: 'İçeriğe geç' },
+  'a11y.skip': { en: 'Skip to content', tr: 'İçeriğe geç' },
   'nav.work': { en: 'Work', tr: 'Projeler' },
   'nav.about': { en: 'About', tr: 'Hakkımda' },
   'nav.writing': { en: 'Writing', tr: 'Yazılar' },
@@ -86,6 +86,15 @@ const dict: Record<string, Record<Locale, string>> = {
   'link.live': { en: 'Live site', tr: 'Canlı site' },
   'link.appstore': { en: 'App Store', tr: 'App Store' },
   'link.other': { en: 'Related link', tr: 'İlgili bağlantı' },
+  // Project category enum → localized label (see projectSchema `category`).
+  'category.AI-Agents': { en: 'AI-Agents', tr: 'AI Ajanları' },
+  'category.Applied-AI': { en: 'Applied-AI', tr: 'Uygulamalı AI' },
+  'category.ML-Research': { en: 'ML-Research', tr: 'ML Araştırması' },
+  'category.Mobile': { en: 'Mobile', tr: 'Mobil' },
+  'category.Web': { en: 'Web', tr: 'Web' },
+  'category.DevTool': { en: 'DevTool', tr: 'Geliştirici Aracı' },
+  'category.Networking': { en: 'Networking', tr: 'Ağ' },
+  'category.Other': { en: 'Other', tr: 'Diğer' },
 };
 
 export function t(locale: Locale, key: string): string {

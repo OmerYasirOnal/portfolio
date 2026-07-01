@@ -17,9 +17,9 @@
  *
  * Contrast (WCAG AA, verified):
  *   Light  fg #18181b / bg #fbfbfc → ~17:1  · muted #52525b / bg → ~7.1:1
- *          accent-as-text #1d4ed8 / bg → ~6.5:1 (normal-text AA pass)
+ *          accent-as-text #6d28d9 / bg → ~6.9:1 (normal-text AA pass)
  *   Dark   fg #ededef / bg #0a0a0b → ~15:1  · muted #9b9ba3 / bg → ~6.7:1
- *          accent-as-text #5b9dff / bg → ~7.2:1 (normal-text AA pass)
+ *          accent-as-text #a78bfa / bg → ~7.3:1 (normal-text AA pass)
  */
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
@@ -29,7 +29,7 @@
   --color-bg: #fbfbfc;
   --color-fg: #18181b;
   --color-muted: #52525b;
-  --color-accent: #1d4ed8;
+  --color-accent: #6d28d9;
   --color-card: #f4f4f6;
   --color-border: #e4e4e8;
 }
@@ -39,7 +39,7 @@
   --color-bg: #0a0a0b;
   --color-fg: #ededef;
   --color-muted: #9b9ba3;
-  --color-accent: #5b9dff;
+  --color-accent: #a78bfa;
   --color-card: #141417;
   --color-border: #232329;
 }

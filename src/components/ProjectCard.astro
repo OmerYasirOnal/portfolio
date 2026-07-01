@@ -61,7 +61,7 @@ const hint = t(locale, 'social.opensNewTab');
 >
   {/* category — mono tag, bracketed for a dev-tools feel */}
   <p class="font-mono text-[0.7rem] uppercase tracking-widest text-muted">
-    <span class="text-accent/70">/</span>{data.category}
+    <span class="text-accent/70">/</span>{t(locale, `category.${data.category}`)}
   </p>
 
   <h3 class="mt-3 text-lg font-semibold tracking-tight text-fg transition-colors group-hover:text-accent">

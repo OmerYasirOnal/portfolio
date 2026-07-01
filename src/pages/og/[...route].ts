@@ -5,7 +5,7 @@
  * EN and TR variants), rendered with `astro-og-canvas`. The visual language
  * matches the site's "dev-tools minimal" tokens: near-black gradient, off-white
  * heading (Inter), muted monospace sub-line (JetBrains Mono) and an accent
- * (#5b9dff) edge stripe.
+ * (#a78bfa) edge stripe.
  *
  * Generated routes (the `pages` keys become the file path, `.png` appended):
  *   /og/home.png            /og/home-tr.png
@@ -25,7 +25,7 @@ const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0
 const BG_CARD: [number, number, number] = [20, 20, 23]; //  --color-card  #141417
 const FG: [number, number, number] = [237, 237, 239]; //    --color-fg    #ededef
 const MUTED: [number, number, number] = [155, 155, 163]; // --color-muted #9b9ba3
-const ACCENT: [number, number, number] = [91, 157, 255]; // --color-accent #5b9dff
+const ACCENT: [number, number, number] = [167, 139, 250]; // --color-accent #a78bfa
 
 interface OgPage {
   /** Large heading line. */
