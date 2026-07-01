@@ -27,7 +27,9 @@ const {
   canonicalUrl,
 } = Astro.props;
 const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
-const alternates = hreflangLinks(lang, path, Astro.site!);
+// A page deferring to an external canonical must not claim itself (or its
+// twin) as a language alternate — hreflang targets must be canonical pages.
+const alternates = canonicalUrl ? [] : hreflangLinks(lang, path, Astro.site!);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
 ---
 

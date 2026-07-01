@@ -102,7 +102,11 @@ export const postSchema = z.object({
   home: z.boolean().default(false),
   /** Optional cover image path (public/ relative). */
   cover: z.string().optional(),
-  /** External canonical URL when the post is a republication. */
+  /**
+   * External canonical URL when the post is a republication. Setting this
+   * makes the page defer to that URL (rel=canonical + og:url) and suppresses
+   * its hreflang alternates.
+   */
   canonical: z.string().url().optional(),
 });
 
