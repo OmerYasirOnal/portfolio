@@ -86,7 +86,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'courses.title': { en: 'Courses', tr: 'Kurslar' },
   'courses.intro': {
     en: 'Small, focused courses — written in the open, free on the web, and synced to the upcoming mobile app.',
-    tr: `Küçük, odaklı kurslar — açıkta yazılıyor, web'de ücretsiz ve yakında mobil uygulamayla senkron.`,
+    tr: 'Küçük, odaklı kurslar — açıkta yazılıyor, web’de ücretsiz ve yakında mobil uygulamayla senkron.',
   },
   'courses.comingSoon': {
     en: 'The first course is in the works. Meanwhile, the articles are live:',
@@ -106,7 +106,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'writing.sourceSelf': { en: 'This site', tr: 'Bu site' },
   'seo.courses.description': {
     en: 'Free, focused mini-courses by Ömer Yasir Önal — agentic systems, applied AI, and mobile engineering.',
-    tr: `Ömer Yasir Önal'dan ücretsiz, odaklı mini kurslar — ajan tabanlı sistemler, uygulamalı yapay zeka ve mobil geliştirme.`,
+    tr: 'Ömer Yasir Önal’dan ücretsiz, odaklı mini kurslar — ajan tabanlı sistemler, uygulamalı yapay zeka ve mobil geliştirme.',
   },
   'footer.builtWith': {
     en: 'Built with Astro & Tailwind CSS.',
