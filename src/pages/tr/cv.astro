@@ -3,12 +3,17 @@ import Base from '../../layouts/Base.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { profile } from '../../data/profile';
-import { t, type Locale } from '../../data/i18n';
+import { t, localizePath, type Locale } from '../../data/i18n';
 import { ogCvPath } from '../../lib/og';
+import { breadcrumbJsonLd, canonicalHref } from '../../lib/seo';
 
 const locale: Locale = 'tr';
 const path = '/tr/cv';
 const mailto = `mailto:${profile.email}`;
+
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'cv.title'), url: canonicalHref(localizePath(locale, '/cv'), Astro.site!) },
+]);
 
 const downloadIcon = `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>`;
 
@@ -29,6 +34,8 @@ const downloads = [
   lang={locale}
   ogImage={ogCvPath(locale)}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
