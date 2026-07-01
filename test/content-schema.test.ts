@@ -85,16 +85,27 @@ describe('experience schema', () => {
 });
 
 describe('writing schema', () => {
+  const validWriting = {
+    title: 'On agents',
+    url: 'https://medium.com/@omer/on-agents',
+    source: 'Medium',
+    date: '2025-10-22',
+    lang: 'en',
+  };
+
   it('requires a valid url and defaults order', () => {
-    const parsed = writingSchema.parse({
-      title: 'On agents',
-      url: 'https://medium.com/@omer/on-agents',
-      source: 'Medium',
-    });
+    const parsed = writingSchema.parse(validWriting);
     expect(parsed.order).toBe(99);
-    expect(writingSchema.safeParse({ title: 'x', url: 'nope', source: 'Medium' }).success).toBe(
-      false,
-    );
+    expect(parsed.date).toBe('2025-10-22');
+    expect(parsed.lang).toBe('en');
+    expect(writingSchema.safeParse({ ...validWriting, url: 'nope' }).success).toBe(false);
+  });
+
+  it('requires an ISO date and a valid lang', () => {
+    expect(writingSchema.safeParse({ ...validWriting, date: undefined }).success).toBe(false);
+    expect(writingSchema.safeParse({ ...validWriting, date: '19-12-2025' }).success).toBe(false);
+    expect(writingSchema.safeParse({ ...validWriting, lang: undefined }).success).toBe(false);
+    expect(writingSchema.safeParse({ ...validWriting, lang: 'de' }).success).toBe(false);
   });
 });
 

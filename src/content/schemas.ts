@@ -63,6 +63,10 @@ export const writingSchema = z.object({
   title: z.string(),
   url: z.string().url(),
   source: z.string(),
+  /** ISO date the article was published, e.g. "2025-12-19". Drives newest-first ordering. */
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD'),
+  /** Language the article is written in. Surfaced as a TR/EN tag. */
+  lang: z.enum(['tr', 'en']),
   order: z.number().default(99),
 });
 

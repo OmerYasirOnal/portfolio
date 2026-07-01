@@ -49,6 +49,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'contact.elsewhere': { en: 'Find me elsewhere', tr: 'Diğer platformlar' },
   'writing.articles': { en: 'Articles', tr: 'Makaleler' },
   'writing.publications': { en: 'Publications', tr: 'Yayınlar' },
+  'writing.seeAll': { en: 'See all writing', tr: 'Tüm yazılar' },
   'writing.intro': {
     en: 'Long-form notes on building agentic systems and shipping AI, plus peer-reviewed research.',
     tr: 'Ajan tabanlı sistemler kurmak ve yapay zekâyı yayına almak üzerine uzun yazılar ve hakemli araştırmalar.',

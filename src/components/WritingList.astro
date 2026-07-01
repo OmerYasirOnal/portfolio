@@ -16,17 +16,33 @@
  * prefers-reduced-motion by the global stylesheet.
  */
 import { getCollection } from 'astro:content';
-import { t, type Locale } from '../data/i18n';
+import { t, localizePath, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
+  /** When set, show only the newest `limit` articles + a "See all writing" link. */
+  limit?: number;
 }
 
-const { locale } = Astro.props;
+const { locale, limit } = Astro.props;
 
-const articles = (await getCollection('writing')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+// Newest first (ISO date strings sort lexically); `order` breaks ties (e.g. the
+// TR/EN pair published the same day).
+const allArticles = (await getCollection('writing')).sort((a, b) => {
+  if (a.data.date !== b.data.date) return a.data.date < b.data.date ? 1 : -1;
+  return a.data.order - b.data.order;
+});
+
+const articles = limit != null ? allArticles.slice(0, limit) : allArticles;
+const truncated = limit != null && allArticles.length > articles.length;
+const seeAllHref = localizePath(locale, '/writing');
+
+// Publish month/year, rendered in the page's locale ("Dec 2025" / "Ara 2025").
+const dateFmt = new Intl.DateTimeFormat(locale === 'tr' ? 'tr-TR' : 'en-US', {
+  month: 'short',
+  year: 'numeric',
+});
+const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
 
 // Newest research first.
 const publications = (await getCollection('publications')).sort(
@@ -74,6 +90,17 @@ const EXTERNAL_ICON = [
                   <span class="text-base font-medium leading-snug text-fg decoration-accent/50 decoration-1 underline-offset-4 group-hover:text-accent group-hover:underline">
                     {entry.data.title}
                   </span>
+                  <span class="mt-1.5 flex items-center gap-2 font-mono text-xs text-muted">
+                    <time datetime={entry.data.date} class="tabular-nums">
+                      {formatDate(entry.data.date)}
+                    </time>
+                    <span aria-hidden="true" class="text-border">
+                      ·
+                    </span>
+                    <span class="rounded border border-border/70 px-1.5 py-px text-[0.65rem] uppercase tracking-wider text-muted/80">
+                      {entry.data.lang}
+                    </span>
+                  </span>
                 </span>
                 <span class="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted">
                   {entry.data.source}
@@ -99,6 +126,17 @@ const EXTERNAL_ICON = [
             </li>
           ))}
         </ul>
+        {truncated && (
+          <a
+            href={seeAllHref}
+            class="group mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {t(locale, 'writing.seeAll')}
+            <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">
+              →
+            </span>
+          </a>
+        )}
       </section>
     )
   }
