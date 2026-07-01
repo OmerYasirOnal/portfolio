@@ -5,6 +5,9 @@ import {
   experienceSchema,
   writingSchema,
   publicationSchema,
+  postSchema,
+  courseSchema,
+  lessonSchema,
 } from './content/schemas';
 
 const projects = defineCollection({
@@ -27,4 +30,22 @@ const publications = defineCollection({
   schema: publicationSchema,
 });
 
-export const collections = { projects, experience, writing, publications };
+const posts = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  schema: postSchema,
+});
+
+// A course = directory `src/content/courses/<slug>/` with `index.md` (meta)
+// plus `NN-*.md` lesson files. Two collections over the same base: `courses`
+// loads only the index files, `lessons` everything else.
+const courses = defineCollection({
+  loader: glob({ pattern: '*/index.md', base: './src/content/courses' }),
+  schema: courseSchema,
+});
+
+const lessons = defineCollection({
+  loader: glob({ pattern: ['*/*.md', '!*/index.md'], base: './src/content/courses' }),
+  schema: lessonSchema,
+});
+
+export const collections = { projects, experience, writing, publications, posts, courses, lessons };
