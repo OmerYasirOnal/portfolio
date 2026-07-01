@@ -23,10 +23,16 @@ const pubs = await getCollection('publications');
 const breadcrumbLd = breadcrumbJsonLd([
   { name: t(locale, 'section.writing'), url: canonicalHref(localizePath(locale, '/writing'), Astro.site!) },
 ]);
-const articlesLd = writingItemListJsonLd(
-  articles.map((a) => ({ title: a.data.title, url: a.data.url, date: a.data.date })),
-  Astro.site!,
-);
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const ldItems = [
+  ...articles.map((a) => ({ title: a.data.title, url: a.data.url, date: a.data.date })),
+  ...posts.map((p) => ({
+    title: p.data.title,
+    url: canonicalHref(localizePath(locale, `/writing/${p.id}`), Astro.site!),
+    date: p.data.date,
+  })),
+].sort((a, b) => (a.date < b.date ? 1 : -1));
+const articlesLd = writingItemListJsonLd(ldItems, Astro.site!);
 const pubsLd = pubs.map((p) =>
   scholarlyArticleJsonLd(
     {
