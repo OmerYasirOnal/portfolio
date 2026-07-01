@@ -13,6 +13,7 @@ import Contact from '../../components/Contact.astro';
 import { t, type Locale } from '../../data/i18n';
 import { profile } from '../../data/profile';
 import { personJsonLd } from '../../lib/seo';
+import { ogHomePath } from '../../lib/og';
 
 const locale: Locale = 'tr';
 const path = '/tr/';
@@ -31,6 +32,7 @@ const featured = (
   description={t(locale, 'seo.home.description')}
   path={path}
   lang={locale}
+  ogImage={ogHomePath(locale)}
 >
   <script
     slot="head"

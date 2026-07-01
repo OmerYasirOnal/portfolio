@@ -4,6 +4,7 @@ import Base from '../../../layouts/Base.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import { t, localizePath, type Locale } from '../../../data/i18n';
+import { ogProjectPath } from '../../../lib/og';
 
 // Emit one TR page per non-draft project. `entry.id` is the markdown filename
 // (e.g. "akis") and becomes the URL slug; Astro prefixes `/tr/projects/`.
@@ -45,6 +46,7 @@ const highlights = data.highlights_tr;
   description={tagline}
   path={path}
   lang={locale}
+  ogImage={ogProjectPath(locale, entry.id)}
 >
   <a
     href="#main"
