@@ -1,5 +1,7 @@
 # Phase 2 — Native Blog + Courses Implementation Plan
 
+**Status: implemented — 2026-07-02** (all 13 tasks executed + task-reviewed; E2E verification incl. course draft-flip green)
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add native `posts` + `courses` content collections with en/tr list & detail pages, tags, reading time, RSS + `feed.json` (contract v1), and per-post/per-course JSON-LD — per `docs/specs/2026-07-01-content-platform-design.md` §3–§5.
