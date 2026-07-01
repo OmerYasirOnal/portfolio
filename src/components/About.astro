@@ -1,0 +1,108 @@
+---
+/**
+ * About — a two-column portrait + prose block for the home page.
+ *
+ * All copy is read from `profile` (the about paragraph + signal badges) and the
+ * i18n dictionary — nothing is hard-coded. The left column is a framed portrait;
+ * until an owner-provided photo lands in `src/assets/`, it degrades to a neutral
+ * monogram placeholder at the correct portrait dimensions so the layout stays
+ * stable (no dead <img>, no layout shift). Swap in `<Image>` here once the photo
+ * exists. The frame is decorative and static — inert under prefers-reduced-motion.
+ */
+import { profile } from '../data/profile';
+import type { Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const about = profile.about[locale];
+const badges = profile.badges.map((b) => b[locale]);
+
+/** Initials for the monogram placeholder, derived from the name (no hard-coding). */
+const initials = profile.name
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((part) => Array.from(part)[0])
+  .join('');
+---
+
+<div class="grid items-start gap-10 md:grid-cols-[minmax(0,18rem)_1fr] md:gap-12 lg:gap-16">
+  {/* Portrait — framed monogram placeholder until a real photo is supplied. */}
+  <figure class="mx-auto w-full max-w-[18rem] md:mx-0">
+    <div
+      class="relative aspect-[4/5] overflow-hidden rounded-xl border border-border bg-card"
+    >
+      {/* corner ticks — dev-tools framing */}
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute left-2 top-2 h-3 w-3 border-l border-t border-accent/60"
+      ></span>
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute right-2 top-2 h-3 w-3 border-r border-t border-accent/60"
+      ></span>
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute bottom-2 left-2 h-3 w-3 border-b border-l border-accent/60"
+      ></span>
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute bottom-2 right-2 h-3 w-3 border-b border-r border-accent/60"
+      ></span>
+
+      {/* neutral monogram — placeholder image role with a proper alt */}
+      <div
+        role="img"
+        aria-label={profile.name}
+        class="grid h-full w-full place-items-center bg-gradient-to-br from-card to-bg"
+      >
+        <span
+          aria-hidden="true"
+          class="select-none font-mono text-6xl font-bold tracking-tight text-muted/40"
+        >
+          {initials}
+        </span>
+      </div>
+    </div>
+    <figcaption class="mt-2 text-center font-mono text-[0.7rem] text-muted/70 md:text-left">
+      <span class="text-accent/70">~/</span>{profile.name}
+    </figcaption>
+  </figure>
+
+  {/* Prose + signal badges. */}
+  <div>
+    <p class="max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+      {about}
+    </p>
+
+    <ul class="mt-7 flex flex-wrap gap-2" role="list">
+      {
+        badges.map((badge) => (
+          <li
+            class="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-3 py-1 font-mono text-xs text-fg"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-accent"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="m5 12 5 5L20 7" />
+            </svg>
+            {badge}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

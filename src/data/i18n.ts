@@ -8,6 +8,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'nav.contact': { en: 'Contact', tr: 'İletişim' },
   'hero.viewWork': { en: 'View work', tr: 'Projeleri gör' },
   'hero.resume': { en: 'Résumé', tr: 'CV' },
+  'section.about': { en: 'About', tr: 'Hakkımda' },
   'section.selectedWork': { en: 'Selected work', tr: 'Seçili işler' },
   'section.experience': { en: 'Experience', tr: 'Deneyim' },
   'section.skills': { en: 'Skills', tr: 'Yetenekler' },
