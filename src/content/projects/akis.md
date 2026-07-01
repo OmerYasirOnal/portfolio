@@ -1,0 +1,60 @@
+---
+title: AKIS
+tagline_en: Verifiable AI software-development platform.
+tagline_tr: Doğrulanabilir yapay zeka yazılım geliştirme platformu.
+category: AI-Agents
+stack:
+  - TypeScript
+  - Node.js
+  - React 19
+  - PostgreSQL/pgvector
+  - Docker
+  - Multi-LLM
+  - Ed25519
+  - MCP
+status_en: Open source (Apache-2.0), self-hostable
+status_tr: Açık kaynak (Apache-2.0), self-hostable
+links:
+  repo: https://github.com/OmerYasirOnal/akis
+  live: https://akisflow.com
+highlights_en:
+  - Multi-agent engine — Scribe, Proto, Critic and Trace — orchestrated behind 4 structural human-approval gates.
+  - Nothing ships until a human approves and a real boot-smoke test proves the build actually runs.
+  - Ed25519 build provenance and MCP-based approval gates for every external write.
+highlights_tr:
+  - Scribe, Proto, Critic ve Trace ajanları, 4 yapısal insan-onay kapısı ardında orkestre edilir.
+  - Bir insan onaylamadan ve gerçek bir boot-smoke testi derlemenin çalıştığını kanıtlamadan hiçbir şey yayınlanmaz.
+  - Her dış yazma işlemi için Ed25519 kaynak kanıtı ve MCP tabanlı onay kapıları.
+problem_en: AI coding agents routinely report success without proof — "false green" — and can push unreviewed changes straight into real systems.
+problem_tr: Yapay zeka kodlama ajanları çoğu zaman kanıt olmadan başarı bildirir — "sahte yeşil" — ve gözden geçirilmemiş değişiklikleri doğrudan gerçek sistemlere gönderebilir.
+what_i_did_en: Built a multi-agent platform where every build passes four structural gates (spec approval, verify, push confirm, external write) and can only be marked done once a real boot-smoke test passes.
+what_i_did_tr: Her derlemenin dört yapısal kapıdan (spec onayı, doğrulama, push onayı, dış yazma) geçtiği ve yalnızca gerçek bir boot-smoke testi geçtiğinde tamamlanmış sayılabildiği çok ajanlı bir platform geliştirdim.
+featured: true
+order: 1
+---
+
+## The problem
+
+AI coding agents are fast, but they routinely report success without proof —
+"false green" — and, left unattended, will happily push unreviewed changes into
+real systems. Trust, not speed, is the missing layer.
+
+## What I did
+
+AKIS is a multi-agent engine (Scribe, Proto, Critic, Trace) coordinated by an
+orchestrator behind **four structural, human-approval gates**: spec approval,
+verify, push confirmation, and external write. A build can only be marked done
+once a real **boot-smoke test** proves the artifact actually starts and serves —
+the default verification path, not a self-reported checkmark.
+
+Ed25519 signing gives every artifact tamper-evident build provenance, and
+external side effects (repository writes, integrations) route through
+Model Context Protocol approval gates so nothing leaves the sandbox without an
+explicit human confirmation.
+
+## Highlights
+
+- Runs multiple LLM providers behind one orchestration layer.
+- Retrieval (pgvector) grounds the agents in the project's own context.
+- Fully open source under Apache-2.0 and self-hostable via Docker — a live
+  self-hosted instance runs at [akisflow.com](https://akisflow.com) (signup gated).
