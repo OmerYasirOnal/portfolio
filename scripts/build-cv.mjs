@@ -28,6 +28,11 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
 const VARIANTS = ['tr', 'en', 'eu'];
+// The visual project showcase (A4 landscape, screenshots inlined) renders from
+// its own route `dist/cv-print/showcase/index.html` → `…-showcase.pdf`. It's
+// printed with the same CDP `preferCSSPageSize` path, which honours its
+// `@page { size: A4 landscape }` regardless of the portrait fallback dimensions.
+const PAGES = [...VARIANTS, 'showcase'];
 const OUT_DIR = join(repoRoot, 'public', 'cv');
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
@@ -171,7 +176,7 @@ async function main() {
   console.log(`▶ Brave headless on DevTools port ${port}`);
 
   try {
-    for (const variant of VARIANTS) {
+    for (const variant of PAGES) {
       const built = join(repoRoot, 'dist', 'cv-print', variant, 'index.html');
       if (!existsSync(built)) {
         console.error(`Missing built page: ${built}`);
@@ -189,7 +194,7 @@ async function main() {
   }
 
   console.log('\n✅ CV PDFs generated:');
-  for (const variant of VARIANTS) {
+  for (const variant of PAGES) {
     const out = join(OUT_DIR, `omer-yasir-onal-${variant}.pdf`);
     console.log(`  ${out}  —  ${kb(statSync(out).size)}`);
   }
