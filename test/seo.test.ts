@@ -9,6 +9,8 @@ import {
   creativeWorkJsonLd,
   writingItemListJsonLd,
   scholarlyArticleJsonLd,
+  blogPostingJsonLd,
+  courseJsonLd,
 } from '../src/lib/seo';
 
 const SITE = 'https://omeryasironal.com';
@@ -125,5 +127,61 @@ describe('scholarlyArticleJsonLd', () => {
     expect(s['@type']).toBe('ScholarlyArticle');
     expect(s.publication.name).toBe('IEEE SIU 2025');
     expect(s.datePublished).toBe('2025');
+  });
+});
+
+describe('blogPostingJsonLd', () => {
+  it('emits a BlogPosting with dates, language and keywords', () => {
+    const p = blogPostingJsonLd(
+      {
+        title: 'T',
+        description: 'D',
+        url: SITE + '/writing/t/',
+        date: '2026-07-01',
+        updated: '2026-07-02',
+        lang: 'en',
+        tags: ['meta', 'site'],
+      },
+      SITE,
+    );
+    expect(p['@type']).toBe('BlogPosting');
+    expect(p.datePublished).toBe('2026-07-01');
+    expect(p.dateModified).toBe('2026-07-02');
+    expect(p.inLanguage).toBe('en');
+    expect(p.keywords).toBe('meta, site');
+    expect(p.author.name).toBe('Ömer Yasir Önal');
+    expect(p.mainEntityOfPage).toBe(SITE + '/writing/t/');
+  });
+
+  it('falls back dateModified to the publish date and omits empty keywords', () => {
+    const p = blogPostingJsonLd(
+      { title: 'T', description: 'D', url: SITE + '/writing/t/', date: '2026-07-01', lang: 'tr', tags: [] },
+      SITE,
+    );
+    expect(p.dateModified).toBe('2026-07-01');
+    expect('keywords' in p).toBe(false);
+  });
+});
+
+describe('courseJsonLd', () => {
+  it('emits a free online Course with an instance and lesson parts', () => {
+    const c = courseJsonLd(
+      {
+        title: 'C',
+        description: 'D',
+        url: SITE + '/courses/c/',
+        lang: 'en',
+        level: 'beginner',
+        tags: ['demo'],
+        lessons: [{ title: 'L1', url: SITE + '/courses/c/01-l1/' }],
+      },
+      SITE,
+    );
+    expect(c['@type']).toBe('Course');
+    expect(c.isAccessibleForFree).toBe(true);
+    expect(c.hasCourseInstance.courseMode).toBe('online');
+    expect(c.hasPart[0].url).toBe(SITE + '/courses/c/01-l1/');
+    expect(c.educationalLevel).toBe('beginner');
+    expect(c.provider.name).toBe('Ömer Yasir Önal');
   });
 });

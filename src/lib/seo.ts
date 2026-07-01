@@ -179,3 +179,68 @@ export function scholarlyArticleJsonLd(
     author: authorNode(site),
   };
 }
+
+/** A native article as a schema.org BlogPosting (post detail pages). */
+export function blogPostingJsonLd(
+  input: {
+    title: string;
+    description: string;
+    url: string;
+    date: string;
+    updated?: string;
+    lang: string;
+    tags: string[];
+  },
+  site?: URL | string,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: input.title,
+    description: input.description,
+    url: input.url,
+    mainEntityOfPage: input.url,
+    datePublished: input.date,
+    dateModified: input.updated ?? input.date,
+    inLanguage: input.lang,
+    ...(input.tags.length ? { keywords: input.tags.join(', ') } : {}),
+    author: authorNode(site),
+  };
+}
+
+/** A course as schema.org Course + CourseInstance, lessons as hasPart. */
+export function courseJsonLd(
+  input: {
+    title: string;
+    description: string;
+    url: string;
+    lang: string;
+    level: string;
+    tags: string[];
+    lessons: { title: string; url: string }[];
+  },
+  site?: URL | string,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: input.title,
+    description: input.description,
+    url: input.url,
+    inLanguage: input.lang,
+    educationalLevel: input.level,
+    ...(input.tags.length ? { keywords: input.tags.join(', ') } : {}),
+    isAccessibleForFree: true,
+    provider: authorNode(site),
+    author: authorNode(site),
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'online',
+    },
+    hasPart: input.lessons.map((l) => ({
+      '@type': 'CreativeWork',
+      name: l.title,
+      url: l.url,
+    })),
+  };
+}
