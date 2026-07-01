@@ -19,6 +19,11 @@ const dict: Record<string, Record<Locale, string>> = {
   },
   'theme.switchToLight': { en: 'Switch to light theme', tr: 'Açık temaya geç' },
   'theme.switchToDark': { en: 'Switch to dark theme', tr: 'Koyu temaya geç' },
+  'hero.status': { en: 'Open to work', tr: 'İşe açık' },
+  'lang.label': { en: 'Language', tr: 'Dil' },
+  'lang.switchToTr': { en: 'Switch to Turkish', tr: 'Türkçe’ye geç' },
+  'lang.switchToEn': { en: 'Switch to English', tr: 'İngilizce’ye geç' },
+  'social.opensNewTab': { en: 'opens in a new tab', tr: 'yeni sekmede açılır' },
 };
 
 export function t(locale: Locale, key: string): string {

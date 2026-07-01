@@ -1,17 +1,70 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import LangToggle from '../components/LangToggle.astro';
 import ThemeToggle from '../components/ThemeToggle.tsx';
+import { profile } from '../data/profile';
+import { t, localizePath, type Locale } from '../data/i18n';
+
+const locale: Locale = 'en';
+const path = '/';
+
+// Home-section anchors; labels come from the i18n dictionary (no hard-coded copy).
+const navLinks = [
+  { key: 'nav.work', href: '#work' },
+  { key: 'nav.about', href: '#about' },
+  { key: 'nav.writing', href: '#writing' },
+  { key: 'nav.contact', href: '#contact' },
+];
 ---
 
 <Base
   title="Ömer Yasir Önal — Back-End & Applied AI Engineer"
   description="Back-end & applied-AI engineer who ships verifiable systems."
-  path="/"
+  path={path}
+  lang={locale}
 >
-  <main class="mx-auto max-w-3xl p-8">
-    <div class="flex items-center justify-between">
-      <h1 class="text-4xl font-bold">it builds</h1>
-      <ThemeToggle client:load locale="en" />
-    </div>
+  <a
+    href="#work"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
+  >
+    Skip to content
+  </a>
+
+  <header class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
+    <nav
+      class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3"
+      aria-label="Primary"
+    >
+      <a
+        href={localizePath(locale, '/')}
+        class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {profile.name}
+      </a>
+
+      <div class="flex items-center gap-1">
+        <ul class="mr-2 hidden items-center gap-1 sm:flex" role="list">
+          {
+            navLinks.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {t(locale, item.key)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <LangToggle locale={locale} path={path} />
+        <ThemeToggle client:load locale={locale} />
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <Hero locale={locale} />
   </main>
 </Base>
