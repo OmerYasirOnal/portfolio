@@ -132,13 +132,16 @@ async function printPdf(port, lang) {
     const { data } = await client.send('Page.printToPDF', {
       printBackground: true,
       preferCSSPageSize: true,
-      // Fallbacks used only if the page lacks a CSS @page size:
+      // Fallbacks used only if the page lacks a CSS @page size. They mirror the
+      // template's `@page { margin: 13mm 0 }` (0 left/right so the violet header
+      // band reaches both paper edges) so the output is identical no matter
+      // which margin system the engine honours. 13mm ≈ 0.512in.
       paperWidth: 8.27,
       paperHeight: 11.69,
-      marginTop: 0.55,
-      marginBottom: 0.55,
-      marginLeft: 0.55,
-      marginRight: 0.55,
+      marginTop: 0.512,
+      marginBottom: 0.512,
+      marginLeft: 0,
+      marginRight: 0,
     });
     if (existsSync(out)) rmSync(out);
     writeFileSync(out, Buffer.from(data, 'base64'));

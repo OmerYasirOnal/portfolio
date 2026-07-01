@@ -4,11 +4,13 @@
  *
  * `scripts/build-cv.mjs` builds the site, then prints the built HTML of
  * `dist/cv-print/{en,tr}/index.html` to `public/cv/omer-yasir-onal-{en,tr}.pdf`
- * via headless Brave. Everything is a single ATS-safe main column with real,
- * selectable text — no text-as-image. TR renders the headshot; EN omits it.
+ * via headless Brave. The layout is a single ATS-safe main column with real,
+ * selectable text — no text-as-image, no column splitting. A full-bleed violet
+ * header band opens the page; TR renders the headshot in the band, EN omits it.
  *
  * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections —
- * nothing is duplicated here.
+ * nothing is duplicated here. Turkish date/location strings are localized at
+ * RENDER time via `cv-format.ts` (the source frontmatter is never mutated).
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -16,6 +18,7 @@ import { getCollection } from 'astro:content';
 import { profile } from '../../data/profile';
 import { cv } from '../../data/cv';
 import { locales, type Locale } from '../../data/i18n';
+import { formatPeriod, localizeLocation } from '../../data/cv-format';
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -55,17 +58,19 @@ const primaryLink = (links: {
   other?: string;
 }): string | undefined => links.appstore ?? links.live ?? links.repo ?? links.other;
 
-const contactLinks = [
-  { label: profile.links.github.label, handle: profile.links.github.handle, url: profile.links.github.url },
-  { label: profile.links.linkedin.label, handle: profile.links.linkedin.handle, url: profile.links.linkedin.url },
-  { label: profile.links.medium.label, handle: profile.links.medium.handle, url: profile.links.medium.url },
-  { label: profile.links.hackerrank.label, handle: profile.links.hackerrank.handle, url: profile.links.hackerrank.url },
+const socialLinks = [
+  profile.links.github,
+  profile.links.linkedin,
+  profile.links.medium,
+  profile.links.hackerrank,
 ];
 
-const gradPrefix = isTr ? 'Beklenen mezuniyet' : 'Expected';
+// Education reads as *graduated* now (word order differs by locale), framed at
+// render time so the reusable `profile.education` fields stay date-only.
+const grad = isTr ? profile.education.graduation_tr : profile.education.graduation_en;
 const educationLine = `${isTr ? profile.education.degree_tr : profile.education.degree_en} — ${
   isTr ? profile.education.school_tr : profile.education.school_en
-} — ${gradPrefix} ${isTr ? profile.education.graduation_tr : profile.education.graduation_en}`;
+} — ${isTr ? `${grad} mezunu` : `Graduated ${grad}`}`;
 ---
 
 <!doctype html>
@@ -76,16 +81,22 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
     <meta name="robots" content="noindex" />
     <title>{profile.name} — {isTr ? 'Özgeçmiş' : 'Résumé'}</title>
     <style>
+      /* Full-bleed sides (band reaches both edges); top/bottom keep a margin so
+         a spillover page never butts content against the paper edge. */
       @page {
         size: A4;
-        margin: 14mm;
+        margin: 13mm 0;
       }
 
       :root {
         --accent: #6d28d9;
+        --accent-soft: #c4b5fd;
+        --accent-tint: #f5f3ff;
         --fg: #18181b;
         --muted: #52525b;
-        --rule: #d9d2f0;
+        --faint: #a1a1aa;
+        --rule: #e4e0f4;
+        --pad: 15mm; /* horizontal inset of the content + band interior */
       }
 
       * {
@@ -105,8 +116,8 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           'Helvetica Neue', Arial, sans-serif;
-        font-size: 9.6pt;
-        line-height: 1.4;
+        font-size: 9.5pt;
+        line-height: 1.42;
         -webkit-font-smoothing: antialiased;
       }
 
@@ -115,67 +126,102 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
         text-decoration: none;
       }
 
-      /* ---- Header --------------------------------------------------------- */
-      .header {
+      /* ---- Header band (full-bleed violet) -------------------------------- */
+      .band {
+        background: var(--accent);
+        color: #ffffff;
+        /* Pull up into the top page margin so the violet reaches the paper edge. */
+        margin-top: -13mm;
+        padding: 15mm var(--pad) 9mm;
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 10px;
-        margin-bottom: 12px;
+        gap: 12mm;
+      }
+
+      .band-text {
+        min-width: 0;
       }
 
       .name {
-        font-size: 22pt;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        color: var(--fg);
+        font-size: 25pt;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.04;
         margin: 0;
-        line-height: 1.1;
+        color: #ffffff;
       }
 
       .role {
-        font-size: 11pt;
-        font-weight: 600;
-        color: var(--accent);
-        margin: 3px 0 8px;
-      }
-
-      .contact {
-        font-size: 8.7pt;
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .contact .sep {
-        color: var(--rule);
-        margin: 0 5px;
+        font-size: 11.5pt;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin: 5px 0 0;
+        color: rgba(255, 255, 255, 0.92);
       }
 
       .photo {
         flex: 0 0 auto;
-        width: 84px;
-        height: 84px;
-        border-radius: 8px;
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
         object-fit: cover;
-        border: 2px solid var(--accent);
+        border: 3px solid rgba(255, 255, 255, 0.92);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+      }
+
+      /* ---- Content column ------------------------------------------------- */
+      .content {
+        padding: 7mm var(--pad) 0;
+      }
+
+      /* ---- Contact / links masthead --------------------------------------- */
+      .masthead {
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--rule);
+        margin-bottom: 2px;
+      }
+
+      .contact-line {
+        font-size: 9pt;
+        color: var(--fg);
+        line-height: 1.7;
+      }
+
+      .links-line {
+        font-size: 9pt;
+        line-height: 1.7;
+        margin-top: 1px;
+      }
+
+      .links-line .platform {
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .links-line .handle {
+        color: var(--muted);
+      }
+
+      .sep {
+        color: var(--faint);
+        margin: 0 6px;
       }
 
       /* ---- Sections ------------------------------------------------------- */
       section {
-        margin-top: 12px;
+        margin-top: 13pt;
       }
 
       h2 {
-        font-size: 10pt;
+        font-size: 9.5pt;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.09em;
+        letter-spacing: 0.14em;
         color: var(--accent);
-        margin: 0 0 6px;
-        padding-bottom: 3px;
-        border-bottom: 1px solid var(--rule);
+        margin: 0 0 7px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--accent-soft);
       }
 
       p {
@@ -184,11 +230,12 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
 
       .summary {
         text-align: justify;
+        color: #27272a;
       }
 
       /* ---- Entries (avoid splitting across pages) ------------------------- */
       .entry {
-        margin-bottom: 8px;
+        margin-bottom: 9px;
         break-inside: avoid;
         page-break-inside: avoid;
       }
@@ -216,23 +263,28 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
 
       .entry-meta {
         flex: 0 0 auto;
-        font-size: 8.5pt;
+        font-size: 8.4pt;
+        font-weight: 500;
         color: var(--muted);
         white-space: nowrap;
       }
 
       ul.bullets {
-        margin: 3px 0 0;
+        margin: 4px 0 0;
         padding-left: 15px;
       }
 
       ul.bullets li {
-        margin: 1px 0;
+        margin: 1.5px 0;
+      }
+
+      ul.bullets li::marker {
+        color: var(--accent-soft);
       }
 
       /* ---- Skills / meta lists ------------------------------------------- */
       .kv {
-        margin: 3px 0;
+        margin: 3.5px 0;
       }
 
       .kv .k {
@@ -242,183 +294,194 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
 
       .project-tech {
         color: var(--muted);
-        font-size: 8.8pt;
+        font-size: 8.7pt;
+        margin-top: 1px;
       }
 
       .inline-list {
         margin: 0;
+        padding-left: 15px;
       }
 
       .inline-list li {
-        margin: 2px 0;
+        margin: 2.5px 0;
+      }
+
+      .inline-list li::marker {
+        color: var(--accent-soft);
       }
     </style>
   </head>
   <body>
-    <!-- ============================== HEADER ============================== -->
-    <header class="header">
-      <div>
+    <!-- ============================== HEADER BAND ========================== -->
+    <header class="band">
+      <div class="band-text">
         <h1 class="name">{profile.name}</h1>
         <p class="role">{profile.role[lang]}</p>
-        <div class="contact">
-          <span>{profile.location[lang]}</span><span class="sep">·</span>
+      </div>
+      {photoDataUri && <img class="photo" src={photoDataUri} alt={profile.name} />}
+    </header>
+
+    <main class="content">
+      <!-- ========================= CONTACT / LINKS ======================= -->
+      <div class="masthead">
+        <div class="contact-line">
           <a href={`mailto:${profile.email}`}>{profile.email}</a><span class="sep">·</span>
           <a href={`tel:${cv.phone.replace(/\s/g, '')}`}>{cv.phone}</a><span class="sep">·</span>
+          <span>{profile.location[lang]}</span><span class="sep">·</span>
           <a href={cv.website}>{displayUrl(cv.website)}</a>
-          <br />
+        </div>
+        <div class="links-line">
           {
-            contactLinks.map((l, i) => (
+            socialLinks.map((l, i) => (
               <>
                 {i > 0 && <span class="sep">·</span>}
                 <a href={l.url}>
-                  {l.label}: {l.handle}
+                  <span class="platform">{l.label}</span> <span class="handle">{l.handle}</span>
                 </a>
               </>
             ))
           }
         </div>
       </div>
-      {photoDataUri && <img class="photo" src={photoDataUri} alt={profile.name} />}
-    </header>
 
-    <!-- ============================== SUMMARY ============================= -->
-    <section>
-      <h2>{s('summary')}</h2>
-      <p class="summary">{cv.summary[lang]}</p>
-    </section>
+      <!-- ============================= SUMMARY ========================= -->
+      <section>
+        <h2>{s('summary')}</h2>
+        <p class="summary">{cv.summary[lang]}</p>
+      </section>
 
-    <!-- =============================== SKILLS ============================= -->
-    <section>
-      <h2>{s('skills')}</h2>
-      {
-        profile.skillGroups.map((g) => (
-          <p class="kv">
-            <span class="k">{isTr ? g.title_tr : g.title_en}:</span> {g.items.join(', ')}
-          </p>
-        ))
-      }
-    </section>
+      <!-- ============================== SKILLS ========================= -->
+      <section>
+        <h2>{s('skills')}</h2>
+        {
+          profile.skillGroups.map((g) => (
+            <p class="kv">
+              <span class="k">{isTr ? g.title_tr : g.title_en}:</span> {g.items.join(', ')}
+            </p>
+          ))
+        }
+      </section>
 
-    <!-- ============================ EXPERIENCE =========================== -->
-    <section>
-      <h2>{s('experience')}</h2>
-      {
-        experience.map((e) => (
-          <div class="entry">
-            <div class="entry-head">
-              <div>
-                <span class="entry-title">{isTr ? e.data.role_tr : e.data.role_en}</span>
-                <span class="entry-org">
-                  {' '}
-                  — {e.data.org}
-                </span>
-              </div>
-              <div class="entry-meta">
-                {e.data.location} · {e.data.start} – {e.data.end}
-              </div>
-            </div>
-            <ul class="bullets">
-              {(isTr ? e.data.bullets_tr : e.data.bullets_en).map((b) => (
-                <li>{b}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </section>
-
-    <!-- ============================= PROJECTS ============================ -->
-    <section>
-      <h2>{s('projects')}</h2>
-      {
-        projects.map((p) => {
-          const link = primaryLink(p.data.links);
-          return (
+      <!-- ============================ EXPERIENCE ======================= -->
+      <section>
+        <h2>{s('experience')}</h2>
+        {
+          experience.map((e) => (
             <div class="entry">
               <div class="entry-head">
                 <div>
-                  <span class="entry-title">{p.data.title}</span>
-                  <span class="entry-org"> — {isTr ? p.data.tagline_tr : p.data.tagline_en}</span>
+                  <span class="entry-title">{isTr ? e.data.role_tr : e.data.role_en}</span>
+                  <span class="entry-org"> — {e.data.org}</span>
                 </div>
-                {link && (
-                  <div class="entry-meta">
-                    <a href={link}>{displayUrl(link)}</a>
-                  </div>
-                )}
+                <div class="entry-meta">
+                  {localizeLocation(e.data.location, lang)} ·{' '}
+                  {formatPeriod(e.data.start, e.data.end, lang)}
+                </div>
               </div>
-              <p class="project-tech">{p.data.stack.join(' · ')}</p>
+              <ul class="bullets">
+                {(isTr ? e.data.bullets_tr : e.data.bullets_en).map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
             </div>
-          );
-        })
-      }
-    </section>
-
-    <!-- =========================== PUBLICATIONS ========================== -->
-    <section>
-      <h2>{s('publications')}</h2>
-      {
-        publications.map((pub) => (
-          <p class="entry">
-            <span class="entry-title">{isTr ? pub.data.title_tr : pub.data.title_en}</span>
-            {' — '}
-            <span class="entry-org">
-              {pub.data.venue}, {pub.data.year}
-            </span>
-          </p>
-        ))
-      }
-    </section>
-
-    <!-- ============================== WRITING ============================ -->
-    <section>
-      <h2>{s('writing')}</h2>
-      <p>
-        <a href={profile.links.medium.url}>Medium ({profile.links.medium.handle})</a>
-        {' — '}
-        {
-          writing.map((w, i) => (
-            <>
-              {i > 0 && <span> · </span>}
-              <a href={w.data.url}>{w.data.title}</a>
-            </>
           ))
         }
-      </p>
-    </section>
+      </section>
 
-    <!-- =========================== CERTIFICATIONS ======================== -->
-    <section>
-      <h2>{s('certifications')}</h2>
-      <ul class="inline-list">
+      <!-- ============================= PROJECTS ======================== -->
+      <section>
+        <h2>{s('projects')}</h2>
         {
-          profile.certifications.map((c) => (
-            <li>
-              <span class="entry-title">{c.title}</span> — {c.issuer}
-              {c.platform ? ` (${c.platform})` : ''}, {c.date}
-            </li>
+          projects.map((p) => {
+            const link = primaryLink(p.data.links);
+            return (
+              <div class="entry">
+                <div class="entry-head">
+                  <div>
+                    <span class="entry-title">{p.data.title}</span>
+                    <span class="entry-org"> — {isTr ? p.data.tagline_tr : p.data.tagline_en}</span>
+                  </div>
+                  {link && (
+                    <div class="entry-meta">
+                      <a href={link}>{displayUrl(link)}</a>
+                    </div>
+                  )}
+                </div>
+                <p class="project-tech">{p.data.stack.join(' · ')}</p>
+              </div>
+            );
+          })
+        }
+      </section>
+
+      <!-- =========================== PUBLICATIONS ====================== -->
+      <section>
+        <h2>{s('publications')}</h2>
+        {
+          publications.map((pub) => (
+            <p class="entry">
+              <span class="entry-title">{isTr ? pub.data.title_tr : pub.data.title_en}</span>
+              {' — '}
+              <span class="entry-org">
+                {pub.data.venue}, {pub.data.year}
+              </span>
+            </p>
           ))
         }
-      </ul>
-    </section>
+      </section>
 
-    <!-- ============================= EDUCATION =========================== -->
-    <section>
-      <h2>{s('education')}</h2>
-      <p>{educationLine}</p>
-    </section>
+      <!-- ============================== WRITING ======================== -->
+      <section>
+        <h2>{s('writing')}</h2>
+        <p>
+          <a href={profile.links.medium.url}>Medium ({profile.links.medium.handle})</a>
+          {' — '}
+          {
+            writing.map((w, i) => (
+              <>
+                {i > 0 && <span> · </span>}
+                <a href={w.data.url}>{w.data.title}</a>
+              </>
+            ))
+          }
+        </p>
+      </section>
 
-    <!-- ============================= LANGUAGES =========================== -->
-    <section>
-      <h2>{s('languages')}</h2>
-      <p>
-        {
-          profile.languages
-            .map((l) =>
-              isTr ? `${l.name_tr} (${l.level_tr})` : `${l.name_en} (${l.level_en})`,
-            )
-            .join(' · ')
-        }
-      </p>
-    </section>
+      <!-- =========================== CERTIFICATIONS ==================== -->
+      <section>
+        <h2>{s('certifications')}</h2>
+        <ul class="inline-list">
+          {
+            profile.certifications.map((c) => {
+              const meta = `${c.issuer}${c.platform ? ` (${c.platform})` : ''}, ${c.date}`;
+              return (
+                <li>
+                  <span class="entry-title">{c.title}</span> — {meta}
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <!-- ============================= EDUCATION ======================= -->
+      <section>
+        <h2>{s('education')}</h2>
+        <p>{educationLine}</p>
+      </section>
+
+      <!-- ============================= LANGUAGES ======================= -->
+      <section>
+        <h2>{s('languages')}</h2>
+        <p>
+          {
+            profile.languages
+              .map((l) => (isTr ? `${l.name_tr} (${l.level_tr})` : `${l.name_en} (${l.level_en})`))
+              .join(' · ')
+          }
+        </p>
+      </section>
+    </main>
   </body>
 </html>

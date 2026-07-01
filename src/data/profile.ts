@@ -112,8 +112,8 @@ export const profile = {
 
   /** Verbatim from spec §7. Do not paraphrase. */
   about: {
-    en: 'Ömer Yasir Önal is a back-end and applied-AI engineer based in Istanbul who builds verifiable, multi-agent AI systems and ships full-stack products end to end — from AKIS, an open-source platform where AI agents can’t ship code past a human and a real passing test, to UniSum, a GPA tracker live on the App Store with its own Node/MySQL API. He works across TypeScript/Node and Python backends, LLM and agent orchestration (RAG, MCP, multi-model), and native mobile (SwiftUI, Flutter). A selected AI Fellow (1,500 of 31,700), TÜBİTAK 2209-A researcher with an IEEE SIU 2025 paper, and freelancer, graduating in Computer Engineering from FSM in June 2026.',
-    tr: 'Ömer Yasir Önal, İstanbul merkezli bir back-end ve uygulamalı yapay zeka mühendisidir; doğrulanabilir çok ajanlı yapay zeka sistemleri kurar ve ürünleri uçtan uca yayına alır — yapay zeka ajanlarının insan onayı ve gerçek bir test geçmeden kod yayınlayamadığı açık kaynak platform AKIS’ten, kendi Node/MySQL API’siyle App Store’da yayında olan not ortalaması uygulaması UniSum’a kadar. TypeScript/Node ve Python backend’leri, LLM ve ajan orkestrasyonu (RAG, MCP, çok modelli) ile native mobil (SwiftUI, Flutter) arasında rahatça çalışır. Seçilmiş bir AI Fellow (31.700 içinden 1.500), IEEE SIU 2025 bildirili TÜBİTAK 2209-A araştırmacısı ve freelancer’dır; Haziran 2026’da FSM Bilgisayar Mühendisliği’nden mezun olacaktır.',
+    en: 'Ömer Yasir Önal is a back-end and applied-AI engineer based in Istanbul who builds verifiable, multi-agent AI systems and ships full-stack products end to end — from AKIS, an open-source platform where AI agents can’t ship code past a human and a real passing test, to UniSum, a GPA tracker live on the App Store with its own Node/MySQL API. He works across TypeScript/Node and Python backends, LLM and agent orchestration (RAG, MCP, multi-model), and native mobile (SwiftUI, Flutter). A selected AI Fellow (1,500 of 31,700), TÜBİTAK 2209-A researcher with an IEEE SIU 2025 paper, and freelancer, a recent Computer Engineering graduate from FSM (2026).',
+    tr: 'Ömer Yasir Önal, İstanbul merkezli bir back-end ve uygulamalı yapay zeka mühendisidir; doğrulanabilir çok ajanlı yapay zeka sistemleri kurar ve ürünleri uçtan uca yayına alır — yapay zeka ajanlarının insan onayı ve gerçek bir test geçmeden kod yayınlayamadığı açık kaynak platform AKIS’ten, kendi Node/MySQL API’siyle App Store’da yayında olan not ortalaması uygulaması UniSum’a kadar. TypeScript/Node ve Python backend’leri, LLM ve ajan orkestrasyonu (RAG, MCP, çok modelli) ile native mobil (SwiftUI, Flutter) arasında rahatça çalışır. Seçilmiş bir AI Fellow (31.700 içinden 1.500), IEEE SIU 2025 bildirili TÜBİTAK 2209-A araştırmacısı ve freelancer’dır; Haziran 2026’da FSM Bilgisayar Mühendisliği’nden mezun oldu.',
   },
 
   /** Signal badges for the About section (spec §5). */
@@ -239,8 +239,7 @@ export const profile = {
 
   languages: [
     { name_en: 'Turkish', name_tr: 'Türkçe', level_en: 'Native', level_tr: 'Ana dil' },
-    { name_en: 'English', name_tr: 'İngilizce', level_en: 'B2–C1', level_tr: 'B2–C1' },
-    { name_en: 'German', name_tr: 'Almanca', level_en: 'A1', level_tr: 'A1' },
+    { name_en: 'English', name_tr: 'İngilizce', level_en: 'B2', level_tr: 'B2' },
   ] satisfies LanguageSkill[],
 } as const;
 
