@@ -31,11 +31,30 @@ export interface LlmsPublication {
   year: number;
   url?: string;
 }
+export interface LlmsPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  lang: string;
+  /** Raw markdown body — inlined into llms-full.txt. */
+  body: string;
+}
+export interface LlmsCourse {
+  slug: string;
+  title: string;
+  description: string;
+  level: string;
+  lang: string;
+  lessons: { slug: string; title: string }[];
+}
 export interface LlmsData {
   site: string;
   projects: LlmsProject[];
   writing: LlmsWriting[];
   publications: LlmsPublication[];
+  posts: LlmsPost[];
+  courses: LlmsCourse[];
 }
 
 const abs = (site: string, path: string) => new URL(path, site).toString();
@@ -55,6 +74,11 @@ export function llmsTxt(data: LlmsData): string {
   }
   lines.push('');
   lines.push('## Writing');
+  for (const p of data.posts) {
+    lines.push(
+      `- [${p.title}](${abs(site, `/writing/${p.slug}/`)}): ${p.description} (${p.date}, ${p.lang})`,
+    );
+  }
   for (const w of data.writing) {
     lines.push(`- [${w.title}](${w.url}): ${w.source}, ${w.date} (${w.lang})`);
   }
@@ -65,7 +89,19 @@ export function llmsTxt(data: LlmsData): string {
   }
   lines.push('');
   lines.push('## Courses');
-  lines.push('_Coming soon — small, focused courses will be published here and in the mobile app._');
+  if (data.courses.length) {
+    for (const c of data.courses) {
+      lines.push(
+        `- [${c.title}](${abs(site, `/courses/${c.slug}/`)}): ${c.description} (${c.level}, ${c.lessons.length} lessons, ${c.lang})`,
+      );
+    }
+  } else {
+    lines.push('_Coming soon — small, focused courses will be published here and in the mobile app._');
+  }
+  lines.push('');
+  lines.push('## Feeds');
+  lines.push(`- [RSS](${abs(site, '/rss.xml')}): new articles`);
+  lines.push(`- [feed.json](${abs(site, '/feed.json')}): versioned JSON feed of posts + courses (contract v1)`);
   lines.push('');
   lines.push('## CV');
   lines.push(`- [Résumé (English)](${abs(site, '/cv/omer-yasir-onal-en.pdf')})`);
@@ -115,6 +151,23 @@ export function llmsFullTxt(data: LlmsData): string {
   s.push('## Writing');
   for (const w of data.writing) s.push(`- ${w.title} (${w.source}, ${w.date}): ${w.url}`);
   s.push('');
+  s.push('## Articles (native, full text)');
+  for (const p of data.posts) {
+    s.push(`### ${p.title} — ${abs(site, `/writing/${p.slug}/`)}`);
+    s.push(`${p.description} (${p.date}, ${p.lang})`);
+    s.push('');
+    s.push(p.body.trim());
+    s.push('');
+  }
+  s.push('## Courses');
+  for (const c of data.courses) {
+    s.push(`### ${c.title} — ${abs(site, `/courses/${c.slug}/`)}`);
+    s.push(`${c.description} (level: ${c.level}, ${c.lang})`);
+    for (const l of c.lessons) {
+      s.push(`- ${l.title}: ${abs(site, `/courses/${c.slug}/${l.slug}/`)}`);
+    }
+    s.push('');
+  }
   s.push('## Publications');
   for (const pub of data.publications) s.push(`- ${pub.title} — ${pub.venue}, ${pub.year}`);
   s.push('');
