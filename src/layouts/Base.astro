@@ -12,6 +12,8 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   robots?: string;
+  /** External canonical URL override (republished content). Default: self. */
+  canonicalUrl?: string;
 }
 
 const {
@@ -22,8 +24,9 @@ const {
   ogImage,
   ogType = 'website',
   robots = 'index, follow',
+  canonicalUrl,
 } = Astro.props;
-const canonical = canonicalHref(path, Astro.site!);
+const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
 const alternates = hreflangLinks(lang, path, Astro.site!);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
 ---
