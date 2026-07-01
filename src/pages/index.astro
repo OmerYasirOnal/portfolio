@@ -1,18 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import Hero from '../components/Hero.astro';
-import LangToggle from '../components/LangToggle.astro';
-import ThemeToggle from '../components/ThemeToggle.tsx';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import About from '../components/About.astro';
 import Timeline from '../components/Timeline.astro';
 import SkillGroups from '../components/SkillGroups.astro';
 import WritingList from '../components/WritingList.astro';
 import Contact from '../components/Contact.astro';
-import SocialLinks from '../components/SocialLinks.astro';
-import { profile } from '../data/profile';
-import { t, localizePath, type Locale } from '../data/i18n';
+import { t, type Locale } from '../data/i18n';
 
 const locale: Locale = 'en';
 const path = '/';
@@ -21,14 +19,6 @@ const path = '/';
 const featured = (
   await getCollection('projects', (e) => e.data.featured && !e.data.draft)
 ).sort((a, b) => a.data.order - b.data.order);
-
-// Home-section anchors; labels come from the i18n dictionary (no hard-coded copy).
-const navLinks = [
-  { key: 'nav.work', href: '#work' },
-  { key: 'nav.about', href: '#about' },
-  { key: 'nav.writing', href: '#writing' },
-  { key: 'nav.contact', href: '#contact' },
-];
 ---
 
 <Base
@@ -38,46 +28,15 @@ const navLinks = [
   lang={locale}
 >
   <a
-    href="#work"
+    href="#main"
     class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
   >
     Skip to content
   </a>
 
-  <header id="top" class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
-    <nav
-      class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3"
-      aria-label="Primary"
-    >
-      <a
-        href={localizePath(locale, '/')}
-        class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        {profile.name}
-      </a>
+  <SiteHeader locale={locale} path={path} />
 
-      <div class="flex items-center gap-1">
-        <ul class="mr-2 hidden items-center gap-1 sm:flex" role="list">
-          {
-            navLinks.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {t(locale, item.key)}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <LangToggle locale={locale} path={path} />
-        <ThemeToggle client:load locale={locale} />
-      </div>
-    </nav>
-  </header>
-
-  <main>
+  <main id="main">
     <Hero locale={locale} />
 
     <section id="work" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
@@ -147,42 +106,5 @@ const navLinks = [
     </section>
   </main>
 
-  <footer class="border-t border-border/60">
-    <div
-      class="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between"
-    >
-      <div class="space-y-1">
-        <a
-          href={localizePath(locale, '/')}
-          class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {profile.name}
-        </a>
-        <p class="text-sm text-muted">{profile.role[locale]} · {profile.location[locale]}</p>
-      </div>
-
-      <div class="flex flex-col items-start gap-3 sm:items-end">
-        <SocialLinks
-          locale={locale}
-          platforms={['github', 'linkedin', 'medium', 'youtube', 'hackerrank']}
-        />
-        <a
-          href="#top"
-          class="font-mono text-xs text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {t(locale, 'footer.backToTop')} ↑
-        </a>
-      </div>
-    </div>
-
-    <div class="border-t border-border/40">
-      <p
-        class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-2 gap-y-1 px-6 py-5 font-mono text-xs text-muted"
-      >
-        <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span aria-hidden="true">·</span>
-        <span>{t(locale, 'footer.builtWith')}</span>
-      </p>
-    </div>
-  </footer>
+  <SiteFooter locale={locale} />
 </Base>

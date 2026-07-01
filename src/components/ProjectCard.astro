@@ -9,7 +9,7 @@
  * (repo / live / App Store / other), which open in a new tab with rel=noopener.
  */
 import type { CollectionEntry } from 'astro:content';
-import { t, type Locale } from '../data/i18n';
+import { t, localizePath, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
@@ -21,6 +21,11 @@ const { data } = entry;
 
 const tagline = locale === 'en' ? data.tagline_en : data.tagline_tr;
 const status = locale === 'en' ? data.status_en : data.status_tr;
+
+// The whole card links to the project's case-study detail page. The title is the
+// real link; a stretched ::before overlay makes the entire card clickable, while
+// the external icon links below sit above it (relative z-10) and stay clickable.
+const detailHref = localizePath(locale, `/projects/${entry.id}`);
 
 /** Link types in display order, each mapped to its i18n label + glyph. */
 type LinkKey = 'repo' | 'live' | 'appstore' | 'other';
@@ -59,10 +64,13 @@ const hint = t(locale, 'social.opensNewTab');
     <span class="text-accent/70">/</span>{data.category}
   </p>
 
-  <h3
-    class="mt-3 text-lg font-semibold tracking-tight text-fg transition-colors group-hover:text-accent"
-  >
-    {data.title}
+  <h3 class="mt-3 text-lg font-semibold tracking-tight text-fg transition-colors group-hover:text-accent">
+    <a
+      href={detailHref}
+      class="before:absolute before:inset-0 before:rounded-lg before:content-[''] focus-visible:outline-none focus-visible:before:outline focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-accent"
+    >
+      {data.title}
+    </a>
   </h3>
 
   <p class="mt-1.5 text-sm leading-relaxed text-muted">{tagline}</p>
@@ -89,7 +97,7 @@ const hint = t(locale, 'social.opensNewTab');
   {/* external links — pushed to the card bottom */}
   {
     links.length > 0 && (
-      <ul class="mt-auto flex items-center gap-1 pt-5" role="list">
+      <ul class="relative z-10 mt-auto flex items-center gap-1 pt-5" role="list">
         {links.map((link) => (
           <li>
             <a

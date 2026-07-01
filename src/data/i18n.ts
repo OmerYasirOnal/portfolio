@@ -15,6 +15,14 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
   'section.contact': { en: 'Contact', tr: 'İletişim' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'projects.title': { en: 'Projects', tr: 'Projeler' },
+  'projects.intro': {
+    en: 'A selection of things I have designed, built, and shipped — from multi-agent systems to production mobile apps.',
+    tr: 'Tasarladığım, geliştirdiğim ve yayına aldığım işlerden bir seçki — çok ajanlı sistemlerden yayında olan mobil uygulamalara.',
+  },
+  'projects.backToAll': { en: 'All projects', tr: 'Tüm projeler' },
+  'project.overview': { en: 'Overview', tr: 'Genel bakış' },
+  'project.stack': { en: 'Stack', tr: 'Teknolojiler' },
   'contact.intro': {
     en: 'Have a role, a project, or a question? The fastest way to reach me is email — I read every message.',
     tr: 'Bir pozisyon, bir proje ya da bir sorunuz mu var? Bana ulaşmanın en hızlı yolu e-posta — her mesajı okuyorum.',
