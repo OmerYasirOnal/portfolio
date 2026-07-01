@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Odak — Ücretsiz Pomodoro Odak Zamanlayıcısı | Free Focus Timer</title>
+  <meta name="description" content="Odak: ücretsiz, reklamsız, Türkçe ve İngilizce Pomodoro odak zamanlayıcısı. Görevler, günlük istatistikler ve tam gizlilik — verileriniz cihazınızda kalır. Free, ad-free bilingual Pomodoro timer.">
+  <meta name="keywords" content="pomodoro, odak, zamanlayıcı, focus timer, verimlilik, productivity, ders çalışma, study timer">
+
+  <meta property="og:title" content="Odak — Ücretsiz Pomodoro Odak Zamanlayıcısı">
+  <meta property="og:description" content="Ücretsiz, reklamsız, TR/EN Pomodoro zamanlayıcısı. Görevler + istatistikler, verileriniz cihazınızda kalır.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Odak">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; padding: 0; background: #12141f; }
+    #splash {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      color: #e8e9f0; font-family: system-ui, sans-serif;
+    }
+    #splash .ring {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 4px solid #2a2e45; border-top-color: #ff7a59;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="splash"><div class="ring"></div><div>Odak</div></div>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
