@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Unit tests
+        run: pnpm vitest run
+
+      - name: Build
+        run: pnpm build
+
+      # Link check over the built site. LinkedIn returns 999 to bots, so it is
+      # skipped. The canonical/OG absolute URLs point at the production domain
+      # (https://omeryasironal.com); until that domain is attached we rewrite it
+      # to the local build root so those self-references are validated against
+      # the emitted files instead of hitting the network. Any other broken
+      # internal/external link fails the job (enforces the accuracy rule).
+      - name: Link check (dist)
+        run: >-
+          pnpm dlx linkinator ./dist --silent
+          --skip "^https://www.linkedin.com"
+          --url-rewrite-search "https://omeryasironal.com/"
+          --url-rewrite-replace "/"
