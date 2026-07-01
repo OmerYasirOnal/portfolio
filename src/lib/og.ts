@@ -58,3 +58,30 @@ export function ogCvKey(locale: Locale): string {
 export function ogCvPath(locale: Locale): string {
   return `/og/${ogCvKey(locale)}.png`;
 }
+
+/** Route key + path for a native post detail page. */
+export function ogPostKey(locale: Locale, id: string): string {
+  return `writing/${id}${suffix(locale)}`;
+}
+
+export function ogPostPath(locale: Locale, id: string): string {
+  return `/og/${ogPostKey(locale, id)}.png`;
+}
+
+/** Route key + path for the /courses listing page. */
+export function ogCoursesKey(locale: Locale): string {
+  return `courses-index${suffix(locale)}`;
+}
+
+export function ogCoursesPath(locale: Locale): string {
+  return `/og/${ogCoursesKey(locale)}.png`;
+}
+
+/** Route key + path for a course page (lesson pages reuse the course card). */
+export function ogCourseKey(locale: Locale, id: string): string {
+  return `courses/${id}${suffix(locale)}`;
+}
+
+export function ogCoursePath(locale: Locale, id: string): string {
+  return `/og/${ogCourseKey(locale, id)}.png`;
+}
