@@ -2,6 +2,7 @@ export const locales = ['en', 'tr'] as const;
 export type Locale = (typeof locales)[number];
 
 const dict: Record<string, Record<Locale, string>> = {
+  'a11y.skipToContent': { en: 'Skip to content', tr: 'İçeriğe geç' },
   'nav.work': { en: 'Work', tr: 'Projeler' },
   'nav.about': { en: 'About', tr: 'Hakkımda' },
   'nav.writing': { en: 'Writing', tr: 'Yazılar' },
