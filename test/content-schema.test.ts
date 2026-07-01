@@ -4,6 +4,9 @@ import {
   experienceSchema,
   writingSchema,
   publicationSchema,
+  postSchema,
+  courseSchema,
+  lessonSchema,
 } from '../src/content/schemas';
 
 const validProject = {
@@ -136,5 +139,66 @@ describe('publications schema', () => {
         year: '2025',
       }).success,
     ).toBe(false);
+  });
+});
+
+describe('post schema', () => {
+  const validPost = {
+    title: 'Writing comes home',
+    description: 'New articles publish natively on this site.',
+    date: '2026-07-01',
+    lang: 'en',
+  };
+
+  it('accepts a minimal entry and applies defaults', () => {
+    const parsed = postSchema.parse(validPost);
+    expect(parsed.tags).toEqual([]);
+    expect(parsed.draft).toBe(false);
+    expect(parsed.home).toBe(false);
+    expect(parsed.updated).toBeUndefined();
+  });
+
+  it('requires an ISO date and a valid lang', () => {
+    expect(postSchema.safeParse({ ...validPost, date: '01-07-2026' }).success).toBe(false);
+    expect(postSchema.safeParse({ ...validPost, date: undefined }).success).toBe(false);
+    expect(postSchema.safeParse({ ...validPost, lang: 'de' }).success).toBe(false);
+  });
+
+  it('validates optional updated and canonical', () => {
+    expect(postSchema.parse({ ...validPost, updated: '2026-07-02' }).updated).toBe('2026-07-02');
+    expect(postSchema.safeParse({ ...validPost, updated: 'yesterday' }).success).toBe(false);
+    expect(postSchema.safeParse({ ...validPost, canonical: 'not-a-url' }).success).toBe(false);
+  });
+});
+
+describe('course schema', () => {
+  const validCourse = {
+    title: 'Demo course',
+    description: 'A skeleton course.',
+    level: 'beginner',
+    lang: 'en',
+  };
+
+  it('accepts a minimal entry and applies defaults', () => {
+    const parsed = courseSchema.parse(validCourse);
+    expect(parsed.tags).toEqual([]);
+    expect(parsed.order).toBe(99);
+    expect(parsed.draft).toBe(false);
+  });
+
+  it('rejects an unknown level and a missing description', () => {
+    expect(courseSchema.safeParse({ ...validCourse, level: 'expert' }).success).toBe(false);
+    expect(courseSchema.safeParse({ ...validCourse, description: undefined }).success).toBe(false);
+  });
+});
+
+describe('lesson schema', () => {
+  it('requires only a title', () => {
+    const parsed = lessonSchema.parse({ title: 'How lessons work' });
+    expect(parsed.description).toBeUndefined();
+  });
+
+  it('rejects a missing title', () => {
+    expect(lessonSchema.safeParse({}).success).toBe(false);
   });
 });

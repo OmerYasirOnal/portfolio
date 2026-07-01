@@ -83,3 +83,45 @@ export const publicationSchema = z.object({
   year: z.number(),
   url: z.string().url().optional(),
 });
+
+/** ISO calendar date, e.g. "2026-07-01". */
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD');
+
+export const postSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  /** Publish date — drives newest-first ordering and datePublished. */
+  date: isoDate,
+  /** Last substantive revision — feeds dateModified when present. */
+  updated: isoDate.optional(),
+  /** Language the post body is written in. */
+  lang: z.enum(['en', 'tr']),
+  tags: z.array(z.string()).default([]),
+  draft: z.boolean().default(false),
+  /** Surfaced in the curated home-page writing section when true. */
+  home: z.boolean().default(false),
+  /** Optional cover image path (public/ relative). */
+  cover: z.string().optional(),
+  /**
+   * External canonical URL when the post is a republication. Setting this
+   * makes the page defer to that URL (rel=canonical + og:url) and suppresses
+   * its hreflang alternates.
+   */
+  canonical: z.string().url().optional(),
+});
+
+export const courseSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  level: z.enum(['beginner', 'intermediate', 'advanced']),
+  /** Language the course is written in. */
+  lang: z.enum(['en', 'tr']),
+  tags: z.array(z.string()).default([]),
+  order: z.number().default(99),
+  draft: z.boolean().default(false),
+});
+
+export const lessonSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+});

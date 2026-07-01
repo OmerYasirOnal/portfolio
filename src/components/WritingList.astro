@@ -2,18 +2,13 @@
 /**
  * WritingList — the "Writing & publications" section.
  *
- * Two data-driven blocks, both read from content collections (single source of
- * truth): `writing` (external articles, e.g. Medium) linked out to their canonical
- * URL, and `publications` (peer-reviewed venues, e.g. IEEE SIU 2025). Locale-only
- * fields (`title_en` / `title_tr` on publications) are selected by the incoming
- * `locale`; article titles/URLs are canonical and shared across locales. Nothing
- * is hard-coded — sub-headings and hints come from the i18n dictionary.
- *
- * Visual: a "reading list" rendered like an index — each row is a mono ordinal +
- * title link + a mono source/venue tag. Article rows link out (new tab,
- * rel=noopener); publications link out only when a URL exists, otherwise they are
- * a static citation. The row underline is the only motion and is disabled under
- * prefers-reduced-motion by the global stylesheet.
+ * Three sources, one list: `posts` (native articles rendered on this site),
+ * `writing` (external articles, e.g. Medium) and `publications` (peer-reviewed
+ * venues). Native and external articles merge into a single newest-first
+ * reading list; native rows link internally (no new tab, no external glyph),
+ * external rows keep target=_blank + rel=noopener. Locale-only fields are
+ * selected by the incoming `locale`; sub-headings, hints and the native source
+ * tag all come from the i18n dictionary — nothing is hard-coded.
  */
 import { getCollection } from 'astro:content';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -30,14 +25,50 @@ interface Props {
 
 const { locale, home = false } = Astro.props;
 
+/** One row of the reading list, normalized across native + external sources. */
+interface Row {
+  title: string;
+  href: string;
+  external: boolean;
+  source: string;
+  date: string;
+  lang: string;
+  order: number;
+  home: boolean;
+}
+
+const writing = await getCollection('writing');
+const posts = await getCollection('posts', (e) => !e.data.draft);
+
 // Newest first (ISO date strings sort lexically); `order` breaks ties (e.g. the
-// TR/EN pair published the same day).
-const allArticles = (await getCollection('writing')).sort((a, b) => {
-  if (a.data.date !== b.data.date) return a.data.date < b.data.date ? 1 : -1;
-  return a.data.order - b.data.order;
+// TR/EN pair published the same day). Native posts carry no order → 99.
+const allArticles: Row[] = [
+  ...writing.map((e) => ({
+    title: e.data.title,
+    href: e.data.url,
+    external: true,
+    source: e.data.source,
+    date: e.data.date,
+    lang: e.data.lang,
+    order: e.data.order,
+    home: e.data.home,
+  })),
+  ...posts.map((e) => ({
+    title: e.data.title,
+    href: localizePath(locale, `/writing/${e.id}`),
+    external: false,
+    source: t(locale, 'writing.sourceSelf'),
+    date: e.data.date,
+    lang: e.data.lang,
+    order: 99,
+    home: e.data.home,
+  })),
+].sort((a, b) => {
+  if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+  return a.order - b.order;
 });
 
-const articles = home ? allArticles.filter((entry) => entry.data.home) : allArticles;
+const articles = home ? allArticles.filter((row) => row.home) : allArticles;
 const truncated = home && allArticles.length > articles.length;
 const seeAllHref = localizePath(locale, '/writing');
 
@@ -75,13 +106,13 @@ const EXTERNAL_ICON = [
           {t(locale, 'writing.articles')}
         </h3>
         <ul class="divide-y divide-border/60 border-y border-border/60" role="list">
-          {articles.map((entry, i) => (
+          {articles.map((row, i) => (
             <li>
               <a
-                href={entry.data.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${entry.data.title} — ${entry.data.source} (${hint})`}
+                href={row.href}
+                target={row.external ? '_blank' : undefined}
+                rel={row.external ? 'noopener noreferrer' : undefined}
+                aria-label={row.external ? `${row.title} — ${row.source} (${hint})` : undefined}
                 class="group flex items-baseline gap-4 py-4 transition-colors hover:bg-card/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <span
@@ -92,39 +123,41 @@ const EXTERNAL_ICON = [
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="text-base font-medium leading-snug text-fg decoration-accent/50 decoration-1 underline-offset-4 group-hover:text-accent group-hover:underline">
-                    {entry.data.title}
+                    {row.title}
                   </span>
                   <span class="mt-1.5 flex items-center gap-2 font-mono text-xs text-muted">
-                    <time datetime={entry.data.date} class="tabular-nums">
-                      {formatDate(entry.data.date)}
+                    <time datetime={row.date} class="tabular-nums">
+                      {formatDate(row.date)}
                     </time>
                     <span aria-hidden="true" class="text-border">
                       ·
                     </span>
                     <span class="rounded border border-border/70 px-1.5 py-px text-[0.65rem] uppercase tracking-wider text-muted/80">
-                      {entry.data.lang}
+                      {row.lang}
                     </span>
                   </span>
                 </span>
                 <span class="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted">
-                  {entry.data.source}
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="text-muted/70 transition-colors group-hover:text-accent"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    {EXTERNAL_ICON.map((d) => (
-                      <path d={d} />
-                    ))}
-                  </svg>
+                  {row.source}
+                  {row.external && (
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="text-muted/70 transition-colors group-hover:text-accent"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      {EXTERNAL_ICON.map((d) => (
+                        <path d={d} />
+                      ))}
+                    </svg>
+                  )}
                 </span>
               </a>
             </li>

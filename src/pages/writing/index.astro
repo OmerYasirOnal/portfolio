@@ -1,13 +1,50 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import WritingList from '../../components/WritingList.astro';
-import { t, type Locale } from '../../data/i18n';
+import { t, localizePath, type Locale } from '../../data/i18n';
 import { ogWritingPath } from '../../lib/og';
+import {
+  breadcrumbJsonLd,
+  writingItemListJsonLd,
+  scholarlyArticleJsonLd,
+  canonicalHref,
+  jsonLdScript,
+} from '../../lib/seo';
 
 const locale: Locale = 'en';
 const path = '/writing';
+
+const articles = (await getCollection('writing')).sort((a, b) =>
+  a.data.date < b.data.date ? 1 : -1,
+);
+const pubs = await getCollection('publications');
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'section.writing'), url: canonicalHref(localizePath(locale, '/writing'), Astro.site!) },
+]);
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const ldItems = [
+  ...articles.map((a) => ({ title: a.data.title, url: a.data.url, date: a.data.date })),
+  ...posts.map((p) => ({
+    title: p.data.title,
+    url: canonicalHref(localizePath(locale, `/writing/${p.id}`), Astro.site!),
+    date: p.data.date,
+  })),
+].sort((a, b) => (a.date < b.date ? 1 : -1));
+const articlesLd = writingItemListJsonLd(ldItems, Astro.site!);
+const pubsLd = pubs.map((p) =>
+  scholarlyArticleJsonLd(
+    {
+      title: p.data.title_en,
+      venue: p.data.venue,
+      year: p.data.year,
+      url: p.data.url,
+    },
+    Astro.site!,
+  ),
+);
 ---
 
 <Base
@@ -17,6 +54,10 @@ const path = '/writing';
   lang={locale}
   ogImage={ogWritingPath(locale)}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(articlesLd)} />
+  {pubsLd.map((p) => <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(p)} />)}
+
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
@@ -30,6 +71,12 @@ const path = '/writing';
       <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
         {t(locale, 'writing.intro')}
       </p>
+      <a
+        href={localizePath(locale, '/courses')}
+        class="group mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {t(locale, 'writing.browseCourses')}
+      </a>
     </section>
 
     <section class="mx-auto max-w-5xl px-6 py-8 pb-20">

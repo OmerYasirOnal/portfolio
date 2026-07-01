@@ -12,6 +12,9 @@
  *   /og/projects/<id>.png     /og/projects/<id>-tr.png
  *   /og/projects-index.png    /og/projects-index-tr.png
  *   /og/writing.png           /og/writing-tr.png
+ *   /og/writing/<id>.png      /og/writing/<id>-tr.png
+ *   /og/courses-index.png     /og/courses-index-tr.png
+ *   /og/courses/<slug>.png    /og/courses/<slug>-tr.png
  *
  * Route keys and the matching public paths live in `src/lib/og.ts` so the
  * emitted files and the `og:image` <meta> URLs stay in lockstep.
@@ -20,7 +23,17 @@ import { getCollection } from 'astro:content';
 import { OGImageRoute } from 'astro-og-canvas';
 import { profile } from '../../data/profile';
 import { locales, t } from '../../data/i18n';
-import { ogHomeKey, ogProjectKey, ogProjectsKey, ogWritingKey } from '../../lib/og';
+import {
+  ogHomeKey,
+  ogProjectKey,
+  ogProjectsKey,
+  ogWritingKey,
+  ogCvKey,
+  ogPostKey,
+  ogCoursesKey,
+  ogCourseKey,
+} from '../../lib/og';
+import { courseSlugOf } from '../../lib/courses';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
 const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0b
@@ -37,6 +50,8 @@ interface OgPage {
 }
 
 const projects = await getCollection('projects', (e) => !e.data.draft);
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const courses = await getCollection('courses', (e) => !e.data.draft);
 
 const pages: Record<string, OgPage> = {};
 
@@ -56,12 +71,34 @@ for (const locale of locales) {
     heading: t(locale, 'section.writing'),
     sub: t(locale, 'writing.intro'),
   };
+  pages[ogCvKey(locale)] = {
+    heading: t(locale, 'cv.title'),
+    sub: profile.role[locale],
+  };
+
+  pages[ogCoursesKey(locale)] = {
+    heading: t(locale, 'courses.title'),
+    sub: t(locale, 'courses.intro'),
+  };
 
   // Per-project: title + localized tagline.
   for (const entry of projects) {
     pages[ogProjectKey(locale, entry.id)] = {
       heading: entry.data.title,
       sub: locale === 'en' ? entry.data.tagline_en : entry.data.tagline_tr,
+    };
+  }
+  // Per-post and per-course: title + description.
+  for (const entry of posts) {
+    pages[ogPostKey(locale, entry.id)] = {
+      heading: entry.data.title,
+      sub: entry.data.description,
+    };
+  }
+  for (const entry of courses) {
+    pages[ogCourseKey(locale, courseSlugOf(entry.id))] = {
+      heading: entry.data.title,
+      sub: entry.data.description,
     };
   }
 }
