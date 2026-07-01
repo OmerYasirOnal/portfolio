@@ -10,6 +10,7 @@ import Timeline from '../components/Timeline.astro';
 import SkillGroups from '../components/SkillGroups.astro';
 import WritingList from '../components/WritingList.astro';
 import Contact from '../components/Contact.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
 
@@ -43,7 +44,7 @@ const navLinks = [
     Skip to content
   </a>
 
-  <header class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
+  <header id="top" class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
     <nav
       class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3"
       aria-label="Primary"
@@ -145,4 +146,43 @@ const navLinks = [
       <Contact locale={locale} />
     </section>
   </main>
+
+  <footer class="border-t border-border/60">
+    <div
+      class="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div class="space-y-1">
+        <a
+          href={localizePath(locale, '/')}
+          class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {profile.name}
+        </a>
+        <p class="text-sm text-muted">{profile.role[locale]} · {profile.location[locale]}</p>
+      </div>
+
+      <div class="flex flex-col items-start gap-3 sm:items-end">
+        <SocialLinks
+          locale={locale}
+          platforms={['github', 'linkedin', 'medium', 'youtube', 'hackerrank']}
+        />
+        <a
+          href="#top"
+          class="font-mono text-xs text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {t(locale, 'footer.backToTop')} ↑
+        </a>
+      </div>
+    </div>
+
+    <div class="border-t border-border/40">
+      <p
+        class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-2 gap-y-1 px-6 py-5 font-mono text-xs text-muted"
+      >
+        <span>© {new Date().getFullYear()} {profile.name}</span>
+        <span aria-hidden="true">·</span>
+        <span>{t(locale, 'footer.builtWith')}</span>
+      </p>
+    </div>
+  </footer>
 </Base>
