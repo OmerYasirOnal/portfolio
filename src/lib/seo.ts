@@ -35,7 +35,7 @@ export interface PersonJsonLd {
  *   testable outside an Astro render context.
  */
 export function personJsonLd(site?: URL | string): PersonJsonLd {
-  const origin = site ? new URL(site).origin : 'https://omeryasironal.com';
+  const origin = site ? new URL(site).origin : 'https://portfolio-one-black-59.vercel.app';
 
   // Every public profile/social link from the single source of truth.
   const sameAs = Object.values(profile.links).map((link) => link.url);

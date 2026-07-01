@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://omeryasironal.com/sitemap-index.xml
+Sitemap: https://portfolio-one-black-59.vercel.app/sitemap-index.xml
