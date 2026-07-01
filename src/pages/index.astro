@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ThemeToggle from '../components/ThemeToggle.tsx';
 ---
 
 <Base
@@ -8,6 +9,9 @@ import Base from '../layouts/Base.astro';
   path="/"
 >
   <main class="mx-auto max-w-3xl p-8">
-    <h1 class="text-4xl font-bold">it builds</h1>
+    <div class="flex items-center justify-between">
+      <h1 class="text-4xl font-bold">it builds</h1>
+      <ThemeToggle client:load locale="en" />
+    </div>
   </main>
 </Base>

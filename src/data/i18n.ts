@@ -17,6 +17,8 @@ const dict: Record<string, Record<Locale, string>> = {
     en: 'Open to part-time, internship, junior full-time, and freelance.',
     tr: 'Part-time, staj, junior tam zamanlı ve freelance fırsatlara açığım.',
   },
+  'theme.switchToLight': { en: 'Switch to light theme', tr: 'Açık temaya geç' },
+  'theme.switchToDark': { en: 'Switch to dark theme', tr: 'Koyu temaya geç' },
 };
 
 export function t(locale: Locale, key: string): string {
