@@ -39,11 +39,26 @@ const photoDataUri = isTr
 
 // --- Data (sorted, reused from the site's single sources of truth) -----------
 const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
-const projects = (await getCollection('projects'))
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
+
+// Curated résumé projects: `cv.projects` fixes the order + carries a CV-only
+// impact note; the matching content-collection entry supplies the tech line and
+// the primary link. `flatMap` drops any slug that doesn't resolve (strict-TS
+// safe — no non-null assertion needed).
+const allProjects = await getCollection('projects');
+const cvProjects = cv.projects.flatMap((cp) => {
+  const entry = allProjects.find((p) => p.id === cp.slug);
+  return entry ? [{ entry, note: isTr ? cp.tr : cp.en }] : [];
+});
+
 const publications = await getCollection('publications');
-const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+const writingCount = (await getCollection('writing')).length;
+
+// CV-specific skill order (reused from profile.ts, reordered for a security /
+// back-end reviewer). Frontend + Mobile are folded into one line below.
+const cvSkillLines = cv.skills.order.flatMap((title) => {
+  const g = profile.skillGroups.find((sg) => sg.title_en === title);
+  return g ? [g] : [];
+});
 
 const s = (key: keyof typeof cv.sections): string => cv.sections[key][lang];
 
@@ -68,7 +83,7 @@ const socialLinks = [
 // Education reads as *graduated* now (word order differs by locale), framed at
 // render time so the reusable `profile.education` fields stay date-only.
 const grad = isTr ? profile.education.graduation_tr : profile.education.graduation_en;
-const educationLine = `${isTr ? profile.education.degree_tr : profile.education.degree_en} — ${
+const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en} — ${
   isTr ? profile.education.school_tr : profile.education.school_en
 } — ${isTr ? `${grad} mezunu` : `Graduated ${grad}`}`;
 ---
@@ -292,10 +307,21 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
         color: var(--fg);
       }
 
+      .project-note {
+        margin-top: 2px;
+        color: #27272a;
+      }
+
       .project-tech {
         color: var(--muted);
         font-size: 8.7pt;
-        margin-top: 1px;
+        margin-top: 2px;
+      }
+
+      .project-more {
+        margin-top: 7px;
+        font-size: 8.7pt;
+        color: var(--muted);
       }
 
       .inline-list {
@@ -355,12 +381,18 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
       <section>
         <h2>{s('skills')}</h2>
         {
-          profile.skillGroups.map((g) => (
+          cvSkillLines.map((g) => (
             <p class="kv">
               <span class="k">{isTr ? g.title_tr : g.title_en}:</span> {g.items.join(', ')}
             </p>
           ))
         }
+        <p class="kv">
+          <span class="k">
+            {isTr ? cv.skills.frontendMobile.title_tr : cv.skills.frontendMobile.title_en}:
+          </span>{' '}
+          {isTr ? cv.skills.frontendMobile.tr : cv.skills.frontendMobile.en}
+        </p>
       </section>
 
       <!-- ============================ EXPERIENCE ======================= -->
@@ -393,14 +425,13 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
       <section>
         <h2>{s('projects')}</h2>
         {
-          projects.map((p) => {
-            const link = primaryLink(p.data.links);
+          cvProjects.map(({ entry, note }) => {
+            const link = primaryLink(entry.data.links);
             return (
               <div class="entry">
                 <div class="entry-head">
                   <div>
-                    <span class="entry-title">{p.data.title}</span>
-                    <span class="entry-org"> — {isTr ? p.data.tagline_tr : p.data.tagline_en}</span>
+                    <span class="entry-title">{entry.data.title}</span>
                   </div>
                   {link && (
                     <div class="entry-meta">
@@ -408,11 +439,18 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
                     </div>
                   )}
                 </div>
-                <p class="project-tech">{p.data.stack.join(' · ')}</p>
+                <p class="project-note">{note}</p>
+                <p class="project-tech">{entry.data.stack.join(' · ')}</p>
               </div>
             );
           })
         }
+        <p class="project-more">
+          <a href={profile.links.github.url}>
+            {isTr ? 'GitHub’da daha fazlası' : 'More on GitHub'} →{' '}
+            {displayUrl(profile.links.github.url)}
+          </a>
+        </p>
       </section>
 
       <!-- =========================== PUBLICATIONS ====================== -->
@@ -435,16 +473,9 @@ const educationLine = `${isTr ? profile.education.degree_tr : profile.education.
       <section>
         <h2>{s('writing')}</h2>
         <p>
-          <a href={profile.links.medium.url}>Medium ({profile.links.medium.handle})</a>
+          {(isTr ? cv.writing.tr : cv.writing.en).replace('{n}', String(writingCount))}
           {' — '}
-          {
-            writing.map((w, i) => (
-              <>
-                {i > 0 && <span> · </span>}
-                <a href={w.data.url}>{w.data.title}</a>
-              </>
-            ))
-          }
+          <a href={profile.links.medium.url}>{displayUrl(profile.links.medium.url)}</a>
         </p>
       </section>
 

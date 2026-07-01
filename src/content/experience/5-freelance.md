@@ -6,10 +6,10 @@ location: Istanbul
 start: May 2024
 end: Jan 2025
 bullets_en:
-  - Delivered end-to-end client web projects.
+  - Delivered end-to-end client sites incl. A2 Reklam — a 341-page trilingual (TR/EN/AR) Astro build.
   - Owned scope, timeline and SEO / Google Ads.
 bullets_tr:
-  - Müşteriler için uçtan uca web projeleri teslim ettim.
+  - A2 Reklam dâhil uçtan uca müşteri siteleri teslim ettim — 341 sayfalık üç dilli (TR/EN/AR) Astro sitesi.
   - Kapsam, takvim ve SEO / Google Ads sorumluluğunu üstlendim.
-order: 5
+order: 4
 ---

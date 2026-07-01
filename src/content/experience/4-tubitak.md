@@ -11,5 +11,5 @@ bullets_en:
 bullets_tr:
   - Yapısal / beton dayanıklılığı için sensör verisine ML (XGBoost / Random Forest) uyguladım.
   - Çalışma, IEEE SIU 2025'te kabul edilen bir bildiriye dönüştü.
-order: 4
+order: 5
 ---
