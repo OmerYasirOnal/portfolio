@@ -1,0 +1,46 @@
+---
+import Base from '../../../layouts/Base.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import WritingList from '../../../components/WritingList.astro';
+import { t, type Locale } from '../../../data/i18n';
+
+const locale: Locale = 'tr';
+const path = '/tr/writing';
+---
+
+<Base
+  title={`${t(locale, 'section.writing')} — Ömer Yasir Önal`}
+  description="Articles and peer-reviewed publications by Ömer Yasir Önal — agentic systems, applied AI, and ML research."
+  path={path}
+  lang={locale}
+>
+  <a
+    href="#main"
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
+  >
+    Skip to content
+  </a>
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
+      <p class="font-mono text-sm text-accent">
+        <span class="text-accent/70">/</span>{t(locale, 'nav.writing').toLowerCase()}
+      </p>
+      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        {t(locale, 'section.writing')}
+      </h1>
+      <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
+        {t(locale, 'writing.intro')}
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-6 py-8 pb-20">
+      <WritingList locale={locale} />
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>
