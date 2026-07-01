@@ -59,5 +59,6 @@ export function localizePath(locale: Locale, path: string): string {
 
 export function altLocalePath(locale: Locale, path: string): string {
   if (locale === 'en') return localizePath('tr', path);
-  return path.replace(/^\/tr/, '') || '/';
+  // Strip only a whole `/tr` segment (so `/trending` is left untouched).
+  return path.replace(/^\/tr(?=\/|$)/, '') || '/';
 }
