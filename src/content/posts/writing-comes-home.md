@@ -7,7 +7,7 @@ tags: ["meta", "site"]
 home: true
 ---
 
-Until now, everything I wrote lived on [Medium](https://medium.com/@engomeryasironal). Those nine articles stay where they are — but starting with this post, new writing publishes here first.
+Until now, everything I wrote lived on [Medium](https://medium.com/@engomeryasironal). Those eleven articles stay where they are — but starting with this post, new writing publishes here first.
 
 Why move?
 

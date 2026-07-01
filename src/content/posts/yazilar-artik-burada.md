@@ -7,7 +7,7 @@ tags: ["meta", "site"]
 home: true
 ---
 
-Şimdiye kadar yazdığım her şey [Medium](https://medium.com/@engomeryasironal)'da yaşıyordu. O dokuz makale olduğu yerde kalıyor; ama bu yazıdan itibaren yeni içerikler önce burada yayımlanacak.
+Şimdiye kadar yazdığım her şey [Medium](https://medium.com/@engomeryasironal)'da yaşıyordu. O on bir makale olduğu yerde kalıyor; ama bu yazıdan itibaren yeni içerikler önce burada yayımlanacak.
 
 Neden taşındım?
 
