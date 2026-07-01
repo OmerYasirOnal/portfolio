@@ -13,7 +13,17 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.experience': { en: 'Experience', tr: 'Deneyim' },
   'section.skills': { en: 'Skills', tr: 'Yetenekler' },
   'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
+  'section.contact': { en: 'Contact', tr: 'İletişim' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'contact.intro': {
+    en: 'Have a role, a project, or a question? The fastest way to reach me is email — I read every message.',
+    tr: 'Bir pozisyon, bir proje ya da bir sorunuz mu var? Bana ulaşmanın en hızlı yolu e-posta — her mesajı okuyorum.',
+  },
+  'contact.emailMe': { en: 'Email me', tr: 'E-posta gönder' },
+  'contact.copyEmail': { en: 'Copy email address', tr: 'E-posta adresini kopyala' },
+  'contact.copied': { en: 'Copied', tr: 'Kopyalandı' },
+  'contact.viewCv': { en: 'View CV', tr: 'CV’yi gör' },
+  'contact.elsewhere': { en: 'Find me elsewhere', tr: 'Diğer platformlar' },
   'writing.articles': { en: 'Articles', tr: 'Makaleler' },
   'writing.publications': { en: 'Publications', tr: 'Yayınlar' },
   'contact.availability': {
