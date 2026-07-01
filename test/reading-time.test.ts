@@ -16,4 +16,9 @@ describe('readingTimeMinutes', () => {
     const code = '```js\n' + Array(400).fill('token').join(' ') + '\n```';
     expect(readingTimeMinutes(`intro words here ${code}`)).toBe(1);
   });
+
+  it('excludes an unclosed code fence to end of input', () => {
+    const code = '```js\n' + Array(400).fill('token').join(' ');
+    expect(readingTimeMinutes(`intro words here ${code}`)).toBe(1);
+  });
 });
