@@ -1,0 +1,138 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { t, localizePath, type Locale } from '../../data/i18n';
+import { ogPostPath } from '../../lib/og';
+import { readingTimeMinutes } from '../../lib/reading-time';
+import { blogPostingJsonLd, breadcrumbJsonLd, canonicalHref } from '../../lib/seo';
+
+// Emit one page per non-draft post. `entry.id` is the markdown filename and
+// becomes the URL slug; the TR mirror at /tr/writing/<id>/ renders the same
+// body with localized chrome so every path keeps its locale twin.
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', (e) => !e.data.draft);
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const locale: Locale = 'en';
+const { entry } = Astro.props;
+const { data } = entry;
+const path = localizePath(locale, `/writing/${entry.id}`);
+const { Content } = await render(entry);
+
+const minutes = readingTimeMinutes(entry.body ?? '');
+const url = canonicalHref(path, Astro.site!);
+const postLd = blogPostingJsonLd(
+  {
+    title: data.title,
+    description: data.description,
+    url,
+    date: data.date,
+    updated: data.updated,
+    lang: data.lang,
+    tags: data.tags,
+  },
+  Astro.site!,
+);
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'section.writing'), url: canonicalHref(localizePath(locale, '/writing'), Astro.site!) },
+  { name: data.title, url },
+]);
+
+// Full publish date in the page's locale ("1 Jul 2026" / "1 Tem 2026").
+const dateFmt = new Intl.DateTimeFormat('en-US', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
+---
+
+<Base
+  title={`${data.title} — Ömer Yasir Önal`}
+  description={data.description}
+  path={path}
+  lang={locale}
+  ogImage={ogPostPath(locale, entry.id)}
+  ogType="article"
+  canonicalUrl={data.canonical}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(postLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <article class="mx-auto max-w-3xl px-6 pb-20 pt-12">
+      {/* breadcrumb back to the writing index */}
+      <a
+        href={localizePath(locale, '/writing')}
+        class="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+        {t(locale, 'writing.backToAll')}
+      </a>
+
+      <header class="mt-6 border-b border-border/60 pb-8">
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+          {data.title}
+        </h1>
+
+        <p class="mt-3 text-lg leading-relaxed text-muted">{data.description}</p>
+
+        <p class="mt-5 flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
+          <time datetime={data.date} class="tabular-nums">{formatDate(data.date)}</time>
+          {
+            data.updated && (
+              <>
+                <span aria-hidden="true" class="text-border">·</span>
+                <span>
+                  {t(locale, 'writing.updated')}:{' '}
+                  <time datetime={data.updated} class="tabular-nums">{formatDate(data.updated)}</time>
+                </span>
+              </>
+            )
+          }
+          <span aria-hidden="true" class="text-border">·</span>
+          <span>{minutes} {t(locale, 'writing.minRead')}</span>
+          <span aria-hidden="true" class="text-border">·</span>
+          <span class="rounded border border-border/70 px-1.5 py-px text-[0.65rem] uppercase tracking-wider text-muted/80">
+            {data.lang}
+          </span>
+        </p>
+
+        {
+          data.tags.length > 0 && (
+            <ul class="mt-4 flex flex-wrap gap-1.5" role="list">
+              {data.tags.map((tag) => (
+                <li class="rounded border border-border/70 px-1.5 py-0.5 font-mono text-[0.7rem] text-muted">
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </header>
+
+      <div class="prose mt-8 max-w-none" lang={data.lang}>
+        <Content />
+      </div>
+    </article>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>
