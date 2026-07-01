@@ -11,6 +11,7 @@ import {
   scholarlyArticleJsonLd,
   blogPostingJsonLd,
   courseJsonLd,
+  jsonLdScript,
 } from '../src/lib/seo';
 
 const SITE = 'https://omeryasironal.com';
@@ -160,6 +161,14 @@ describe('blogPostingJsonLd', () => {
     );
     expect(p.dateModified).toBe('2026-07-01');
     expect('keywords' in p).toBe(false);
+  });
+});
+
+describe('jsonLdScript', () => {
+  it('escapes </script> sequences for safe inline injection', () => {
+    const out = jsonLdScript({ headline: 'Why </script> breaks embeds' });
+    expect(out).not.toContain('</script>');
+    expect(JSON.parse(out).headline).toBe('Why </script> breaks embeds');
   });
 });
 

@@ -5,7 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
 import { ogCvPath } from '../lib/og';
-import { breadcrumbJsonLd, canonicalHref } from '../lib/seo';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../lib/seo';
 
 const locale: Locale = 'en';
 const path = '/cv';
@@ -35,7 +35,7 @@ const downloads = [
   lang={locale}
   ogImage={ogCvPath(locale)}
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
 
   <SiteHeader locale={locale} path={path} />
 

@@ -6,7 +6,7 @@ import SiteFooter from '../../components/SiteFooter.astro';
 import { t, localizePath, type Locale } from '../../data/i18n';
 import { ogPostPath } from '../../lib/og';
 import { readingTimeMinutes } from '../../lib/reading-time';
-import { blogPostingJsonLd, breadcrumbJsonLd, canonicalHref } from '../../lib/seo';
+import { blogPostingJsonLd, breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../lib/seo';
 
 // Emit one page per non-draft post. `entry.id` is the markdown filename and
 // becomes the URL slug; the TR mirror at /tr/writing/<id>/ renders the same
@@ -59,8 +59,8 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
   ogType="article"
   canonicalUrl={data.canonical}
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(postLd)} />
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(postLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
 
   <SiteHeader locale={locale} path={path} />
 

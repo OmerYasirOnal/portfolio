@@ -11,6 +11,7 @@ import {
   writingItemListJsonLd,
   scholarlyArticleJsonLd,
   canonicalHref,
+  jsonLdScript,
 } from '../../../lib/seo';
 
 const locale: Locale = 'tr';
@@ -53,9 +54,9 @@ const pubsLd = pubs.map((p) =>
   lang={locale}
   ogImage={ogWritingPath(locale)}
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(articlesLd)} />
-  {pubsLd.map((p) => <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(p)} />)}
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(articlesLd)} />
+  {pubsLd.map((p) => <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(p)} />)}
 
   <SiteHeader locale={locale} path={path} />
 

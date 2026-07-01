@@ -6,7 +6,7 @@ import SiteFooter from '../../../components/SiteFooter.astro';
 import ProjectGrid from '../../../components/ProjectGrid.astro';
 import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogProjectsPath } from '../../../lib/og';
-import { breadcrumbJsonLd, canonicalHref } from '../../../lib/seo';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../../lib/seo';
 
 const locale: Locale = 'tr';
 const path = '/tr/projects';
@@ -32,7 +32,7 @@ const more = all.filter((e) => !e.data.featured);
   lang={locale}
   ogImage={ogProjectsPath(locale)}
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
 
   <SiteHeader locale={locale} path={path} />
 

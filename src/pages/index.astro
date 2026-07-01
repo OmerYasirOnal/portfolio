@@ -12,7 +12,7 @@ import WritingList from '../components/WritingList.astro';
 import Contact from '../components/Contact.astro';
 import { t, localizePath, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
-import { personJsonLd, webSiteJsonLd } from '../lib/seo';
+import { personJsonLd, webSiteJsonLd, jsonLdScript } from '../lib/seo';
 import { ogHomePath } from '../lib/og';
 
 const locale: Locale = 'en';
@@ -35,8 +35,8 @@ const featured = (
   lang={locale}
   ogImage={ogHomePath(locale)}
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(siteLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(personLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(siteLd)} />
 
   <SiteHeader locale={locale} path={path} />
 

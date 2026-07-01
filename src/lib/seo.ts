@@ -8,6 +8,16 @@
 import { profile } from '../data/profile';
 import { altLocalePath, type Locale } from '../data/i18n';
 
+/**
+ * Serialize a JSON-LD node for inline <script> injection. JSON.stringify
+ * leaves `<` untouched, so a string like "</script>" would terminate the
+ * script element; escaping to < keeps the payload inert and still
+ * parses back to the same JSON.
+ */
+export function jsonLdScript(node: unknown): string {
+  return JSON.stringify(node).replace(/</g, '\\u003c');
+}
+
 /** Normalize a path to a trailing slash (root stays "/"). Matches sitemap loc. */
 export function withTrailingSlash(path: string): string {
   const p = path.startsWith('/') ? path : `/${path}`;

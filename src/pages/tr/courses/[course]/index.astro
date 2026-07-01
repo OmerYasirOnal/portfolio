@@ -5,7 +5,7 @@ import SiteHeader from '../../../../components/SiteHeader.astro';
 import SiteFooter from '../../../../components/SiteFooter.astro';
 import { t, localizePath, type Locale } from '../../../../data/i18n';
 import { ogCoursePath } from '../../../../lib/og';
-import { breadcrumbJsonLd, canonicalHref, courseJsonLd } from '../../../../lib/seo';
+import { breadcrumbJsonLd, canonicalHref, courseJsonLd, jsonLdScript } from '../../../../lib/seo';
 import { courseSlugOf, lessonSlugOf, sortLessons } from '../../../../lib/courses';
 
 // One page per non-draft course; the TR twin mirrors it under /tr/.
@@ -57,8 +57,8 @@ const breadcrumbLd = breadcrumbJsonLd([
   ogImage={ogCoursePath(locale, slug)}
   ogType="article"
 >
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(courseLd)} />
-  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(courseLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
 
   <SiteHeader locale={locale} path={path} />
 
