@@ -70,6 +70,12 @@ const pubsLd = pubs.map((p) =>
       <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
         {t(locale, 'writing.intro')}
       </p>
+      <a
+        href={localizePath(locale, '/courses')}
+        class="group mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {t(locale, 'writing.browseCourses')}
+      </a>
     </section>
 
     <section class="mx-auto max-w-5xl px-6 py-8 pb-20">

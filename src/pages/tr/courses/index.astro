@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import { t, localizePath, type Locale } from '../../../data/i18n';
+import { ogCoursesPath } from '../../../lib/og';
+import { breadcrumbJsonLd, canonicalHref } from '../../../lib/seo';
+import { courseSlugOf } from '../../../lib/courses';
+
+const locale: Locale = 'tr';
+const path = '/tr/courses';
+
+const courses = (await getCollection('courses', (e) => !e.data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const lessons = await getCollection('lessons');
+const lessonCount = (slug: string) =>
+  lessons.filter((l) => courseSlugOf(l.id) === slug).length;
+
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'courses.title'), url: canonicalHref(localizePath(locale, '/courses'), Astro.site!) },
+]);
+---
+
+<Base
+  title={`${t(locale, 'courses.title')} — Ömer Yasir Önal`}
+  description={t(locale, 'seo.courses.description')}
+  path={path}
+  lang={locale}
+  ogImage={ogCoursesPath(locale)}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
+      <p class="font-mono text-sm text-accent">
+        <span class="text-accent/70">/</span>{t(locale, 'courses.title').toLowerCase()}
+      </p>
+      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        {t(locale, 'courses.title')}
+      </h1>
+      <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
+        {t(locale, 'courses.intro')}
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-6 py-8 pb-20">
+      {
+        courses.length === 0 ? (
+          <p class="rounded-lg border border-border bg-card/40 p-6 text-sm leading-relaxed text-muted">
+            {t(locale, 'courses.comingSoon')}{' '}
+            <a
+              href={localizePath(locale, '/writing')}
+              class="text-accent underline decoration-accent/50 underline-offset-4 transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {t(locale, 'section.writing')}
+            </a>
+          </p>
+        ) : (
+          <ul class="space-y-4" role="list">
+            {courses.map((entry) => {
+              const slug = courseSlugOf(entry.id);
+              return (
+                <li class="rounded-lg border border-border bg-card/40 p-5 transition-colors hover:border-accent/50">
+                  <a
+                    href={localizePath(locale, `/courses/${slug}`)}
+                    class="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <p class="text-lg font-semibold leading-snug text-fg transition-colors group-hover:text-accent">
+                      {entry.data.title}
+                    </p>
+                    <p class="mt-1.5 text-sm leading-relaxed text-muted">{entry.data.description}</p>
+                    <p class="mt-3 flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
+                      <span class="rounded border border-border/70 px-1.5 py-px text-[0.65rem] uppercase tracking-wider text-muted/80">
+                        {t(locale, `level.${entry.data.level}`)}
+                      </span>
+                      <span aria-hidden="true" class="text-border">·</span>
+                      <span>
+                        {lessonCount(slug)} {t(locale, 'course.lessons').toLowerCase()}
+                      </span>
+                      <span aria-hidden="true" class="text-border">·</span>
+                      <span class="uppercase">{entry.data.lang}</span>
+                    </p>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        )
+      }
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>
