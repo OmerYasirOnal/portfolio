@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import { t } from '../data/i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'en' | 'tr';
+  path: string;
+  ogImage?: string;
+}
+
+const { title, description, lang = 'en', path, ogImage } = Astro.props;
+const canonical = new URL(path, Astro.site).toString();
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Ömer Yasir Önal" />
+    <meta property="og:locale" content={lang === 'tr' ? 'tr_TR' : 'en_US'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <script is:inline>
+      // No-flash theme: dark is the default; honor a stored explicit choice.
+      try {
+        const stored = localStorage.getItem('theme');
+        const root = document.documentElement;
+        if (stored === 'light') {
+          root.classList.remove('dark');
+          root.style.colorScheme = 'light';
+        } else {
+          root.classList.add('dark');
+          root.style.colorScheme = 'dark';
+        }
+      } catch (_) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen font-sans bg-bg text-fg antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
+    >
+      {t(lang, 'a11y.skip')}
+    </a>
+    <slot />
+  </body>
+</html>

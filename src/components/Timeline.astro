@@ -1,0 +1,92 @@
+---
+/**
+ * Timeline — a vertical, chronological list of work / research experience.
+ *
+ * Data is read straight from the `experience` content collection (single source
+ * of truth) and sorted by `order`; nothing is hard-coded here. Locale-specific
+ * fields (`role_*`, `bullets_*`) are selected by the incoming `locale`, so the
+ * same component powers both the EN home and the /tr mirror.
+ *
+ * Visual: a single accent rail on the left with a node per role — a "commit
+ * graph" reading of a career. The rail and nodes are decorative (aria-hidden)
+ * and inert under prefers-reduced-motion (no animation is used at all).
+ */
+import { getCollection } from 'astro:content';
+import type { Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const items = (await getCollection('experience')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const isPresent = (end: string) =>
+  end.trim().toLowerCase() === 'present' || end.trim().toLowerCase() === 'devam';
+---
+
+<ol class="relative ml-1.5 space-y-10 border-l border-border pl-8" role="list">
+  {
+    items.map((entry) => {
+      const { role_en, role_tr, org, location, start, end, bullets_en, bullets_tr } =
+        entry.data;
+      const role = locale === 'tr' ? role_tr : role_en;
+      const bullets = locale === 'tr' ? bullets_tr : bullets_en;
+      const current = isPresent(end);
+      return (
+        <li class="relative">
+          {/* node on the rail */}
+          <span
+            aria-hidden="true"
+            class:list={[
+              'absolute -left-[2.55rem] top-1.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 bg-bg',
+              current ? 'border-accent' : 'border-border',
+            ]}
+          >
+            {current && (
+              <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            )}
+          </span>
+
+          {/* date range — monospace tag */}
+          <p class="font-mono text-xs tracking-tight text-muted">
+            <time>{start}</time>
+            <span aria-hidden="true" class="mx-1 text-border">→</span>
+            {current ? (
+              <span class="text-accent">{end}</span>
+            ) : (
+              <time>{end}</time>
+            )}
+          </p>
+
+          <h3 class="mt-1.5 text-lg font-semibold tracking-tight text-fg">
+            {role}
+          </h3>
+
+          <p class="mt-0.5 text-sm text-muted">
+            <span class="font-medium text-fg/90">{org}</span>
+            <span aria-hidden="true" class="mx-1.5 text-border">·</span>
+            <span class="font-mono text-xs">{location}</span>
+          </p>
+
+          {bullets.length > 0 && (
+            <ul class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted" role="list">
+              {bullets.map((bullet) => (
+                <li class="relative pl-4">
+                  <span
+                    aria-hidden="true"
+                    class="absolute left-0 top-[0.55em] h-1 w-1 rounded-full bg-accent/60"
+                  />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      );
+    })
+  }
+</ol>

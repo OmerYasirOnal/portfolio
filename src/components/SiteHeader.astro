@@ -1,0 +1,67 @@
+---
+/**
+ * SiteHeader — the sticky top nav shared by the home page and every sub-page.
+ *
+ * Section links point at the home page's anchors (`/#work`, `/#about`, …) so
+ * they resolve correctly whether the visitor is on the home page or a sub-page.
+ * All labels come from the i18n dictionary; the brand + toggles read `profile`
+ * / the locale — nothing is hard-coded here.
+ */
+import { profile } from '../data/profile';
+import { t, localizePath, type Locale } from '../data/i18n';
+import LangToggle from './LangToggle.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  /** Current page path in the current locale (for the LangToggle twin route). */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+
+const home = localizePath(locale, '/');
+
+// Work/About/Contact are home-section anchors; Writing points at its own full
+// page (absolute localized path) so it stays reachable from any sub-page. Labels
+// come from the i18n dictionary (no hard-coded copy).
+const navLinks = [
+  { key: 'nav.work', href: `${home}#work` },
+  { key: 'nav.about', href: `${home}#about` },
+  { key: 'nav.writing', href: localizePath(locale, '/writing') },
+  { key: 'nav.contact', href: `${home}#contact` },
+];
+---
+
+<header id="top" class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
+  <nav
+    class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3"
+    aria-label="Primary"
+  >
+    <a
+      href={home}
+      class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+    >
+      {profile.name}
+    </a>
+
+    <div class="flex items-center gap-1">
+      <ul class="mr-2 hidden items-center gap-1 sm:flex" role="list">
+        {
+          navLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {t(locale, item.key)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <LangToggle locale={locale} path={path} />
+      <ThemeToggle locale={locale} />
+    </div>
+  </nav>
+</header>

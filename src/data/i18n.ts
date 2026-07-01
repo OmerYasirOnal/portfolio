@@ -1,0 +1,114 @@
+export const locales = ['en', 'tr'] as const;
+export type Locale = (typeof locales)[number];
+
+const dict: Record<string, Record<Locale, string>> = {
+  'a11y.skip': { en: 'Skip to content', tr: 'İçeriğe geç' },
+  'nav.work': { en: 'Work', tr: 'Projeler' },
+  'nav.about': { en: 'About', tr: 'Hakkımda' },
+  'nav.writing': { en: 'Writing', tr: 'Yazılar' },
+  'nav.contact': { en: 'Contact', tr: 'İletişim' },
+  'hero.viewWork': { en: 'View work', tr: 'Projeleri gör' },
+  'hero.resume': { en: 'Résumé', tr: 'CV' },
+  'section.about': { en: 'About', tr: 'Hakkımda' },
+  'section.selectedWork': { en: 'Selected work', tr: 'Seçili işler' },
+  'section.experience': { en: 'Experience', tr: 'Deneyim' },
+  'section.skills': { en: 'Skills', tr: 'Yetenekler' },
+  'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
+  'section.contact': { en: 'Contact', tr: 'İletişim' },
+  'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'work.viewAll': { en: 'View all projects →', tr: 'Tüm projeleri gör →' },
+  'projects.title': { en: 'Projects', tr: 'Projeler' },
+  'projects.intro': {
+    en: 'A selection of things I have designed, built, and shipped — from multi-agent systems to production mobile apps.',
+    tr: 'Tasarladığım, geliştirdiğim ve yayına aldığım işlerden bir seçki — çok ajanlı sistemlerden yayında olan mobil uygulamalara.',
+  },
+  'projects.backToAll': { en: 'All projects', tr: 'Tüm projeler' },
+  'project.overview': { en: 'Overview', tr: 'Genel bakış' },
+  'project.stack': { en: 'Stack', tr: 'Teknolojiler' },
+  'project.problem': { en: 'The problem', tr: 'Sorun' },
+  'project.whatIDid': { en: 'What I did', tr: 'Ne yaptım' },
+  'project.highlights': { en: 'Highlights', tr: 'Öne çıkanlar' },
+  'contact.intro': {
+    en: 'Have a role, a project, or a question? The fastest way to reach me is email — I read every message.',
+    tr: 'Bir pozisyon, bir proje ya da bir sorunuz mu var? Bana ulaşmanın en hızlı yolu e-posta — her mesajı okuyorum.',
+  },
+  'contact.emailMe': { en: 'Email me', tr: 'E-posta gönder' },
+  'contact.copyEmail': { en: 'Copy email address', tr: 'E-posta adresini kopyala' },
+  'contact.copied': { en: 'Copied', tr: 'Kopyalandı' },
+  'contact.viewCv': { en: 'View CV', tr: 'CV’yi gör' },
+  'cv.title': { en: 'Curriculum Vitae', tr: 'Özgeçmiş' },
+  'cv.intro': {
+    en: 'A one-page PDF résumé generated from the same verified source that drives this site. It is being finalised — check back shortly, or reach me by email in the meantime.',
+    tr: 'Bu siteyi besleyen aynı doğrulanmış kaynaktan üretilen tek sayfalık bir PDF özgeçmiş. Şu anda son hâli veriliyor — kısa süre içinde tekrar bakın ya da bu arada bana e-posta ile ulaşın.',
+  },
+  'cv.download': { en: 'Download PDF', tr: 'PDF indir' },
+  'cv.comingSoon': { en: 'Coming soon', tr: 'Çok yakında' },
+  'cv.emailInstead': { en: 'Email me instead', tr: 'Bunun yerine e-posta gönder' },
+  'contact.elsewhere': { en: 'Find me elsewhere', tr: 'Diğer platformlar' },
+  'writing.articles': { en: 'Articles', tr: 'Makaleler' },
+  'writing.publications': { en: 'Publications', tr: 'Yayınlar' },
+  'writing.intro': {
+    en: 'Long-form notes on building agentic systems and shipping AI, plus peer-reviewed research.',
+    tr: 'Ajan tabanlı sistemler kurmak ve yapay zekâyı yayına almak üzerine uzun yazılar ve hakemli araştırmalar.',
+  },
+  'contact.availability': {
+    en: 'Open to part-time, internship, junior full-time, and freelance.',
+    tr: 'Part-time, staj, junior tam zamanlı ve freelance fırsatlara açığım.',
+  },
+  'theme.switchToLight': { en: 'Switch to light theme', tr: 'Açık temaya geç' },
+  'theme.switchToDark': { en: 'Switch to dark theme', tr: 'Koyu temaya geç' },
+  'hero.status': { en: 'Open to work', tr: 'İşe açık' },
+  'lang.label': { en: 'Language', tr: 'Dil' },
+  'lang.switchToTr': { en: 'Switch to Turkish', tr: 'Türkçe’ye geç' },
+  'lang.switchToEn': { en: 'Switch to English', tr: 'İngilizce’ye geç' },
+  'social.opensNewTab': { en: 'opens in a new tab', tr: 'yeni sekmede açılır' },
+  'seo.home.description': {
+    en: 'Back-end & applied-AI engineer who ships verifiable systems.',
+    tr: 'Doğrulanabilir sistemler geliştiren bir back-end ve uygulamalı yapay zeka mühendisi.',
+  },
+  'seo.projects.description': {
+    en: 'Projects by Ömer Yasir Önal — multi-agent systems, applied AI, and shipped mobile & web apps.',
+    tr: 'Ömer Yasir Önal’ın projeleri — çok ajanlı sistemler, uygulamalı yapay zeka ve yayına alınmış mobil & web uygulamaları.',
+  },
+  'seo.writing.description': {
+    en: 'Articles and peer-reviewed publications by Ömer Yasir Önal — agentic systems, applied AI, and ML research.',
+    tr: 'Ömer Yasir Önal’ın makaleleri ve hakemli yayınları — ajan tabanlı sistemler, uygulamalı yapay zeka ve makine öğrenmesi araştırmaları.',
+  },
+  'seo.cv.description': {
+    en: 'Downloadable PDF résumé for {name} — {role}.',
+    tr: '{name} için indirilebilir PDF özgeçmiş — {role}.',
+  },
+  'footer.builtWith': {
+    en: 'Built with Astro & Tailwind CSS.',
+    tr: 'Astro & Tailwind CSS ile geliştirildi.',
+  },
+  'footer.backToTop': { en: 'Back to top', tr: 'Başa dön' },
+  'link.repo': { en: 'Source code', tr: 'Kaynak kod' },
+  'link.live': { en: 'Live site', tr: 'Canlı site' },
+  'link.appstore': { en: 'App Store', tr: 'App Store' },
+  'link.other': { en: 'Related link', tr: 'İlgili bağlantı' },
+  // Project category enum → localized label (see projectSchema `category`).
+  'category.AI-Agents': { en: 'AI-Agents', tr: 'AI Ajanları' },
+  'category.Applied-AI': { en: 'Applied-AI', tr: 'Uygulamalı AI' },
+  'category.ML-Research': { en: 'ML-Research', tr: 'ML Araştırması' },
+  'category.Mobile': { en: 'Mobile', tr: 'Mobil' },
+  'category.Web': { en: 'Web', tr: 'Web' },
+  'category.DevTool': { en: 'DevTool', tr: 'Geliştirici Aracı' },
+  'category.Networking': { en: 'Networking', tr: 'Ağ' },
+  'category.Other': { en: 'Other', tr: 'Diğer' },
+};
+
+export function t(locale: Locale, key: string): string {
+  return dict[key]?.[locale] ?? key;
+}
+
+export function localizePath(locale: Locale, path: string): string {
+  const p = path.startsWith('/') ? path : `/${path}`;
+  return locale === 'en' ? p : `/tr${p === '/' ? '/' : p}`;
+}
+
+export function altLocalePath(locale: Locale, path: string): string {
+  if (locale === 'en') return localizePath('tr', path);
+  // Strip only a whole `/tr` segment (so `/trending` is left untouched).
+  return path.replace(/^\/tr(?=\/|$)/, '') || '/';
+}

@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Two palettes drive every surface. Tailwind v4 emits the `@theme` tokens as
+ * `:root` CSS variables and references them (via `var()`) from the generated
+ * utilities (`bg-bg`, `text-fg`, `border-border`, `text-accent`, …). Because
+ * those utilities read the variables at runtime, overriding the same variables
+ * under `.dark` makes toggling the class actually reflow every color.
+ *
+ * The `@theme` block below is the DEFAULT (LIGHT) palette. The `.dark` block
+ * overrides it with the DARK palette. Base.astro sets `class="dark"` before
+ * first paint, so dark stays the default; removing `.dark` yields light.
+ *
+ * Contrast (WCAG AA, verified):
+ *   Light  fg #18181b / bg #fbfbfc → ~17:1  · muted #52525b / bg → ~7.1:1
+ *          accent-as-text #6d28d9 / bg → ~6.9:1 (normal-text AA pass)
+ *   Dark   fg #ededef / bg #0a0a0b → ~15:1  · muted #9b9ba3 / bg → ~6.7:1
+ *          accent-as-text #a78bfa / bg → ~7.3:1 (normal-text AA pass)
+ */
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  /* Default = light palette (used when `.dark` is absent). */
+  --color-bg: #fbfbfc;
+  --color-fg: #18181b;
+  --color-muted: #52525b;
+  --color-accent: #6d28d9;
+  --color-card: #f4f4f6;
+  --color-border: #e4e4e8;
+}
+
+/* Dark palette — applied under the `.dark` class (Base's default). */
+.dark {
+  --color-bg: #0a0a0b;
+  --color-fg: #ededef;
+  --color-muted: #9b9ba3;
+  --color-accent: #a78bfa;
+  --color-card: #141417;
+  --color-border: #232329;
+}
+
+:root { color-scheme: light; }
+.dark { color-scheme: dark; }
+
+html { background: var(--color-bg); color: var(--color-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

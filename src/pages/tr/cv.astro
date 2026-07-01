@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { profile } from '../../data/profile';
+import { t, type Locale } from '../../data/i18n';
+
+const locale: Locale = 'tr';
+const path = '/tr/cv';
+
+// Phase 2 produces `/resume.pdf`. Until the file exists we must NOT render a
+// dead link — the download control is disabled with a "coming soon" note.
+const resumeReady = false;
+const mailto = `mailto:${profile.email}`;
+---
+
+<Base
+  title={`${t(locale, 'cv.title')} — ${profile.name}`}
+  description={t(locale, 'seo.cv.description')
+    .replace('{name}', profile.name)
+    .replace('{role}', profile.role[locale])}
+  path={path}
+  lang={locale}
+>
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
+      <p class="font-mono text-sm text-accent">
+        <span class="text-accent/70">/</span>cv
+      </p>
+      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        {t(locale, 'cv.title')}
+      </h1>
+      <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
+        {t(locale, 'cv.intro')}
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        {
+          resumeReady ? (
+            <a
+              href="/resume.pdf"
+              download
+              class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+              {t(locale, 'cv.download')}
+            </a>
+          ) : (
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              class="inline-flex cursor-not-allowed items-center gap-2 rounded-md border border-border px-5 py-2.5 text-sm font-medium text-muted opacity-60"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+              {t(locale, 'cv.download')}
+            </button>
+          )
+        }
+
+        {
+          !resumeReady && (
+            <span class="font-mono text-xs uppercase tracking-widest text-accent/70">
+              {t(locale, 'cv.comingSoon')}
+            </span>
+          )
+        }
+      </div>
+
+      {
+        !resumeReady && (
+          <p class="mt-6 text-sm text-muted">
+            <a
+              href={mailto}
+              class="font-medium text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {t(locale, 'cv.emailInstead')}
+            </a>
+          </p>
+        )
+      }
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

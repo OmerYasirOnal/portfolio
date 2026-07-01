@@ -1,0 +1,99 @@
+---
+/**
+ * ProjectCaseStudy — the structured, locale-correct case study for a project
+ * detail page.
+ *
+ * Renders problem / what-I-did / highlights from the entry's `_${locale}`
+ * frontmatter fields (problem_{en,tr}, what_i_did_{en,tr}, highlights_{en,tr})
+ * so EN and TR surface exactly the SAME facts, translated — never the raw
+ * English markdown body. This guarantees locale parity and keeps the two detail
+ * pages DRY. Sections with no content are omitted, so both locales degrade
+ * identically when a project lacks a given field.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { data } = entry;
+
+const problem = locale === 'en' ? data.problem_en : data.problem_tr;
+const whatIDid = locale === 'en' ? data.what_i_did_en : data.what_i_did_tr;
+const highlights = locale === 'en' ? data.highlights_en : data.highlights_tr;
+---
+
+<div class="prose mt-10">
+  {
+    problem && (
+      <>
+        <h2>{t(locale, 'project.problem')}</h2>
+        <p>{problem}</p>
+      </>
+    )
+  }
+  {
+    whatIDid && (
+      <>
+        <h2>{t(locale, 'project.whatIDid')}</h2>
+        <p>{whatIDid}</p>
+      </>
+    )
+  }
+  {
+    highlights.length > 0 && (
+      <>
+        <h2>{t(locale, 'project.highlights')}</h2>
+        <ul>
+          {highlights.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</div>
+
+<style>
+  /* Scoped typographic styles for the structured case study — no typography
+     plugin; stays within the dev-tools-minimal tokens. */
+  .prose {
+    color: var(--color-muted);
+    line-height: 1.75;
+  }
+  .prose :global(h2) {
+    color: var(--color-fg);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .prose :global(p) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .prose :global(ul) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 1.25rem;
+    list-style-position: outside;
+    list-style-type: disc;
+  }
+  .prose :global(li) {
+    margin-top: 0.375rem;
+  }
+  .prose :global(li::marker) {
+    color: var(--color-accent);
+  }
+  .prose :global(strong) {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+</style>

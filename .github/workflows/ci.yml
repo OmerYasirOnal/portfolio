@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Unit tests
+        run: pnpm vitest run
+
+      - name: Build
+        run: pnpm build
+
+      # Link check over the WHOLE built site. `--recurse` follows every internal
+      # link from the home page, so now that /projects and /writing are reachable
+      # it crawls all pages (both locales, every project case study) — not just
+      # the home page. Any broken internal/external link fails the job (enforces
+      # the accuracy rule).
+      #
+      # Skips / tolerations (all valid in a real browser, hostile only to bots):
+      #   - LinkedIn returns 999, Medium returns 403 to non-browser clients.
+      #   - The Apple App Store rate-limits crawlers with 429; 429 means
+      #     "alive but throttled", never a dead link, so it is treated as OK.
+      #   - The canonical/OG absolute URLs point at the production domain
+      #     (https://omeryasironal.com), which is not attached yet, so those
+      #     self-references are skipped rather than resolved over the network.
+      - name: Link check (dist)
+        run: >-
+          pnpm dlx linkinator ./dist --recurse --silent --retry-errors
+          --skip "^https://www.linkedin.com"
+          --skip "^https://medium.com"
+          --skip "^https://omeryasironal.com"
+          --status-code "429:ok"

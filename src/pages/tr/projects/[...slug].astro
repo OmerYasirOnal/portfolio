@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import ProjectCaseStudy from '../../../components/ProjectCaseStudy.astro';
+import { t, localizePath, type Locale } from '../../../data/i18n';
+import { ogProjectPath } from '../../../lib/og';
+
+// Emit one TR page per non-draft project. `entry.id` is the markdown filename
+// (e.g. "akis") and becomes the URL slug; Astro prefixes `/tr/projects/`.
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (e) => !e.data.draft);
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const locale: Locale = 'tr';
+const { entry } = Astro.props;
+const { data } = entry;
+const path = localizePath(locale, `/projects/${entry.id}`);
+
+const tagline = data.tagline_tr;
+const status = data.status_tr;
+
+// External destinations in display order, each mapped to its i18n label.
+type LinkKey = 'repo' | 'live' | 'appstore' | 'other';
+const LINK_ORDER: LinkKey[] = ['repo', 'live', 'appstore', 'other'];
+const links = LINK_ORDER.filter((k) => data.links?.[k]).map((k) => ({
+  key: k,
+  href: data.links![k] as string,
+  label: t(locale, `link.${k}`),
+}));
+const hint = t(locale, 'social.opensNewTab');
+---
+
+<Base
+  title={`${data.title} — Ömer Yasir Önal`}
+  description={tagline}
+  path={path}
+  lang={locale}
+  ogImage={ogProjectPath(locale, entry.id)}
+>
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <article class="mx-auto max-w-3xl px-6 pb-20 pt-12">
+      {/* breadcrumb back to the projects index */}
+      <a
+        href={localizePath(locale, '/projects')}
+        class="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+        {t(locale, 'projects.backToAll')}
+      </a>
+
+      <header class="mt-6 border-b border-border/60 pb-8">
+        <p class="font-mono text-[0.7rem] uppercase tracking-widest text-muted">
+          <span class="text-accent/70">/</span>{t(locale, `category.${data.category}`)}
+        </p>
+
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+          {data.title}
+        </h1>
+
+        <p class="mt-3 text-lg leading-relaxed text-muted">{tagline}</p>
+
+        {/* status pill */}
+        <p
+          class="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-border bg-bg/60 px-2.5 py-0.5 font-mono text-[0.7rem] text-muted"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-accent/70" aria-hidden="true"></span>
+          {status}
+        </p>
+
+        {/* stack chips */}
+        <ul class="mt-5 flex flex-wrap gap-1.5" role="list" aria-label={t(locale, 'project.stack')}>
+          {
+            data.stack.map((tech) => (
+              <li class="rounded border border-border/70 px-1.5 py-0.5 font-mono text-[0.7rem] text-muted">
+                {tech}
+              </li>
+            ))
+          }
+        </ul>
+
+        {/* external links */}
+        {
+          links.length > 0 && (
+            <div class="mt-6 flex flex-wrap gap-2">
+              {links.map((link) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${link.label} (${hint})`}
+                  class="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 font-mono text-xs text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {link.label}
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M15 3h6v6" />
+                    <path d="M10 14 21 3" />
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      {/* structured, locale-correct case study (shared with the EN page) */}
+      <ProjectCaseStudy entry={entry} locale={locale} />
+    </article>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

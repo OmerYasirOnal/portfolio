@@ -1,0 +1,125 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Hero from '../../components/Hero.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import About from '../../components/About.astro';
+import Timeline from '../../components/Timeline.astro';
+import SkillGroups from '../../components/SkillGroups.astro';
+import WritingList from '../../components/WritingList.astro';
+import Contact from '../../components/Contact.astro';
+import { t, localizePath, type Locale } from '../../data/i18n';
+import { profile } from '../../data/profile';
+import { personJsonLd } from '../../lib/seo';
+import { ogHomePath } from '../../lib/og';
+
+const locale: Locale = 'tr';
+const path = '/tr/';
+
+// schema.org Person, derived from profile.ts — injected once on the home page.
+const jsonLd = personJsonLd(Astro.site);
+
+// Featured, non-draft projects, in curated order — single source of truth.
+const featured = (
+  await getCollection('projects', (e) => e.data.featured && !e.data.draft)
+).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title={`${profile.name} — ${profile.role[locale]}`}
+  description={t(locale, 'seo.home.description')}
+  path={path}
+  lang={locale}
+  ogImage={ogHomePath(locale)}
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(jsonLd)}
+  />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <Hero locale={locale} />
+
+    <section id="work" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">01</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.selectedWork')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <ProjectGrid locale={locale} items={featured} columns={3} />
+      <div class="mt-8">
+        <a
+          href={localizePath(locale, '/projects')}
+          class="inline-flex items-center font-mono text-sm text-accent transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {t(locale, 'work.viewAll')}
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">02</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.about')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <About locale={locale} />
+    </section>
+
+    <section id="experience" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">03</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.experience')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <Timeline locale={locale} />
+    </section>
+
+    <section id="skills" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">04</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.skills')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <SkillGroups locale={locale} />
+    </section>
+
+    <section id="writing" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">05</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.writing')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <WritingList locale={locale} />
+    </section>
+
+    <section id="contact" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">06</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.contact')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <Contact locale={locale} />
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

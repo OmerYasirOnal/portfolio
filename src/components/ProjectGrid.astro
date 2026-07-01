@@ -1,0 +1,36 @@
+---
+/**
+ * ProjectGrid — responsive grid of ProjectCards.
+ *
+ * Presentational only: it receives already-sorted/filtered `projects` entries
+ * from the page (single source of truth stays in the content collection) and
+ * lays them out. `columns` controls the widest breakpoint; the grid always
+ * collapses to a single column on mobile.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../data/i18n';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  locale: Locale;
+  items: CollectionEntry<'projects'>[];
+  /** Max columns at the widest breakpoint. Defaults to 2. */
+  columns?: 2 | 3;
+}
+
+const { locale, items, columns = 2 } = Astro.props;
+
+// Literal class strings so Tailwind can statically detect them.
+const colClass =
+  columns === 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2';
+---
+
+<ul class:list={['grid grid-cols-1 gap-4', colClass]} role="list">
+  {
+    items.map((entry) => (
+      <li class="h-full">
+        <ProjectCard locale={locale} entry={entry} />
+      </li>
+    ))
+  }
+</ul>
