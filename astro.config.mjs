@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // updated when domain attaches
-  site: 'https://portfolio-one-black-59.vercel.app', // TODO: switch to https://omeryasironal.com when the custom domain is attached
+  site: 'https://omeryasironal.com',
 
   i18n: {
     defaultLocale: 'en',
