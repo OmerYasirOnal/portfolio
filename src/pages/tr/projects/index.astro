@@ -4,11 +4,16 @@ import Base from '../../../layouts/Base.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import ProjectGrid from '../../../components/ProjectGrid.astro';
-import { t, type Locale } from '../../../data/i18n';
+import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogProjectsPath } from '../../../lib/og';
+import { breadcrumbJsonLd, canonicalHref } from '../../../lib/seo';
 
 const locale: Locale = 'tr';
 const path = '/tr/projects';
+
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'nav.work'), url: canonicalHref(localizePath(locale, '/projects'), Astro.site!) },
+]);
 
 // All non-draft projects, split into the curated featured set and the rest.
 // The content collection stays the single source of truth; ordering is by
@@ -27,6 +32,8 @@ const more = all.filter((e) => !e.data.featured);
   lang={locale}
   ogImage={ogProjectsPath(locale)}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">

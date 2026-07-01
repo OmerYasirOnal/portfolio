@@ -1,13 +1,43 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import WritingList from '../../../components/WritingList.astro';
-import { t, type Locale } from '../../../data/i18n';
+import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogWritingPath } from '../../../lib/og';
+import {
+  breadcrumbJsonLd,
+  writingItemListJsonLd,
+  scholarlyArticleJsonLd,
+  canonicalHref,
+} from '../../../lib/seo';
 
 const locale: Locale = 'tr';
 const path = '/tr/writing';
+
+const articles = (await getCollection('writing')).sort((a, b) =>
+  a.data.date < b.data.date ? 1 : -1,
+);
+const pubs = await getCollection('publications');
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'section.writing'), url: canonicalHref(localizePath(locale, '/writing'), Astro.site!) },
+]);
+const articlesLd = writingItemListJsonLd(
+  articles.map((a) => ({ title: a.data.title, url: a.data.url, date: a.data.date })),
+  Astro.site!,
+);
+const pubsLd = pubs.map((p) =>
+  scholarlyArticleJsonLd(
+    {
+      title: p.data.title_tr,
+      venue: p.data.venue,
+      year: p.data.year,
+      url: p.data.url,
+    },
+    Astro.site!,
+  ),
+);
 ---
 
 <Base
@@ -17,6 +47,10 @@ const path = '/tr/writing';
   lang={locale}
   ogImage={ogWritingPath(locale)}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(articlesLd)} />
+  {pubsLd.map((p) => <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(p)} />)}
+
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">

@@ -6,6 +6,7 @@ import SiteFooter from '../../../components/SiteFooter.astro';
 import ProjectCaseStudy from '../../../components/ProjectCaseStudy.astro';
 import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogProjectPath } from '../../../lib/og';
+import { creativeWorkJsonLd, breadcrumbJsonLd, canonicalHref } from '../../../lib/seo';
 
 // Emit one TR page per non-draft project. `entry.id` is the markdown filename
 // (e.g. "akis") and becomes the URL slug; Astro prefixes `/tr/projects/`.
@@ -34,6 +35,16 @@ const links = LINK_ORDER.filter((k) => data.links?.[k]).map((k) => ({
   label: t(locale, `link.${k}`),
 }));
 const hint = t(locale, 'social.opensNewTab');
+
+const url = canonicalHref(path, Astro.site!);
+const workLd = creativeWorkJsonLd(
+  { title: data.title, description: tagline, category: data.category, url, stack: data.stack },
+  Astro.site!,
+);
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'projects.title'), url: canonicalHref(localizePath(locale, '/projects'), Astro.site!) },
+  { name: data.title, url },
+]);
 ---
 
 <Base
@@ -42,7 +53,11 @@ const hint = t(locale, 'social.opensNewTab');
   path={path}
   lang={locale}
   ogImage={ogProjectPath(locale, entry.id)}
+  ogType="article"
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(workLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">

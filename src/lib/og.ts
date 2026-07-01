@@ -49,3 +49,12 @@ export function ogProjectsPath(locale: Locale): string {
 export function ogWritingPath(locale: Locale): string {
   return `/og/${ogWritingKey(locale)}.png`;
 }
+
+/** Route key + path for the /cv social card. */
+export function ogCvKey(locale: Locale): string {
+  return `cv${suffix(locale)}`;
+}
+
+export function ogCvPath(locale: Locale): string {
+  return `/og/${ogCvKey(locale)}.png`;
+}

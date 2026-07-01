@@ -20,7 +20,7 @@ import { getCollection } from 'astro:content';
 import { OGImageRoute } from 'astro-og-canvas';
 import { profile } from '../../data/profile';
 import { locales, t } from '../../data/i18n';
-import { ogHomeKey, ogProjectKey, ogProjectsKey, ogWritingKey } from '../../lib/og';
+import { ogHomeKey, ogProjectKey, ogProjectsKey, ogWritingKey, ogCvKey } from '../../lib/og';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
 const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0b
@@ -55,6 +55,10 @@ for (const locale of locales) {
   pages[ogWritingKey(locale)] = {
     heading: t(locale, 'section.writing'),
     sub: t(locale, 'writing.intro'),
+  };
+  pages[ogCvKey(locale)] = {
+    heading: t(locale, 'cv.title'),
+    sub: profile.role[locale],
   };
 
   // Per-project: title + localized tagline.

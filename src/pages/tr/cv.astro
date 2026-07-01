@@ -4,6 +4,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { profile } from '../../data/profile';
 import { t, type Locale } from '../../data/i18n';
+import { ogCvPath } from '../../lib/og';
 
 const locale: Locale = 'tr';
 const path = '/tr/cv';
@@ -26,6 +27,7 @@ const downloads = [
     .replace('{role}', profile.role[locale])}
   path={path}
   lang={locale}
+  ogImage={ogCvPath(locale)}
 >
   <SiteHeader locale={locale} path={path} />
 
