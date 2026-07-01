@@ -45,10 +45,14 @@ jobs:
       #   - The canonical/OG absolute URLs point at the production domain
       #     (https://omeryasironal.com), which is not attached yet, so those
       #     self-references are skipped rather than resolved over the network.
+      #   - The Odak PWA (apps/odak) goes live on GitHub Pages with the first
+      #     master push of its deploy workflow, so its URL is skipped until
+      #     that deployment exists.
       - name: Link check (dist)
         run: >-
           pnpm dlx linkinator ./dist --recurse --silent --retry-errors
           --skip "^https://www.linkedin.com"
           --skip "^https://medium.com"
           --skip "^https://omeryasironal.com"
+          --skip "^https://omeryasironal.github.io"
           --status-code "429:ok"
