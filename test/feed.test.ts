@@ -58,6 +58,15 @@ describe('buildFeedJson', () => {
     });
     expect(f.items[0].slug).toBe('newer');
   });
+
+  it('breaks same-date ties deterministically by slug', () => {
+    const f = buildFeedJson({
+      site: SITE,
+      posts: [{ ...post, slug: 'zzz-later-in-alphabet' }, post],
+      courses: [],
+    });
+    expect(f.items.map((i) => i.slug)).toEqual(['writing-comes-home', 'zzz-later-in-alphabet']);
+  });
 });
 
 describe('rssItems', () => {
@@ -71,5 +80,17 @@ describe('rssItems', () => {
     expect(items[0].description).toBe('D');
     expect(items[0].pubDate.toISOString().startsWith('2026-07-01')).toBe(true);
     expect(items[1].link).toBe('https://medium.com/x');
+  });
+
+  it('breaks same-date ties deterministically by link', () => {
+    const items = rssItems({
+      site: SITE,
+      posts: [{ ...post, slug: 'zzz-later' }, post],
+      external: [],
+    });
+    expect(items.map((i) => i.link)).toEqual([
+      `${SITE}/writing/writing-comes-home/`,
+      `${SITE}/writing/zzz-later/`,
+    ]);
   });
 });

@@ -51,7 +51,9 @@ export function buildFeedJson(input: {
   posts: FeedPostInput[];
   courses: FeedCourseInput[];
 }): FeedJson {
-  const posts = [...input.posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+  const posts = [...input.posts].sort((a, b) =>
+    a.date === b.date ? a.slug.localeCompare(b.slug) : a.date < b.date ? 1 : -1,
+  );
   const postItems: FeedItem[] = posts.map((p) => ({
     type: 'post',
     slug: p.slug,
@@ -116,5 +118,7 @@ export function rssItems(input: {
     pubDate: new Date(`${e.date}T00:00:00Z`),
     ...(e.description ? { description: e.description } : {}),
   }));
-  return [...native, ...external].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+  return [...native, ...external].sort(
+    (a, b) => b.pubDate.getTime() - a.pubDate.getTime() || a.link.localeCompare(b.link),
+  );
 }
