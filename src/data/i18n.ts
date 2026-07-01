@@ -23,6 +23,9 @@ const dict: Record<string, Record<Locale, string>> = {
   'projects.backToAll': { en: 'All projects', tr: 'Tüm projeler' },
   'project.overview': { en: 'Overview', tr: 'Genel bakış' },
   'project.stack': { en: 'Stack', tr: 'Teknolojiler' },
+  'project.problem': { en: 'The problem', tr: 'Sorun' },
+  'project.whatIDid': { en: 'What I did', tr: 'Ne yaptım' },
+  'project.highlights': { en: 'Highlights', tr: 'Öne çıkanlar' },
   'contact.intro': {
     en: 'Have a role, a project, or a question? The fastest way to reach me is email — I read every message.',
     tr: 'Bir pozisyon, bir proje ya da bir sorunuz mu var? Bana ulaşmanın en hızlı yolu e-posta — her mesajı okuyorum.',
@@ -57,6 +60,22 @@ const dict: Record<string, Record<Locale, string>> = {
   'lang.switchToTr': { en: 'Switch to Turkish', tr: 'Türkçe’ye geç' },
   'lang.switchToEn': { en: 'Switch to English', tr: 'İngilizce’ye geç' },
   'social.opensNewTab': { en: 'opens in a new tab', tr: 'yeni sekmede açılır' },
+  'seo.home.description': {
+    en: 'Back-end & applied-AI engineer who ships verifiable systems.',
+    tr: 'Doğrulanabilir sistemler geliştiren bir back-end ve uygulamalı yapay zeka mühendisi.',
+  },
+  'seo.projects.description': {
+    en: 'Projects by Ömer Yasir Önal — multi-agent systems, applied AI, and shipped mobile & web apps.',
+    tr: 'Ömer Yasir Önal’ın projeleri — çok ajanlı sistemler, uygulamalı yapay zeka ve yayına alınmış mobil & web uygulamaları.',
+  },
+  'seo.writing.description': {
+    en: 'Articles and peer-reviewed publications by Ömer Yasir Önal — agentic systems, applied AI, and ML research.',
+    tr: 'Ömer Yasir Önal’ın makaleleri ve hakemli yayınları — ajan tabanlı sistemler, uygulamalı yapay zeka ve makine öğrenmesi araştırmaları.',
+  },
+  'seo.cv.description': {
+    en: 'Downloadable PDF résumé for {name} — {role}.',
+    tr: '{name} için indirilebilir PDF özgeçmiş — {role}.',
+  },
   'footer.builtWith': {
     en: 'Built with Astro & Tailwind CSS.',
     tr: 'Astro & Tailwind CSS ile geliştirildi.',

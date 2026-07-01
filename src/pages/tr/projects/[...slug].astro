@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
@@ -33,7 +33,11 @@ const links = LINK_ORDER.filter((k) => data.links?.[k]).map((k) => ({
 }));
 const hint = t(locale, 'social.opensNewTab');
 
-const { Content } = await render(entry);
+// The markdown body is English-only. For the TR mirror we build the case study
+// from the localized `_tr` frontmatter fields so /tr never ships English copy.
+const problem = data.problem_tr;
+const whatIDid = data.what_i_did_tr;
+const highlights = data.highlights_tr;
 ---
 
 <Base
@@ -139,9 +143,37 @@ const { Content } = await render(entry);
         }
       </header>
 
-      {/* rendered case-study markdown body */}
+      {/* Localized case study built from the `_tr` frontmatter (the markdown
+          body is English-only, so it is not rendered on the TR mirror). */}
       <div class="prose mt-10">
-        <Content />
+        {
+          problem && (
+            <>
+              <h2>{t(locale, 'project.problem')}</h2>
+              <p>{problem}</p>
+            </>
+          )
+        }
+        {
+          whatIDid && (
+            <>
+              <h2>{t(locale, 'project.whatIDid')}</h2>
+              <p>{whatIDid}</p>
+            </>
+          )
+        }
+        {
+          highlights.length > 0 && (
+            <>
+              <h2>{t(locale, 'project.highlights')}</h2>
+              <ul>
+                {highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </>
+          )
+        }
       </div>
     </article>
   </main>

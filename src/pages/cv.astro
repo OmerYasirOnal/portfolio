@@ -16,7 +16,9 @@ const mailto = `mailto:${profile.email}`;
 
 <Base
   title={`${t(locale, 'cv.title')} — ${profile.name}`}
-  description={`Downloadable PDF résumé for ${profile.name} — ${profile.role[locale]}.`}
+  description={t(locale, 'seo.cv.description')
+    .replace('{name}', profile.name)
+    .replace('{role}', profile.role[locale])}
   path={path}
   lang={locale}
 >

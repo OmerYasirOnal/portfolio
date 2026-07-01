@@ -11,6 +11,7 @@ import SkillGroups from '../components/SkillGroups.astro';
 import WritingList from '../components/WritingList.astro';
 import Contact from '../components/Contact.astro';
 import { t, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
 
 const locale: Locale = 'en';
 const path = '/';
@@ -22,8 +23,8 @@ const featured = (
 ---
 
 <Base
-  title="Ömer Yasir Önal — Back-End & Applied AI Engineer"
-  description="Back-end & applied-AI engineer who ships verifiable systems."
+  title={`${profile.name} — ${profile.role[locale]}`}
+  description={t(locale, 'seo.home.description')}
   path={path}
   lang={locale}
 >
