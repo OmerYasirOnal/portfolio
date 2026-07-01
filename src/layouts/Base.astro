@@ -44,6 +44,12 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Ömer Yasir Önal — Writing"
+      href={new URL('/rss.xml', Astro.site!).toString()}
+    />
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
 
     <!-- Open Graph -->
