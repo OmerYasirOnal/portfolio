@@ -28,22 +28,3 @@ what_i_did_tr: Oyun geliştirmeyi, dosya sistemi üzerinden koordine olan 16 uzm
 featured: true
 order: 6
 ---
-
-## The problem
-
-Building a game touches many disciplines at once — design, code, art, audio —
-more than a single coding agent can hold in one context window.
-
-## What I did
-
-Studio is a **multi-agent game-development framework for Claude Code** that
-orchestrates **16 specialist agents** coordinating through the filesystem. The
-runtime is **Three.js + React Three Fiber**, packaged for mobile with
-**Capacitor**, and a **FastAPI** observer dashboard makes the agents' work
-visible. A CC0 asset pipeline supplies royalty-free game assets.
-
-## Highlights
-
-- Filesystem-as-coordination for many concurrent agents.
-- Web + mobile runtime from one codebase.
-- Open source (MIT), currently in alpha.

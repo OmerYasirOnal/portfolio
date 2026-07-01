@@ -16,6 +16,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
   'section.contact': { en: 'Contact', tr: 'İletişim' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'work.viewAll': { en: 'View all projects →', tr: 'Tüm projeleri gör →' },
   'projects.title': { en: 'Projects', tr: 'Projeler' },
   'projects.intro': {
     en: 'A selection of things I have designed, built, and shipped — from multi-agent systems to production mobile apps.',

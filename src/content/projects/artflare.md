@@ -18,8 +18,3 @@ highlights_tr:
 featured: false
 order: 12
 ---
-
-## ArtFlare
-
-A Flutter text-to-image app that turns prompts into pictures using the OpenAI
-DALL·E 2 API. Open source.

@@ -29,20 +29,3 @@ what_i_did_tr: TR/EN/AR i18n, Schema.org yerel SEO, sertleştirilmiş bir PHP il
 featured: true
 order: 4
 ---
-
-## The problem
-
-A commercial-signage company needed a fast, multilingual marketing site that
-ranks well locally and converts — delivered on a freelance budget and timeline.
-
-## What I did
-
-A2 Reklam is an **Astro 5 + Tailwind** site that statically generates **341
-pages** across **three languages (TR / EN / AR)**. It ships **Schema.org**
-local-SEO markup, a hardened **PHP** contact endpoint, and **GTM/GA4** analytics.
-
-## Highlights
-
-- Live in production at [a2reklam.com](https://a2reklam.com).
-- Static-first for excellent Lighthouse scores and crawlability.
-- End-to-end freelance delivery: scope, build, SEO and launch.

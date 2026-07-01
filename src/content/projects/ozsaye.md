@@ -20,9 +20,3 @@ highlights_tr:
 featured: false
 order: 8
 ---
-
-## Özsaye Psikoloji
-
-A freelance clinic website built with **Next.js 16**, statically exported for
-deployment to shared hosting, with SEO and **KVKK-compliant** consent handling.
-No verified live URL yet — repository only.

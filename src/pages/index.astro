@@ -10,7 +10,7 @@ import Timeline from '../components/Timeline.astro';
 import SkillGroups from '../components/SkillGroups.astro';
 import WritingList from '../components/WritingList.astro';
 import Contact from '../components/Contact.astro';
-import { t, type Locale } from '../data/i18n';
+import { t, localizePath, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
 import { personJsonLd } from '../lib/seo';
 import { ogHomePath } from '../lib/og';
@@ -55,6 +55,14 @@ const featured = (
         <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
       </header>
       <ProjectGrid locale={locale} items={featured} columns={3} />
+      <div class="mt-8">
+        <a
+          href={localizePath(locale, '/projects')}
+          class="inline-flex items-center font-mono text-sm text-accent transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {t(locale, 'work.viewAll')}
+        </a>
+      </div>
     </section>
 
     <section id="about" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">

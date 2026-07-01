@@ -32,29 +32,3 @@ what_i_did_tr: Her derlemenin dört yapısal kapıdan (spec onayı, doğrulama, 
 featured: true
 order: 1
 ---
-
-## The problem
-
-AI coding agents are fast, but they routinely report success without proof —
-"false green" — and, left unattended, will happily push unreviewed changes into
-real systems. Trust, not speed, is the missing layer.
-
-## What I did
-
-AKIS is a multi-agent engine (Scribe, Proto, Critic, Trace) coordinated by an
-orchestrator behind **four structural, human-approval gates**: spec approval,
-verify, push confirmation, and external write. A build can only be marked done
-once a real **boot-smoke test** proves the artifact actually starts and serves —
-the default verification path, not a self-reported checkmark.
-
-Ed25519 signing gives every artifact tamper-evident build provenance, and
-external side effects (repository writes, integrations) route through
-Model Context Protocol approval gates so nothing leaves the sandbox without an
-explicit human confirmation.
-
-## Highlights
-
-- Runs multiple LLM providers behind one orchestration layer.
-- Retrieval (pgvector) grounds the agents in the project's own context.
-- Fully open source under Apache-2.0 and self-hostable via Docker — a live
-  self-hosted instance runs at [akisflow.com](https://akisflow.com) (signup gated).

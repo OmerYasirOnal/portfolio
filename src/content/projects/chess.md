@@ -20,8 +20,3 @@ highlights_tr:
 featured: false
 order: 11
 ---
-
-## Network Chess
-
-A Java client-server multiplayer chess game: raw **sockets** for the network
-protocol (with a heartbeat), a **Swing** UI, and a DMG build. Open source.

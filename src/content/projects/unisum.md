@@ -32,22 +32,3 @@ what_i_did_tr: Kendi Node/Express/MySQL REST API’m tarafından desteklenen nat
 featured: true
 order: 2
 ---
-
-## The problem
-
-Students tracking several courses at once need a fast, private way to log grades
-and project their GPA, without shipping their academic data to an opaque
-third-party service.
-
-## What I did
-
-UniSum is a **native SwiftUI iOS client** (MVVM) backed by a REST API I built
-from scratch on **Node/Express/MySQL** — not a hosted backend-as-a-service. The
-API handles authentication with JWT and bcrypt, transactional email through
-Nodemailer, and is hardened with helmet, CORS and rate limiting.
-
-## Highlights
-
-- Live on the [App Store](https://apps.apple.com/tr/app/unisum/id6742401580).
-- End-to-end ownership: client, API, data model and delivery.
-- Two repositories — the SwiftUI client and the Node/Express/MySQL backend.

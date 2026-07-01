@@ -23,9 +23,3 @@ highlights_tr:
 featured: false
 order: 7
 ---
-
-## CalisTrack
-
-A Flutter + Firebase calisthenics tracker that generates training programs with
-an OpenAI Cloud Function. It's **offline-first**, using Hive locally with
-Firestore for sync. Early MVP — no store listing yet.

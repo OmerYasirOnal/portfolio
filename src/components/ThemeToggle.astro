@@ -1,0 +1,103 @@
+---
+/**
+ * ThemeToggle — a framework-free theme switch.
+ *
+ * Renders a plain <button> plus BOTH icons (sun/moon); the correct one is shown
+ * purely via the Tailwind `dark:` variant, so the icon is right at first paint
+ * (Base.astro's inline no-flash script sets the `.dark` class pre-paint). A small
+ * hoisted <script> flips the `.dark` class on <html>, mirrors `color-scheme`,
+ * persists the explicit choice to localStorage('theme'), and keeps a localized
+ * aria-label/title in sync. Nothing is hard-coded — both action labels come from
+ * the i18n dictionary and are handed to the script via data-* attributes.
+ */
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+
+// Action labels for the current locale. Dark is the default, so the server
+// renders the dark-state label; the script corrects it on load when a stored
+// 'light' choice applied before paint, and again on every toggle.
+const labelDark = t(locale, 'theme.switchToLight'); // shown WHEN dark → go light
+const labelLight = t(locale, 'theme.switchToDark'); // shown WHEN light → go dark
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label={labelDark}
+  title={labelDark}
+  data-label-dark={labelDark}
+  data-label-light={labelLight}
+  class="grid h-9 w-9 place-items-center rounded-md border border-border text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+>
+  {/* Sun — shown when dark (action: switch to light). */}
+  <svg
+    class="hidden dark:block"
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+  {/* Moon — shown when light (action: switch to dark). */}
+  <svg
+    class="block dark:hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    const root = document.documentElement;
+    const sync = (): void => {
+      const isDark = root.classList.contains('dark');
+      const label = (isDark ? btn.dataset.labelDark : btn.dataset.labelLight) ?? '';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    };
+    // Correct the label if a stored 'light' choice was applied before paint.
+    sync();
+    btn.addEventListener('click', () => {
+      const nextDark = !root.classList.contains('dark');
+      root.classList.toggle('dark', nextDark);
+      root.style.colorScheme = nextDark ? 'dark' : 'light';
+      try {
+        localStorage.setItem('theme', nextDark ? 'dark' : 'light');
+      } catch {
+        /* storage unavailable — the in-page toggle still works this session */
+      }
+      sync();
+    });
+  }
+</script>

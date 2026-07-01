@@ -10,7 +10,7 @@
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
 import LangToggle from './LangToggle.astro';
-import ThemeToggle from './ThemeToggle.tsx';
+import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   locale: Locale;
@@ -22,11 +22,13 @@ const { locale, path } = Astro.props;
 
 const home = localizePath(locale, '/');
 
-// Home-section anchors; labels come from the i18n dictionary (no hard-coded copy).
+// Work/About/Contact are home-section anchors; Writing points at its own full
+// page (absolute localized path) so it stays reachable from any sub-page. Labels
+// come from the i18n dictionary (no hard-coded copy).
 const navLinks = [
   { key: 'nav.work', href: `${home}#work` },
   { key: 'nav.about', href: `${home}#about` },
-  { key: 'nav.writing', href: `${home}#writing` },
+  { key: 'nav.writing', href: localizePath(locale, '/writing') },
   { key: 'nav.contact', href: `${home}#contact` },
 ];
 ---
@@ -59,7 +61,7 @@ const navLinks = [
         }
       </ul>
       <LangToggle locale={locale} path={path} />
-      <ThemeToggle client:load locale={locale} />
+      <ThemeToggle locale={locale} />
     </div>
   </nav>
 </header>

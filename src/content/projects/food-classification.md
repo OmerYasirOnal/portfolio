@@ -19,11 +19,3 @@ highlights_tr:
 featured: false
 order: 9
 ---
-
-## Food Image Classification
-
-A **MobileNetV2** transfer-learning model trained on the **Food-101** dataset
-(~73–80% validation accuracy), built with **TensorFlow / Keras** as part of the
-TÜBİTAK 2209-A programme. This is a separate project from the XGBoost
-concrete-durability model that produced the IEEE SIU 2025 paper. Local only —
-no public repository.

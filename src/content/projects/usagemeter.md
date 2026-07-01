@@ -26,22 +26,3 @@ what_i_did_tr: Kullanımı protokoller ardındaki birden fazla kaynaktan okuyan,
 featured: true
 order: 5
 ---
-
-## The problem
-
-Developers want a quick read on their Claude usage without paying for a tracker
-or handing their activity to a third party.
-
-## What I did
-
-UsageMeter is a **native Swift 6 / SwiftUI** macOS menu-bar app — a free
-alternative to the paid "Usage for Claude". It pulls usage from **three data
-sources behind protocols**, keeps everything **on-device with zero telemetry**,
-and surfaces it in a dashboard with charts and a heatmap. The optional claude.ai
-data source is unofficial.
-
-## Highlights
-
-- Privacy-first: no accounts, no servers, no telemetry.
-- Pluggable data sources via Swift protocols.
-- In progress and open source under the MIT license.

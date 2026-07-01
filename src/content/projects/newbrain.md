@@ -29,23 +29,3 @@ what_i_did_tr: PyTorch ile sıfırdan nedensel bir GPT transformer ve BPE tokeni
 featured: true
 order: 3
 ---
-
-## The problem
-
-Really understanding a modern language model means building one end to end —
-tokenizer, architecture, training loop and fine-tuning — not just calling
-someone else's API.
-
-## What I did
-
-newBrain is a Turkish LLM built from scratch: a custom **BPE tokenizer** and a
-**causal GPT transformer** implemented in **PyTorch** with RoPE positional
-encoding, SwiGLU activations and scaled-dot-product attention. Fine-tuning runs
-as **LoRA on Apple MLX**. Around the model sits a FastAPI + Three.js workspace
-with retrieval-augmented generation (ChromaDB) and multi-agent chat.
-
-## Highlights
-
-- A complete, readable from-scratch transformer stack for study and reuse.
-- On-device fine-tuning path via MLX.
-- Open source and framed as a research / educational project.

@@ -18,8 +18,3 @@ highlights_tr:
 featured: false
 order: 13
 ---
-
-## University Grade Calculator
-
-A Flutter GPA calculator that stores data in **Firebase Realtime Database**
-(not Firestore). Open source.

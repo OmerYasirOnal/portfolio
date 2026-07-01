@@ -18,8 +18,3 @@ highlights_tr:
 featured: false
 order: 10
 ---
-
-## QRCheckIn
-
-A QR-code attendance web app (**Express / SQLite / vanilla JS**) built as a side
-project during the Exedra HRTech internship. Demo-grade authentication.
