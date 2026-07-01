@@ -18,7 +18,7 @@ import { getCollection } from 'astro:content';
 import { profile } from '../../data/profile';
 import { cv } from '../../data/cv';
 import { locales, type Locale } from '../../data/i18n';
-import { formatPeriod, localizeLocation } from '../../data/cv-format';
+import { formatPeriod, localizeDate, localizeLocation, stripTechVersion } from '../../data/cv-format';
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -440,7 +440,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
                   )}
                 </div>
                 <p class="project-note">{note}</p>
-                <p class="project-tech">{entry.data.stack.join(' · ')}</p>
+                <p class="project-tech">{entry.data.stack.map(stripTechVersion).join(' · ')}</p>
               </div>
             );
           })
@@ -485,7 +485,10 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         <ul class="inline-list">
           {
             profile.certifications.map((c) => {
-              const meta = `${c.issuer}${c.platform ? ` (${c.platform})` : ''}, ${c.date}`;
+              const meta = `${c.issuer}${c.platform ? ` (${c.platform})` : ''}, ${localizeDate(
+                c.date,
+                lang,
+              )}`;
               return (
                 <li>
                   <span class="entry-title">{c.title}</span> — {meta}

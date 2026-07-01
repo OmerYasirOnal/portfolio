@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { localizeDate, localizeLocation, formatPeriod } from '../src/data/cv-format';
+import {
+  localizeDate,
+  localizeLocation,
+  formatPeriod,
+  stripTechVersion,
+} from '../src/data/cv-format';
 
 describe('cv-format — locale-aware résumé formatting', () => {
   it('leaves English untouched (source form)', () => {
@@ -31,5 +36,21 @@ describe('cv-format — locale-aware résumé formatting', () => {
     expect(formatPeriod('Dec 2025', 'Present', 'tr')).toBe('Ara. 2025 – Günümüz');
     expect(formatPeriod('Jul 2025', 'Aug 2025', 'tr')).toBe('Tem. 2025 – Ağu. 2025');
     expect(formatPeriod('2024', '2025', 'tr')).toBe('2024 – 2025');
+  });
+
+  it('strips a trailing version marker from a tech token', () => {
+    expect(stripTechVersion('React 19')).toBe('React');
+    expect(stripTechVersion('Astro 5')).toBe('Astro');
+    expect(stripTechVersion('Next.js 16')).toBe('Next.js');
+    expect(stripTechVersion('Tailwind CSS v4')).toBe('Tailwind CSS');
+    expect(stripTechVersion('Swift 6')).toBe('Swift');
+  });
+
+  it('leaves embedded product numbers and version-less tokens intact', () => {
+    expect(stripTechVersion('GTM/GA4')).toBe('GTM/GA4');
+    expect(stripTechVersion('Ed25519')).toBe('Ed25519');
+    expect(stripTechVersion('Three.js')).toBe('Three.js');
+    expect(stripTechVersion('TypeScript')).toBe('TypeScript');
+    expect(stripTechVersion('PostgreSQL/pgvector')).toBe('PostgreSQL/pgvector');
   });
 });

@@ -8,8 +8,10 @@
  * (#a78bfa) edge stripe.
  *
  * Generated routes (the `pages` keys become the file path, `.png` appended):
- *   /og/home.png            /og/home-tr.png
- *   /og/projects/<id>.png   /og/projects/<id>-tr.png
+ *   /og/home.png              /og/home-tr.png
+ *   /og/projects/<id>.png     /og/projects/<id>-tr.png
+ *   /og/projects-index.png    /og/projects-index-tr.png
+ *   /og/writing.png           /og/writing-tr.png
  *
  * Route keys and the matching public paths live in `src/lib/og.ts` so the
  * emitted files and the `og:image` <meta> URLs stay in lockstep.
@@ -17,8 +19,8 @@
 import { getCollection } from 'astro:content';
 import { OGImageRoute } from 'astro-og-canvas';
 import { profile } from '../../data/profile';
-import { locales } from '../../data/i18n';
-import { ogHomeKey, ogProjectKey } from '../../lib/og';
+import { locales, t } from '../../data/i18n';
+import { ogHomeKey, ogProjectKey, ogProjectsKey, ogWritingKey } from '../../lib/og';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
 const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0b
@@ -43,6 +45,16 @@ for (const locale of locales) {
   pages[ogHomeKey(locale)] = {
     heading: profile.name,
     sub: profile.role[locale],
+  };
+
+  // Listing pages: section title + localized intro (mirrors the on-page h1 + lede).
+  pages[ogProjectsKey(locale)] = {
+    heading: t(locale, 'projects.title'),
+    sub: t(locale, 'projects.intro'),
+  };
+  pages[ogWritingKey(locale)] = {
+    heading: t(locale, 'section.writing'),
+    sub: t(locale, 'writing.intro'),
   };
 
   // Per-project: title + localized tagline.

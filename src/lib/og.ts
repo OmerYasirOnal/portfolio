@@ -23,6 +23,16 @@ export function ogProjectKey(locale: Locale, id: string): string {
   return `projects/${id}${suffix(locale)}`;
 }
 
+/** Route key for the /projects listing page. */
+export function ogProjectsKey(locale: Locale): string {
+  return `projects-index${suffix(locale)}`;
+}
+
+/** Route key for the /writing listing page. */
+export function ogWritingKey(locale: Locale): string {
+  return `writing${suffix(locale)}`;
+}
+
 /** Public, root-relative path to the emitted PNG (what goes in `og:image`). */
 export function ogHomePath(locale: Locale): string {
   return `/og/${ogHomeKey(locale)}.png`;
@@ -30,4 +40,12 @@ export function ogHomePath(locale: Locale): string {
 
 export function ogProjectPath(locale: Locale, id: string): string {
   return `/og/${ogProjectKey(locale, id)}.png`;
+}
+
+export function ogProjectsPath(locale: Locale): string {
+  return `/og/${ogProjectsKey(locale)}.png`;
+}
+
+export function ogWritingPath(locale: Locale): string {
+  return `/og/${ogWritingKey(locale)}.png`;
 }

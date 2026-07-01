@@ -51,3 +51,17 @@ export function localizeLocation(value: string, locale: Locale): string {
 export function formatPeriod(start: string, end: string, locale: Locale): string {
   return `${localizeDate(start, locale)} – ${localizeDate(end, locale)}`;
 }
+
+/**
+ * Drop a trailing version marker from a single tech token so the résumé reads
+ * cleanly: `"React 19"` → `"React"`, `"Astro 5"` → `"Astro"`,
+ * `"Next.js 16"` → `"Next.js"`, `"Tailwind CSS v4"` → `"Tailwind CSS"`.
+ *
+ * Only a *trailing* space-separated version (optional `v`, then a digit and
+ * any dots) is stripped — so embedded product numbers stay intact
+ * (`"GTM/GA4"`, `"Ed25519"`, `"Three.js"` are untouched). Locale-independent:
+ * the tech line is the same in both résumé variants.
+ */
+export function stripTechVersion(tech: string): string {
+  return tech.replace(/\s+v?\d[\d.]*$/, '');
+}

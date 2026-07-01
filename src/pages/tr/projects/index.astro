@@ -5,6 +5,7 @@ import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import ProjectGrid from '../../../components/ProjectGrid.astro';
 import { t, type Locale } from '../../../data/i18n';
+import { ogProjectsPath } from '../../../lib/og';
 
 const locale: Locale = 'tr';
 const path = '/tr/projects';
@@ -24,6 +25,7 @@ const more = all.filter((e) => !e.data.featured);
   description={t(locale, 'seo.projects.description')}
   path={path}
   lang={locale}
+  ogImage={ogProjectsPath(locale)}
 >
   <SiteHeader locale={locale} path={path} />
 

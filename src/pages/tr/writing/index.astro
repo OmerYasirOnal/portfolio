@@ -4,6 +4,7 @@ import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import WritingList from '../../../components/WritingList.astro';
 import { t, type Locale } from '../../../data/i18n';
+import { ogWritingPath } from '../../../lib/og';
 
 const locale: Locale = 'tr';
 const path = '/tr/writing';
@@ -14,6 +15,7 @@ const path = '/tr/writing';
   description={t(locale, 'seo.writing.description')}
   path={path}
   lang={locale}
+  ogImage={ogWritingPath(locale)}
 >
   <SiteHeader locale={locale} path={path} />
 
