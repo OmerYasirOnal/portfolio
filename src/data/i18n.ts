@@ -14,6 +14,8 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.skills': { en: 'Skills', tr: 'Yetenekler' },
   'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'writing.articles': { en: 'Articles', tr: 'Makaleler' },
+  'writing.publications': { en: 'Publications', tr: 'Yayınlar' },
   'contact.availability': {
     en: 'Open to part-time, internship, junior full-time, and freelance.',
     tr: 'Part-time, staj, junior tam zamanlı ve freelance fırsatlara açığım.',

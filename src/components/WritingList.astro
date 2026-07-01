@@ -1,0 +1,154 @@
+---
+/**
+ * WritingList — the "Writing & publications" section.
+ *
+ * Two data-driven blocks, both read from content collections (single source of
+ * truth): `writing` (external articles, e.g. Medium) linked out to their canonical
+ * URL, and `publications` (peer-reviewed venues, e.g. IEEE SIU 2025). Locale-only
+ * fields (`title_en` / `title_tr` on publications) are selected by the incoming
+ * `locale`; article titles/URLs are canonical and shared across locales. Nothing
+ * is hard-coded — sub-headings and hints come from the i18n dictionary.
+ *
+ * Visual: a "reading list" rendered like an index — each row is a mono ordinal +
+ * title link + a mono source/venue tag. Article rows link out (new tab,
+ * rel=noopener); publications link out only when a URL exists, otherwise they are
+ * a static citation. The row underline is the only motion and is disabled under
+ * prefers-reduced-motion by the global stylesheet.
+ */
+import { getCollection } from 'astro:content';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const articles = (await getCollection('writing')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+// Newest research first.
+const publications = (await getCollection('publications')).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+
+const hint = t(locale, 'social.opensNewTab');
+
+// external-link glyph (stroke, 24×24) — matches the ProjectCard "other" icon.
+const EXTERNAL_ICON = [
+  'M15 3h6v6',
+  'M10 14 21 3',
+  'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
+];
+---
+
+<div class="space-y-12">
+  {/* Articles */}
+  {
+    articles.length > 0 && (
+      <section aria-labelledby="writing-articles">
+        <h3
+          id="writing-articles"
+          class="mb-4 font-mono text-xs uppercase tracking-widest text-accent/70"
+        >
+          {t(locale, 'writing.articles')}
+        </h3>
+        <ul class="divide-y divide-border/60 border-y border-border/60" role="list">
+          {articles.map((entry, i) => (
+            <li>
+              <a
+                href={entry.data.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${entry.data.title} — ${entry.data.source} (${hint})`}
+                class="group flex items-baseline gap-4 py-4 transition-colors hover:bg-card/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                <span
+                  class="font-mono text-xs tabular-nums text-muted"
+                  aria-hidden="true"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="text-base font-medium leading-snug text-fg decoration-accent/50 decoration-1 underline-offset-4 group-hover:text-accent group-hover:underline">
+                    {entry.data.title}
+                  </span>
+                </span>
+                <span class="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted">
+                  {entry.data.source}
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-muted/70 transition-colors group-hover:text-accent"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    {EXTERNAL_ICON.map((d) => (
+                      <path d={d} />
+                    ))}
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {/* Publications */}
+  {
+    publications.length > 0 && (
+      <section aria-labelledby="writing-publications">
+        <h3
+          id="writing-publications"
+          class="mb-4 font-mono text-xs uppercase tracking-widest text-accent/70"
+        >
+          {t(locale, 'writing.publications')}
+        </h3>
+        <ul class="space-y-4" role="list">
+          {publications.map((entry) => {
+            const title = locale === 'tr' ? entry.data.title_tr : entry.data.title_en;
+            const meta = (
+              <p class="mt-1 flex items-center gap-2 font-mono text-xs text-muted">
+                <span class="text-fg/80">{entry.data.venue}</span>
+                <span aria-hidden="true" class="text-border">·</span>
+                <span class="tabular-nums">{entry.data.year}</span>
+              </p>
+            );
+            return (
+              <li class="rounded-lg border border-border bg-card/40 p-4">
+                {entry.data.url ? (
+                  <a
+                    href={entry.data.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${title} — ${entry.data.venue} (${hint})`}
+                    class="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <p class="text-sm font-medium leading-snug text-fg transition-colors group-hover:text-accent">
+                      {title}
+                    </p>
+                    {meta}
+                  </a>
+                ) : (
+                  <>
+                    <p class="text-sm font-medium leading-snug text-fg">{title}</p>
+                    {meta}
+                  </>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )
+  }
+</div>
