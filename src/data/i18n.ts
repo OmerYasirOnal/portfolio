@@ -44,6 +44,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'cv.download': { en: 'Download PDF', tr: 'PDF indir' },
   'cv.downloadEn': { en: 'Download CV (English)', tr: 'CV indir (İngilizce)' },
   'cv.downloadTr': { en: 'Download CV (Türkçe)', tr: 'CV indir (Türkçe)' },
+  'cv.downloadEu': { en: 'Download CV (EU / GDPR)', tr: 'CV indir (AB / GDPR)' },
   'cv.comingSoon': { en: 'Coming soon', tr: 'Çok yakında' },
   'cv.emailInstead': { en: 'Email me instead', tr: 'Bunun yerine e-posta gönder' },
   'contact.elsewhere': { en: 'Find me elsewhere', tr: 'Diğer platformlar' },

@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 /**
- * build-cv.mjs — generate the two CV PDFs from the built site.
+ * build-cv.mjs — generate the three CV PDFs from the built site.
  *
- * 1. `pnpm build` so `dist/cv-print/{en,tr}/index.html` exist.
- * 2. Print each built page to `public/cv/omer-yasir-onal-<lang>.pdf` via headless
- *    Brave, driven over the DevTools Protocol (CDP).
+ * 1. `pnpm build` so `dist/cv-print/{tr,en,eu}/index.html` exist.
+ * 2. Print each built page to `public/cv/omer-yasir-onal-<variant>.pdf` via
+ *    headless Brave, driven over the DevTools Protocol (CDP).
+ *
+ * Variants: `tr` (Turkish, photo, diacritics), `en` (English, no photo,
+ * ASCII-folded for ATS + a remote-availability note), `eu` (same as `en` plus a
+ * GDPR recruitment-consent footer).
  *
  * Why CDP instead of `--print-to-pdf`: on this machine (Brave 149) both
  * `--headless=new --print-to-pdf` and `--headless --print-to-pdf` hang
@@ -23,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const BRAVE = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
-const LOCALES = ['en', 'tr'];
+const VARIANTS = ['tr', 'en', 'eu'];
 const OUT_DIR = join(repoRoot, 'public', 'cv');
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
@@ -115,9 +119,9 @@ async function launchBrave(profileDir) {
   return { proc, port };
 }
 
-async function printPdf(port, lang) {
-  const out = join(OUT_DIR, `omer-yasir-onal-${lang}.pdf`);
-  const src = `file://${join(repoRoot, 'dist', 'cv-print', lang, 'index.html')}`;
+async function printPdf(port, variant) {
+  const out = join(OUT_DIR, `omer-yasir-onal-${variant}.pdf`);
+  const src = `file://${join(repoRoot, 'dist', 'cv-print', variant, 'index.html')}`;
   const target = await (
     await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: 'PUT' })
   ).json();
@@ -167,15 +171,15 @@ async function main() {
   console.log(`▶ Brave headless on DevTools port ${port}`);
 
   try {
-    for (const lang of LOCALES) {
-      const built = join(repoRoot, 'dist', 'cv-print', lang, 'index.html');
+    for (const variant of VARIANTS) {
+      const built = join(repoRoot, 'dist', 'cv-print', variant, 'index.html');
       if (!existsSync(built)) {
         console.error(`Missing built page: ${built}`);
         process.exit(1);
       }
-      console.log(`▶ Printing ${lang.toUpperCase()} → PDF…`);
-      if (!(await printPdf(port, lang))) {
-        console.error(`Failed to generate a non-trivial PDF for ${lang}`);
+      console.log(`▶ Printing ${variant.toUpperCase()} → PDF…`);
+      if (!(await printPdf(port, variant))) {
+        console.error(`Failed to generate a non-trivial PDF for ${variant}`);
         process.exit(1);
       }
     }
@@ -185,8 +189,8 @@ async function main() {
   }
 
   console.log('\n✅ CV PDFs generated:');
-  for (const lang of LOCALES) {
-    const out = join(OUT_DIR, `omer-yasir-onal-${lang}.pdf`);
+  for (const variant of VARIANTS) {
+    const out = join(OUT_DIR, `omer-yasir-onal-${variant}.pdf`);
     console.log(`  ${out}  —  ${kb(statSync(out).size)}`);
   }
 }

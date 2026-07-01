@@ -40,6 +40,17 @@ export const cv = {
   /** Extra contact endpoints shown on the CV contact line (spec note). */
   website: 'https://omeryasironal.com',
 
+  /**
+   * English-only lines shown ONLY on the international `en` / EU `eu` PDF
+   * variants (never on the Turkish résumé):
+   *  - `availabilityRemote` — a one-line remote/international availability note.
+   *  - `gdprConsent` — the recruitment-data consent footer required on the `eu`
+   *    variant for GDPR-compliant applications.
+   */
+  availabilityRemote: 'Open to remote / international roles (UTC+3)',
+  gdprConsent:
+    'I consent to the processing of my personal data for recruitment purposes (GDPR).',
+
   /** Long-form professional summary (résumé opener) — proof-led, security-leaning. */
   summary: {
     en: "Computer Engineering new-grad and back-end & applied-AI engineer — AI Fellow (1,500 of 31,700, ~top 5%) and IEEE SIU 2025 author. I build verifiable, security-minded systems: at AKIS — a live multi-agent AI platform (akisflow.com) — I designed four structural human-approval gates, Ed25519-signed build provenance, and OWASP-LLM safety guardrails, and I shipped UniSum to the App Store on my own Node/MySQL API. Hands-on with Node.js/Python back-ends, PostgreSQL, Docker and CI/CD, and LLM/agent orchestration. Open to junior / entry-level full-time (and freelance) roles.",

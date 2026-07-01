@@ -65,3 +65,62 @@ export function formatPeriod(start: string, end: string, locale: Locale): string
 export function stripTechVersion(tech: string): string {
   return tech.replace(/\s+v?\d[\d.]*$/, '');
 }
+
+/**
+ * Characters that Unicode NFKD decomposition does NOT reduce to an ASCII base
+ * (they carry no separable combining mark), plus the typographic punctuation an
+ * ATS parser (Workday / Greenhouse) mishandles. Applied AFTER NFKD, so accented
+ * Latin/Turkish letters like `ö ü ç ş ğ İ` are already handled by the strip; the
+ * only Turkish letter needing an explicit rule is the dotless `ı`.
+ */
+const ASCII_FALLBACK: Readonly<Record<string, string>> = {
+  ı: 'i',
+  İ: 'I',
+  ß: 'ss',
+  Æ: 'AE',
+  æ: 'ae',
+  Œ: 'OE',
+  œ: 'oe',
+  Ø: 'O',
+  ø: 'o',
+  Ł: 'L',
+  ł: 'l',
+  Đ: 'D',
+  đ: 'd',
+  Þ: 'Th',
+  þ: 'th',
+  '–': '-', // en dash
+  '—': '-', // em dash
+  '―': '-', // horizontal bar
+  '‐': '-', // hyphen
+  '‑': '-', // non-breaking hyphen
+  '‒': '-', // figure dash
+  '−': '-', // minus sign
+  '‘': "'", // left single quote
+  '’': "'", // right single quote / apostrophe
+  '“': '"', // left double quote
+  '”': '"', // right double quote
+  '„': '"', // low double quote
+  '…': '...', // ellipsis
+  ' ': ' ', // non-breaking space
+  ' ': ' ', // thin space
+  ' ': ' ', // narrow no-break space
+};
+
+/**
+ * Fold a string to ASCII-safe form for the international / EU résumé variants:
+ * strips diacritics from Latin and Turkish letters (`Ömer Yasir Önal` →
+ * `Omer Yasir Onal`, `Türkiye` → `Turkiye`, `TÜBİTAK` → `TUBITAK`) and
+ * normalizes smart punctuation (curly quotes, en/em dashes, the minus sign,
+ * ellipsis) to plain ASCII so Workday/Greenhouse-style parsers read the text
+ * cleanly. Pure and idempotent; the Turkish variant never calls it.
+ *
+ * Decorative separators the résumé uses as dividers (`·`, `→`) are intentionally
+ * left untouched — they are not textual content and parse fine.
+ */
+export function asciiFold(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // drop combining diacritical marks
+    .replace(/[^\u0000-\u007f]/g, (ch) => ASCII_FALLBACK[ch] ?? ch);
+}

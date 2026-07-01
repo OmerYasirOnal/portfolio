@@ -11,10 +11,11 @@ const mailto = `mailto:${profile.email}`;
 
 const downloadIcon = `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>`;
 
-// Both languages are offered on both pages; the current locale's PDF is the
-// primary (filled) action, the other is the secondary (outline) action.
+// The English page leads with the international/ATS English PDF (primary), then
+// offers the GDPR-consent EU variant and the Turkish résumé as secondary actions.
 const downloads = [
   { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: true },
+  { key: 'cv.downloadEu', href: '/cv/omer-yasir-onal-eu.pdf', primary: false },
   { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: false },
 ];
 ---

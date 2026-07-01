@@ -3,35 +3,58 @@
  * PDF render source (NOT a public page — noindex).
  *
  * `scripts/build-cv.mjs` builds the site, then prints the built HTML of
- * `dist/cv-print/{en,tr}/index.html` to `public/cv/omer-yasir-onal-{en,tr}.pdf`
+ * `dist/cv-print/{tr,en,eu}/index.html` to `public/cv/omer-yasir-onal-{tr,en,eu}.pdf`
  * via headless Brave. The layout is a single ATS-safe main column with real,
  * selectable text — no text-as-image, no column splitting. A full-bleed violet
- * header band opens the page; TR renders the headshot in the band, EN omits it.
+ * header band opens the page.
+ *
+ * Three OUTPUT variants (`getStaticPaths` below), each a `{ lang, photo, ascii,
+ * availabilityNote, gdpr }` recipe:
+ *   - `tr` — Turkish, headshot, full diacritics (`Ömer Yasir Önal`).
+ *   - `en` — English, no photo, ASCII-folded (`Omer Yasir Onal`) so Workday /
+ *     Greenhouse parsers survive it; adds a remote-availability note. The
+ *     international / remote variant.
+ *   - `eu` — same as `en` PLUS a GDPR recruitment-consent footer; may run to a
+ *     second page.
  *
  * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections —
  * nothing is duplicated here. Turkish date/location strings are localized at
- * RENDER time via `cv-format.ts` (the source frontmatter is never mutated).
+ * RENDER time via `cv-format.ts`; the `en`/`eu` variants ASCII-fold every
+ * rendered string via `asciiFold` (the source frontmatter is never mutated).
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import { profile } from '../../data/profile';
 import { cv } from '../../data/cv';
-import { locales, type Locale } from '../../data/i18n';
-import { formatPeriod, localizeDate, localizeLocation, stripTechVersion } from '../../data/cv-format';
+import type { Locale } from '../../data/i18n';
+import { cvVariants, type VariantId } from '../../data/cv-variants';
+import {
+  asciiFold,
+  formatPeriod,
+  localizeDate,
+  localizeLocation,
+  stripTechVersion,
+} from '../../data/cv-format';
 
 export function getStaticPaths() {
-  return locales.map((lang) => ({ params: { lang } }));
+  return (Object.keys(cvVariants) as VariantId[]).map((variant) => ({ params: { variant } }));
 }
 
-const lang = Astro.params.lang as Locale;
+const variant = Astro.params.variant as VariantId;
+const cfg = cvVariants[variant];
+const lang: Locale = cfg.lang;
 const isTr = lang === 'tr';
+
+// ASCII-fold every rendered string on the international / EU variants so ATS
+// parsers read clean text; a no-op on the Turkish résumé.
+const fold = cfg.ascii ? asciiFold : (value: string) => value;
 
 // The TR résumé carries a headshot; inline it as a data URI so it resolves when
 // Brave prints the built file:// HTML (Astro's asset URLs would 404 there).
 // `astro build` runs from the repo root, so resolve the source asset from cwd
 // (import.meta.url would point at the compiled module under dist/).
-const photoDataUri = isTr
+const photoDataUri = cfg.photo
   ? `data:image/jpeg;base64,${readFileSync(
       join(process.cwd(), 'src', 'assets', 'omer-yasir-onal.jpg'),
     ).toString('base64')}`
@@ -94,7 +117,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>{profile.name} — {isTr ? 'Özgeçmiş' : 'Résumé'}</title>
+    <title>{fold(profile.name)} — {fold(isTr ? 'Özgeçmiş' : 'Résumé')}</title>
     <style>
       /* Full-bleed sides (band reaches both edges); top/bottom keep a margin so
          a spillover page never butts content against the paper edge. */
@@ -223,6 +246,24 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         margin: 0 6px;
       }
 
+      /* Remote/international availability note (en + eu variants only). */
+      .availability {
+        font-size: 8.7pt;
+        font-weight: 600;
+        color: var(--accent);
+        margin-top: 3px;
+      }
+
+      /* GDPR recruitment-consent footer (eu variant only). */
+      .gdpr {
+        margin-top: 16pt;
+        padding-top: 6px;
+        border-top: 1px solid var(--rule);
+        font-size: 8pt;
+        font-style: italic;
+        color: var(--faint);
+      }
+
       /* ---- Sections ------------------------------------------------------- */
       section {
         margin-top: 13pt;
@@ -342,10 +383,10 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <!-- ============================== HEADER BAND ========================== -->
     <header class="band">
       <div class="band-text">
-        <h1 class="name">{profile.name}</h1>
-        <p class="role">{profile.role[lang]}</p>
+        <h1 class="name">{fold(profile.name)}</h1>
+        <p class="role">{fold(profile.role[lang])}</p>
       </div>
-      {photoDataUri && <img class="photo" src={photoDataUri} alt={profile.name} />}
+      {photoDataUri && <img class="photo" src={photoDataUri} alt={fold(profile.name)} />}
     </header>
 
     <main class="content">
@@ -354,7 +395,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         <div class="contact-line">
           <a href={`mailto:${profile.email}`}>{profile.email}</a><span class="sep">·</span>
           <a href={`tel:${cv.phone.replace(/\s/g, '')}`}>{cv.phone}</a><span class="sep">·</span>
-          <span>{profile.location[lang]}</span><span class="sep">·</span>
+          <span>{fold(profile.location[lang])}</span><span class="sep">·</span>
           <a href={cv.website}>{displayUrl(cv.website)}</a>
         </div>
         <div class="links-line">
@@ -369,12 +410,13 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
             ))
           }
         </div>
+        {cfg.availabilityNote && <p class="availability">{cv.availabilityRemote}</p>}
       </div>
 
       <!-- ============================= SUMMARY ========================= -->
       <section>
         <h2>{s('summary')}</h2>
-        <p class="summary">{cv.summary[lang]}</p>
+        <p class="summary">{fold(cv.summary[lang])}</p>
       </section>
 
       <!-- ============================== SKILLS ========================= -->
@@ -383,15 +425,16 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         {
           cvSkillLines.map((g) => (
             <p class="kv">
-              <span class="k">{isTr ? g.title_tr : g.title_en}:</span> {g.items.join(', ')}
+              <span class="k">{fold(isTr ? g.title_tr : g.title_en)}:</span>{' '}
+              {fold(g.items.join(', '))}
             </p>
           ))
         }
         <p class="kv">
           <span class="k">
-            {isTr ? cv.skills.frontendMobile.title_tr : cv.skills.frontendMobile.title_en}:
+            {fold(isTr ? cv.skills.frontendMobile.title_tr : cv.skills.frontendMobile.title_en)}:
           </span>{' '}
-          {isTr ? cv.skills.frontendMobile.tr : cv.skills.frontendMobile.en}
+          {fold(isTr ? cv.skills.frontendMobile.tr : cv.skills.frontendMobile.en)}
         </p>
       </section>
 
@@ -403,17 +446,17 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
             <div class="entry">
               <div class="entry-head">
                 <div>
-                  <span class="entry-title">{isTr ? e.data.role_tr : e.data.role_en}</span>
-                  <span class="entry-org"> — {e.data.org}</span>
+                  <span class="entry-title">{fold(isTr ? e.data.role_tr : e.data.role_en)}</span>
+                  <span class="entry-org"> {fold('—')} {fold(e.data.org)}</span>
                 </div>
                 <div class="entry-meta">
-                  {localizeLocation(e.data.location, lang)} ·{' '}
-                  {formatPeriod(e.data.start, e.data.end, lang)}
+                  {fold(localizeLocation(e.data.location, lang))} ·{' '}
+                  {fold(formatPeriod(e.data.start, e.data.end, lang))}
                 </div>
               </div>
               <ul class="bullets">
                 {(isTr ? e.data.bullets_tr : e.data.bullets_en).map((b) => (
-                  <li>{b}</li>
+                  <li>{fold(b)}</li>
                 ))}
               </ul>
             </div>
@@ -431,7 +474,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
               <div class="entry">
                 <div class="entry-head">
                   <div>
-                    <span class="entry-title">{entry.data.title}</span>
+                    <span class="entry-title">{fold(entry.data.title)}</span>
                   </div>
                   {link && (
                     <div class="entry-meta">
@@ -439,15 +482,17 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
                     </div>
                   )}
                 </div>
-                <p class="project-note">{note}</p>
-                <p class="project-tech">{entry.data.stack.map(stripTechVersion).join(' · ')}</p>
+                <p class="project-note">{fold(note)}</p>
+                <p class="project-tech">
+                  {entry.data.stack.map((tech) => fold(stripTechVersion(tech))).join(' · ')}
+                </p>
               </div>
             );
           })
         }
         <p class="project-more">
           <a href={profile.links.github.url}>
-            {isTr ? 'GitHub’da daha fazlası' : 'More on GitHub'} →{' '}
+            {fold(isTr ? 'GitHub’da daha fazlası' : 'More on GitHub')} →{' '}
             {displayUrl(profile.links.github.url)}
           </a>
         </p>
@@ -459,10 +504,10 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         {
           publications.map((pub) => (
             <p class="entry">
-              <span class="entry-title">{isTr ? pub.data.title_tr : pub.data.title_en}</span>
-              {' — '}
+              <span class="entry-title">{fold(isTr ? pub.data.title_tr : pub.data.title_en)}</span>
+              {fold(' — ')}
               <span class="entry-org">
-                {pub.data.venue}, {pub.data.year}
+                {fold(pub.data.venue)}, {pub.data.year}
               </span>
             </p>
           ))
@@ -473,8 +518,8 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <section>
         <h2>{s('writing')}</h2>
         <p>
-          {(isTr ? cv.writing.tr : cv.writing.en).replace('{n}', String(writingCount))}
-          {' — '}
+          {fold((isTr ? cv.writing.tr : cv.writing.en).replace('{n}', String(writingCount)))}
+          {fold(' — ')}
           <a href={profile.links.medium.url}>{displayUrl(profile.links.medium.url)}</a>
         </p>
       </section>
@@ -491,7 +536,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
               )}`;
               return (
                 <li>
-                  <span class="entry-title">{c.title}</span> — {meta}
+                  <span class="entry-title">{fold(c.title)}</span> {fold('—')} {fold(meta)}
                 </li>
               );
             })
@@ -502,20 +547,23 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <!-- ============================= EDUCATION ======================= -->
       <section>
         <h2>{s('education')}</h2>
-        <p>{educationLine}</p>
+        <p>{fold(educationLine)}</p>
       </section>
 
       <!-- ============================= LANGUAGES ======================= -->
       <section>
         <h2>{s('languages')}</h2>
         <p>
-          {
+          {fold(
             profile.languages
               .map((l) => (isTr ? `${l.name_tr} (${l.level_tr})` : `${l.name_en} (${l.level_en})`))
-              .join(' · ')
-          }
+              .join(' · '),
+          )}
         </p>
       </section>
+
+      <!-- ============================ GDPR CONSENT ===================== -->
+      {cfg.gdpr && <footer class="gdpr">{cv.gdprConsent}</footer>}
     </main>
   </body>
 </html>
