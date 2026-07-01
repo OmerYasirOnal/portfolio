@@ -16,6 +16,8 @@ export default defineConfig({
   vite: { plugins: [tailwindcss()] },
   integrations: [
     sitemap({
+      // The /cv-print/* pages are noindex PDF render sources, not public pages.
+      filter: (page) => !page.includes('/cv-print/'),
       // Emit <xhtml:link rel="alternate" hreflang> pairs for the EN/TR mirror.
       i18n: {
         defaultLocale: 'en',

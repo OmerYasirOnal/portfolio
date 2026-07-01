@@ -1,0 +1,424 @@
+---
+/**
+ * PDF render source (NOT a public page — noindex).
+ *
+ * `scripts/build-cv.mjs` builds the site, then prints the built HTML of
+ * `dist/cv-print/{en,tr}/index.html` to `public/cv/omer-yasir-onal-{en,tr}.pdf`
+ * via headless Brave. Everything is a single ATS-safe main column with real,
+ * selectable text — no text-as-image. TR renders the headshot; EN omits it.
+ *
+ * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections —
+ * nothing is duplicated here.
+ */
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+import { profile } from '../../data/profile';
+import { cv } from '../../data/cv';
+import { locales, type Locale } from '../../data/i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+const isTr = lang === 'tr';
+
+// The TR résumé carries a headshot; inline it as a data URI so it resolves when
+// Brave prints the built file:// HTML (Astro's asset URLs would 404 there).
+// `astro build` runs from the repo root, so resolve the source asset from cwd
+// (import.meta.url would point at the compiled module under dist/).
+const photoDataUri = isTr
+  ? `data:image/jpeg;base64,${readFileSync(
+      join(process.cwd(), 'src', 'assets', 'omer-yasir-onal.jpg'),
+    ).toString('base64')}`
+  : null;
+
+// --- Data (sorted, reused from the site's single sources of truth) -----------
+const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+const publications = await getCollection('publications');
+const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+
+const s = (key: keyof typeof cv.sections): string => cv.sections[key][lang];
+
+/** Human-readable, protocol-stripped display for a URL. */
+const displayUrl = (url: string): string => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
+/** The single most relevant link for a project (shipped product > code). */
+const primaryLink = (links: {
+  appstore?: string;
+  live?: string;
+  repo?: string;
+  other?: string;
+}): string | undefined => links.appstore ?? links.live ?? links.repo ?? links.other;
+
+const contactLinks = [
+  { label: profile.links.github.label, handle: profile.links.github.handle, url: profile.links.github.url },
+  { label: profile.links.linkedin.label, handle: profile.links.linkedin.handle, url: profile.links.linkedin.url },
+  { label: profile.links.medium.label, handle: profile.links.medium.handle, url: profile.links.medium.url },
+  { label: profile.links.hackerrank.label, handle: profile.links.hackerrank.handle, url: profile.links.hackerrank.url },
+];
+
+const gradPrefix = isTr ? 'Beklenen mezuniyet' : 'Expected';
+const educationLine = `${isTr ? profile.education.degree_tr : profile.education.degree_en} — ${
+  isTr ? profile.education.school_tr : profile.education.school_en
+} — ${gradPrefix} ${isTr ? profile.education.graduation_tr : profile.education.graduation_en}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{profile.name} — {isTr ? 'Özgeçmiş' : 'Résumé'}</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 14mm;
+      }
+
+      :root {
+        --accent: #6d28d9;
+        --fg: #18181b;
+        --muted: #52525b;
+        --rule: #d9d2f0;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: var(--fg);
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        font-size: 9.6pt;
+        line-height: 1.4;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      /* ---- Header --------------------------------------------------------- */
+      .header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+      }
+
+      .name {
+        font-size: 22pt;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--fg);
+        margin: 0;
+        line-height: 1.1;
+      }
+
+      .role {
+        font-size: 11pt;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 3px 0 8px;
+      }
+
+      .contact {
+        font-size: 8.7pt;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .contact .sep {
+        color: var(--rule);
+        margin: 0 5px;
+      }
+
+      .photo {
+        flex: 0 0 auto;
+        width: 84px;
+        height: 84px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid var(--accent);
+      }
+
+      /* ---- Sections ------------------------------------------------------- */
+      section {
+        margin-top: 12px;
+      }
+
+      h2 {
+        font-size: 10pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        color: var(--accent);
+        margin: 0 0 6px;
+        padding-bottom: 3px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .summary {
+        text-align: justify;
+      }
+
+      /* ---- Entries (avoid splitting across pages) ------------------------- */
+      .entry {
+        margin-bottom: 8px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .entry:last-child {
+        margin-bottom: 0;
+      }
+
+      .entry-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .entry-title {
+        font-weight: 700;
+        color: var(--fg);
+      }
+
+      .entry-org {
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .entry-meta {
+        flex: 0 0 auto;
+        font-size: 8.5pt;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      ul.bullets {
+        margin: 3px 0 0;
+        padding-left: 15px;
+      }
+
+      ul.bullets li {
+        margin: 1px 0;
+      }
+
+      /* ---- Skills / meta lists ------------------------------------------- */
+      .kv {
+        margin: 3px 0;
+      }
+
+      .kv .k {
+        font-weight: 700;
+        color: var(--fg);
+      }
+
+      .project-tech {
+        color: var(--muted);
+        font-size: 8.8pt;
+      }
+
+      .inline-list {
+        margin: 0;
+      }
+
+      .inline-list li {
+        margin: 2px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================== HEADER ============================== -->
+    <header class="header">
+      <div>
+        <h1 class="name">{profile.name}</h1>
+        <p class="role">{profile.role[lang]}</p>
+        <div class="contact">
+          <span>{profile.location[lang]}</span><span class="sep">·</span>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a><span class="sep">·</span>
+          <a href={`tel:${cv.phone.replace(/\s/g, '')}`}>{cv.phone}</a><span class="sep">·</span>
+          <a href={cv.website}>{displayUrl(cv.website)}</a>
+          <br />
+          {
+            contactLinks.map((l, i) => (
+              <>
+                {i > 0 && <span class="sep">·</span>}
+                <a href={l.url}>
+                  {l.label}: {l.handle}
+                </a>
+              </>
+            ))
+          }
+        </div>
+      </div>
+      {photoDataUri && <img class="photo" src={photoDataUri} alt={profile.name} />}
+    </header>
+
+    <!-- ============================== SUMMARY ============================= -->
+    <section>
+      <h2>{s('summary')}</h2>
+      <p class="summary">{cv.summary[lang]}</p>
+    </section>
+
+    <!-- =============================== SKILLS ============================= -->
+    <section>
+      <h2>{s('skills')}</h2>
+      {
+        profile.skillGroups.map((g) => (
+          <p class="kv">
+            <span class="k">{isTr ? g.title_tr : g.title_en}:</span> {g.items.join(', ')}
+          </p>
+        ))
+      }
+    </section>
+
+    <!-- ============================ EXPERIENCE =========================== -->
+    <section>
+      <h2>{s('experience')}</h2>
+      {
+        experience.map((e) => (
+          <div class="entry">
+            <div class="entry-head">
+              <div>
+                <span class="entry-title">{isTr ? e.data.role_tr : e.data.role_en}</span>
+                <span class="entry-org">
+                  {' '}
+                  — {e.data.org}
+                </span>
+              </div>
+              <div class="entry-meta">
+                {e.data.location} · {e.data.start} – {e.data.end}
+              </div>
+            </div>
+            <ul class="bullets">
+              {(isTr ? e.data.bullets_tr : e.data.bullets_en).map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- ============================= PROJECTS ============================ -->
+    <section>
+      <h2>{s('projects')}</h2>
+      {
+        projects.map((p) => {
+          const link = primaryLink(p.data.links);
+          return (
+            <div class="entry">
+              <div class="entry-head">
+                <div>
+                  <span class="entry-title">{p.data.title}</span>
+                  <span class="entry-org"> — {isTr ? p.data.tagline_tr : p.data.tagline_en}</span>
+                </div>
+                {link && (
+                  <div class="entry-meta">
+                    <a href={link}>{displayUrl(link)}</a>
+                  </div>
+                )}
+              </div>
+              <p class="project-tech">{p.data.stack.join(' · ')}</p>
+            </div>
+          );
+        })
+      }
+    </section>
+
+    <!-- =========================== PUBLICATIONS ========================== -->
+    <section>
+      <h2>{s('publications')}</h2>
+      {
+        publications.map((pub) => (
+          <p class="entry">
+            <span class="entry-title">{isTr ? pub.data.title_tr : pub.data.title_en}</span>
+            {' — '}
+            <span class="entry-org">
+              {pub.data.venue}, {pub.data.year}
+            </span>
+          </p>
+        ))
+      }
+    </section>
+
+    <!-- ============================== WRITING ============================ -->
+    <section>
+      <h2>{s('writing')}</h2>
+      <p>
+        <a href={profile.links.medium.url}>Medium ({profile.links.medium.handle})</a>
+        {' — '}
+        {
+          writing.map((w, i) => (
+            <>
+              {i > 0 && <span> · </span>}
+              <a href={w.data.url}>{w.data.title}</a>
+            </>
+          ))
+        }
+      </p>
+    </section>
+
+    <!-- =========================== CERTIFICATIONS ======================== -->
+    <section>
+      <h2>{s('certifications')}</h2>
+      <ul class="inline-list">
+        {
+          profile.certifications.map((c) => (
+            <li>
+              <span class="entry-title">{c.title}</span> — {c.issuer}
+              {c.platform ? ` (${c.platform})` : ''}, {c.date}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- ============================= EDUCATION =========================== -->
+    <section>
+      <h2>{s('education')}</h2>
+      <p>{educationLine}</p>
+    </section>
+
+    <!-- ============================= LANGUAGES =========================== -->
+    <section>
+      <h2>{s('languages')}</h2>
+      <p>
+        {
+          profile.languages
+            .map((l) =>
+              isTr ? `${l.name_tr} (${l.level_tr})` : `${l.name_en} (${l.level_en})`,
+            )
+            .join(' · ')
+        }
+      </p>
+    </section>
+  </body>
+</html>

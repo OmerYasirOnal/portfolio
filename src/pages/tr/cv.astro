@@ -7,11 +7,16 @@ import { t, type Locale } from '../../data/i18n';
 
 const locale: Locale = 'tr';
 const path = '/tr/cv';
-
-// Phase 2 produces `/resume.pdf`. Until the file exists we must NOT render a
-// dead link — the download control is disabled with a "coming soon" note.
-const resumeReady = false;
 const mailto = `mailto:${profile.email}`;
+
+const downloadIcon = `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>`;
+
+// Both languages are offered on both pages; the current locale's PDF is the
+// primary (filled) action, the other is the secondary (outline) action.
+const downloads = [
+  { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: true },
+  { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: false },
+];
 ---
 
 <Base
@@ -38,11 +43,15 @@ const mailto = `mailto:${profile.email}`;
 
       <div class="mt-8 flex flex-wrap items-center gap-4">
         {
-          resumeReady ? (
+          downloads.map((d) => (
             <a
-              href="/resume.pdf"
+              href={d.href}
               download
-              class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              class={
+                d.primary
+                  ? 'inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                  : 'inline-flex items-center gap-2 rounded-md border border-border px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+              }
             >
               <svg
                 width="16"
@@ -54,61 +63,22 @@ const mailto = `mailto:${profile.email}`;
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" x2="12" y1="15" y2="3" />
-              </svg>
-              {t(locale, 'cv.download')}
+                set:html={downloadIcon}
+              />
+              {t(locale, d.key)}
             </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              class="inline-flex cursor-not-allowed items-center gap-2 rounded-md border border-border px-5 py-2.5 text-sm font-medium text-muted opacity-60"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" x2="12" y1="15" y2="3" />
-              </svg>
-              {t(locale, 'cv.download')}
-            </button>
-          )
-        }
-
-        {
-          !resumeReady && (
-            <span class="font-mono text-xs uppercase tracking-widest text-accent/70">
-              {t(locale, 'cv.comingSoon')}
-            </span>
-          )
+          ))
         }
       </div>
 
-      {
-        !resumeReady && (
-          <p class="mt-6 text-sm text-muted">
-            <a
-              href={mailto}
-              class="font-medium text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              {t(locale, 'cv.emailInstead')}
-            </a>
-          </p>
-        )
-      }
+      <p class="mt-6 text-sm text-muted">
+        <a
+          href={mailto}
+          class="font-medium text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {t(locale, 'cv.emailInstead')}
+        </a>
+      </p>
     </section>
   </main>
 
