@@ -2,7 +2,7 @@ import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
 import { t } from '../data/i18n';
-import { rssItems } from '../lib/feed';
+import { rssItems, RSS_TITLE } from '../lib/feed';
 
 export async function GET(context: APIContext) {
   const posts = await getCollection('posts', (e) => !e.data.draft);
@@ -26,10 +26,9 @@ export async function GET(context: APIContext) {
   });
 
   return rss({
-    title: 'Ömer Yasir Önal — Writing',
+    title: RSS_TITLE,
     description: t('en', 'seo.writing.description'),
     site: context.site!,
     items,
-    customData: '<language>en</language>',
   });
 }

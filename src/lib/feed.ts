@@ -46,6 +46,9 @@ export interface FeedJson {
 
 const abs = (site: string, path: string) => new URL(path, site).toString();
 
+/** Feed title shared by the rss.xml channel and Base's autodiscovery link. */
+export const RSS_TITLE = 'Ömer Yasir Önal — Writing';
+
 export function buildFeedJson(input: {
   site: string;
   posts: FeedPostInput[];

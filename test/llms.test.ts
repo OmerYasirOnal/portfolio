@@ -82,7 +82,7 @@ describe('llmsTxt phase-2 content', () => {
 
   it('lists courses when present', () => {
     expect(out).toContain(
-      '- [Demo](https://omeryasironal.com/courses/demo-course/): CD (beginner, 1 lessons, en)',
+      '- [Demo](https://omeryasironal.com/courses/demo-course/): CD (beginner, 1 lesson, en)',
     );
     expect(out).not.toContain('_Coming soon');
   });
@@ -94,6 +94,28 @@ describe('llmsTxt phase-2 content', () => {
   it('references the feeds', () => {
     expect(out).toContain('https://omeryasironal.com/rss.xml');
     expect(out).toContain('https://omeryasironal.com/feed.json');
+  });
+
+  it('interleaves native and external writing newest-first', () => {
+    const out = llmsTxt({
+      ...data,
+      writing: [
+        {
+          title: 'Newest external',
+          url: 'https://medium.com/new',
+          source: 'Medium',
+          date: '2026-08-01',
+          lang: 'en',
+        },
+        ...data.writing,
+      ],
+    });
+    const newest = out.indexOf('Newest external');
+    const native = out.indexOf('Writing comes home');
+    const oldest = out.indexOf('RxDart');
+    expect(newest).toBeGreaterThan(-1);
+    expect(newest).toBeLessThan(native);
+    expect(native).toBeLessThan(oldest);
   });
 });
 

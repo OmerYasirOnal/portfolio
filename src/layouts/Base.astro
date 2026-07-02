@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { t } from '../data/i18n';
 import { canonicalHref, hreflangLinks } from '../lib/seo';
+import { RSS_TITLE } from '../lib/feed';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
@@ -49,7 +50,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Ömer Yasir Önal — Writing"
+      title={RSS_TITLE}
       href={new URL('/rss.xml', Astro.site!).toString()}
     />
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}

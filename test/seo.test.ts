@@ -193,4 +193,21 @@ describe('courseJsonLd', () => {
     expect(c.educationalLevel).toBe('beginner');
     expect(c.provider.name).toBe('Ömer Yasir Önal');
   });
+
+  it('omits keywords when tags are empty and shares one author node', () => {
+    const c = courseJsonLd(
+      {
+        title: 'C',
+        description: 'D',
+        url: SITE + '/courses/c/',
+        lang: 'en',
+        level: 'beginner',
+        tags: [],
+        lessons: [],
+      },
+      SITE,
+    );
+    expect('keywords' in c).toBe(false);
+    expect(c.provider).toBe(c.author);
+  });
 });

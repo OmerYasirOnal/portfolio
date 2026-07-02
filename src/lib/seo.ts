@@ -231,6 +231,7 @@ export function courseJsonLd(
   },
   site?: URL | string,
 ) {
+  const author = authorNode(site);
   return {
     '@context': 'https://schema.org',
     '@type': 'Course',
@@ -241,8 +242,8 @@ export function courseJsonLd(
     educationalLevel: input.level,
     ...(input.tags.length ? { keywords: input.tags.join(', ') } : {}),
     isAccessibleForFree: true,
-    provider: authorNode(site),
-    author: authorNode(site),
+    provider: author,
+    author,
     hasCourseInstance: {
       '@type': 'CourseInstance',
       courseMode: 'online',
