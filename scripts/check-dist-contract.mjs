@@ -31,6 +31,10 @@ export function validateFeed(feed) {
     return errors;
   }
   feed.items.forEach((item, i) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) {
+      errors.push(`items[${i}]: expected an object`);
+      return;
+    }
     const at = `items[${i}] (${item?.slug ?? '?'})`;
     if (item.type !== 'post' && item.type !== 'course') {
       errors.push(`${at}: type must be "post" or "course"`);
@@ -93,11 +97,13 @@ export function checkDist(distDir) {
   if (!existsSync(feedPath)) {
     errors.push('dist/feed.json missing');
   } else {
+    let feed;
     try {
-      errors.push(...validateFeed(JSON.parse(readFileSync(feedPath, 'utf8'))));
+      feed = JSON.parse(readFileSync(feedPath, 'utf8'));
     } catch (e) {
       errors.push(`dist/feed.json is not valid JSON: ${e.message}`);
     }
+    if (feed !== undefined) errors.push(...validateFeed(feed));
   }
   const rssPath = path.join(distDir, 'rss.xml');
   if (!existsSync(rssPath)) errors.push('dist/rss.xml missing');

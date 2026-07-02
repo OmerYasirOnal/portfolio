@@ -76,4 +76,10 @@ describe('validateFeed', () => {
     expect(validateFeed({ ...validFeed, items: [] }).join()).toMatch(/items/);
     expect(validateFeed(null).length).toBeGreaterThan(0);
   });
+
+  it('reports malformed (non-object) items as violations instead of throwing', () => {
+    const out = validateFeed({ ...validFeed, items: [null, 42, validPost] });
+    expect(out.join()).toMatch(/items\[0\].*object/);
+    expect(out.join()).toMatch(/items\[1\].*object/);
+  });
 });
