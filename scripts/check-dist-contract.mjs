@@ -90,7 +90,12 @@ export function validateFeed(feed) {
   return errors;
 }
 
-/** A feed URL must map to a built page: <dist>/<url path>/index.html. */
+/**
+ * A feed URL must map to a built page: <dist>/<url path>/index.html.
+ * Assumes Astro's default `build.format: 'directory'`; with `format: 'file'`
+ * this would fail loudly at build time (naming the expected path), which is
+ * the desired failure mode if that config ever changes.
+ */
 function pageFileErrors(distDir, site, url) {
   const rel = url.slice(site.length).replace(/^\/+|\/+$/g, '');
   const page = path.join(distDir, rel, 'index.html');

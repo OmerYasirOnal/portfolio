@@ -129,4 +129,8 @@ describe('llmsFullTxt phase-2 content', () => {
   it('indexes course lessons with absolute URLs', () => {
     expect(out).toContain('- L1: https://omeryasironal.com/courses/demo-course/01-a/');
   });
+
+  it('labels the external-links section distinctly from the merged llms.txt list', () => {
+    expect(out).toContain('## External writing');
+  });
 });

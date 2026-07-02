@@ -151,7 +151,7 @@ export function llmsFullTxt(data: LlmsData): string {
     if (links.length) s.push(`Links: ${links.map(([k, v]) => `${k}: ${v}`).join(', ')}`);
     s.push('');
   }
-  s.push('## Writing');
+  s.push('## External writing');
   for (const w of data.writing) s.push(`- ${w.title} (${w.source}, ${w.date}): ${w.url}`);
   s.push('');
   s.push('## Articles (native, full text)');
