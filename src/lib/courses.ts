@@ -14,7 +14,11 @@ export function lessonSlugOf(id: string): string {
   return id.split('/').slice(1).join('/');
 }
 
-/** Lessons ordered by their zero-padded `NN-` filename prefix. */
+/**
+ * Lessons ordered by their zero-padded `NN-` filename prefix. Expects entries
+ * from a single course: ids from different courses would sort by course slug
+ * before lesson number, so filter to one course before calling.
+ */
 export function sortLessons<T extends { id: string }>(lessons: T[]): T[] {
-  return [...lessons].sort((a, b) => (a.id < b.id ? -1 : 1));
+  return [...lessons].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 }

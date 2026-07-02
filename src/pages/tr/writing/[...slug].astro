@@ -52,7 +52,7 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
   description={data.description}
   path={path}
   lang={locale}
-  ogImage={ogPostPath(locale, entry.id)}
+  ogImage={data.cover ?? ogPostPath(locale, entry.id)}
   ogType="article"
   canonicalUrl={data.canonical}
 >
@@ -63,6 +63,7 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
 
   <main id="main">
     <article class="mx-auto max-w-3xl px-6 pb-20 pt-12">
+      {/* breadcrumb back to the writing index */}
       <a
         href={localizePath(locale, '/writing')}
         class="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"

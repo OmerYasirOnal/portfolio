@@ -38,4 +38,11 @@ describe('vercel.json', () => {
     expect(allHeaderKeys).not.toContain('strict-transport-security');
     expect(rules.some((r) => r.source.includes('_astro'))).toBe(false);
   });
+
+  it('keeps each rule exactly as specified (no stray headers)', () => {
+    expect(rules).toHaveLength(3);
+    expect(rules.find((r) => r.source === '/(.*)')!.headers).toHaveLength(5);
+    expect(rules.find((r) => r.source === '/og/(.*)')!.headers).toHaveLength(1);
+    expect(rules.find((r) => r.source === '/cv/(.*\\.pdf)')!.headers).toHaveLength(1);
+  });
 });

@@ -55,7 +55,7 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
   description={data.description}
   path={path}
   lang={locale}
-  ogImage={ogPostPath(locale, entry.id)}
+  ogImage={data.cover ?? ogPostPath(locale, entry.id)}
   ogType="article"
   canonicalUrl={data.canonical}
 >

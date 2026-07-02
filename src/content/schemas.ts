@@ -100,8 +100,8 @@ export const postSchema = z.object({
   draft: z.boolean().default(false),
   /** Surfaced in the curated home-page writing section when true. */
   home: z.boolean().default(false),
-  /** Optional cover image path (public/ relative). */
-  cover: z.string().optional(),
+  /** Optional cover image path (public/-relative); replaces the generated OG card when set. */
+  cover: z.string().min(1).optional(),
   /**
    * External canonical URL when the post is a republication. Setting this
    * makes the page defer to that URL (rel=canonical + og:url) and suppresses

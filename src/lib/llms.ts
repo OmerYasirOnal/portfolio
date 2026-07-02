@@ -74,14 +74,17 @@ export function llmsTxt(data: LlmsData): string {
   }
   lines.push('');
   lines.push('## Writing');
-  for (const p of data.posts) {
-    lines.push(
-      `- [${p.title}](${abs(site, `/writing/${p.slug}/`)}): ${p.description} (${p.date}, ${p.lang})`,
-    );
-  }
-  for (const w of data.writing) {
-    lines.push(`- [${w.title}](${w.url}): ${w.source}, ${w.date} (${w.lang})`);
-  }
+  const writingLines = [
+    ...data.posts.map((p) => ({
+      date: p.date,
+      line: `- [${p.title}](${abs(site, `/writing/${p.slug}/`)}): ${p.description} (${p.date}, ${p.lang})`,
+    })),
+    ...data.writing.map((w) => ({
+      date: w.date,
+      line: `- [${w.title}](${w.url}): ${w.source}, ${w.date} (${w.lang})`,
+    })),
+  ].sort((a, b) => (a.date === b.date ? 0 : a.date < b.date ? 1 : -1));
+  for (const { line } of writingLines) lines.push(line);
   lines.push('');
   lines.push('## Publications');
   for (const pub of data.publications) {
@@ -92,7 +95,7 @@ export function llmsTxt(data: LlmsData): string {
   if (data.courses.length) {
     for (const c of data.courses) {
       lines.push(
-        `- [${c.title}](${abs(site, `/courses/${c.slug}/`)}): ${c.description} (${c.level}, ${c.lessons.length} lessons, ${c.lang})`,
+        `- [${c.title}](${abs(site, `/courses/${c.slug}/`)}): ${c.description} (${c.level}, ${c.lessons.length} lesson${c.lessons.length === 1 ? '' : 's'}, ${c.lang})`,
       );
     }
   } else {
@@ -148,7 +151,7 @@ export function llmsFullTxt(data: LlmsData): string {
     if (links.length) s.push(`Links: ${links.map(([k, v]) => `${k}: ${v}`).join(', ')}`);
     s.push('');
   }
-  s.push('## Writing');
+  s.push('## External writing');
   for (const w of data.writing) s.push(`- ${w.title} (${w.source}, ${w.date}): ${w.url}`);
   s.push('');
   s.push('## Articles (native, full text)');

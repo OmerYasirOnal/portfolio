@@ -174,6 +174,11 @@ describe('post schema', () => {
     expect(postSchema.safeParse({ ...validPost, title: '' }).success).toBe(false);
     expect(postSchema.safeParse({ ...validPost, description: '' }).success).toBe(false);
   });
+
+  it('rejects an empty cover path', () => {
+    expect(postSchema.safeParse({ ...validPost, cover: '' }).success).toBe(false);
+    expect(postSchema.parse({ ...validPost, cover: '/img/c.png' }).cover).toBe('/img/c.png');
+  });
 });
 
 describe('course schema', () => {
@@ -194,6 +199,11 @@ describe('course schema', () => {
   it('rejects an unknown level and a missing description', () => {
     expect(courseSchema.safeParse({ ...validCourse, level: 'expert' }).success).toBe(false);
     expect(courseSchema.safeParse({ ...validCourse, description: undefined }).success).toBe(false);
+  });
+
+  it('rejects empty title/description strings', () => {
+    expect(courseSchema.safeParse({ ...validCourse, title: '' }).success).toBe(false);
+    expect(courseSchema.safeParse({ ...validCourse, description: '' }).success).toBe(false);
   });
 });
 

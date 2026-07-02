@@ -22,4 +22,13 @@ describe('course id helpers', () => {
     sortLessons(input);
     expect(input[0].id).toBe('c/02-b');
   });
+
+  it('returns 0 for equal ids (valid comparator, no reorder)', () => {
+    const sorted = sortLessons([{ id: 'c/01-a' }, { id: 'c/01-a' }]);
+    expect(sorted.map((l) => l.id)).toEqual(['c/01-a', 'c/01-a']);
+  });
+
+  it('returns an empty lesson slug for a slashless id (documented behavior)', () => {
+    expect(lessonSlugOf('demo-course')).toBe('');
+  });
 });
