@@ -43,8 +43,9 @@ jobs:
       #   - The Apple App Store rate-limits crawlers with 429; 429 means
       #     "alive but throttled", never a dead link, so it is treated as OK.
       #   - The canonical/OG absolute URLs point at the production domain
-      #     (https://omeryasironal.com), which is not attached yet, so those
-      #     self-references are skipped rather than resolved over the network.
+      #     (https://omeryasironal.com, live on Vercel); crawling them from CI
+      #     would just hammer the live site, so self-references are skipped —
+      #     dist/ itself is what's being checked.
       - name: Link check (dist)
         run: >-
           pnpm dlx linkinator ./dist --recurse --silent --retry-errors
