@@ -1,5 +1,7 @@
 # Phase 3 — Vercel Delivery Optimization Implementation Plan
 
+**Status: implemented — 2026-07-02** (all tasks executed + reviewed; headers curl-verified on the PR #2 Vercel preview via share link)
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Harden and formalize the site's delivery on Vercel — security headers + targeted cache rules via `vercel.json`, a build-gating feed-contract tripwire, a corrected spec, and preview-deploy verification.
