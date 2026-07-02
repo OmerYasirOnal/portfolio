@@ -23,13 +23,14 @@ describe('vercel.json', () => {
     expect(byKey['Permissions-Policy']).toBe('camera=(), microphone=(), geolocation=()');
   });
 
-  it('gives OG images and CV PDFs a one-hour browser cache', () => {
-    for (const source of ['/og/(.*)', '/cv/(.*)']) {
+  it('gives OG images and CV PDFs a one-hour browser cache (not the /cv/ HTML page)', () => {
+    for (const source of ['/og/(.*)', '/cv/(.*\\.pdf)']) {
       const rule = rules.find((r) => r.source === source);
       expect(rule, source).toBeDefined();
       const cache = rule!.headers.find((h) => h.key === 'Cache-Control');
       expect(cache?.value).toBe('public, max-age=3600');
     }
+    expect(rules.some((r) => r.source === '/cv/(.*)')).toBe(false);
   });
 
   it('does not duplicate platform behavior (no HSTS, no /_astro override)', () => {
