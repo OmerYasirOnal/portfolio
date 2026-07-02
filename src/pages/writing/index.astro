@@ -26,13 +26,24 @@ const breadcrumbLd = breadcrumbJsonLd([
 ]);
 const posts = await getCollection('posts', (e) => !e.data.draft);
 const ldItems = [
-  ...articles.map((a) => ({ title: a.data.title, url: a.data.url, date: a.data.date })),
+  ...articles.map((a) => ({
+    title: a.data.title,
+    url: a.data.url,
+    date: a.data.date,
+    order: a.data.order,
+  })),
   ...posts.map((p) => ({
     title: p.data.title,
     url: canonicalHref(localizePath(locale, `/writing/${p.id}`), Astro.site!),
     date: p.data.date,
+    order: 99,
   })),
-].sort((a, b) => (a.date < b.date ? 1 : -1));
+]
+  .sort((a, b) => {
+    if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+    return a.order - b.order;
+  })
+  .map(({ title, url, date }) => ({ title, url, date }));
 const articlesLd = writingItemListJsonLd(ldItems, Astro.site!);
 const pubsLd = pubs.map((p) =>
   scholarlyArticleJsonLd(
@@ -73,7 +84,7 @@ const pubsLd = pubs.map((p) =>
       </p>
       <a
         href={localizePath(locale, '/courses')}
-        class="group mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {t(locale, 'writing.browseCourses')}
       </a>

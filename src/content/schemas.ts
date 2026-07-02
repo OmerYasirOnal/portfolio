@@ -100,7 +100,7 @@ export const postSchema = z.object({
   draft: z.boolean().default(false),
   /** Surfaced in the curated home-page writing section when true. */
   home: z.boolean().default(false),
-  /** Optional cover image path (public/ relative). */
+  /** Optional cover image path (public/-relative); replaces the generated OG card when set. */
   cover: z.string().optional(),
   /**
    * External canonical URL when the post is a republication. Setting this
