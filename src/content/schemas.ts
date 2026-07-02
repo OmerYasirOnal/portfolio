@@ -88,8 +88,8 @@ export const publicationSchema = z.object({
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD');
 
 export const postSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(1),
+  description: z.string().min(1),
   /** Publish date — drives newest-first ordering and datePublished. */
   date: isoDate,
   /** Last substantive revision — feeds dateModified when present. */
@@ -111,8 +111,8 @@ export const postSchema = z.object({
 });
 
 export const courseSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(1),
+  description: z.string().min(1),
   level: z.enum(['beginner', 'intermediate', 'advanced']),
   /** Language the course is written in. */
   lang: z.enum(['en', 'tr']),
@@ -122,6 +122,6 @@ export const courseSchema = z.object({
 });
 
 export const lessonSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1),
   description: z.string().optional(),
 });

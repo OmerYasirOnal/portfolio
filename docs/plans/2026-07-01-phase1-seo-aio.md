@@ -16,7 +16,7 @@
 - **Single source of truth:** copy comes from `src/data/profile.ts` and `src/data/i18n.ts`; structured data / feeds read content collections. Never hardcode bio/role/link strings in a component or route.
 - **No new client JS.** All work is SSG/build-time. The only `<head>` additions are `<meta>`/`<link>`/`<script type="application/ld+json">` (inert) tags.
 - **cv-print pages bypass `Base.astro`** and already emit `<meta name="robots" content="noindex">` — do not touch them; they must never receive hreflang/JSON-LD.
-- **Deferred to later phases (do NOT build here):** RSS (`rss.xml`) + JSON Feed (`feed.json`) land in **Phase 2** with native posts/courses (the `feed.json` contract is defined in the spec). `public/_headers`/`_redirects` (Cloudflare security/cache headers) land in **Phase 3**. This plan reserves a `## Courses` placeholder in `llms.txt` and references future feeds, but does not create the feeds.
+- **Deferred to later phases (do NOT build here):** RSS (`rss.xml`) + JSON Feed (`feed.json`) land in **Phase 2** with native posts/courses (the `feed.json` contract is defined in the spec). `public/_headers`/`_redirects` (Cloudflare security/cache headers) land in **Phase 3**. This plan reserves a `## Courses` placeholder in `llms.txt` and references future feeds, but does not create the feeds. *(superseded 2026-07-02 — hosting is Vercel; see spec §2 amendment and the phase-3 plan)*
 
 ---
 

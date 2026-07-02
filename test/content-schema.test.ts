@@ -169,6 +169,11 @@ describe('post schema', () => {
     expect(postSchema.safeParse({ ...validPost, updated: 'yesterday' }).success).toBe(false);
     expect(postSchema.safeParse({ ...validPost, canonical: 'not-a-url' }).success).toBe(false);
   });
+
+  it('rejects empty title/description strings', () => {
+    expect(postSchema.safeParse({ ...validPost, title: '' }).success).toBe(false);
+    expect(postSchema.safeParse({ ...validPost, description: '' }).success).toBe(false);
+  });
 });
 
 describe('course schema', () => {
@@ -200,5 +205,9 @@ describe('lesson schema', () => {
 
   it('rejects a missing title', () => {
     expect(lessonSchema.safeParse({}).success).toBe(false);
+  });
+
+  it('rejects an empty title', () => {
+    expect(lessonSchema.safeParse({ title: '' }).success).toBe(false);
   });
 });
