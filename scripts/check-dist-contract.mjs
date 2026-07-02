@@ -90,6 +90,13 @@ export function validateFeed(feed) {
   return errors;
 }
 
+/** A feed URL must map to a built page: <dist>/<url path>/index.html. */
+function pageFileErrors(distDir, site, url) {
+  const rel = url.slice(site.length).replace(/^\/+|\/+$/g, '');
+  const page = path.join(distDir, rel, 'index.html');
+  return existsSync(page) ? [] : [`feed url ${url} has no built page at dist/${rel}/index.html`];
+}
+
 /** Validate the built dist/ surface: feed contract + companion feeds exist. */
 export function checkDist(distDir) {
   const errors = [];
@@ -103,7 +110,19 @@ export function checkDist(distDir) {
     } catch (e) {
       errors.push(`dist/feed.json is not valid JSON: ${e.message}`);
     }
-    if (feed !== undefined) errors.push(...validateFeed(feed));
+    if (feed !== undefined) {
+      const feedErrors = validateFeed(feed);
+      errors.push(...feedErrors);
+      // Only map URLs to pages when the shape is valid — bad shapes already failed.
+      if (feedErrors.length === 0) {
+        for (const item of feed.items) {
+          errors.push(...pageFileErrors(distDir, feed.site, item.url));
+          for (const lesson of item.lessons ?? []) {
+            errors.push(...pageFileErrors(distDir, feed.site, lesson.url));
+          }
+        }
+      }
+    }
   }
   const rssPath = path.join(distDir, 'rss.xml');
   if (!existsSync(rssPath)) errors.push('dist/rss.xml missing');

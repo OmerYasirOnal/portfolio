@@ -195,6 +195,11 @@ describe('course schema', () => {
     expect(courseSchema.safeParse({ ...validCourse, level: 'expert' }).success).toBe(false);
     expect(courseSchema.safeParse({ ...validCourse, description: undefined }).success).toBe(false);
   });
+
+  it('rejects empty title/description strings', () => {
+    expect(courseSchema.safeParse({ ...validCourse, title: '' }).success).toBe(false);
+    expect(courseSchema.safeParse({ ...validCourse, description: '' }).success).toBe(false);
+  });
 });
 
 describe('lesson schema', () => {
