@@ -24,7 +24,16 @@ dynamic data exists (the app's course progress), never bolted onto the static si
 
 ## 2. Architecture decisions (conflicts resolved)
 
-- **Cloudflare** = hosting/CDN for the website (already in place). No Workers/D1 needed for v1.
+> **Amendment (2026-07-02):** live-header + DNS evidence showed production is hosted on
+> **Vercel** (GitHub integration, Vercel DNS nameservers) — not Cloudflare Pages as this
+> section originally assumed. Decision: **stay on Vercel**. Phase 3 is re-scoped to
+> "delivery optimization on Vercel" (`vercel.json` security/cache headers + a build-gating
+> feed-contract check); the Cloudflare-specific items (`_headers`/`_redirects`, CF edge
+> config) are superseded. Vercel provides HSTS, immutable `/_astro/*` caching, edge caching
+> with ETag revalidation for feeds, and per-PR preview deploys out of the box.
+
+- **Vercel** = hosting/CDN for the website (see 2026-07-02 amendment above; originally
+  written as Cloudflare). No serverless functions needed for v1 — fully static.
 - **Firebase** = backend for the **Flutter app only** (Auth + Firestore for course progress /
   bookmarks). Not wired into the website.
 - **Content source of truth** = repo markdown (Astro content collections). Build emits feeds that
@@ -51,7 +60,7 @@ as a "links" list. Add native content:
 |-------|-------|-------|------|
 | **1 · SEO/AIO** | JSON-LD (Person, Article, BreadcrumbList, Course), `llms.txt` + `llms-full.txt`, meta/robots/canonical audit, sitemap validation, Lighthouse pass (perf/a11y/SEO) | none (existing Astro) | low |
 | **2 · Native blog + courses** | `posts` + `courses` collections, list/detail pages (en+tr), tags, reading time, RSS + `feed.json`, per-post & per-course JSON-LD | none | low–med |
-| **3 · Cloudflare optimization** | Confirm CF Pages build, headers/caching, `_headers`/`_redirects`, edge cache for feeds, preview deploys | Cloudflare | med |
+| **3 · Delivery optimization (Vercel)** | `vercel.json` security headers + og/cv cache rules, build-gating feed-contract check in CI, verify edge caching of feeds + preview deploys | Vercel | low |
 | **4 · Flutter app** | Separate repo; consumes `feed.json`; Firebase Auth + Firestore for progress/bookmarks; article + course reader; offline cache | Firebase | high |
 
 Phases 1–3 live in this repo. Phase 4 is a **separate repo** (own spec/plan) that only depends on
