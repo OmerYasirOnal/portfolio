@@ -3,7 +3,7 @@
 **Owner:** Ömer Yasir Önal · **Date:** 2026-07-01 · **Status:** proposed design, pre-implementation
 
 > Builds on `2026-06-30-portfolio-site-design.md` (the Astro portfolio, already live on
-> **Cloudflare Pages**). This spec turns the site into a **content platform** — articles + small
+> **Vercel**; see the §2 amendment). This spec turns the site into a **content platform** — articles + small
 > courses — that feeds **three surfaces from one source**: the website, AI/LLM crawlers (AIO), and
 > a future **Flutter mobile app**. It is decomposed into four phases; each phase gets its own
 > implementation plan.
@@ -14,7 +14,7 @@
 
 One content source in the repo, consumed everywhere:
 
-- **Website** (Astro static on Cloudflare Pages) — renders articles & courses, SEO-strong.
+- **Website** (Astro static on Vercel) — renders articles & courses, SEO-strong.
 - **AI / LLM discovery (AIO)** — `llms.txt`, JSON-LD, clean feeds so LLMs cite the work correctly.
 - **Flutter app** (separate repo, later) — consumes the same JSON/RSS feed; Firebase only for
   dynamic per-user data (auth + course progress).
