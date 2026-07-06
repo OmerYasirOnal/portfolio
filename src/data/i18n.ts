@@ -6,8 +6,10 @@ const dict: Record<string, Record<Locale, string>> = {
   'nav.work': { en: 'Work', tr: 'Projeler' },
   'nav.about': { en: 'About', tr: 'Hakkımda' },
   'nav.writing': { en: 'Writing', tr: 'Yazılar' },
+  'nav.packages': { en: 'Packages', tr: 'Paketler' },
   'nav.contact': { en: 'Contact', tr: 'İletişim' },
   'hero.viewWork': { en: 'View work', tr: 'Projeleri gör' },
+  'hero.viewPackages': { en: 'View packages', tr: 'Paketleri incele' },
   'hero.resume': { en: 'Résumé', tr: 'CV' },
   'section.about': { en: 'About', tr: 'Hakkımda' },
   'section.selectedWork': { en: 'Selected work', tr: 'Seçili işler' },
@@ -107,6 +109,23 @@ const dict: Record<string, Record<Locale, string>> = {
   'seo.courses.description': {
     en: 'Free, focused mini-courses by Ömer Yasir Önal — agentic systems, applied AI, and mobile engineering.',
     tr: 'Ömer Yasir Önal’dan ücretsiz, odaklı mini kurslar — ajan tabanlı sistemler, uygulamalı yapay zeka ve mobil geliştirme.',
+  },
+  'packages.title': { en: 'Packages', tr: 'Paketler' },
+  'packages.intro': {
+    en: 'Fixed-scope brand identity and website packages for founders and small businesses — pick a starting point, then we tailor the scope together.',
+    tr: 'Kurucular ve küçük işletmeler için sabit kapsamlı marka kimliği ve web sitesi paketleri — bir başlangıç noktası seçin, kapsamı birlikte netleştirelim.',
+  },
+  'packages.mostPopular': { en: 'Most popular', tr: 'En çok tercih edilen' },
+  'packages.priceFrom': { en: 'starting from', tr: 'başlayan fiyatlarla' },
+  'packages.timeline': { en: 'Timeline', tr: 'Teslim süresi' },
+  'packages.cta': { en: 'Get a quote', tr: 'Teklif al' },
+  'packages.priceNote': {
+    en: 'Prices are starting points in Turkish lira (TRY) and depend on final scope. Get in touch for an exact quote.',
+    tr: 'Fiyatlar Türk lirası (TL) cinsinden başlangıç noktalarıdır ve nihai kapsama göre değişir. Net bir teklif için iletişime geçin.',
+  },
+  'seo.packages.description': {
+    en: 'Brand identity and website packages by Ömer Yasir Önal — fixed-scope freelance tiers for founders and small businesses.',
+    tr: 'Ömer Yasir Önal’ın marka kimliği ve web sitesi paketleri — kurucular ve küçük işletmeler için sabit kapsamlı freelance paketler.',
   },
   'footer.builtWith': {
     en: 'Built with Astro & Tailwind CSS.',

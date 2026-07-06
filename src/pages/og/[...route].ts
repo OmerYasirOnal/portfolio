@@ -15,6 +15,7 @@
  *   /og/writing/<id>.png      /og/writing/<id>-tr.png
  *   /og/courses-index.png     /og/courses-index-tr.png
  *   /og/courses/<slug>.png    /og/courses/<slug>-tr.png
+ *   /og/packages.png          /og/packages-tr.png
  *
  * Route keys and the matching public paths live in `src/lib/og.ts` so the
  * emitted files and the `og:image` <meta> URLs stay in lockstep.
@@ -32,6 +33,7 @@ import {
   ogPostKey,
   ogCoursesKey,
   ogCourseKey,
+  ogPackagesKey,
 } from '../../lib/og';
 import { courseSlugOf } from '../../lib/courses';
 
@@ -79,6 +81,11 @@ for (const locale of locales) {
   pages[ogCoursesKey(locale)] = {
     heading: t(locale, 'courses.title'),
     sub: t(locale, 'courses.intro'),
+  };
+
+  pages[ogPackagesKey(locale)] = {
+    heading: t(locale, 'packages.title'),
+    sub: t(locale, 'packages.intro'),
   };
 
   // Per-project: title + localized tagline.

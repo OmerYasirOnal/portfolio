@@ -1,0 +1,89 @@
+---
+/**
+ * PackageGrid — the three fixed-scope package tiers on `/packages`.
+ *
+ * Data comes straight from `packageTiers` (single source of truth); nothing is
+ * hard-coded here. The middle (`highlighted`) tier gets an accent border and a
+ * "most popular" badge — exactly one tier is expected to carry that flag.
+ */
+import { packageTiers } from '../data/packages';
+import { t, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const priceFormatter = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US');
+const mailto = `mailto:${profile.email}`;
+---
+
+<ul class="grid gap-6 lg:grid-cols-3" role="list">
+  {
+    packageTiers.map((tier) => (
+      <li
+        class:list={[
+          'flex h-full flex-col rounded-xl border p-6',
+          tier.highlighted ? 'border-accent bg-card' : 'border-border bg-card/60',
+        ]}
+      >
+        {tier.highlighted && (
+          <p class="mb-3 inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-0.5 font-mono text-[0.7rem] font-medium text-bg">
+            {t(locale, 'packages.mostPopular')}
+          </p>
+        )}
+
+        <h3 class="text-lg font-semibold tracking-tight text-fg">{tier.name[locale]}</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-muted">{tier.tagline[locale]}</p>
+
+        <p class="mt-5">
+          <span class="text-2xl font-bold tracking-tight text-fg">
+            {priceFormatter.format(tier.priceFrom)} TL
+          </span>
+          <span class="ml-1.5 text-sm text-muted">{t(locale, 'packages.priceFrom')}</span>
+        </p>
+
+        <p class="mt-1 font-mono text-xs text-muted">
+          {t(locale, 'packages.timeline')}: {tier.timeline[locale]}
+        </p>
+
+        <ul class="mt-6 flex-1 space-y-2.5" role="list">
+          {tier.features.map((feature) => (
+            <li class="flex items-start gap-2 text-sm leading-relaxed text-muted">
+              <svg
+                class="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              <span>{feature[locale]}</span>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={mailto}
+          class:list={[
+            'mt-6 inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            tier.highlighted
+              ? 'bg-accent text-bg hover:opacity-90'
+              : 'border border-border text-fg hover:border-accent hover:text-accent',
+          ]}
+        >
+          {t(locale, 'packages.cta')}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<p class="mt-8 max-w-2xl text-sm text-muted">{t(locale, 'packages.priceNote')}</p>

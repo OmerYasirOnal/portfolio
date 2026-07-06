@@ -22,11 +22,12 @@ const { locale, path } = Astro.props;
 
 const home = localizePath(locale, '/');
 
-// Work/About/Contact are home-section anchors; Writing points at its own full
-// page (absolute localized path) so it stays reachable from any sub-page. Labels
-// come from the i18n dictionary (no hard-coded copy).
+// Work/About/Contact are home-section anchors; Packages/Writing point at their
+// own full pages (absolute localized paths) so they stay reachable from any
+// sub-page. Labels come from the i18n dictionary (no hard-coded copy).
 const navLinks = [
   { key: 'nav.work', href: `${home}#work` },
+  { key: 'nav.packages', href: localizePath(locale, '/packages') },
   { key: 'nav.about', href: `${home}#about` },
   { key: 'nav.writing', href: localizePath(locale, '/writing') },
   { key: 'nav.contact', href: `${home}#contact` },

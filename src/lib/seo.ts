@@ -190,6 +190,37 @@ export function scholarlyArticleJsonLd(
   };
 }
 
+/** A Service with an OfferCatalog of fixed-scope package tiers (/packages). */
+export function serviceOfferCatalogJsonLd(
+  input: {
+    name: string;
+    description: string;
+    url: string;
+    tiers: { name: string; description: string; priceFrom: number }[];
+  },
+  site?: URL | string,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: input.name,
+    description: input.description,
+    url: input.url,
+    provider: authorNode(site),
+    areaServed: 'TR',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: input.name,
+      itemListElement: input.tiers.map((tier) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: tier.name, description: tier.description },
+        priceCurrency: 'TRY',
+        price: tier.priceFrom,
+      })),
+    },
+  };
+}
+
 /** A native article as a schema.org BlogPosting (post detail pages). */
 export function blogPostingJsonLd(
   input: {
