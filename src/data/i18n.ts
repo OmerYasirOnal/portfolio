@@ -9,6 +9,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'nav.packages': { en: 'Packages', tr: 'Paketler' },
   'nav.contact': { en: 'Contact', tr: 'İletişim' },
   'hero.viewWork': { en: 'View work', tr: 'Projeleri gör' },
+  'hero.viewPackages': { en: 'View packages', tr: 'Paketleri incele' },
   'hero.resume': { en: 'Résumé', tr: 'CV' },
   'section.about': { en: 'About', tr: 'Hakkımda' },
   'section.selectedWork': { en: 'Selected work', tr: 'Seçili işler' },
