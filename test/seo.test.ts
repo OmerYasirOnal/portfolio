@@ -11,6 +11,7 @@ import {
   scholarlyArticleJsonLd,
   blogPostingJsonLd,
   courseJsonLd,
+  serviceOfferCatalogJsonLd,
   jsonLdScript,
 } from '../src/lib/seo';
 
@@ -161,6 +162,29 @@ describe('blogPostingJsonLd', () => {
     );
     expect(p.dateModified).toBe('2026-07-01');
     expect('keywords' in p).toBe(false);
+  });
+});
+
+describe('serviceOfferCatalogJsonLd', () => {
+  it('emits a Service with an OfferCatalog of priced tiers', () => {
+    const s = serviceOfferCatalogJsonLd(
+      {
+        name: 'Packages',
+        description: 'Fixed-scope brand + website tiers.',
+        url: SITE + '/packages/',
+        tiers: [
+          { name: 'Starter', description: 'One-page site.', priceFrom: 15000 },
+          { name: 'Growth', description: 'Multi-page site.', priceFrom: 35000 },
+        ],
+      },
+      SITE,
+    );
+    expect(s['@type']).toBe('Service');
+    expect(s.provider.name).toBe('Ömer Yasir Önal');
+    expect(s.hasOfferCatalog['@type']).toBe('OfferCatalog');
+    expect(s.hasOfferCatalog.itemListElement).toHaveLength(2);
+    expect(s.hasOfferCatalog.itemListElement[1].price).toBe(35000);
+    expect(s.hasOfferCatalog.itemListElement[1].priceCurrency).toBe('TRY');
   });
 });
 
