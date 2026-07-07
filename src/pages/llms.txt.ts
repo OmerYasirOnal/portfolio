@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { llmsTxt, type LlmsData } from '../lib/llms';
 import { courseSlugOf, lessonSlugOf, sortLessons } from '../lib/courses';
+import { packageTiers } from '../data/packages';
 
 export const GET: APIRoute = async ({ site }) => {
   const data = await loadLlmsData(site!.toString());
@@ -75,5 +76,12 @@ export async function loadLlmsData(site: string): Promise<LlmsData> {
         })),
       };
     }),
+    packages: packageTiers.map((pkg) => ({
+      name: pkg.name.en,
+      tagline: pkg.tagline.en,
+      priceFrom: pkg.priceFrom,
+      timeline: pkg.timeline.en,
+      features: pkg.features.map((f) => f.en),
+    })),
   };
 }
