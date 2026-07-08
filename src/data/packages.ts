@@ -20,6 +20,11 @@ export interface PackageTier {
   highlighted: boolean;
 }
 
+export interface PackageFaq {
+  question: Bilingual;
+  answer: Bilingual;
+}
+
 export const packageTiers: PackageTier[] = [
   {
     id: 'starter',
@@ -77,5 +82,56 @@ export const packageTiers: PackageTier[] = [
       { en: 'Priority support + 3 months of maintenance', tr: 'Öncelikli destek ve 3 ay bakım' },
     ],
     highlighted: false,
+  },
+];
+
+/**
+ * FAQ shown on the /packages page and mirrored as FAQPage JSON-LD.
+ *
+ * Every answer is grounded in the tier data above (prices, timelines,
+ * features, the tailor-the-scope note) — no claim here goes beyond what the
+ * packages already state, so the visible copy and the structured data can't
+ * drift into anything unverifiable.
+ */
+export const packageFaqs: PackageFaq[] = [
+  {
+    question: {
+      en: 'Are these the final prices?',
+      tr: 'Bu fiyatlar kesin mi?',
+    },
+    answer: {
+      en: 'The figures are starting points in Turkish lira (TRY) and depend on the final scope we agree on. Tell me what you need and I’ll send an exact quote.',
+      tr: 'Rakamlar Türk lirası (TL) cinsinden başlangıç noktalarıdır ve üzerinde anlaştığımız nihai kapsama göre değişir. İhtiyacını anlat, sana net bir teklif göndereyim.',
+    },
+  },
+  {
+    question: {
+      en: 'How long does a project take?',
+      tr: 'Bir proje ne kadar sürede teslim edilir?',
+    },
+    answer: {
+      en: 'Roughly one week for Starter, two to three weeks for Growth, and four to six weeks for Premium — the exact timeline is confirmed once the scope is set.',
+      tr: 'Başlangıç için yaklaşık bir hafta, Büyüme için iki-üç hafta, Premium için dört-altı hafta — kesin süre kapsam netleştiğinde belirlenir.',
+    },
+  },
+  {
+    question: {
+      en: 'Which package should I choose?',
+      tr: 'Hangi paketi seçmeliyim?',
+    },
+    answer: {
+      en: 'Starter is a single credible page to get online fast; Growth adds a multi-page site with a full brand identity; Premium is an end-to-end brand and web system for a growing business. If you’re unsure, start from the closest one and we tailor the scope together.',
+      tr: 'Başlangıç, hızlıca çevrimiçi olmak için tek ve güvenilir bir sayfadır; Büyüme, tam marka kimliğiyle çok sayfalı bir site ekler; Premium ise büyüyen bir işletme için uçtan uca marka ve web sistemidir. Emin değilsen en yakınından başla, kapsamı birlikte netleştiririz.',
+    },
+  },
+  {
+    question: {
+      en: 'Do you provide support and maintenance after launch?',
+      tr: 'Yayın sonrası destek ve bakım sağlıyor musunuz?',
+    },
+    answer: {
+      en: 'The Premium package includes priority support and three months of maintenance. For the other packages, ongoing support can be added to the quote.',
+      tr: 'Premium paketi öncelikli destek ve üç ay bakım içerir. Diğer paketler için sürekli destek teklife eklenebilir.',
+    },
   },
 ];

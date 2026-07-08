@@ -3,11 +3,18 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import PackageGrid from '../components/PackageGrid.astro';
+import PackageFaq from '../components/PackageFaq.astro';
 import { t, localizePath, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
-import { packageTiers } from '../data/packages';
+import { packageTiers, packageFaqs } from '../data/packages';
 import { ogPackagesPath } from '../lib/og';
-import { breadcrumbJsonLd, canonicalHref, jsonLdScript, serviceOfferCatalogJsonLd } from '../lib/seo';
+import {
+  breadcrumbJsonLd,
+  canonicalHref,
+  faqPageJsonLd,
+  jsonLdScript,
+  serviceOfferCatalogJsonLd,
+} from '../lib/seo';
 
 const locale: Locale = 'en';
 const path = '/packages';
@@ -29,6 +36,10 @@ const serviceLd = serviceOfferCatalogJsonLd(
   },
   Astro.site,
 );
+
+const faqLd = faqPageJsonLd(
+  packageFaqs.map((faq) => ({ question: faq.question[locale], answer: faq.answer[locale] })),
+);
 ---
 
 <Base
@@ -40,6 +51,7 @@ const serviceLd = serviceOfferCatalogJsonLd(
 >
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(faqLd)} />
 
   <SiteHeader locale={locale} path={path} />
 
@@ -56,9 +68,11 @@ const serviceLd = serviceOfferCatalogJsonLd(
       </p>
     </section>
 
-    <section class="mx-auto max-w-5xl px-6 pb-20 pt-4">
+    <section class="mx-auto max-w-5xl px-6 pb-16 pt-4">
       <PackageGrid locale={locale} />
     </section>
+
+    <PackageFaq locale={locale} />
   </main>
 
   <SiteFooter locale={locale} />
