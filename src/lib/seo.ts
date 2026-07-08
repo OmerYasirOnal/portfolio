@@ -221,6 +221,19 @@ export function serviceOfferCatalogJsonLd(
   };
 }
 
+/** A FAQPage node from question/answer pairs (must mirror visible on-page copy). */
+export function faqPageJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.question,
+      acceptedAnswer: { '@type': 'Answer', text: it.answer },
+    })),
+  };
+}
+
 /** A native article as a schema.org BlogPosting (post detail pages). */
 export function blogPostingJsonLd(
   input: {

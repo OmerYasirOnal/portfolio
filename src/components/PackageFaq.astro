@@ -1,0 +1,52 @@
+---
+/**
+ * PackageFaq — the FAQ block on `/packages`, matched by FAQPage JSON-LD.
+ *
+ * Data comes straight from `packageFaqs` (single source of truth); the same
+ * question/answer strings feed the structured data on the page, so the visible
+ * copy and the schema.org markup can never diverge (a Google requirement for
+ * FAQ rich results). Uses native `<details>`/`<summary>` accordions — no client
+ * JS, keyboard-accessible, and inert under prefers-reduced-motion.
+ */
+import { packageFaqs } from '../data/packages';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section class="mx-auto max-w-3xl px-6 pb-20">
+  <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+    {t(locale, 'packages.faqTitle')}
+  </h2>
+
+  <div class="mt-8 divide-y divide-border border-t border-border">
+    {
+      packageFaqs.map((faq) => (
+        <details class="group py-4">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 text-left text-base font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&::-webkit-details-marker]:hidden">
+            <span>{faq.question[locale]}</span>
+            <svg
+              class="h-4 w-4 shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 5v14" />
+              <path d="M5 12h14" />
+            </svg>
+          </summary>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{faq.answer[locale]}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>

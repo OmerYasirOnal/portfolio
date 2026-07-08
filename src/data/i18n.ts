@@ -123,6 +123,7 @@ const dict: Record<string, Record<Locale, string>> = {
     en: 'Prices are starting points in Turkish lira (TRY) and depend on final scope. Get in touch for an exact quote.',
     tr: 'Fiyatlar Türk lirası (TL) cinsinden başlangıç noktalarıdır ve nihai kapsama göre değişir. Net bir teklif için iletişime geçin.',
   },
+  'packages.faqTitle': { en: 'Frequently asked questions', tr: 'Sıkça sorulan sorular' },
   'seo.packages.description': {
     en: 'Brand identity and website packages by Ömer Yasir Önal — fixed-scope freelance tiers for founders and small businesses.',
     tr: 'Ömer Yasir Önal’ın marka kimliği ve web sitesi paketleri — kurucular ve küçük işletmeler için sabit kapsamlı freelance paketler.',
