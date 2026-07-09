@@ -1,0 +1,58 @@
+---
+/**
+ * FreelanceServices — the home-page teaser for the freelance packages.
+ *
+ * A compact summary (lead line + the three tiers as name/starting-price/
+ * tagline chips) that links to the full `/packages` page. Reads from
+ * `packageTiers` (single source of truth), so it can't drift from the
+ * packages page; every label comes from the i18n dictionary.
+ */
+import { packageTiers } from '../data/packages';
+import { t, localizePath, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const priceFormatter = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US');
+const packagesHref = localizePath(locale, '/packages');
+---
+
+<div>
+  <p class="max-w-2xl text-base leading-relaxed text-muted">
+    {t(locale, 'services.intro')}
+  </p>
+
+  <ul class="mt-8 grid gap-4 sm:grid-cols-3" role="list">
+    {
+      packageTiers.map((tier) => (
+        <li
+          class:list={[
+            'rounded-xl border p-5',
+            tier.highlighted ? 'border-accent bg-card' : 'border-border bg-card/60',
+          ]}
+        >
+          <h3 class="text-base font-semibold tracking-tight text-fg">{tier.name[locale]}</h3>
+          <p class="mt-1">
+            <span class="text-lg font-bold tracking-tight text-fg">
+              {priceFormatter.format(tier.priceFrom)} TL
+            </span>
+            <span class="ml-1 text-xs text-muted">{t(locale, 'packages.priceFrom')}</span>
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{tier.tagline[locale]}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="mt-8">
+    <a
+      href={packagesHref}
+      class="inline-flex items-center font-mono text-sm text-accent transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+    >
+      {t(locale, 'services.cta')}
+    </a>
+  </div>
+</div>
