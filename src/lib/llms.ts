@@ -130,6 +130,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Contact');
   lines.push(`- Email: ${profile.email}`);
+  lines.push(`- WhatsApp: https://wa.me/${profile.whatsapp}`);
   for (const [, link] of Object.entries(profile.links)) {
     lines.push(`- ${link.label}: ${link.url}`);
   }

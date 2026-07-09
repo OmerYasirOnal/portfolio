@@ -70,6 +70,9 @@ describe('llmsTxt', () => {
   it('references the CV PDFs', () => {
     expect(out).toContain('/cv/omer-yasir-onal-en.pdf');
   });
+  it('lists the WhatsApp contact as a wa.me link', () => {
+    expect(out).toMatch(/- WhatsApp: https:\/\/wa\.me\/\d+/);
+  });
 });
 
 describe('llmsFullTxt', () => {
