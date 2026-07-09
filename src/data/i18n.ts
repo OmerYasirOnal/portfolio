@@ -131,6 +131,17 @@ const dict: Record<string, Record<Locale, string>> = {
   'packages.compare.timeline': { en: 'Timeline', tr: 'Teslim süresi' },
   'packages.compare.pages': { en: 'Pages', tr: 'Sayfa sayısı' },
   'packages.compare.brand': { en: 'Brand identity', tr: 'Marka kimliği' },
+  'packages.ctaTitle': { en: 'Ready to start?', tr: 'Başlamaya hazır mısın?' },
+  'packages.ctaText': {
+    en: 'Tell me about your project and I’ll get back to you with an exact quote. WhatsApp is usually the fastest.',
+    tr: 'Projenden bahset, sana net bir teklifle döneyim. En hızlı yol genelde WhatsApp.',
+  },
+  'packages.ctaWhatsapp': { en: 'Message on WhatsApp', tr: 'WhatsApp’tan yaz' },
+  'packages.ctaEmail': { en: 'Send an email', tr: 'E-posta gönder' },
+  'packages.whatsappPrefill': {
+    en: 'Hi Ömer, I’d like to talk about a website / brand project.',
+    tr: 'Merhaba Ömer, bir web sitesi / marka projesi hakkında konuşmak istiyorum.',
+  },
   'seo.packages.description': {
     en: 'Brand identity and website packages by Ömer Yasir Önal — fixed-scope freelance tiers for founders and small businesses.',
     tr: 'Ömer Yasir Önal’ın marka kimliği ve web sitesi paketleri — kurucular ve küçük işletmeler için sabit kapsamlı freelance paketler.',

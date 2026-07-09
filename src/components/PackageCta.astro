@@ -1,0 +1,77 @@
+---
+/**
+ * PackageCta — the closing "ready to start?" contact block on `/packages`.
+ *
+ * Offers the two fastest ways to reach out about a project: a WhatsApp deep
+ * link (wa.me, with a bilingual pre-filled message) and email. The number and
+ * address come from `profile`; every label from the i18n dictionary. No client
+ * JS — both are plain links.
+ */
+import { profile } from '../data/profile';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const whatsappHref = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
+  t(locale, 'packages.whatsappPrefill'),
+)}`;
+const mailto = `mailto:${profile.email}`;
+const hint = t(locale, 'social.opensNewTab');
+---
+
+<section class="mx-auto max-w-5xl px-6 pb-16">
+  <div
+    class="flex flex-col gap-6 rounded-2xl border border-border bg-card/40 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+  >
+    <div>
+      <h2 class="text-xl font-bold tracking-tight text-fg sm:text-2xl">
+        {t(locale, 'packages.ctaTitle')}
+      </h2>
+      <p class="mt-2 max-w-md text-sm leading-relaxed text-muted">
+        {t(locale, 'packages.ctaText')}
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <a
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${t(locale, 'packages.ctaWhatsapp')} (${hint})`}
+        class="inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-2.5 text-sm font-medium text-[#0a0a0b] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24.044 12.045.044 5.463.044.104 5.403.101 11.986c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 005.71 1.454h.006c6.585 0 11.946-5.36 11.948-11.945a11.9 11.9 0 00-3.48-8.418"
+          />
+        </svg>
+        {t(locale, 'packages.ctaWhatsapp')}
+      </a>
+
+      <a
+        href={mailto}
+        class="inline-flex items-center gap-2 rounded-md border border-border px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+        {t(locale, 'packages.ctaEmail')}
+      </a>
+    </div>
+  </div>
+</section>
