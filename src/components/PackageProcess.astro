@@ -1,0 +1,37 @@
+---
+/**
+ * PackageProcess — the four-step "how we work" section on `/packages`.
+ *
+ * Data comes from `packageProcess` (single source of truth); nothing is
+ * hard-coded here. Each step is a numbered card, laid out as a responsive grid
+ * that reads left-to-right on desktop and top-to-bottom on mobile.
+ */
+import { packageProcess } from '../data/packages';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section class="mx-auto max-w-5xl px-6 pb-16">
+  <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+    {t(locale, 'packages.processTitle')}
+  </h2>
+
+  <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+    {
+      packageProcess.map((step, i) => (
+        <li class="flex h-full flex-col rounded-xl border border-border bg-card/60 p-5">
+          <span class="font-mono text-sm text-accent" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3 class="mt-3 text-base font-semibold tracking-tight text-fg">{step.title[locale]}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{step.description[locale]}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
