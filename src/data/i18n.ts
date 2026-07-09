@@ -17,7 +17,13 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.skills': { en: 'Skills', tr: 'Yetenekler' },
   'section.writing': { en: 'Writing & publications', tr: 'Yazılar & yayınlar' },
   'section.contact': { en: 'Contact', tr: 'İletişim' },
+  'section.services': { en: 'Freelance services', tr: 'Freelance hizmetler' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
+  'services.intro': {
+    en: 'Beyond my own products, I design and build brand identities and websites for founders and small businesses — as fixed-scope packages you can pick from.',
+    tr: 'Kendi ürünlerimin yanı sıra, kurucular ve küçük işletmeler için marka kimliği ve web sitesi tasarlayıp geliştiriyorum — seçebileceğin sabit kapsamlı paketler hâlinde.',
+  },
+  'services.cta': { en: 'See packages & pricing →', tr: 'Paketleri ve fiyatları gör →' },
   'work.viewAll': { en: 'View all projects →', tr: 'Tüm projeleri gör →' },
   'projects.title': { en: 'Projects', tr: 'Projeler' },
   'projects.intro': {

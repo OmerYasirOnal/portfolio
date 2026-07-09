@@ -5,6 +5,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import Hero from '../../components/Hero.astro';
 import ProjectGrid from '../../components/ProjectGrid.astro';
+import FreelanceServices from '../../components/FreelanceServices.astro';
 import About from '../../components/About.astro';
 import Timeline from '../../components/Timeline.astro';
 import SkillGroups from '../../components/SkillGroups.astro';
@@ -62,9 +63,20 @@ const featured = (
       </div>
     </section>
 
-    <section id="about" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+    <section id="services" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
       <header class="mb-8 flex items-baseline gap-3">
         <span class="font-mono text-sm text-accent" aria-hidden="true">02</span>
+        <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+          {t(locale, 'section.services')}
+        </h2>
+        <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
+      </header>
+      <FreelanceServices locale={locale} />
+    </section>
+
+    <section id="about" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
+      <header class="mb-8 flex items-baseline gap-3">
+        <span class="font-mono text-sm text-accent" aria-hidden="true">03</span>
         <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
           {t(locale, 'section.about')}
         </h2>
@@ -75,7 +87,7 @@ const featured = (
 
     <section id="experience" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
       <header class="mb-8 flex items-baseline gap-3">
-        <span class="font-mono text-sm text-accent" aria-hidden="true">03</span>
+        <span class="font-mono text-sm text-accent" aria-hidden="true">04</span>
         <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
           {t(locale, 'section.experience')}
         </h2>
@@ -86,7 +98,7 @@ const featured = (
 
     <section id="skills" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
       <header class="mb-8 flex items-baseline gap-3">
-        <span class="font-mono text-sm text-accent" aria-hidden="true">04</span>
+        <span class="font-mono text-sm text-accent" aria-hidden="true">05</span>
         <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
           {t(locale, 'section.skills')}
         </h2>
@@ -97,7 +109,7 @@ const featured = (
 
     <section id="writing" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
       <header class="mb-8 flex items-baseline gap-3">
-        <span class="font-mono text-sm text-accent" aria-hidden="true">05</span>
+        <span class="font-mono text-sm text-accent" aria-hidden="true">06</span>
         <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
           {t(locale, 'section.writing')}
         </h2>
@@ -108,7 +120,7 @@ const featured = (
 
     <section id="contact" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16">
       <header class="mb-8 flex items-baseline gap-3">
-        <span class="font-mono text-sm text-accent" aria-hidden="true">06</span>
+        <span class="font-mono text-sm text-accent" aria-hidden="true">07</span>
         <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
           {t(locale, 'section.contact')}
         </h2>
