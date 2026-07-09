@@ -15,6 +15,10 @@ export interface PackageTier {
   /** Starting price in Turkish lira (whole numbers, no currency symbol). */
   priceFrom: number;
   timeline: Bilingual;
+  /** Page-count summary for the comparison table (faithful to `features`). */
+  pages: Bilingual;
+  /** Brand-identity scope for the comparison table (faithful to `features`). */
+  brandScope: Bilingual;
   features: Bilingual[];
   /** Surfaced as the "most popular" tier — exactly one should be true. */
   highlighted: boolean;
@@ -23,6 +27,11 @@ export interface PackageTier {
 export interface PackageFaq {
   question: Bilingual;
   answer: Bilingual;
+}
+
+export interface ProcessStep {
+  title: Bilingual;
+  description: Bilingual;
 }
 
 export const packageTiers: PackageTier[] = [
@@ -35,6 +44,8 @@ export const packageTiers: PackageTier[] = [
     },
     priceFrom: 15000,
     timeline: { en: '~1 week', tr: '~1 hafta' },
+    pages: { en: '1 page', tr: '1 sayfa' },
+    brandScope: { en: 'Basic logo + palette', tr: 'Temel logo + palet' },
     features: [
       { en: 'One-page landing site, designed and built', tr: 'Tek sayfa (landing page) tasarım ve geliştirme' },
       { en: 'Basic logo + color palette', tr: 'Temel logo ve renk paleti' },
@@ -52,6 +63,8 @@ export const packageTiers: PackageTier[] = [
     },
     priceFrom: 35000,
     timeline: { en: '~2–3 weeks', tr: '~2-3 hafta' },
+    pages: { en: '5–7 pages', tr: '5-7 sayfa' },
+    brandScope: { en: 'Full brand identity', tr: 'Tam marka kimliği' },
     features: [
       { en: '5–7 page custom-designed website', tr: '5-7 sayfalık özel tasarım web sitesi' },
       {
@@ -72,6 +85,8 @@ export const packageTiers: PackageTier[] = [
     },
     priceFrom: 65000,
     timeline: { en: '~4–6 weeks', tr: '~4-6 hafta' },
+    pages: { en: 'Unlimited', tr: 'Sınırsız' },
+    brandScope: { en: 'Full brand system', tr: 'Kapsamlı marka sistemi' },
     features: [
       { en: 'Unlimited pages, custom design + interactions', tr: 'Sınırsız sayfa, özel tasarım ve etkileşimler' },
       {
@@ -132,6 +147,42 @@ export const packageFaqs: PackageFaq[] = [
     answer: {
       en: 'The Premium package includes priority support and three months of maintenance. For the other packages, ongoing support can be added to the quote.',
       tr: 'Premium paketi öncelikli destek ve üç ay bakım içerir. Diğer paketler için sürekli destek teklife eklenebilir.',
+    },
+  },
+];
+
+/**
+ * The four-step delivery process shown on /packages. Generic-but-accurate
+ * freelance workflow — each step maps to work the packages already describe
+ * (SEO setup ships in Growth+, support/maintenance in Premium).
+ */
+export const packageProcess: ProcessStep[] = [
+  {
+    title: { en: 'Discovery', tr: 'Keşif' },
+    description: {
+      en: 'A short call to understand your business, goals, and audience, and to agree on the scope and package.',
+      tr: 'İşini, hedeflerini ve hedef kitleni anlamak, kapsam ve paket üzerinde anlaşmak için kısa bir görüşme.',
+    },
+  },
+  {
+    title: { en: 'Design', tr: 'Tasarım' },
+    description: {
+      en: 'Brand direction and page layouts — logo, palette, and typography where the package includes them — reviewed before a line of code.',
+      tr: 'Marka yönü ve sayfa tasarımları — paket kapsıyorsa logo, renk paleti ve tipografi — kod yazılmadan önce onayına sunulur.',
+    },
+  },
+  {
+    title: { en: 'Build', tr: 'Geliştirme' },
+    description: {
+      en: 'The site is developed to be fast, mobile-friendly, and SEO-ready, with revision rounds along the way.',
+      tr: 'Site hızlı, mobil uyumlu ve SEO’ya hazır şekilde geliştirilir; süreç boyunca revizyon turları yapılır.',
+    },
+  },
+  {
+    title: { en: 'Launch', tr: 'Yayın' },
+    description: {
+      en: 'Deployment, Google visibility setup, and handover — with priority support and maintenance on the Premium package.',
+      tr: 'Yayına alma, Google görünürlük kurulumu ve teslim — Premium pakette öncelikli destek ve bakım ile birlikte.',
     },
   },
 ];

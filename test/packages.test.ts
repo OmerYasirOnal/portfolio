@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { packageTiers, packageFaqs } from '../src/data/packages';
+import { packageTiers, packageFaqs, packageProcess } from '../src/data/packages';
 
 describe('packageTiers', () => {
   it('has exactly one highlighted (most popular) tier', () => {
@@ -24,6 +24,15 @@ describe('packageTiers', () => {
       }
     }
   });
+
+  it('gives every tier bilingual comparison dimensions (pages + brand scope)', () => {
+    for (const tier of packageTiers) {
+      expect(tier.pages.en).toBeTruthy();
+      expect(tier.pages.tr).toBeTruthy();
+      expect(tier.brandScope.en).toBeTruthy();
+      expect(tier.brandScope.tr).toBeTruthy();
+    }
+  });
 });
 
 describe('packageFaqs', () => {
@@ -34,6 +43,18 @@ describe('packageFaqs', () => {
       expect(faq.question.tr).toBeTruthy();
       expect(faq.answer.en).toBeTruthy();
       expect(faq.answer.tr).toBeTruthy();
+    }
+  });
+});
+
+describe('packageProcess', () => {
+  it('has ordered steps, each with a bilingual title and description', () => {
+    expect(packageProcess.length).toBeGreaterThan(0);
+    for (const step of packageProcess) {
+      expect(step.title.en).toBeTruthy();
+      expect(step.title.tr).toBeTruthy();
+      expect(step.description.en).toBeTruthy();
+      expect(step.description.tr).toBeTruthy();
     }
   });
 });

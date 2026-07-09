@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import PackageGrid from '../components/PackageGrid.astro';
+import PackageComparison from '../components/PackageComparison.astro';
+import PackageProcess from '../components/PackageProcess.astro';
 import PackageFaq from '../components/PackageFaq.astro';
 import { t, localizePath, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
@@ -72,6 +74,8 @@ const faqLd = faqPageJsonLd(
       <PackageGrid locale={locale} />
     </section>
 
+    <PackageComparison locale={locale} />
+    <PackageProcess locale={locale} />
     <PackageFaq locale={locale} />
   </main>
 

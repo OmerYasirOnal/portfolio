@@ -124,6 +124,13 @@ const dict: Record<string, Record<Locale, string>> = {
     tr: 'Fiyatlar Türk lirası (TL) cinsinden başlangıç noktalarıdır ve nihai kapsama göre değişir. Net bir teklif için iletişime geçin.',
   },
   'packages.faqTitle': { en: 'Frequently asked questions', tr: 'Sıkça sorulan sorular' },
+  'packages.processTitle': { en: 'How we work', tr: 'Nasıl çalışıyoruz' },
+  'packages.compareTitle': { en: 'Compare packages', tr: 'Paketleri karşılaştır' },
+  'packages.compare.plan': { en: 'Package', tr: 'Paket' },
+  'packages.compare.price': { en: 'Starting price', tr: 'Başlangıç fiyatı' },
+  'packages.compare.timeline': { en: 'Timeline', tr: 'Teslim süresi' },
+  'packages.compare.pages': { en: 'Pages', tr: 'Sayfa sayısı' },
+  'packages.compare.brand': { en: 'Brand identity', tr: 'Marka kimliği' },
   'seo.packages.description': {
     en: 'Brand identity and website packages by Ömer Yasir Önal — fixed-scope freelance tiers for founders and small businesses.',
     tr: 'Ömer Yasir Önal’ın marka kimliği ve web sitesi paketleri — kurucular ve küçük işletmeler için sabit kapsamlı freelance paketler.',
