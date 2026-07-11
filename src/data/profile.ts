@@ -64,6 +64,11 @@ export const profile = {
     tr: 'İstanbul, Türkiye',
   },
   email: 'engomeryasironal@gmail.com',
+  /**
+   * WhatsApp number in E.164 digits (no `+`/spaces) for wa.me links. Used by
+   * the freelance packages CTA; intentionally not a public social profile.
+   */
+  whatsapp: '905323090261',
 
   links: {
     github: {

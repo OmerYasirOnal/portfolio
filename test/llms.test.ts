@@ -41,6 +41,15 @@ const data = {
       lessons: [{ slug: '01-a', title: 'L1' }],
     },
   ],
+  packages: [
+    {
+      name: 'Starter',
+      tagline: 'A fast, credible one-page site.',
+      priceFrom: 15000,
+      timeline: '~1 week',
+      features: ['One-page landing site'],
+    },
+  ],
 };
 
 describe('llmsTxt', () => {
@@ -61,6 +70,9 @@ describe('llmsTxt', () => {
   it('references the CV PDFs', () => {
     expect(out).toContain('/cv/omer-yasir-onal-en.pdf');
   });
+  it('lists the WhatsApp contact as a wa.me link', () => {
+    expect(out).toMatch(/- WhatsApp: https:\/\/wa\.me\/\d+/);
+  });
 });
 
 describe('llmsFullTxt', () => {
@@ -68,6 +80,22 @@ describe('llmsFullTxt', () => {
   it('inlines the full bio and per-project problem/what-I-did', () => {
     expect(out).toContain(data.projects[0].problem);
     expect(out).toContain('Ömer Yasir Önal is a back-end');
+  });
+});
+
+describe('llmsTxt packages section', () => {
+  const out = llmsTxt(data);
+  it('links to the packages page and lists each tier with its starting price', () => {
+    expect(out).toContain('https://omeryasironal.com/packages/');
+    expect(out).toContain('- Starter (from 15,000 TRY, ~1 week): A fast, credible one-page site.');
+  });
+});
+
+describe('llmsFullTxt packages section', () => {
+  const out = llmsFullTxt(data);
+  it('inlines package features', () => {
+    expect(out).toContain('### Starter — from 15,000 TRY (~1 week)');
+    expect(out).toContain('Includes: One-page landing site');
   });
 });
 

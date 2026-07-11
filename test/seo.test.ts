@@ -11,6 +11,8 @@ import {
   scholarlyArticleJsonLd,
   blogPostingJsonLd,
   courseJsonLd,
+  serviceOfferCatalogJsonLd,
+  faqPageJsonLd,
   jsonLdScript,
 } from '../src/lib/seo';
 
@@ -161,6 +163,44 @@ describe('blogPostingJsonLd', () => {
     );
     expect(p.dateModified).toBe('2026-07-01');
     expect('keywords' in p).toBe(false);
+  });
+});
+
+describe('serviceOfferCatalogJsonLd', () => {
+  it('emits a Service with an OfferCatalog of priced tiers', () => {
+    const s = serviceOfferCatalogJsonLd(
+      {
+        name: 'Packages',
+        description: 'Fixed-scope brand + website tiers.',
+        url: SITE + '/packages/',
+        tiers: [
+          { name: 'Starter', description: 'One-page site.', priceFrom: 15000 },
+          { name: 'Growth', description: 'Multi-page site.', priceFrom: 35000 },
+        ],
+      },
+      SITE,
+    );
+    expect(s['@type']).toBe('Service');
+    expect(s.provider.name).toBe('Ömer Yasir Önal');
+    expect(s.hasOfferCatalog['@type']).toBe('OfferCatalog');
+    expect(s.hasOfferCatalog.itemListElement).toHaveLength(2);
+    expect(s.hasOfferCatalog.itemListElement[1].price).toBe(35000);
+    expect(s.hasOfferCatalog.itemListElement[1].priceCurrency).toBe('TRY');
+  });
+});
+
+describe('faqPageJsonLd', () => {
+  it('emits a FAQPage with each Q wrapped as a Question + accepted Answer', () => {
+    const f = faqPageJsonLd([
+      { question: 'Are these the final prices?', answer: 'They are starting points.' },
+      { question: 'How long does it take?', answer: 'About a week.' },
+    ]);
+    expect(f['@type']).toBe('FAQPage');
+    expect(f.mainEntity).toHaveLength(2);
+    expect(f.mainEntity[0]['@type']).toBe('Question');
+    expect(f.mainEntity[0].name).toBe('Are these the final prices?');
+    expect(f.mainEntity[0].acceptedAnswer['@type']).toBe('Answer');
+    expect(f.mainEntity[0].acceptedAnswer.text).toBe('They are starting points.');
   });
 });
 

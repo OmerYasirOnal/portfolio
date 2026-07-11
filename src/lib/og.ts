@@ -85,3 +85,12 @@ export function ogCourseKey(locale: Locale, id: string): string {
 export function ogCoursePath(locale: Locale, id: string): string {
   return `/og/${ogCourseKey(locale, id)}.png`;
 }
+
+/** Route key + path for the /packages page. */
+export function ogPackagesKey(locale: Locale): string {
+  return `packages${suffix(locale)}`;
+}
+
+export function ogPackagesPath(locale: Locale): string {
+  return `/og/${ogPackagesKey(locale)}.png`;
+}

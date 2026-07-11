@@ -48,6 +48,14 @@ export interface LlmsCourse {
   lang: string;
   lessons: { slug: string; title: string }[];
 }
+export interface LlmsPackage {
+  name: string;
+  tagline: string;
+  /** Starting price in Turkish lira (TRY). */
+  priceFrom: number;
+  timeline: string;
+  features: string[];
+}
 export interface LlmsData {
   site: string;
   projects: LlmsProject[];
@@ -55,6 +63,7 @@ export interface LlmsData {
   publications: LlmsPublication[];
   posts: LlmsPost[];
   courses: LlmsCourse[];
+  packages: LlmsPackage[];
 }
 
 const abs = (site: string, path: string) => new URL(path, site).toString();
@@ -67,6 +76,14 @@ export function llmsTxt(data: LlmsData): string {
   lines.push(`> ${profile.role.en} in Istanbul, Türkiye — ${profile.availability.en}`);
   lines.push('');
   lines.push(profile.about.en);
+  lines.push('');
+  lines.push('## Packages');
+  lines.push(`Fixed-scope brand identity + website packages: ${abs(site, '/packages/')}`);
+  for (const pkg of data.packages) {
+    lines.push(
+      `- ${pkg.name} (from ${pkg.priceFrom.toLocaleString('en-US')} TRY, ${pkg.timeline}): ${pkg.tagline}`,
+    );
+  }
   lines.push('');
   lines.push('## Projects');
   for (const p of data.projects) {
@@ -113,6 +130,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Contact');
   lines.push(`- Email: ${profile.email}`);
+  lines.push(`- WhatsApp: https://wa.me/${profile.whatsapp}`);
   for (const [, link] of Object.entries(profile.links)) {
     lines.push(`- ${link.label}: ${link.url}`);
   }
@@ -139,6 +157,13 @@ export function llmsFullTxt(data: LlmsData): string {
     `${profile.education.degree_en}, ${profile.education.school_en} (${profile.education.graduation_en})`,
   );
   s.push('');
+  s.push(`## Packages — ${abs(site, '/packages/')}`);
+  for (const pkg of data.packages) {
+    s.push(`### ${pkg.name} — from ${pkg.priceFrom.toLocaleString('en-US')} TRY (${pkg.timeline})`);
+    s.push(pkg.tagline);
+    if (pkg.features.length) s.push(`Includes: ${pkg.features.join('; ')}`);
+    s.push('');
+  }
   s.push('## Projects');
   for (const p of data.projects) {
     s.push(`### ${p.title} — ${abs(site, `/projects/${p.slug}/`)}`);

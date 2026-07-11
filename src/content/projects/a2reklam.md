@@ -13,7 +13,6 @@ status_en: Live in production
 status_tr: Yayında
 links:
   live: https://a2reklam.com
-  repo: https://github.com/OmerYasirOnal/a2reklam-website
 highlights_en:
   - 341 statically generated pages for fast loads and clean SEO.
   - Trilingual TR / EN / AR i18n.

@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import PackageGrid from '../../components/PackageGrid.astro';
+import PackageComparison from '../../components/PackageComparison.astro';
+import PackageProcess from '../../components/PackageProcess.astro';
+import PackageCta from '../../components/PackageCta.astro';
+import PackageFaq from '../../components/PackageFaq.astro';
+import { t, localizePath, type Locale } from '../../data/i18n';
+import { profile } from '../../data/profile';
+import { packageTiers, packageFaqs } from '../../data/packages';
+import { ogPackagesPath } from '../../lib/og';
+import {
+  breadcrumbJsonLd,
+  canonicalHref,
+  faqPageJsonLd,
+  jsonLdScript,
+  serviceOfferCatalogJsonLd,
+} from '../../lib/seo';
+
+const locale: Locale = 'tr';
+const path = '/tr/packages';
+
+const breadcrumbLd = breadcrumbJsonLd([
+  { name: t(locale, 'packages.title'), url: canonicalHref(localizePath(locale, '/packages'), Astro.site!) },
+]);
+
+const serviceLd = serviceOfferCatalogJsonLd(
+  {
+    name: t(locale, 'packages.title'),
+    description: t(locale, 'packages.intro'),
+    url: canonicalHref(localizePath(locale, '/packages'), Astro.site!),
+    tiers: packageTiers.map((tier) => ({
+      name: tier.name[locale],
+      description: tier.tagline[locale],
+      priceFrom: tier.priceFrom,
+    })),
+  },
+  Astro.site,
+);
+
+const faqLd = faqPageJsonLd(
+  packageFaqs.map((faq) => ({ question: faq.question[locale], answer: faq.answer[locale] })),
+);
+---
+
+<Base
+  title={`${t(locale, 'packages.title')} — ${profile.name}`}
+  description={t(locale, 'seo.packages.description')}
+  path={path}
+  lang={locale}
+  ogImage={ogPackagesPath(locale)}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(faqLd)} />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
+      <p class="font-mono text-sm text-accent">
+        <span class="text-accent/70">/</span>paketler
+      </p>
+      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        {t(locale, 'packages.title')}
+      </h1>
+      <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
+        {t(locale, 'packages.intro')}
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-6 pb-16 pt-4">
+      <PackageGrid locale={locale} />
+    </section>
+
+    <PackageComparison locale={locale} />
+    <PackageProcess locale={locale} />
+    <PackageCta locale={locale} />
+    <PackageFaq locale={locale} />
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>
