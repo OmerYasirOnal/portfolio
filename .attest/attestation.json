@@ -1,0 +1,52 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "portfolio",
+      "digest": {
+        "gitCommit": "c22903d37328b9b4bb634d42e4312a61f01b649e"
+      }
+    }
+  ],
+  "predicateType": "https://omeryasironal.com/akis-attest/predicate/v1",
+  "predicate": {
+    "gates": {
+      "plan": {
+        "ts": "2026-07-11T05:07:52.103Z",
+        "actor": "Ömer Yasir Önal <engomeryasironal@gmail.com>",
+        "message": "Scope: personal portfolio site (omeryasironal.com) — Astro+Tailwind, EN+TR, zero-JS, CV/RSS/llms.txt feeds, project write-ups; current published state at HEAD"
+      },
+      "verify": {
+        "ts": "2026-07-11T05:08:09.888Z",
+        "actor": "Ömer Yasir Önal <engomeryasironal@gmail.com>",
+        "command": "pnpm test",
+        "exitCode": 0,
+        "durationMs": 703,
+        "pass": true,
+        "tests": {
+          "passed": 10,
+          "failed": 0
+        },
+        "outputDigest": "7f184c3da7a14693d05568480930950a7b541d841defcc1e150ac87490eca4b1",
+        "env": {
+          "node": "v26.0.0",
+          "platform": "darwin",
+          "lockfileSha256": "6abd3e5988ea9b14b2093a3e8217a2411004e67ede9e4a19f86646e4b36281d0"
+        }
+      },
+      "delivery": {
+        "ts": "2026-07-11T05:08:09.972Z",
+        "actor": "Ömer Yasir Önal <engomeryasironal@gmail.com>",
+        "message": "Delivered; personal portfolio live at omeryasironal.com, current HEAD verified"
+      }
+    },
+    "ledger": {
+      "root": "6e5e5f4b1d967a835048bac917eaa3fbd4b8d4f95259c0a7ea7a4d4dceceeb63",
+      "length": 5
+    },
+    "tool": {
+      "name": "akis-attest",
+      "version": "0.1.0"
+    }
+  }
+}

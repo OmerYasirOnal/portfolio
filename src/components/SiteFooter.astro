@@ -50,6 +50,13 @@ const home = localizePath(locale, '/');
       <span>© {new Date().getFullYear()} {profile.name}</span>
       <span aria-hidden="true">·</span>
       <span>{t(locale, 'footer.builtWith')}</span>
+      <span aria-hidden="true">·</span>
+      <a
+        href="/proof.html"
+        class="text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {t(locale, 'footer.deliveryProof')} ↗
+      </a>
     </p>
   </div>
 </footer>

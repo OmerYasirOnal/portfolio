@@ -113,6 +113,7 @@ const dict: Record<string, Record<Locale, string>> = {
     tr: 'Astro & Tailwind CSS ile geliştirildi.',
   },
   'footer.backToTop': { en: 'Back to top', tr: 'Başa dön' },
+  'footer.deliveryProof': { en: 'Delivery proof', tr: 'Teslimat kanıtı' },
   'link.repo': { en: 'Source code', tr: 'Kaynak kod' },
   'link.live': { en: 'Live site', tr: 'Canlı site' },
   'link.appstore': { en: 'App Store', tr: 'App Store' },
