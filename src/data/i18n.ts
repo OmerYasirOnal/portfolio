@@ -144,6 +144,8 @@ const dict: Record<string, Record<Locale, string>> = {
   },
   'packages.ctaWhatsapp': { en: 'Message on WhatsApp', tr: 'WhatsApp’tan yaz' },
   'packages.ctaEmail': { en: 'Send an email', tr: 'E-posta gönder' },
+  'packages.testimonialsTitle': { en: 'What clients say', tr: 'Müşteriler ne diyor' },
+  'packages.testimonialsSeeProject': { en: 'See the project →', tr: 'Projeyi gör →' },
   'packages.whatsappPrefill': {
     en: 'Hi Ömer, I’d like to talk about a website / brand project.',
     tr: 'Merhaba Ömer, bir web sitesi / marka projesi hakkında konuşmak istiyorum.',

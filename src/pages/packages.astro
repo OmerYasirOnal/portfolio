@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import PackageGrid from '../components/PackageGrid.astro';
 import PackageComparison from '../components/PackageComparison.astro';
 import PackageProcess from '../components/PackageProcess.astro';
+import PackageTestimonials from '../components/PackageTestimonials.astro';
 import PackageCta from '../components/PackageCta.astro';
 import PackageFaq from '../components/PackageFaq.astro';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -77,6 +78,7 @@ const faqLd = faqPageJsonLd(
 
     <PackageComparison locale={locale} />
     <PackageProcess locale={locale} />
+    <PackageTestimonials locale={locale} />
     <PackageCta locale={locale} />
     <PackageFaq locale={locale} />
   </main>

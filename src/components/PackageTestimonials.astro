@@ -1,0 +1,45 @@
+---
+/**
+ * PackageTestimonials — client quotes on `/packages`.
+ *
+ * Renders nothing while `testimonials` is empty (see `src/data/testimonials.ts`)
+ * so the section never shows on the live site until a real client quote is
+ * added — no placeholder or fabricated content.
+ */
+import { testimonials } from '../data/testimonials';
+import { t, localizePath, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+{
+  testimonials.length > 0 && (
+    <section class="mx-auto max-w-5xl px-6 pb-16">
+      <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+        {t(locale, 'packages.testimonialsTitle')}
+      </h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        {testimonials.map((item) => (
+          <figure class="rounded-2xl border border-border bg-card/40 p-6">
+            <blockquote class="text-base leading-relaxed text-fg">“{item.quote[locale]}”</blockquote>
+            <figcaption class="mt-4 text-sm text-muted">
+              <span class="font-medium text-fg">{item.author}</span> — {item.role[locale]}
+              {item.projectSlug && (
+                <a
+                  href={localizePath(locale, `/projects/${item.projectSlug}`)}
+                  class="ml-2 text-accent hover:underline"
+                >
+                  {t(locale, 'packages.testimonialsSeeProject')}
+                </a>
+              )}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}
