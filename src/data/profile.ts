@@ -209,8 +209,8 @@ export const profile = {
   ] satisfies SkillGroup[],
 
   availability: {
-    en: 'Open to part-time, internship, junior full-time, and freelance.',
-    tr: 'Part-time, staj, junior tam zamanlı ve freelance fırsatlara açığım.',
+    en: 'Open to junior / entry-level full-time and freelance roles.',
+    tr: 'Junior / entry-level tam zamanlı ve freelance fırsatlara açığım.',
   },
 
   education: {
