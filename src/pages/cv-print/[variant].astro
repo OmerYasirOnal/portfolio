@@ -10,11 +10,12 @@
  *
  * Three OUTPUT variants (`getStaticPaths` below), each a `{ lang, photo, ascii,
  * gdpr }` recipe:
- *   - `tr` — Turkish, headshot, full diacritics (`Ömer Yasir Önal`).
- *   - `en` — English, no photo, ASCII-folded (`Omer Yasir Onal`) so Workday /
- *     Greenhouse parsers survive it. The international / remote variant.
- *   - `eu` — same as `en` PLUS a GDPR recruitment-consent footer; may run to a
- *     second page.
+ *   - `tr` — Turkish, headshot, full diacritics.
+ *   - `en` — English, CV-only headshot, ASCII-folded (except the name, which
+ *     keeps its diacritics) so Workday / Greenhouse parsers survive it. The
+ *     international / remote variant.
+ *   - `eu` — English, no photo, PLUS a GDPR recruitment-consent footer; may
+ *     run to a second page.
  *
  * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections —
  * nothing is duplicated here. Turkish date/location strings are localized at
@@ -48,13 +49,14 @@ const isTr = lang === 'tr';
 // parsers read clean text; a no-op on the Turkish résumé.
 const fold = cfg.ascii ? asciiFold : (value: string) => value;
 
-// The TR résumé carries a headshot; inline it as a data URI so it resolves when
-// Brave prints the built file:// HTML (Astro's asset URLs would 404 there).
-// `astro build` runs from the repo root, so resolve the source asset from cwd
-// (import.meta.url would point at the compiled module under dist/).
+// The TR and EN résumés carry a headshot (per-variant file from `cvVariants`);
+// inline it as a data URI so it resolves when the built file:// HTML is printed
+// (Astro's asset URLs would 404 there). `astro build` runs from the repo root,
+// so resolve the source asset from cwd (import.meta.url would point at the
+// compiled module under dist/).
 const photoDataUri = cfg.photo
   ? `data:image/jpeg;base64,${readFileSync(
-      join(process.cwd(), 'src', 'assets', 'omer-yasir-onal.jpg'),
+      join(process.cwd(), 'src', 'assets', cfg.photo),
     ).toString('base64')}`
   : null;
 
