@@ -245,27 +245,46 @@ export const cv = {
       linkLabel: 'App Store',
     },
     {
-      title: 'newBrain',
-      en: 'Implemented a causal GPT-style model from scratch in PyTorch, including tokenizer work and transformer components. Used the project to better understand how LLM fundamentals work under the hood instead of only using frameworks and APIs.',
-      tr: 'PyTorch ile sıfırdan, tokenizer çalışması ve transformer bileşenleri dâhil nedensel bir GPT tarzı model geliştirdim. Projeyi, yalnızca framework ve API kullanmak yerine LLM temellerinin kaputun altında nasıl çalıştığını daha iyi anlamak için kullandım.',
-      tech: ['Python', 'PyTorch', 'MLX', 'FastAPI', 'Three.js', 'ChromaDB'],
-      link: 'https://github.com/OmerYasirOnal/newbrain',
-    },
-    {
       title: 'A2 Reklam',
       en: 'Delivered a production corporate website with Turkish, English, and Arabic pages. Worked on the Astro build, local SEO structure, analytics setup, and a hardened PHP endpoint.',
       tr: 'Türkçe, İngilizce ve Arapça sayfaları olan, yayında bir kurumsal web sitesi teslim ettim. Astro derlemesi, yerel SEO yapısı, analitik kurulumu ve sertleştirilmiş bir PHP uç noktası üzerinde çalıştım.',
       tech: ['Astro', 'Tailwind CSS', 'PHP', 'Schema.org', 'GTM / GA4'],
       link: 'https://a2reklam.com',
     },
-    {
-      title: 'Studio',
-      en: 'Built an experimental framework where specialist agents coordinate through the filesystem to support game development workflows.',
-      tr: 'Uzman ajanların, oyun geliştirme akışlarını desteklemek için dosya sistemi üzerinden koordine olduğu deneysel bir çatı geliştirdim.',
-      tech: ['TypeScript', 'Three.js', 'React Three Fiber', 'Capacitor', 'FastAPI'],
-      link: 'https://github.com/OmerYasirOnal/studio',
-    },
   ] satisfies CvProject[],
+
+  /**
+   * Compact "also live on the App Store" line rendered at the tail of the
+   * Projects section — every OTHER app currently published under the developer
+   * account (UniSum has its own entry above). Published apps only; in-review /
+   * unreleased apps are deliberately absent. Links verified against the App
+   * Store developer page (id1797082029).
+   */
+  appStoreApps: {
+    intro: { en: 'Also live on the App Store', tr: 'App Store’da ayrıca yayında' },
+    apps: [
+      {
+        name: 'Hoppala: Zıpla ve Tırman',
+        platform: 'iOS',
+        link: 'https://apps.apple.com/tr/app/hoppala-z%C4%B1pla-ve-t%C4%B1rman/id6786738365',
+      },
+      {
+        name: 'Snake Grow.io: Battle Arena',
+        platform: 'iOS',
+        link: 'https://apps.apple.com/tr/app/snake-grow-io-battle-arena/id6762146110',
+      },
+      {
+        name: 'Odak: Görev & Pomodoro',
+        platform: 'iOS / macOS',
+        link: 'https://apps.apple.com/tr/app/odak-g%C3%B6rev-pomodoro/id6787764117',
+      },
+      {
+        name: 'UsageMeter',
+        platform: 'macOS',
+        link: 'https://apps.apple.com/tr/app/usagemeter/id6786227263',
+      },
+    ],
+  },
 
   /** Résumé publications (CV-only). */
   publications: [
@@ -287,8 +306,8 @@ export const cv = {
    */
   education: {
     degree: {
-      en: 'B.Sc. Computer Engineering (70% English-medium, 50% scholarship)',
-      tr: 'Bilgisayar Mühendisliği (Lisans, %70 İngilizce, %50 burslu)',
+      en: 'B.Sc. Computer Engineering (70% English-medium)',
+      tr: 'Bilgisayar Mühendisliği (Lisans, %70 İngilizce)',
     } satisfies CvBilingual,
   },
 

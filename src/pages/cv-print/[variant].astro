@@ -454,6 +454,17 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
             </div>
           ))
         }
+        <p class="kv">
+          <span class="k">{fold(isTr ? cv.appStoreApps.intro.tr : cv.appStoreApps.intro.en)}:</span>{' '}
+          {
+            cv.appStoreApps.apps.map((a, i) => (
+              <>
+                {i > 0 && <span class="sep">·</span>}
+                <a href={a.link}>{fold(a.name)}</a> ({a.platform})
+              </>
+            ))
+          }
+        </p>
         <p class="project-more">
           <a href={profile.links.github.url}>
             {fold(isTr ? 'GitHub’da daha fazlası' : 'More on GitHub')} →{' '}
