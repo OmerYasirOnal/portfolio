@@ -24,7 +24,6 @@
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { getCollection } from 'astro:content';
 import { profile } from '../../data/profile';
 import { cv } from '../../data/cv';
 import type { Locale } from '../../data/i18n';
@@ -60,41 +59,17 @@ const photoDataUri = cfg.photo
     ).toString('base64')}`
   : null;
 
-// --- Data (sorted, reused from the site's single sources of truth) -----------
-const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
-
-// Curated résumé projects: `cv.projects` fixes the order + carries a CV-only
-// impact note; the matching content-collection entry supplies the tech line and
-// the primary link. `flatMap` drops any slug that doesn't resolve (strict-TS
-// safe — no non-null assertion needed).
-const allProjects = await getCollection('projects');
-const cvProjects = cv.projects.flatMap((cp) => {
-  const entry = allProjects.find((p) => p.id === cp.slug);
-  return entry ? [{ entry, note: isTr ? cp.tr : cp.en }] : [];
-});
-
-const publications = await getCollection('publications');
-const writingCount = (await getCollection('writing')).length;
-
-// CV-specific skill order (reused from profile.ts, reordered for a security /
-// back-end reviewer). Frontend + Mobile are folded into one line below.
-const cvSkillLines = cv.skills.order.flatMap((title) => {
-  const g = profile.skillGroups.find((sg) => sg.title_en === title);
-  return g ? [g] : [];
-});
+// --- Data --------------------------------------------------------------------
+// The résumé's role, summary, skills, experience, projects, publications and
+// writing line are CV-only (`cv.ts`), so the public site can keep its own
+// (bolder) copy in `profile.ts` + the content collections. Still reused from
+// `profile.ts`: name, contact line, certifications, languages, and the school +
+// graduation of the education entry.
 
 const s = (key: keyof typeof cv.sections): string => cv.sections[key][lang];
 
 /** Human-readable, protocol-stripped display for a URL. */
 const displayUrl = (url: string): string => url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-
-/** The single most relevant link for a project (shipped product > code). */
-const primaryLink = (links: {
-  appstore?: string;
-  live?: string;
-  repo?: string;
-  other?: string;
-}): string | undefined => links.appstore ?? links.live ?? links.repo ?? links.other;
 
 const socialLinks = [
   profile.links.github,
@@ -384,7 +359,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <header class="band">
       <div class="band-text">
         <h1 class="name">{fold(profile.name)}</h1>
-        <p class="role">{fold(profile.role[lang])}</p>
+        <p class="role">{fold(cv.role[lang])}</p>
       </div>
       {photoDataUri && <img class="photo" src={photoDataUri} alt={fold(profile.name)} />}
     </header>
@@ -423,39 +398,33 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <section>
         <h2>{s('skills')}</h2>
         {
-          cvSkillLines.map((g) => (
+          cv.skills.map((g) => (
             <p class="kv">
               <span class="k">{fold(isTr ? g.title_tr : g.title_en)}:</span>{' '}
-              {fold(g.items.join(', '))}
+              {fold(isTr ? g.tr : g.en)}
             </p>
           ))
         }
-        <p class="kv">
-          <span class="k">
-            {fold(isTr ? cv.skills.frontendMobile.title_tr : cv.skills.frontendMobile.title_en)}:
-          </span>{' '}
-          {fold(isTr ? cv.skills.frontendMobile.tr : cv.skills.frontendMobile.en)}
-        </p>
       </section>
 
       <!-- ============================ EXPERIENCE ======================= -->
       <section>
         <h2>{s('experience')}</h2>
         {
-          experience.map((e) => (
+          cv.experience.map((e) => (
             <div class="entry">
               <div class="entry-head">
                 <div>
-                  <span class="entry-title">{fold(isTr ? e.data.role_tr : e.data.role_en)}</span>
-                  <span class="entry-org"> {fold('—')} {fold(e.data.org)}</span>
+                  <span class="entry-title">{fold(isTr ? e.role_tr : e.role_en)}</span>
+                  <span class="entry-org"> {fold('—')} {fold(e.org)}</span>
                 </div>
                 <div class="entry-meta">
-                  {fold(localizeLocation(e.data.location, lang))} ·{' '}
-                  {fold(formatPeriod(e.data.start, e.data.end, lang))}
+                  {fold(localizeLocation(e.location, lang))} ·{' '}
+                  {fold(formatPeriod(e.start, e.end, lang))}
                 </div>
               </div>
               <ul class="bullets">
-                {(isTr ? e.data.bullets_tr : e.data.bullets_en).map((b) => (
+                {(isTr ? e.bullets_tr : e.bullets_en).map((b) => (
                   <li>{fold(b)}</li>
                 ))}
               </ul>
@@ -468,27 +437,22 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <section>
         <h2>{s('projects')}</h2>
         {
-          cvProjects.map(({ entry, note }) => {
-            const link = primaryLink(entry.data.links);
-            return (
-              <div class="entry">
-                <div class="entry-head">
-                  <div>
-                    <span class="entry-title">{fold(entry.data.title)}</span>
-                  </div>
-                  {link && (
-                    <div class="entry-meta">
-                      <a href={link}>{displayUrl(link)}</a>
-                    </div>
-                  )}
+          cv.projects.map((p) => (
+            <div class="entry">
+              <div class="entry-head">
+                <div>
+                  <span class="entry-title">{fold(p.title)}</span>
                 </div>
-                <p class="project-note">{fold(note)}</p>
-                <p class="project-tech">
-                  {entry.data.stack.map((tech) => fold(stripTechVersion(tech))).join(' · ')}
-                </p>
+                <div class="entry-meta">
+                  <a href={p.link}>{fold(p.linkLabel ?? displayUrl(p.link))}</a>
+                </div>
               </div>
-            );
-          })
+              <p class="project-note">{fold(isTr ? p.tr : p.en)}</p>
+              <p class="project-tech">
+                {p.tech.map((tech) => fold(stripTechVersion(tech))).join(' · ')}
+              </p>
+            </div>
+          ))
         }
         <p class="project-more">
           <a href={profile.links.github.url}>
@@ -502,14 +466,15 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <section>
         <h2>{s('publications')}</h2>
         {
-          publications.map((pub) => (
-            <p class="entry">
-              <span class="entry-title">{fold(isTr ? pub.data.title_tr : pub.data.title_en)}</span>
-              {fold(' — ')}
-              <span class="entry-org">
-                {fold(pub.data.venue)}, {pub.data.year}
-              </span>
-            </p>
+          cv.publications.map((pub) => (
+            <div class="entry">
+              <p>
+                <span class="entry-title">{fold(isTr ? pub.title_tr : pub.title_en)}</span>
+                {fold(' — ')}
+                <span class="entry-org">{fold(pub.venue)}</span>
+              </p>
+              <p class="project-note">{fold(isTr ? pub.note_tr : pub.note_en)}</p>
+            </div>
           ))
         }
       </section>
@@ -518,7 +483,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       <section>
         <h2>{s('writing')}</h2>
         <p>
-          {fold((isTr ? cv.writing.tr : cv.writing.en).replace('{n}', String(writingCount)))}
+          {fold(isTr ? cv.writing.tr : cv.writing.en)}
           {fold(' — ')}
           <a href={profile.links.medium.url}>{displayUrl(profile.links.medium.url)}</a>
         </p>
