@@ -12,7 +12,6 @@
  *  - `ascii` — ASCII-fold every rendered string (name → `Omer Yasir Onal`,
  *    `Türkiye` → `Turkiye`, smart punctuation → plain) so Workday/Greenhouse
  *    parsers survive it. The international / remote variant.
- *  - `availabilityNote` — show the one-line remote/international availability note.
  *  - `gdpr` — append the GDPR recruitment-consent footer (may run to 2 pages).
  */
 import type { Locale } from './i18n';
@@ -21,14 +20,13 @@ export interface CvVariant {
   lang: Locale;
   photo: boolean;
   ascii: boolean;
-  availabilityNote: boolean;
   gdpr: boolean;
 }
 
 export const cvVariants = {
-  tr: { lang: 'tr', photo: true, ascii: false, availabilityNote: false, gdpr: false },
-  en: { lang: 'en', photo: false, ascii: true, availabilityNote: true, gdpr: false },
-  eu: { lang: 'en', photo: false, ascii: true, availabilityNote: true, gdpr: true },
+  tr: { lang: 'tr', photo: true, ascii: false, gdpr: false },
+  en: { lang: 'en', photo: false, ascii: true, gdpr: false },
+  eu: { lang: 'en', photo: false, ascii: true, gdpr: true },
 } as const satisfies Record<string, CvVariant>;
 
 export type VariantId = keyof typeof cvVariants;

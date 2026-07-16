@@ -87,13 +87,9 @@ export const cv = {
   } satisfies CvBilingual,
 
   /**
-   * English-only lines shown ONLY on the international `en` / EU `eu` PDF
-   * variants (never on the Turkish résumé):
-   *  - `availabilityRemote` — a one-line remote/international availability note.
-   *  - `gdprConsent` — the recruitment-data consent footer required on the `eu`
-   *    variant for GDPR-compliant applications.
+   * English-only line shown ONLY on the EU `eu` PDF variant: the
+   * recruitment-data consent footer required for GDPR-compliant applications.
    */
-  availabilityRemote: 'Open to remote / international roles (UTC+3)',
   gdprConsent:
     'I consent to the processing of my personal data for recruitment purposes (GDPR).',
 

@@ -9,11 +9,10 @@
  * header band opens the page.
  *
  * Three OUTPUT variants (`getStaticPaths` below), each a `{ lang, photo, ascii,
- * availabilityNote, gdpr }` recipe:
+ * gdpr }` recipe:
  *   - `tr` — Turkish, headshot, full diacritics (`Ömer Yasir Önal`).
  *   - `en` — English, no photo, ASCII-folded (`Omer Yasir Onal`) so Workday /
- *     Greenhouse parsers survive it; adds a remote-availability note. The
- *     international / remote variant.
+ *     Greenhouse parsers survive it. The international / remote variant.
  *   - `eu` — same as `en` PLUS a GDPR recruitment-consent footer; may run to a
  *     second page.
  *
@@ -221,14 +220,6 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         margin: 0 6px;
       }
 
-      /* Remote/international availability note (en + eu variants only). */
-      .availability {
-        font-size: 8.7pt;
-        font-weight: 600;
-        color: var(--accent);
-        margin-top: 3px;
-      }
-
       /* GDPR recruitment-consent footer (eu variant only). */
       .gdpr {
         margin-top: 16pt;
@@ -385,7 +376,6 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
             ))
           }
         </div>
-        {cfg.availabilityNote && <p class="availability">{cv.availabilityRemote}</p>}
       </div>
 
       <!-- ============================= SUMMARY ========================= -->
