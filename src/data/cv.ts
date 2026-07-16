@@ -287,8 +287,8 @@ export const cv = {
    */
   education: {
     degree: {
-      en: 'B.Sc. Computer Engineering (50% English-medium)',
-      tr: 'Bilgisayar Mühendisliği (Lisans, %50 İngilizce)',
+      en: 'B.Sc. Computer Engineering (70% English-medium, 50% scholarship)',
+      tr: 'Bilgisayar Mühendisliği (Lisans, %70 İngilizce, %50 burslu)',
     } satisfies CvBilingual,
   },
 
