@@ -91,7 +91,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>{fold(profile.name)} — {fold(isTr ? 'Özgeçmiş' : 'Résumé')}</title>
+    <title>{profile.name} — {fold(isTr ? 'Özgeçmiş' : 'Résumé')}</title>
     <style>
       /* Full-bleed sides (band reaches both edges); top/bottom keep a margin so
          a spillover page never butts content against the paper edge. */
@@ -349,10 +349,12 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <!-- ============================== HEADER BAND ========================== -->
     <header class="band">
       <div class="band-text">
-        <h1 class="name">{fold(profile.name)}</h1>
+        {/* The name keeps its Turkish diacritics on every variant (owner request);
+            the rest of the en/eu text stays ASCII-folded for ATS parsers. */}
+        <h1 class="name">{profile.name}</h1>
         <p class="role">{fold(cv.role[lang])}</p>
       </div>
-      {photoDataUri && <img class="photo" src={photoDataUri} alt={fold(profile.name)} />}
+      {photoDataUri && <img class="photo" src={photoDataUri} alt={profile.name} />}
     </header>
 
     <main class="content">
