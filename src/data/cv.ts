@@ -302,7 +302,7 @@ export const cv = {
    */
   education: {
     degree: {
-      en: 'B.Sc. Computer Engineering (70% English-medium)',
+      en: 'B.Sc. Computer Engineering (70% English)',
       tr: 'Bilgisayar Mühendisliği (Lisans, %70 İngilizce)',
     } satisfies CvBilingual,
   },
