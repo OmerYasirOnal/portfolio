@@ -51,10 +51,10 @@ export const cv = {
   gdprConsent:
     'I consent to the processing of my personal data for recruitment purposes (GDPR).',
 
-  /** Long-form professional summary (résumé opener) — proof-led, security-leaning. */
+  /** Long-form professional summary (résumé opener) — proof-led, plain-language. */
   summary: {
-    en: "Computer Engineering new-grad and back-end & applied-AI engineer — AI Fellow (1,500 of 31,700, ~top 5%) and IEEE SIU 2025 author. I build verifiable, security-minded systems: at AKIS — a live multi-agent AI platform (akisflow.com) — I designed four structural human-approval gates, Ed25519-signed build provenance, and OWASP-LLM safety guardrails, and I shipped UniSum to the App Store on my own Node/MySQL API. Hands-on with Node.js/Python back-ends, PostgreSQL, Docker and CI/CD, and LLM/agent orchestration. Open to junior / entry-level full-time (and freelance) roles.",
-    tr: "Yeni Bilgisayar Mühendisliği mezunu, back-end & uygulamalı yapay zeka mühendisi — AI Fellow (31.700 başvuru içinden 1.500 kişi, ~ilk %5) ve IEEE SIU 2025 bildirisi yazarı. Doğrulanabilir, güvenlik odaklı sistemler kuruyorum: canlı çok-ajanlı yapay zeka platformu AKIS'te (akisflow.com) dört yapısal insan-onay kapısı, Ed25519 imzalı build provenance ve OWASP-LLM güvenlik korumaları tasarladım; UniSum'u kendi Node/MySQL API'imle App Store'a çıkardım. Node.js/Python back-end, PostgreSQL, Docker ve CI/CD ile LLM/agent orkestrasyonunda uygulamalı deneyim. Junior / entry-level tam zamanlı (ve freelance) fırsatlara açığım.",
+    en: "Computer Engineering new-grad and back-end & applied-AI engineer — AI Fellow (1,500 of 31,700, ~top 5%) and IEEE SIU 2025 author. I build reliable, well-tested systems: at AKIS — a live multi-agent AI platform (akisflow.com) — I designed a workflow where nothing ships without human review and a real passing test, and I shipped UniSum to the App Store on my own Node/MySQL API. Hands-on with Node.js/Python back-ends, PostgreSQL, Docker and CI/CD, and LLM/agent orchestration. Open to junior / entry-level full-time (and freelance) roles.",
+    tr: "Yeni Bilgisayar Mühendisliği mezunu, back-end & uygulamalı yapay zeka mühendisi — AI Fellow (31.700 başvuru içinden 1.500 kişi, ~ilk %5) ve IEEE SIU 2025 bildirisi yazarı. Güvenilir, iyi test edilmiş sistemler kuruyorum: canlı çok-ajanlı yapay zeka platformu AKIS'te (akisflow.com) hiçbir şeyin insan onayı ve gerçek bir test geçmeden yayınlanmadığı bir iş akışı tasarladım; UniSum'u kendi Node/MySQL API'imle App Store'a çıkardım. Node.js/Python back-end, PostgreSQL, Docker ve CI/CD ile LLM/agent orkestrasyonunda uygulamalı deneyim. Junior / entry-level tam zamanlı (ve freelance) fırsatlara açığım.",
   } satisfies CvSummary,
 
   /**
@@ -65,13 +65,13 @@ export const cv = {
   projects: [
     {
       slug: 'akis',
-      en: "Live, open-source (Apache-2.0) multi-agent AI build platform: an orchestrator dispatching 5 role-separated agents behind 4 structural human-approval gates and an adversarial gate-keeper/reviewer loop; a task is 'done' only after a real boot-smoke test passes. ~1,800 backend + ~700 frontend automated tests green; Ed25519-signed build provenance; OWASP-LLM06 (Excessive Agency) guardrails; Docker image −198MB. Self-hosted at akisflow.com.",
-      tr: "Canlı, açık kaynak (Apache-2.0) çok-ajanlı yapay zeka derleme platformu: 5 rol-ayrık ajanı, 4 yapısal insan-onay kapısı ve rakip bir gate-keeper/reviewer döngüsü ardında yöneten bir orkestratör; bir görev ancak gerçek bir boot-smoke testi geçtikten sonra 'tamamlandı' sayılır. ~1.800 backend + ~700 frontend otomatik test yeşil; Ed25519 imzalı build provenance; OWASP-LLM06 (Aşırı Yetki) korumaları; Docker imajı −198MB. akisflow.com'da self-hosted.",
+      en: "Live, open-source (Apache-2.0) multi-agent AI build platform: an orchestrator coordinating 5 specialized agents, with mandatory human review before anything ships and a second AI reviewer that catches issues first. A task only counts as done once a real, working test passes. ~1,800 backend + ~700 frontend automated tests passing; Docker image trimmed by 198MB. Self-hosted at akisflow.com.",
+      tr: "Canlı, açık kaynak (Apache-2.0) çok-ajanlı yapay zeka derleme platformu: 5 uzman ajanı yöneten bir orkestratör; hiçbir şey yayınlanmadan önce insan onayı zorunlu ve ikinci bir yapay zeka önce sorunları yakalıyor. Bir görev, ancak gerçek ve çalışan bir test geçtikten sonra tamamlanmış sayılır. ~1.800 backend + ~700 frontend otomatik test yeşil; Docker imajı 198MB küçültüldü. akisflow.com'da self-hosted.",
     },
     {
       slug: 'unisum',
-      en: 'Shipped to the App Store — native SwiftUI client on a self-built Node/Express/MySQL REST API with JWT/bcrypt auth, hardened with helmet, CORS and rate-limiting.',
-      tr: "App Store'da yayında — kendi geliştirdiğim Node/Express/MySQL REST API üzerinde JWT/bcrypt kimlik doğrulamalı native SwiftUI istemci; helmet, CORS ve rate-limiting ile sertleştirildi.",
+      en: 'Shipped to the App Store — native SwiftUI client backed by a self-built Node/Express/MySQL REST API with secure login, hardened against common web attacks.',
+      tr: "App Store'da yayında — kendi geliştirdiğim Node/Express/MySQL REST API üzerinde güvenli girişli native SwiftUI istemci; yaygın web saldırılarına karşı sertleştirildi.",
     },
     {
       slug: 'newbrain',
@@ -80,8 +80,8 @@ export const cv = {
     },
     {
       slug: 'a2reklam',
-      en: 'Freelance corporate site live in production — 341-page trilingual (TR/EN/AR) Astro build with Schema.org local-SEO and a hardened PHP endpoint (honeypot, rate-limit).',
-      tr: 'Yayında olan freelance kurumsal site — Schema.org yerel-SEO ve sertleştirilmiş PHP uç noktası (honeypot, rate-limit) içeren 341 sayfalık üç dilli (TR/EN/AR) Astro sitesi.',
+      en: 'Freelance corporate site live in production — 341-page trilingual (TR/EN/AR) Astro build with Schema.org local-SEO and a hardened contact form.',
+      tr: 'Yayında olan freelance kurumsal site — Schema.org yerel-SEO ve sertleştirilmiş bir iletişim formu içeren 341 sayfalık üç dilli (TR/EN/AR) Astro sitesi.',
     },
     {
       slug: 'studio',

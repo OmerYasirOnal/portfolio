@@ -13,10 +13,10 @@ links:
   repo: https://github.com/OmerYasirOnal/ozsaye-psikoloji
 highlights_en:
   - Statically exported for deployment to shared hosting.
-  - SEO plus KVKK-compliant consent handling.
+  - SEO plus a privacy-friendly consent banner.
 highlights_tr:
   - Paylaşımlı barındırmaya dağıtım için statik olarak dışa aktarıldı.
-  - SEO ve KVKK uyumlu açık rıza yönetimi.
+  - SEO ve gizlilik dostu bir çerez/rıza bildirimi.
 featured: false
 order: 8
 ---
