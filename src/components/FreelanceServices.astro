@@ -9,6 +9,7 @@
  */
 import { packageTiers } from '../data/packages';
 import { t, localizePath, type Locale } from '../data/i18n';
+import RapidSprintGrid from './RapidSprintGrid.astro';
 
 interface Props {
   locale: Locale;
@@ -25,7 +26,19 @@ const packagesHref = localizePath(locale, '/packages');
     {t(locale, 'services.intro')}
   </p>
 
-  <ul class="mt-8 grid gap-4 sm:grid-cols-3" role="list">
+  <div class="mt-8">
+    <h3 class="text-lg font-semibold tracking-tight text-fg">{t(locale, 'sprints.title')}</h3>
+    <p class="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{t(locale, 'sprints.intro')}</p>
+    <div class="mt-5">
+      <RapidSprintGrid locale={locale} compact />
+    </div>
+  </div>
+
+  <h3 class="mt-10 text-lg font-semibold tracking-tight text-fg">
+    {t(locale, 'packages.fullTitle')}
+  </h3>
+
+  <ul class="mt-5 grid gap-4 sm:grid-cols-3" role="list">
     {
       packageTiers.map((tier) => (
         <li
