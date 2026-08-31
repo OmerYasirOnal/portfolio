@@ -1,5 +1,23 @@
 import { describe, it, expect } from 'vitest';
-import { packageTiers, packageFaqs, packageProcess } from '../src/data/packages';
+import { packageTiers, packageFaqs, packageProcess, rapidSprints } from '../src/data/packages';
+
+describe('rapidSprints', () => {
+  it('offers one web and one mobile sprint with fixed positive prices', () => {
+    expect(rapidSprints.map((sprint) => sprint.id)).toEqual(['web-sprint', 'mobile-mvp']);
+    for (const sprint of rapidSprints) {
+      expect(sprint.price).toBeGreaterThan(0);
+      expect(sprint.timeline.en).toBeTruthy();
+      expect(sprint.timeline.tr).toBeTruthy();
+      expect(sprint.features.length).toBeGreaterThan(0);
+      expect(sprint.exclusions.en).toBeTruthy();
+      expect(sprint.exclusions.tr).toBeTruthy();
+    }
+  });
+
+  it('has exactly one highlighted rapid sprint', () => {
+    expect(rapidSprints.filter((sprint) => sprint.highlighted)).toHaveLength(1);
+  });
+});
 
 describe('packageTiers', () => {
   it('has exactly one highlighted (most popular) tier', () => {
