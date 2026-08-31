@@ -7,9 +7,10 @@ import PackageComparison from '../../components/PackageComparison.astro';
 import PackageProcess from '../../components/PackageProcess.astro';
 import PackageCta from '../../components/PackageCta.astro';
 import PackageFaq from '../../components/PackageFaq.astro';
+import RapidSprintGrid from '../../components/RapidSprintGrid.astro';
 import { t, localizePath, type Locale } from '../../data/i18n';
 import { profile } from '../../data/profile';
-import { packageTiers, packageFaqs } from '../../data/packages';
+import { packageTiers, packageFaqs, rapidSprints } from '../../data/packages';
 import { ogPackagesPath } from '../../lib/og';
 import {
   breadcrumbJsonLd,
@@ -31,11 +32,18 @@ const serviceLd = serviceOfferCatalogJsonLd(
     name: t(locale, 'packages.title'),
     description: t(locale, 'packages.intro'),
     url: canonicalHref(localizePath(locale, '/packages'), Astro.site!),
-    tiers: packageTiers.map((tier) => ({
-      name: tier.name[locale],
-      description: tier.tagline[locale],
-      priceFrom: tier.priceFrom,
-    })),
+    tiers: [
+      ...rapidSprints.map((sprint) => ({
+        name: sprint.name[locale],
+        description: sprint.tagline[locale],
+        priceFrom: sprint.price,
+      })),
+      ...packageTiers.map((tier) => ({
+        name: tier.name[locale],
+        description: tier.tagline[locale],
+        priceFrom: tier.priceFrom,
+      })),
+    ],
   },
   Astro.site,
 );
@@ -72,7 +80,27 @@ const faqLd = faqPageJsonLd(
     </section>
 
     <section class="mx-auto max-w-5xl px-6 pb-16 pt-4">
-      <PackageGrid locale={locale} />
+      <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+        {t(locale, 'sprints.title')}
+      </h2>
+      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+        {t(locale, 'sprints.intro')}
+      </p>
+      <div class="mt-8">
+        <RapidSprintGrid locale={locale} />
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-5xl px-6 pb-16">
+      <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
+        {t(locale, 'packages.fullTitle')}
+      </h2>
+      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+        {t(locale, 'packages.fullIntro')}
+      </p>
+      <div class="mt-8">
+        <PackageGrid locale={locale} />
+      </div>
     </section>
 
     <PackageComparison locale={locale} />
