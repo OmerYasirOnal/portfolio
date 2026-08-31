@@ -20,8 +20,8 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.services': { en: 'Freelance services', tr: 'Freelance hizmetler' },
   'section.more': { en: 'More projects', tr: 'Diğer projeler' },
   'services.intro': {
-    en: 'Beyond my own products, I design and build brand identities and websites for founders and small businesses — as fixed-scope packages you can pick from.',
-    tr: 'Kendi ürünlerimin yanı sıra, kurucular ve küçük işletmeler için marka kimliği ve web sitesi tasarlayıp geliştiriyorum — seçebileceğin sabit kapsamlı paketler hâlinde.',
+    en: 'I turn clear business needs into shipped web and mobile products — from 72-hour validation sprints to full brand and website builds.',
+    tr: 'Net iş ihtiyaçlarını yayına alınmış web ve mobil ürünlere dönüştürüyorum — 72 saatlik doğrulama sprintlerinden kapsamlı marka ve web projelerine.',
   },
   'services.cta': { en: 'See packages & pricing →', tr: 'Paketleri ve fiyatları gör →' },
   'work.viewAll': { en: 'View all projects →', tr: 'Tüm projeleri gör →' },
@@ -118,8 +118,29 @@ const dict: Record<string, Record<Locale, string>> = {
   },
   'packages.title': { en: 'Packages', tr: 'Paketler' },
   'packages.intro': {
-    en: 'Fixed-scope brand identity and website packages for founders and small businesses — pick a starting point, then we tailor the scope together.',
-    tr: 'Kurucular ve küçük işletmeler için sabit kapsamlı marka kimliği ve web sitesi paketleri — bir başlangıç noktası seçin, kapsamı birlikte netleştirelim.',
+    en: 'Start with a tightly scoped 72-hour validation sprint or choose a complete brand and website build.',
+    tr: 'Sınırları net 72 saatlik bir doğrulama sprintiyle başlayın veya kapsamlı bir marka ve web projesi seçin.',
+  },
+  'sprints.title': { en: '72-hour validation sprints', tr: '72 saatlik doğrulama sprintleri' },
+  'sprints.intro': {
+    en: 'A small, fixed deliverable for testing an idea or opening a customer channel quickly. The 72-hour clock starts after scope, content, and access are confirmed.',
+    tr: 'Bir fikri test etmek veya hızla yeni bir müşteri kanalı açmak için küçük ve sabit teslimatlar. 72 saatlik süre; kapsam, içerik ve erişimler netleştikten sonra başlar.',
+  },
+  'sprints.featured': { en: 'High impact', tr: 'Yüksek etki' },
+  'sprints.scopeLabel': { en: 'Outside the scope', tr: 'Kapsam dışı' },
+  'sprints.cta': { en: 'Start this sprint', tr: 'Bu sprinti başlat' },
+  'sprints.whatsappPrefill.web-sprint': {
+    en: 'Hi Ömer, I am interested in the 72-hour WhatsApp Lead Page sprint.',
+    tr: 'Merhaba Ömer, 72 saatlik WhatsApp Müşteri Sayfası sprintiyle ilgileniyorum.',
+  },
+  'sprints.whatsappPrefill.mobile-mvp': {
+    en: 'Hi Ömer, I am interested in the 72-hour Working Mobile MVP sprint.',
+    tr: 'Merhaba Ömer, 72 saatlik Çalışan Mobil MVP sprintiyle ilgileniyorum.',
+  },
+  'packages.fullTitle': { en: 'Complete brand & web packages', tr: 'Kapsamlı marka ve web paketleri' },
+  'packages.fullIntro': {
+    en: 'For businesses that need strategy, a distinct brand system, and a larger production website rather than a rapid validation build.',
+    tr: 'Hızlı bir doğrulama çalışması yerine strateji, özgün marka sistemi ve daha büyük bir üretim sitesi isteyen işletmeler için.',
   },
   'packages.mostPopular': { en: 'Most popular', tr: 'En çok tercih edilen' },
   'packages.priceFrom': { en: 'starting from', tr: 'başlayan fiyatlarla' },
@@ -149,8 +170,8 @@ const dict: Record<string, Record<Locale, string>> = {
     tr: 'Merhaba Ömer, bir web sitesi / marka projesi hakkında konuşmak istiyorum.',
   },
   'seo.packages.description': {
-    en: 'Brand identity and website packages by Ömer Yasir Önal — fixed-scope freelance tiers for founders and small businesses.',
-    tr: 'Ömer Yasir Önal’ın marka kimliği ve web sitesi paketleri — kurucular ve küçük işletmeler için sabit kapsamlı freelance paketler.',
+    en: '72-hour web and mobile MVP sprints plus complete brand and website packages by Ömer Yasir Önal.',
+    tr: 'Ömer Yasir Önal’dan 72 saatlik web ve mobil MVP sprintleri ile kapsamlı marka ve web sitesi paketleri.',
   },
   'footer.builtWith': {
     en: 'Built with Astro & Tailwind CSS.',
