@@ -8,6 +8,18 @@
  */
 import type { Bilingual } from './profile';
 
+export interface RapidSprint {
+  id: 'web-sprint' | 'mobile-mvp';
+  eyebrow: Bilingual;
+  name: Bilingual;
+  tagline: Bilingual;
+  price: number;
+  timeline: Bilingual;
+  features: Bilingual[];
+  exclusions: Bilingual;
+  highlighted: boolean;
+}
+
 export interface PackageTier {
   id: 'starter' | 'growth' | 'premium';
   name: Bilingual;
@@ -33,6 +45,59 @@ export interface ProcessStep {
   title: Bilingual;
   description: Bilingual;
 }
+
+/**
+ * Small, sharply bounded validation offers for buyers who need a working
+ * result before committing to a full product or brand build. These are kept
+ * separate from the larger package tiers so neither scope nor pricing is
+ * ambiguous.
+ */
+export const rapidSprints: RapidSprint[] = [
+  {
+    id: 'web-sprint',
+    eyebrow: { en: '72-hour web sprint', tr: '72 saatlik web sprinti' },
+    name: { en: 'WhatsApp Lead Page', tr: 'WhatsApp Müşteri Sayfası' },
+    tagline: {
+      en: 'A focused one-page site that turns mobile visitors into calls and WhatsApp conversations.',
+      tr: 'Mobil ziyaretçileri aramaya ve WhatsApp görüşmesine yönlendiren odaklı tek sayfalık site.',
+    },
+    price: 2500,
+    timeline: { en: '72 hours', tr: '72 saat' },
+    features: [
+      { en: 'One responsive, fast-loading landing page', tr: 'Mobil uyumlu, hızlı yüklenen tek sayfalık site' },
+      { en: 'WhatsApp, call, map, and contact actions', tr: 'WhatsApp, arama, konum ve iletişim aksiyonları' },
+      { en: 'Basic SEO and AI-assisted page copy', tr: 'Temel SEO ve yapay zekâ destekli sayfa metinleri' },
+      { en: 'One revision round and source-code handoff', tr: '1 revizyon turu ve kaynak kod teslimi' },
+    ],
+    exclusions: {
+      en: 'Domain, hosting, CMS, e-commerce, and custom back-end work are quoted separately.',
+      tr: 'Alan adı, hosting, CMS, e-ticaret ve özel back-end çalışmaları ayrıca fiyatlandırılır.',
+    },
+    highlighted: false,
+  },
+  {
+    id: 'mobile-mvp',
+    eyebrow: { en: '72-hour mobile sprint', tr: '72 saatlik mobil sprint' },
+    name: { en: 'Working Mobile MVP', tr: 'Çalışan Mobil MVP' },
+    tagline: {
+      en: 'Turn one clear app idea into a testable mobile MVP you can put in front of real users.',
+      tr: 'Net bir uygulama fikrini gerçek kullanıcılara gösterebileceğin, test edilebilir mobil MVP’ye dönüştür.',
+    },
+    price: 4500,
+    timeline: { en: '72 hours', tr: '72 saat' },
+    features: [
+      { en: 'Up to 3–4 focused screens', tr: 'En fazla 3-4 odaklı ekran' },
+      { en: 'React Native + Expo implementation', tr: 'React Native + Expo ile geliştirme' },
+      { en: 'Navigation plus simple Firebase/Supabase data flow', tr: 'Navigasyon ve basit Firebase/Supabase veri akışı' },
+      { en: 'Testable demo, source code, and one revision round', tr: 'Test edilebilir demo, kaynak kod ve 1 revizyon turu' },
+    ],
+    exclusions: {
+      en: 'Store review, payments, live chat, complex integrations, and admin panels are outside this sprint.',
+      tr: 'Mağaza onayı, ödeme, canlı mesajlaşma, karmaşık entegrasyonlar ve yönetim paneli bu sprintin dışındadır.',
+    },
+    highlighted: true,
+  },
+];
 
 export const packageTiers: PackageTier[] = [
   {
@@ -111,6 +176,26 @@ export const packageTiers: PackageTier[] = [
 export const packageFaqs: PackageFaq[] = [
   {
     question: {
+      en: 'What can realistically be delivered in 72 hours?',
+      tr: '72 saatte gerçekçi olarak ne teslim edilebilir?',
+    },
+    answer: {
+      en: 'One tightly scoped result: either a one-page WhatsApp lead site or a testable 3–4 screen mobile MVP. The clock starts after the scope, content, and required access are confirmed.',
+      tr: 'Sınırları net tek bir sonuç: WhatsApp odaklı tek sayfalık site veya test edilebilir 3-4 ekranlı mobil MVP. Süre; kapsam, içerik ve gerekli erişimler netleştikten sonra başlar.',
+    },
+  },
+  {
+    question: {
+      en: 'Does the mobile MVP include App Store or Play Store publishing?',
+      tr: 'Mobil MVP, App Store veya Play Store’da yayınlamayı içeriyor mu?',
+    },
+    answer: {
+      en: 'No. The sprint includes a testable demo and source code. Store preparation and review depend on store accounts and external approval timelines, so they are quoted separately.',
+      tr: 'Hayır. Sprint, test edilebilir demo ve kaynak kod teslimini içerir. Mağaza hazırlığı ve inceleme süreci mağaza hesaplarına ve dış onay sürelerine bağlı olduğu için ayrıca fiyatlandırılır.',
+    },
+  },
+  {
+    question: {
       en: 'Are these the final prices?',
       tr: 'Bu fiyatlar kesin mi?',
     },
@@ -135,8 +220,8 @@ export const packageFaqs: PackageFaq[] = [
       tr: 'Hangi paketi seçmeliyim?',
     },
     answer: {
-      en: 'Starter is a single credible page to get online fast; Growth adds a multi-page site with a full brand identity; Premium is an end-to-end brand and web system for a growing business. If you’re unsure, start from the closest one and we tailor the scope together.',
-      tr: 'Başlangıç, hızlıca çevrimiçi olmak için tek ve güvenilir bir sayfadır; Büyüme, tam marka kimliğiyle çok sayfalı bir site ekler; Premium ise büyüyen bir işletme için uçtan uca marka ve web sistemidir. Emin değilsen en yakınından başla, kapsamı birlikte netleştiririz.',
+      en: 'Choose a 72-hour sprint to validate one idea quickly. Starter is a complete one-page brand site; Growth adds multiple pages and a full identity; Premium is an end-to-end brand and web system. If you are unsure, describe the result you need and we will choose the smallest sensible scope.',
+      tr: 'Tek bir fikri hızla doğrulamak için 72 saatlik sprinti seçin. Başlangıç, eksiksiz tek sayfalık marka sitesidir; Büyüme, çoklu sayfa ve tam marka kimliği ekler; Premium ise uçtan uca marka ve web sistemidir. Emin değilseniz ihtiyacınız olan sonucu anlatın, en küçük mantıklı kapsamı birlikte seçelim.',
     },
   },
   {
