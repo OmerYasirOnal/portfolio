@@ -24,7 +24,7 @@ const pubs = await getCollection('publications');
 const breadcrumbLd = breadcrumbJsonLd([
   { name: t(locale, 'section.writing'), url: canonicalHref(localizePath(locale, '/writing'), Astro.site!) },
 ]);
-const posts = await getCollection('posts', (e) => !e.data.draft);
+const posts = await getCollection('posts', (e) => !e.data.draft && e.data.lang === locale);
 const ldItems = [
   ...articles.map((a) => ({
     title: a.data.title,

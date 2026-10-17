@@ -24,7 +24,7 @@ interface Row {
 }
 
 const writing = await getCollection('writing');
-const posts = await getCollection('posts', (e) => !e.data.draft);
+const posts = await getCollection('posts', (e) => !e.data.draft && e.data.lang === locale);
 
 const allArticles: Row[] = [
   ...writing.map((e) => ({

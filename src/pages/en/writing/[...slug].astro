@@ -9,7 +9,7 @@ import { readingTimeMinutes } from '../../../lib/reading-time';
 import { blogPostingJsonLd, breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../../lib/seo';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', (e) => !e.data.draft);
+  const posts = await getCollection('posts', (e) => !e.data.draft && e.data.lang === 'en');
   return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
