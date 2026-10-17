@@ -38,11 +38,11 @@ import {
 import { courseSlugOf } from '../../lib/courses';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
-const BG_DARK: [number, number, number] = [11, 15, 23]; //  --color-bg    #0b0f17
-const BG_CARD: [number, number, number] = [17, 24, 39]; //  --color-card  #111827
-const FG: [number, number, number] = [241, 245, 249]; //    --color-fg    #f1f5f9
-const MUTED: [number, number, number] = [148, 163, 184]; // --color-muted #94a3b8
-const ACCENT: [number, number, number] = [56, 189, 248]; // --color-accent #38bdf8
+const BG_DARK: [number, number, number] = [4, 13, 9]; //     --color-bg     #040d09
+const BG_CARD: [number, number, number] = [9, 26, 20]; //    --color-card   #091a14
+const FG: [number, number, number] = [236, 253, 245]; //     --color-fg     #ecfdf5
+const MUTED: [number, number, number] = [143, 178, 163]; //  --color-muted  #8fb2a3
+const ACCENT: [number, number, number] = [16, 185, 129]; //  --color-accent #10b981
 
 interface OgPage {
   /** Large heading line. */

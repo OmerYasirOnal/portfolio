@@ -7,34 +7,32 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Warm Executive Light (default) & Refined Midnight Dark palettes.
+ * Futuristic Emerald & Sage Executive Palette
  *
- * Designed for a prestigious, client-facing personal brand and software
- * consultancy: warm alabaster background (#FAF9F6), crisp white elevated
- * cards (#FFFFFF), deep navy-charcoal ink (#0F172A), and executive royal blue
- * accent (#1D4ED8).
+ * Harmonized with Ömer Yasir Önal's portrait and designed to feel both
+ * prestigious for corporate clients and futuristic/fluid in motion.
  */
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  /* Default = Warm Executive Light palette */
-  --color-bg: #faf9f6;
-  --color-fg: #0f172a;
-  --color-muted: #475569;
-  --color-accent: #1d4ed8;
+  /* Default = Luminous Sage & Emerald Light palette */
+  --color-bg: #f1f7f4;
+  --color-fg: #051c14;
+  --color-muted: #35584a;
+  --color-accent: #059669;
   --color-card: #ffffff;
-  --color-border: #e2e8f0;
+  --color-border: #cde3d8;
 }
 
-/* Dark palette - applied only when the visitor explicitly switches to dark mode. */
+/* Cyber-Forest Night & Bio-Emerald Dark palette */
 .dark {
-  --color-bg: #0b0f19;
-  --color-fg: #f8fafc;
-  --color-muted: #94a3b8;
-  --color-accent: #60a5fa;
-  --color-card: #111827;
-  --color-border: #1e293b;
+  --color-bg: #040d09;
+  --color-fg: #ecfdf5;
+  --color-muted: #8fb2a3;
+  --color-accent: #10b981;
+  --color-card: #091a14;
+  --color-border: #15382a;
 }
 
 :root { color-scheme: light; }
@@ -46,6 +44,132 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Subtle futuristic dot-grid mesh overlay */
+.bg-futuristic-mesh {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-accent) 20%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 25%, #000 35%, transparent 100%);
+}
+
+/* Animated aurora ambient blobs */
+@keyframes aurora-drift-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(45px, 30px, 0) scale(1.1);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-40px, -25px, 0) scale(1.08);
+  }
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-aurora-1 {
+  animation: aurora-drift-1 16s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-drift-2 20s ease-in-out infinite;
+}
+
+.animate-orbit-slow {
+  animation: orbit-spin 36s linear infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-gentle 6s ease-in-out 2s infinite;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Interactive cursor-tracking spotlight surface */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-spotlight]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in srgb, var(--color-accent) 13%, transparent),
+    transparent 65%
+  );
+}
+
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+
+/* Scroll-triggered fluid reveal */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px) scale(0.99);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
   *, *::before, *::after {
@@ -53,6 +177,10 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  .reveal-ready [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -76,3 +204,4 @@ html {
   --tw-prose-kbd: var(--color-fg);
   --tw-prose-kbd-shadows: 128 128 128;
 }
+

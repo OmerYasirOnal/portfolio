@@ -1,16 +1,16 @@
 ---
 title: UniSum
-tagline_en: AI-powered university lecture summarization and academic tracking mobile app published on the App Store.
-tagline_tr: App Store’da yayında olan, yapay zeka destekli ders kaydı özetleme ve akademik başarı takip uygulaması.
+tagline_en: Academic performance tracking and AI course summary app published on the App Store with its own Node.js/Express/MySQL REST API.
+tagline_tr: Akademik performans takibi ve ders özetleme için kendi Node.js/Express/MySQL backend altyapısıyla App Store’da yayımlanan SwiftUI uygulaması.
 category: Mobile
 group: product
 image: unisum.jpg
 stack:
-  - Mobil Uygulama (iOS & Android)
-  - App Store Product
-  - Yapay Zeka Ses & Belge Özetleme
-  - Python & Node.js Sunucu
-  - Akademik Takip Sistemi
+  - SwiftUI Mobil Uygulama
+  - Node.js & Express REST API
+  - MySQL Veri Tabanı
+  - JWT / bcrypt & Güvenlik
+  - App Store Ürünü
 status_en: Live on the App Store
 status_tr: App Store’da Yayında
 links:
@@ -18,17 +18,17 @@ links:
   repo: https://github.com/OmerYasirOnal/UniSum
   other: https://github.com/OmerYasirOnal/UniSum-Backend
 highlights_en:
-  - Turns long lecture audio recordings and course slides into structured study notes, key definitions, and practice questions using AI.
-  - Combines course schedule, grade/GPA calculation, and AI study tools in a single intuitive mobile application.
-  - Backed by a dedicated cloud API infrastructure handling user accounts, audio transcription, and AI summarization.
+  - Developed a SwiftUI mobile application paired with a custom Node.js/Express/MySQL REST API for academic performance tracking and course summarization.
+  - Implemented secure authentication with JWT and bcrypt alongside CORS policies and request rate limiting.
+  - Published live on the Apple App Store with end-to-end backend and database ownership.
 highlights_tr:
-  - Uzun ders ses kayıtlarını ve ders notlarını yapay zeka ile analiz ederek anlaşılır özetlere, temel kavramlara ve çalışma sorularına dönüştürür.
-  - Üniversite öğrencileri için ders takibi, not ortalaması (GPA) hesaplama ve yapay zeka çalışma asistanını tek uygulamada birleştirir.
-  - Kullanıcı hesaplarını, ses işleme hattını ve veritabanını yöneten özel sunucu altyapısıyla birlikte App Store’da yayına alınmıştır.
-problem_en: University students managing heavy course loads need a reliable way to turn hours of lecture recordings and notes into clear, actionable study material while tracking their academic progress.
-problem_tr: Yoğun ders temposundaki üniversite öğrencileri, saatler süren ders anlatımlarını hızlıca tekrar edebilecekleri düzenli çalışma notlarına dönüştürmekte ve akademik ortalamalarını tek yerden takip etmekte zorlanıyor.
-what_i_did_en: Designed, built, and published the UniSum mobile application to the App Store alongside its cloud server infrastructure and AI transcription/summarization pipeline.
-what_i_did_tr: Mobil uygulamayı, arka plandaki sunucu ve veritabanı sistemini ve ses kayıtlarını ders özetine dönüştüren yapay zeka hattını uçtan uca geliştirerek App Store’da kullanıma sundum.
+  - Akademik performans takibi ve ders yönetimi için SwiftUI mobil uygulaması ve Node.js/Express/MySQL REST API altyapısı geliştirdim.
+  - JWT ve bcrypt ile güvenli kimlik doğrulama, CORS yapılandırması ve istek sınırlama (rate-limiting) katmanlarını uyguladım.
+  - Kendi sunucu ve veri tabanı altyapısıyla birlikte uçtan uca geliştirerek App Store’da yayımladım.
+problem_en: University students need a unified, reliable mobile platform to track academic performance, GPA, and structured study notes backed by a secure cloud API.
+problem_tr: Üniversite öğrencilerinin akademik performanslarını, ders notlarını ve ortalamalarını güvenli bir bulut altyapısı üzerinden tek ekranda takip edebileceği hızlı bir mobil ürüne ihtiyacı vardı.
+what_i_did_en: Built and published UniSum on the App Store together with its Node.js/Express/MySQL REST API, JWT/bcrypt authentication, and rate-limited backend architecture.
+what_i_did_tr: SwiftUI mobil uygulamasını ve Node.js/Express/MySQL REST API sunucusunu JWT/bcrypt kimlik doğrulama ve istek sınırlama katmanlarıyla geliştirip App Store’da yayımladım.
 featured: true
-order: 5
+order: 2
 ---

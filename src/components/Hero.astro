@@ -1,7 +1,8 @@
 ---
 /**
- * Hero - executive, client-facing hero section with portrait, clear value
- * proposition, interactive solution pills, and trust credentials.
+ * Hero - futuristic, fluid executive hero section with an orbital portrait
+ * portal, floating glassmorphic HUD credentials, and an infinite live-ecosystem
+ * marquee ticker.
  */
 import { Image } from 'astro:assets';
 import { profile } from '../data/profile';
@@ -41,49 +42,65 @@ const credentials = [
     value: t(locale, 'hero.stat.research.value'),
   },
 ];
+
+const marqueeItems =
+  locale === 'tr'
+    ? [
+        'Odak · iOS, iPadOS ve macOS (App Store)',
+        'UniSum · SwiftUI & Node.js/MySQL REST API (App Store)',
+        'Parla Deniz · SEO & AIO Kurumsal Web Platformu',
+        'Öz & Saye Psikoloji · Next.js & PostgreSQL Yönetim Paneli',
+        'A2 Reklam · 341 Sayfa Programatik SEO & Google Ads',
+        'AKIS · Çoklu AI Ajan Orkestrasyonu',
+        'TÜBİTAK 2209-A & IEEE SIU 2025 · Makine Öğrenmesi Araştırması',
+      ]
+    : [
+        'Odak · iOS, iPadOS & macOS (App Store)',
+        'UniSum · SwiftUI & Node.js/MySQL REST API (App Store)',
+        'Parla Deniz · SEO & AIO Corporate Web Platform',
+        'Öz & Saye Psychology · Next.js & PostgreSQL Admin Portal',
+        'A2 Reklam · 341-Page Programmatic SEO & Google Ads',
+        'AKIS · Multi-Agent AI Orchestration',
+        'TÜBİTAK 2209-A & IEEE SIU 2025 · Machine Learning Research',
+      ];
 ---
 
-<section class="relative isolate overflow-hidden border-b border-border/70">
-  {/* Subtle warm executive ambient glow */}
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute -top-36 left-1/2 -z-10 h-[32rem] w-[54rem] -translate-x-1/2 rounded-full bg-accent/8 blur-[130px]"
-  >
-  </div>
-
-  <div class="mx-auto max-w-6xl px-6 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pt-20">
-    <div class="grid items-center gap-12 lg:grid-cols-[1.35fr_0.85fr] lg:gap-14">
-      {/* Left column: Value proposition, solution areas, and CTAs */}
-      <div>
-        <div class="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted shadow-2xs">
-          <span class="relative flex h-2 w-2" aria-hidden="true">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/60"></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+<section class="relative isolate overflow-hidden pt-6 sm:pt-10 lg:pt-14">
+  <div class="mx-auto max-w-6xl px-6 pb-14 sm:pb-20">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+      {/* Left column: Futuristic value proposition & interactive pills */}
+      <div data-reveal>
+        <div class="inline-flex items-center gap-2.5 rounded-full border border-accent/30 bg-card/75 px-4 py-1.5 text-xs font-semibold text-fg shadow-sm shadow-accent/5 backdrop-blur-md">
+          <span class="relative flex h-2.5 w-2.5" aria-hidden="true">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/75"></span>
+            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
           </span>
           {t(locale, 'hero.status')}
         </div>
 
-        <p class="mt-6 text-xs font-semibold uppercase tracking-wider text-accent sm:text-sm">
+        <p class="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-accent sm:text-sm">
           {t(locale, 'hero.eyebrow')}
         </p>
 
-        <h1 class="mt-2.5 text-3xl font-bold tracking-tight text-fg sm:text-5xl sm:leading-[1.12]">
+        <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-fg sm:text-5xl sm:leading-[1.1] lg:text-[3.35rem]">
           <span class="sr-only">{profile.name} - </span>
-          {t(locale, 'hero.headline')}
+          <span class="bg-gradient-to-br from-fg via-fg to-emerald-600 bg-clip-text text-transparent dark:from-white dark:via-emerald-100 dark:to-emerald-400">
+            {t(locale, 'hero.headline')}
+          </span>
         </h1>
 
         <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
           {tagline}
         </p>
 
-        {/* Solution area pills */}
-        <ul class="mt-6 flex flex-wrap gap-2" role="list">
+        {/* Interactive capability stream pills */}
+        <ul class="mt-7 flex flex-wrap gap-2.5" role="list">
           {
             highlights.map((item) => (
               <li>
                 <a
                   href={item.href}
-                  class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-fg shadow-2xs transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent"
+                  class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-card/70 px-4 py-2 text-xs font-semibold text-fg shadow-2xs backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent/10 hover:text-accent hover:shadow-md hover:shadow-accent/10"
                 >
                   <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
                   {t(locale, item.key)}
@@ -94,10 +111,10 @@ const credentials = [
         </ul>
 
         {/* Primary and secondary actions */}
-        <div class="mt-8 flex flex-wrap items-center gap-3">
+        <div class="mt-9 flex flex-wrap items-center gap-3.5">
           <a
             href="#contact"
-            class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-bg shadow-xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-500/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'hero.contactCta')}
             <svg
@@ -106,9 +123,10 @@ const credentials = [
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              stroke-width="2.2"
               stroke-linecap="round"
               stroke-linejoin="round"
+              class="transition-transform duration-300 group-hover:translate-x-1"
               aria-hidden="true"
             >
               <path d="M5 12h14" />
@@ -118,80 +136,130 @@ const credentials = [
 
           <a
             href="#work"
-            class="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-fg shadow-2xs transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/80 px-6 py-3.5 text-sm font-semibold text-fg shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'hero.viewWork')}
           </a>
 
           <a
             href={packagesHref}
-            class="inline-flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-medium text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-1.5 rounded-full px-4 py-3 text-sm font-semibold text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'hero.viewPackages')}
           </a>
 
           <a
             href={resumeHref}
-            class="inline-flex items-center gap-1.5 rounded-xl px-3 py-3 text-sm font-medium text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-1.5 rounded-full px-3 py-3 text-sm font-semibold text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'hero.resume')}
           </a>
         </div>
+
+        {/* Fluid horizontal live-credentials strip */}
+        <dl class="mt-10 grid gap-4 border-t border-accent/20 pt-7 sm:grid-cols-3">
+          {
+            credentials.map((cred) => (
+              <div class="group relative pl-3.5 before:absolute before:inset-y-0.5 before:left-0 before:w-0.5 before:rounded-full before:bg-gradient-to-b before:from-emerald-500 before:to-teal-500">
+                <dt class="text-[0.68rem] font-bold uppercase tracking-wider text-muted">
+                  {cred.label}
+                </dt>
+                <dd class="mt-0.5 text-xs font-bold text-fg sm:text-sm">
+                  {cred.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
       </div>
 
-      {/* Right column: Executive portrait & credential card */}
-      <aside class="mx-auto w-full max-w-md lg:max-w-none">
-        <div class="overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
-          <div class="flex items-center gap-4">
-            <div class="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border bg-bg sm:h-24 sm:w-24">
-              <Image
-                src={portrait}
-                alt={profile.name}
-                width={320}
-                height={320}
-                densities={[1, 2]}
-                class="h-full w-full object-cover object-center"
-              />
+      {/* Right column: Futuristic Orbital Portrait Portal */}
+      <aside class="relative mx-auto w-full max-w-sm lg:max-w-none" data-reveal>
+        {/* Rotating orbital rings behind the portrait */}
+        <div
+          aria-hidden="true"
+          class="animate-orbit-slow pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] border border-dashed border-accent/30 sm:-inset-6"
+        ></div>
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -inset-2 -z-10 rounded-[2.25rem] bg-gradient-to-tr from-emerald-500/20 via-teal-500/10 to-transparent blur-2xl"
+        ></div>
+
+        {/* Sculpted Emerald Glass Portrait Frame */}
+        <div
+          data-spotlight
+          class="group relative overflow-hidden rounded-[2rem] border border-accent/35 bg-card/85 p-3 shadow-2xl shadow-emerald-950/10 backdrop-blur-xl"
+        >
+          <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] bg-bg">
+            <Image
+              src={portrait}
+              alt={profile.name}
+              width={720}
+              height={900}
+              densities={[1, 2]}
+              class="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            />
+
+            {/* Subtle emerald gradient vignette at the bottom of the portrait for HUD overlay */}
+            <div
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#04140e]/90 via-[#04140e]/45 to-transparent"
+            ></div>
+
+            {/* Top-right floating live badge */}
+            <div class="animate-float-gentle absolute right-3.5 top-3.5 inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-[#051c14]/80 px-3.5 py-1.5 text-[0.7rem] font-semibold text-emerald-100 shadow-lg backdrop-blur-md">
+              <span class="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+              <span>App Store · Web · AI</span>
             </div>
-            <div class="min-w-0">
-              <p class="text-lg font-bold tracking-tight text-fg sm:text-xl">
-                {profile.name}
-              </p>
-              <p class="mt-0.5 text-sm font-medium text-accent">
-                {locale === 'tr' ? 'Bilgisayar Mühendisi' : 'Computer Engineer'}
-              </p>
-              <p class="mt-1 text-xs text-muted">
-                {t(locale, 'hero.portraitCaption')}
-              </p>
+
+            {/* Bottom glassmorphic identity bar inside the portrait portal */}
+            <div class="absolute inset-x-3.5 bottom-3.5 rounded-2xl border border-white/15 bg-[#051c14]/80 p-4 text-white shadow-lg backdrop-blur-md">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-base font-bold tracking-tight text-white sm:text-lg">
+                    {profile.name}
+                  </p>
+                  <p class="text-xs font-medium text-emerald-300">
+                    {t(locale, 'hero.portraitCaption')}
+                  </p>
+                </div>
+                <a
+                  href={resumeHref}
+                  class="shrink-0 rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-200 transition-colors hover:bg-emerald-500 hover:text-white"
+                >
+                  CV →
+                </a>
+              </div>
             </div>
           </div>
 
-          <dl class="mt-5 divide-y divide-border/70 border-y border-border/70">
-            {
-              credentials.map((cred) => (
-                <div class="py-3">
-                  <dt class="text-[0.7rem] font-semibold uppercase tracking-wider text-muted">
-                    {cred.label}
-                  </dt>
-                  <dd class="mt-0.5 text-sm font-semibold text-fg">
-                    {cred.value}
-                  </dd>
-                </div>
-              ))
-            }
-          </dl>
-
-          <div class="mt-4 flex items-center justify-between gap-2">
+          <div class="mt-3 flex items-center justify-between px-2 py-1">
             <SocialLinks locale={locale} />
-            <a
-              href={resumeHref}
-              class="text-xs font-semibold text-accent transition-colors hover:text-fg"
-            >
-              {t(locale, 'hero.resume')} →
-            </a>
+            <span class="font-mono text-[0.7rem] font-semibold text-accent">
+              omeryasironal.com
+            </span>
           </div>
         </div>
       </aside>
+    </div>
+  </div>
+
+  {/* Infinite Futuristic Marquee Ticker */}
+  <div class="relative border-y border-accent/20 bg-card/60 py-3.5 backdrop-blur-md">
+    <div class="overflow-hidden">
+      <div class="marquee-track items-center gap-8">
+        {
+          [...marqueeItems, ...marqueeItems].map((item) => (
+            <span class="inline-flex items-center gap-3 px-4 text-xs font-semibold tracking-wide text-muted sm:text-sm">
+              <span
+                class="h-2 w-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400"
+                aria-hidden="true"
+              />
+              {item}
+            </span>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>

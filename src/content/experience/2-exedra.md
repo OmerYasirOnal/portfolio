@@ -1,15 +1,13 @@
 ---
-role_en: Software Engineer Intern
-role_tr: Yazılım Mühendisi Stajyeri
-org: Exedra HRTech (StajOkulu 2025)
+role_en: Computer Engineering Intern
+role_tr: Bilgisayar Mühendisliği Stajyeri
+org: Exedra HRTech
 location: Istanbul
 start: Jul 2025
 end: Aug 2025
 bullets_en:
-  - Completed the StajOkulu 2025 engineering program focusing on relational database systems, SQL query optimization, and Oracle PL/SQL development.
-  - Developed stored procedures, triggers, and backend data workflows within an enterprise HRTech environment.
+  - "Participated in training and hands-on work on SQL, Oracle PL/SQL, and relational database fundamentals within StajOkulu 2025, alongside seminars on software engineering and project processes."
 bullets_tr:
-  - İlişkisel veritabanı mimarisi, ileri seviye SQL sorgulama ve Oracle PL/SQL geliştirme odaklı StajOkulu 2025 programını tamamladım.
-  - Kurumsal İK teknolojileri (HRTech) ortamında saklı yordamlar (stored procedures), veri doğrulama akışları ve veritabanı katmanı üzerinde çalıştım.
+  - "StajOkulu 2025 kapsamında SQL, Oracle PL/SQL ve veri tabanı temellerine yönelik eğitim çalışmalarına katıldım; yazılım ve proje süreçlerine ilişkin seminerleri takip ettim."
 order: 3
 ---

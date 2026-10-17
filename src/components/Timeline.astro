@@ -19,7 +19,11 @@ const isPresent = (end: string) =>
   end.trim().toLowerCase() === 'present' || end.trim().toLowerCase() === 'devam';
 ---
 
-<ol class="relative ml-2 space-y-8 border-l-2 border-border pl-7 sm:pl-8" role="list">
+<ol
+  data-reveal
+  class="relative ml-3 space-y-7 before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-teal-500/45 before:to-transparent pl-7 sm:pl-9"
+  role="list"
+>
   {
     items.map((entry) => {
       const { role_en, role_tr, org, location, start, end, bullets_en, bullets_tr } =
@@ -28,31 +32,38 @@ const isPresent = (end: string) =>
       const bullets = locale === 'tr' ? bullets_tr : bullets_en;
       const current = isPresent(end);
       return (
-        <li class="relative rounded-2xl border border-border bg-card p-5 shadow-2xs sm:p-6">
-          {/* node on the rail */}
+        <li
+          data-spotlight
+          class="group relative overflow-hidden rounded-3xl border border-accent/20 bg-card/80 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/55 hover:shadow-lg hover:shadow-accent/5 sm:p-6"
+        >
+          {/* Glowing node on the emerald energy rail */}
           <span
             aria-hidden="true"
             class:list={[
-              'absolute -left-[2.3rem] top-6 grid h-3.5 w-3.5 place-items-center rounded-full border-2 bg-bg sm:-left-[2.55rem]',
-              current ? 'border-accent' : 'border-border',
+              'absolute -left-[2.2rem] top-6 grid h-4 w-4 place-items-center rounded-full border-2 bg-bg transition-transform duration-300 group-hover:scale-125 sm:-left-[2.7rem]',
+              current ? 'border-accent shadow-sm shadow-emerald-500/50' : 'border-accent/45',
             ]}
           >
-            {current && (
-              <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-            )}
+            <span
+              class:list={[
+                'h-1.5 w-1.5 rounded-full',
+                current ? 'bg-accent animate-ping' : 'bg-accent/70',
+              ]}
+              aria-hidden="true"
+            />
           </span>
 
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="text-base font-bold tracking-tight text-fg sm:text-lg">
+          <div class="relative z-10 flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-base font-bold tracking-tight text-fg transition-colors group-hover:text-accent sm:text-lg">
               {role}
             </h3>
 
             <span
               class:list={[
-                'inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold',
+                'inline-flex items-center rounded-full px-3.5 py-1 text-xs font-semibold',
                 current
-                  ? 'bg-accent/10 text-accent'
-                  : 'border border-border bg-bg text-muted',
+                  ? 'border border-accent/35 bg-accent/12 text-accent'
+                  : 'border border-accent/20 bg-bg/80 text-muted',
               ]}
             >
               <time>{start}</time>
@@ -61,19 +72,19 @@ const isPresent = (end: string) =>
             </span>
           </div>
 
-          <p class="mt-1 text-sm font-medium text-muted">
-            <span class="text-fg/90">{org}</span>
-            <span aria-hidden="true" class="mx-1.5 text-border">·</span>
+          <p class="relative z-10 mt-1 text-sm font-medium text-muted">
+            <span class="font-semibold text-fg/90">{org}</span>
+            <span aria-hidden="true" class="mx-1.5 text-accent/50">·</span>
             <span>{location}</span>
           </p>
 
           {bullets.length > 0 && (
-            <ul class="mt-3.5 space-y-2 text-sm leading-relaxed text-muted" role="list">
+            <ul class="relative z-10 mt-4 space-y-2 text-sm leading-relaxed text-muted" role="list">
               {bullets.map((bullet) => (
                 <li class="relative pl-4">
                   <span
                     aria-hidden="true"
-                    class="absolute left-0 top-[0.55em] h-1.5 w-1.5 rounded-full bg-accent/70"
+                    class="absolute left-0 top-[0.55em] h-1.5 w-1.5 rounded-full bg-accent"
                   />
                   {bullet}
                 </li>

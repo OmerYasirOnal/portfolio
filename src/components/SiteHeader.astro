@@ -26,9 +26,9 @@ const navLinks = [
 ];
 ---
 
-<header id="top" class="sticky top-0 z-40 border-b border-border/80 bg-bg/90 backdrop-blur-md">
+<header id="top" class="sticky top-3 z-40 px-4 sm:top-4 sm:px-6">
   <nav
-    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5"
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-accent/25 bg-card/80 px-4 py-2.5 shadow-lg shadow-accent/5 backdrop-blur-xl sm:px-6 sm:py-3"
     aria-label="Primary"
   >
     <a
@@ -36,7 +36,7 @@ const navLinks = [
       class="group flex items-center gap-3 text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
       <span
-        class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-xs font-bold tracking-tight text-bg shadow-2xs"
+        class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-xs font-bold tracking-tight text-white shadow-sm shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-105"
         aria-hidden="true"
       >
         ÖY
@@ -45,7 +45,7 @@ const navLinks = [
         <span class="text-sm font-bold tracking-tight text-fg sm:text-base">
           {profile.name}
         </span>
-        <span class="hidden text-[0.7rem] font-medium text-muted lg:inline">
+        <span class="hidden text-[0.7rem] font-medium text-accent lg:inline">
           {locale === 'tr' ? 'Bilgisayar Mühendisi' : 'Computer Engineer'}
         </span>
       </span>
@@ -58,7 +58,7 @@ const navLinks = [
             <li>
               <a
                 href={item.href}
-                class="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-card hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                class="rounded-full px-3.5 py-1.5 text-sm font-medium text-muted transition-all hover:bg-accent/10 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 {t(locale, item.key)}
               </a>
@@ -72,8 +72,9 @@ const navLinks = [
 
       <a
         href={`${home}#contact`}
-        class="ml-1 inline-flex items-center gap-1.5 rounded-lg bg-accent px-3.5 py-2 text-xs font-semibold text-bg shadow-2xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:px-4 sm:text-sm"
+        class="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-emerald-600/25 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-emerald-500/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:px-4.5 sm:text-sm"
       >
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-200" aria-hidden="true"></span>
         {t(locale, 'nav.cta')}
       </a>
     </div>

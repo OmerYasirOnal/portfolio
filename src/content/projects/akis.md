@@ -1,32 +1,32 @@
 ---
 title: AKIS
-tagline_en: Multi-agent AI software platform with human approval gates and verified delivery workflows.
-tagline_tr: İnsan onay adımları ve otomatik kalite doğrulamasıyla çalışan çok ajanlı yapay zeka yazılım platformu.
+tagline_en: University capstone project | AI agent orchestration platform with human-approved execution flows, traceable logs, and Dockerized build/boot checks.
+tagline_tr: Üniversite bitirme projesi | İnsan onaylı yürütme akışları, izlenebilir kayıtlar ve Docker tabanlı derleme/başlatma kontrollerine sahip AI ajan orkestrasyonu.
 category: AI-Agents
 group: product
 image: akis.jpg
 stack:
-  - Çok Ajanlı Yapay Zeka
-  - İş Akışı Otomasyonu
-  - İnsan Onay Mekanizması
-  - Kalite & Güvenlik Doğrulama
-  - Web Kontrol Paneli
-status_en: Open-Source Platform
-status_tr: Açık Kaynak Platform
+  - TypeScript & Node.js
+  - PostgreSQL Veri Tabanı
+  - AI Ajan Orkestrasyonu
+  - LLM API & MCP Entegrasyonu
+  - Docker & Otomatik Test Kontrolleri
+status_en: Capstone Project · Open Source
+status_tr: Bitirme Projesi · Açık Kaynak
 links:
   repo: https://github.com/OmerYasirOnal/akis
 highlights_en:
-  - Coordinates specialized AI agents (planning, implementation, review, verification) behind structured human approval steps.
-  - Ensures no automated task is marked complete without passing real verification tests and human sign-off.
-  - Provides a clean web dashboard to monitor workflows, audit logs, and cryptographic delivery proof.
+  - Developed agent task lifecycles, traceable audit logs, and human-approved execution workflows using TypeScript/Node.js and PostgreSQL.
+  - Integrated Model Context Protocol (MCP) and LLM APIs with Docker-based execution and automated test/build checks.
+  - Verified that generated applications actually compile and boot before marking tasks complete.
 highlights_tr:
-  - Planlama, geliştirme, denetim ve test süreçlerini yürüten uzman yapay zeka ajanlarını insan onay adımlarıyla koordine eder.
-  - Hiçbir otomatik işlemin gerçek kalite testlerinden ve insan onayından geçmeden canlı sistemlere yansımasını engeller.
-  - Tüm iş akışlarını, güvenlik kayıtlarını ve teslimat doğrulamalarını tek ekrandan izleme imkanı sunar.
-problem_en: Autonomous AI tools often produce unverified outputs without human oversight, creating reliability and security risks for real software projects.
-problem_tr: Kontrolsüz çalışan yapay zeka araçları, insan denetimi ve gerçek kalite testi olmadan hatalı çıktılar üretebildiği için kurumsal süreçlerde güven sorunu yaratır.
-what_i_did_en: Designed and engineered AKIS as a multi-agent AI platform where every step is transparent, verified by automated tests, and governed by human approval gates.
-what_i_did_tr: Yapay zeka otomasyonunu insan denetimi, otomatik doğrulama testleri ve güvenlik katmanlarıyla birleştiren çok ajanlı AKIS platformunu tasarlayıp geliştirdim.
+  - TypeScript/Node.js ve PostgreSQL ile ajan görev yaşam döngüsü, izlenebilir kayıtlar ve insan onaylı yürütme akışları geliştirdim.
+  - MCP ve LLM API entegrasyonlarını, Docker tabanlı çalıştırmayı ve test/derleme kontrollerini bir araya getirdim.
+  - Üretilen uygulamaların gerçekten derlenip başlatılabildiğini otomatik kontrollerle doğrulayan bir mimari kurdum.
+problem_en: Autonomous AI coding workflows often lack traceable task lifecycles, human approval gates, and real verification that generated applications can actually boot.
+problem_tr: Otonom yapay zeka ajanları çoğu zaman izlenebilir görev kayıtları, insan onay adımları ve üretilen uygulamanın gerçekten çalıştığını doğrulayan kontroller olmadan işlem yapar.
+what_i_did_en: Built AKIS as my university capstone project using TypeScript/Node.js, PostgreSQL, Docker, MCP, and LLM APIs to orchestrate AI agents behind human approval flows and automated boot verification.
+what_i_did_tr: Üniversite bitirme projem olarak; TypeScript/Node.js, PostgreSQL, Docker, MCP ve LLM API entegrasyonlarıyla insan onaylı ve doğrulanabilir AI ajan orkestrasyon platformu AKIS’i geliştirdim.
 featured: true
 order: 6
 ---

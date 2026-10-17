@@ -1,7 +1,7 @@
 /**
  * CV-only data layer.
  *
- * Synced with the user's latest 2-page CV (Oct 2026) and zero em dashes.
+ * Synced 100% with the user's latest 2-page CV (Oct 2026) and zero em dashes.
  */
 import type { Locale } from './i18n';
 
@@ -23,79 +23,79 @@ export const cv = {
   /** Extra contact endpoints shown on the CV contact line. */
   website: 'https://omeryasironal.com',
 
-  availabilityRemote: 'Open to remote / international and freelance roles (UTC+3)',
+  availabilityRemote: 'Open to relocation, remote/international, and freelance roles (UTC+3)',
   gdprConsent:
     'I consent to the processing of my personal data for recruitment purposes (GDPR).',
 
-  /** Long-form professional summary matching the latest CV. */
+  /** Long-form professional summary matching the uploaded CV. */
   summary: {
-    en: 'Final-year Computer Engineering background (graduated June 2026) with a focus on backend services and applied AI systems. I built AKIS, an agent-assisted software workflow platform with human approval gates and cryptographic build provenance, and shipped Odak (native SwiftUI iOS/iPadOS/macOS) and UniSum (Flutter/SwiftUI + FastAPI/Node + MySQL) to the App Store. I also deliver end-to-end corporate web, brand infrastructure, and SEO/AIO solutions (Parla Deniz, Öz & Saye, A2 Reklam). Author of an IEEE SIU 2025 paper produced from a TÜBİTAK 2209-A research project.',
-    tr: 'Backend servisleri, mobil uygulama geliştirme, kurumsal web altyapıları ve uygulamalı yapay zeka sistemleri odağında çalışan Bilgisayar Mühendisi. İnsan onay kapıları ve kriptografik build provenance içeren çok ajanlı yazılım platformu AKIS’i geliştirdim; native SwiftUI ile geliştirdiğim Odak (iOS, iPadOS, macOS) ve UniSum uygulamalarını App Store’da yayınladım. Kurumsal markalar için uçtan uca web sitesi, yönetim paneli ve SEO/AIO altyapıları (Parla Deniz, Öz & Saye, A2 Reklam) kuruyorum. TÜBİTAK 2209-A araştırma projesinden üretilen IEEE SIU 2025 bildirisinin ilk yazarıyım.',
+    en: 'Computer Engineer focused on developing APIs and databases with Node.js and Python. Published UniSum on the App Store with its own backend and Odak across iPhone, iPad, and Mac; took full responsibility for scope, implementation, testing, and delivery in client projects (Öz & Saye Psikoloji, A2 Reklam, Parla Deniz). Built AKIS for AI agent orchestration as my university capstone project, and co-authored an IEEE SIU 2025 paper from a TÜBİTAK 2209-A research project.',
+    tr: 'Node.js ve Python ile API ve veri tabanı geliştirmeye odaklanan bilgisayar mühendisiyim. UniSum’u kendi backend’iyle App Store’da yayımladım; müşteri projelerinde kapsam, uygulama, test ve teslim sorumluluğu aldım. Yeni teknolojileri proje ihtiyaçlarına göre öğreniyor; geliştirdiğim çözümleri gereksinimlere uygunluk, otomatik testler ve uygulama kontrolleriyle doğruluyorum.',
   } satisfies CvSummary,
 
   /**
-   * Curated, ordered résumé projects matching the CV + client highlights.
+   * Curated, ordered résumé projects matching the CV.
    */
   projects: [
     {
-      slug: 'odak',
-      en: 'Native SwiftUI task, planning, and Pomodoro focus app live on the App Store across iOS, iPadOS, and macOS. Shared SwiftPM core (OdakKit), SwiftData + CloudKit iCloud sync, ActivityKit Live Activity & Dynamic Island, WidgetKit, and native macOS menu bar timer.',
-      tr: 'iOS, iPadOS ve macOS için App Store’da yayında olan native SwiftUI görev, planlama ve Pomodoro odak uygulaması. Ortak SwiftPM çekirdeği (OdakKit), SwiftData ve CloudKit ile iCloud senkronizasyonu, ActivityKit Canlı Etkinlik / Dynamic Island, WidgetKit ve macOS menü çubuğu sayacı.',
-    },
-    {
       slug: 'unisum',
-      en: 'AI-powered university course summarization and academic tracking platform live on the App Store. Combines mobile client, asynchronous Python/FastAPI and Node/Express REST APIs, MySQL persistence, and LLM-based structured lecture summarization.',
-      tr: 'App Store’da yayında olan yapay zeka destekli üniversite ders özetleme ve akademik takip platformu. Mobil istemci, Python/FastAPI ve Node/Express tabanlı REST API, MySQL veri katmanı ve LLM tabanlı yapılandırılmış ders özetleme akışı.',
+      en: 'App Store published product: Developed a SwiftUI application and Node.js/Express/MySQL REST API for academic performance tracking. Implemented JWT/bcrypt authentication, CORS, and rate limiting.',
+      tr: 'App Store’da yayımlanan ürün: Akademik performans takibi için SwiftUI uygulaması ve Node.js/Express/MySQL REST API geliştirdim. JWT/bcrypt ile kimlik doğrulama, CORS ve istek sınırlama uyguladım.',
     },
     {
       slug: 'akis',
-      en: 'Open-source (Apache-2.0) multi-agent AI software platform: an orchestrator dispatching 5 role-separated agents behind 4 structural human-approval gates and a verification loop; Ed25519-signed build provenance and OWASP-LLM guardrails.',
-      tr: 'Açık kaynak (Apache-2.0) çok ajanlı yapay zeka yazılım platformu: 5 rol ayrık ajanı 4 yapısal insan onay kapısı ve doğrulama döngüsü ardında yöneten orkestratör; Ed25519 imzalı build provenance ve OWASP-LLM güvenlik katmanları.',
+      en: 'University capstone project | AI agent orchestration: Built agent task lifecycle, traceable logs, and human-approved execution flows with TypeScript/Node.js and PostgreSQL. Combined MCP and LLM API integrations, Dockerized execution, and test/build checks verifying that generated applications boot.',
+      tr: 'Üniversite bitirme projesi | AI ajan orkestrasyonu: TypeScript/Node.js ve PostgreSQL ile ajan görev yaşam döngüsü, izlenebilir kayıtlar ve insan onaylı yürütme akışları geliştirdim. MCP ve LLM API entegrasyonlarını, Docker tabanlı çalıştırmayı ve test/derleme kontrollerini bir araya getirdim.',
     },
     {
-      slug: 'parladeniz',
-      en: 'End-to-end corporate web and brand infrastructure for Parla Deniz Aesthetic in Nişantaşı (parladeniz.com): bilingual TR/EN Astro + Tailwind site, BeautySalon Schema.org JSON-LD, llms.txt AIO corpus, Cloudflare DNS/Email Routing, and Google Business Profile.',
-      tr: 'Nişantaşı Parla Deniz Güzellik Merkezi (parladeniz.com) için uçtan uca kurumsal web ve marka kurulumu: iki dilli (TR/EN) Astro + Tailwind sitesi, BeautySalon Schema.org JSON-LD, llms.txt AIO mimarisi, Cloudflare DNS/E-posta ve Google İşletme Profili.',
+      slug: 'odak',
+      en: 'Multi-platform product: Built a SwiftUI task and Pomodoro application for iPhone, iPad, and Mac using shared SwiftPM business logic, SwiftData, and iCloud sync.',
+      tr: 'Çok platformlu ürün: iPhone, iPad ve Mac için SwiftUI görev ve Pomodoro uygulaması geliştirdim; ortak SwiftPM iş mantığı, SwiftData ve iCloud eşitlemesi kullandım.',
     },
     {
       slug: 'ozsaye',
-      en: 'Full-stack psychotherapy clinic platform live at ozsaye.com: Next.js 16 + React 19 + PostgreSQL/Prisma with a custom RBAC admin CMS, dynamic clinical test scoring engine, appointment leads, and automated sitemap/SEO.',
-      tr: 'ozsaye.com adresinde yayında olan full-stack psikoterapi kliniği platformu: Next.js 16, React 19 ve PostgreSQL/Prisma üzerinde rol bazlı özel yönetim paneli, dinamik klinik ölçek puanlama motoru, randevu yönetimi ve teknik SEO.',
+      en: 'Built an SEO/AIO-focused corporate website and custom management panel supporting content management and application workflows using Next.js and PostgreSQL (ozsaye.com).',
+      tr: 'Next.js ve PostgreSQL ile SEO/AIO odaklı kurumsal web sitesi, içerik yönetimi ve başvuru süreçlerini destekleyen yönetim paneli geliştirdim (ozsaye.com).',
     },
     {
       slug: 'a2reklam',
-      en: 'Corporate web and local SEO infrastructure live at a2reklam.com: 341-page trilingual (TR/EN/AR) Astro static platform covering 39 Istanbul districts, Schema.org JSON-LD, GTM/GA4 conversion tracking, and hardened contact endpoint.',
-      tr: 'a2reklam.com adresinde yayında olan kurumsal web ve yerel SEO platformu: İstanbul’un 39 ilçesini kapsayan 341 sayfalık üç dilli (TR/EN/AR) Astro mimarisi, Schema.org JSON-LD, GTM/GA4 dönüşüm takibi ve güvenli teklif uç noktası.',
+      en: 'Built a multi-language corporate website with Astro and Cloudflare, established SEO and GTM/GA4 analytics infrastructure, and manage Google Ads campaigns (a2reklam.com).',
+      tr: 'Astro ve Cloudflare ile çok dilli kurumsal web sitesi geliştirdim; SEO ve GTM/GA4 ölçüm altyapısını kurdum. Google Ads kampanya yönetimini sürdürüyorum (a2reklam.com).',
+    },
+    {
+      slug: 'parladeniz',
+      en: 'Built an SEO/AIO-focused Turkish and English website; managed service/blog content presentation, domain/email configuration, and launch processes (parladeniz.com).',
+      tr: 'SEO/AIO odaklı Türkçe ve İngilizce web sitesi geliştirdim; hizmet ve blog içeriklerinin sunumu, alan adı/e-posta yapılandırması ve yayına alma süreçlerini yürüttüm (parladeniz.com).',
     },
   ] satisfies CvProject[],
 
   skills: {
     order: ['Backend & APIs', 'AI & LLM Engineering', 'Brand, SEO & AIO', 'DevOps & Infra'],
     frontendMobile: {
-      title_en: 'Mobile & Web',
-      title_tr: 'Mobil & Web',
-      en: 'Swift 6 / SwiftUI (iOS, iPadOS, macOS), Flutter / Dart, SwiftData, CloudKit · Astro, Next.js, React, TypeScript, Tailwind CSS',
-      tr: 'Swift 6 / SwiftUI (iOS, iPadOS, macOS), Flutter / Dart, SwiftData, CloudKit · Astro, Next.js, React, TypeScript, Tailwind CSS',
+      title_en: 'Web & Mobile',
+      title_tr: 'Web ve Mobil',
+      en: 'Next.js, React, Astro, Tailwind CSS, SwiftUI',
+      tr: 'Next.js, React, Astro, Tailwind CSS, SwiftUI',
     },
   },
 
   education: {
     degree: {
-      en: 'B.Sc. Computer Engineering (50% English-medium)',
-      tr: 'Bilgisayar Mühendisliği (Lisans, %50 İngilizce)',
+      en: 'B.Sc. Computer Engineering',
+      tr: 'Bilgisayar Mühendisliği Lisans',
     },
   },
 
   writing: {
-    en: 'Author of {n} Medium articles on software architecture and AI agents',
-    tr: 'Yazılım mimarisi ve yapay zeka ajanları üzerine {n} Medium yazısının yazarı',
+    en: 'Author of {n} Medium articles on software architecture and AI systems',
+    tr: 'Yazılım mimarisi ve yapay zeka sistemleri üzerine {n} Medium yazısının yazarı',
   },
 
   sections: {
-    summary: { en: 'Summary', tr: 'Özet' },
-    skills: { en: 'Skills', tr: 'Yetenekler' },
+    summary: { en: 'Profile', tr: 'Profil' },
+    skills: { en: 'Technical Skills', tr: 'Teknik Yetkinlikler' },
     experience: { en: 'Experience', tr: 'Deneyim' },
-    projects: { en: 'Projects', tr: 'Projeler' },
+    projects: { en: 'Selected Projects', tr: 'Seçili Projeler' },
     publications: { en: 'Publications', tr: 'Yayınlar' },
     writing: { en: 'Writing', tr: 'Yazılar' },
     certifications: { en: 'Certifications', tr: 'Sertifikalar' },
