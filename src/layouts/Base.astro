@@ -42,7 +42,8 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     <meta name="description" content={description} />
     <meta name="author" content="Ömer Yasir Önal" />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#f1f7f4" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f7f4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#040d09" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -18,23 +18,24 @@ const contactHref = `${localizePath(locale, '/')}#contact`;
 const hint = t(locale, 'social.opensNewTab');
 ---
 
-<section class="mx-auto max-w-6xl px-6 pb-16">
+<section class="mx-auto max-w-6xl px-6 pb-16" data-reveal>
   <div
-    class="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-8"
+    data-spotlight
+    class="flex flex-col gap-6 overflow-hidden rounded-3xl border border-accent/25 bg-card/85 p-6 shadow-xl shadow-accent/5 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-10"
   >
-    <div>
-      <h2 class="text-xl font-bold tracking-tight text-fg sm:text-2xl">
+    <div class="relative z-10">
+      <h2 class="text-xl font-bold tracking-tight text-fg sm:text-3xl">
         {t(locale, 'packages.ctaTitle')}
       </h2>
-      <p class="mt-2 max-w-md text-sm leading-relaxed text-muted">
+      <p class="mt-2.5 max-w-md text-sm leading-relaxed text-muted sm:text-base">
         {t(locale, 'packages.ctaText')}
       </p>
     </div>
 
-    <div class="flex flex-wrap gap-3">
+    <div class="relative z-10 flex flex-wrap gap-3.5">
       <a
         href={contactHref}
-        class="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-bg shadow-2xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <svg
           width="16"
@@ -58,7 +59,7 @@ const hint = t(locale, 'social.opensNewTab');
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${t(locale, 'packages.ctaWhatsapp')} (${hint})`}
-        class="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-semibold text-[#0a0a0b] shadow-2xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+        class="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-bold text-[#051c14] shadow-md transition-all hover:-translate-y-0.5 hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
           <path

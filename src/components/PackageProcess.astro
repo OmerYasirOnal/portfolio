@@ -12,17 +12,30 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="mx-auto max-w-6xl px-6 pb-16">
+<section class="mx-auto max-w-6xl px-6 pb-16" data-reveal>
   <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
     {t(locale, 'packages.processTitle')}
   </h2>
 
   <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
     {
-      packageProcess.map((step) => (
-        <li class="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-2xs">
-          <h3 class="text-base font-bold tracking-tight text-fg">{step.title[locale]}</h3>
-          <p class="mt-2.5 text-sm leading-relaxed text-muted">{step.description[locale]}</p>
+      packageProcess.map((step, idx) => (
+        <li
+          data-spotlight
+          class="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-accent/20 bg-card/80 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/55 hover:shadow-lg hover:shadow-accent/5"
+        >
+          <div class="relative z-10 flex items-center justify-between">
+            <span class="grid h-8 w-8 place-items-center rounded-full bg-accent/12 font-mono text-xs font-bold text-accent">
+              0{idx + 1}
+            </span>
+            <span class="h-1.5 w-1.5 rounded-full bg-accent/60 transition-transform duration-300 group-hover:scale-150 group-hover:bg-accent" aria-hidden="true" />
+          </div>
+          <h3 class="relative z-10 mt-4 text-base font-bold tracking-tight text-fg sm:text-lg">
+            {step.title[locale]}
+          </h3>
+          <p class="relative z-10 mt-2 text-sm leading-relaxed text-muted">
+            {step.description[locale]}
+          </p>
         </li>
       ))
     }

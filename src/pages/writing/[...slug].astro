@@ -61,18 +61,18 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <article class="mx-auto max-w-3xl px-6 pb-20 pt-12">
+    <article class="mx-auto max-w-3xl px-6 pb-20 pt-12" data-reveal>
       <a
         href={localizePath(locale, '/writing')}
-        class="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-card/80 px-4 py-2 text-xs font-semibold text-muted shadow-2xs backdrop-blur-md transition-all hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <svg
-          width="15"
-          height="15"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
+          stroke-width="2.2"
           stroke-linecap="round"
           stroke-linejoin="round"
           aria-hidden="true"
@@ -82,19 +82,19 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
         {t(locale, 'writing.backToAll')}
       </a>
 
-      <header class="mt-6 border-b border-border/70 pb-8">
-        <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+      <header class="mt-6 border-b border-accent/20 pb-8">
+        <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-fg sm:text-5xl">
           {data.title}
         </h1>
 
-        <p class="mt-3 text-lg leading-relaxed text-muted">{data.description}</p>
+        <p class="mt-3.5 text-lg leading-relaxed text-muted sm:text-xl">{data.description}</p>
 
         <p class="mt-5 flex flex-wrap items-center gap-2 text-xs font-medium text-muted">
           <time datetime={data.date}>{formatDate(data.date)}</time>
           {
             data.updated && (
               <>
-                <span aria-hidden="true" class="text-border">·</span>
+                <span aria-hidden="true" class="text-accent/50">·</span>
                 <span>
                   {t(locale, 'writing.updated')}:{' '}
                   <time datetime={data.updated}>{formatDate(data.updated)}</time>
@@ -102,15 +102,15 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
               </>
             )
           }
-          <span aria-hidden="true" class="text-border">·</span>
+          <span aria-hidden="true" class="text-accent/50">·</span>
           <span>{minutes} {t(locale, 'writing.minRead')}</span>
         </p>
 
         {
           data.tags.length > 0 && (
-            <ul class="mt-4 flex flex-wrap gap-2" role="list">
+            <ul class="mt-5 flex flex-wrap gap-2" role="list">
               {data.tags.map((tag) => (
-                <li class="rounded-full border border-border bg-card px-3 py-0.5 text-xs font-medium text-muted">
+                <li class="rounded-full border border-accent/20 bg-bg/80 px-3.5 py-1 text-xs font-semibold text-muted">
                   {tag}
                 </li>
               ))}

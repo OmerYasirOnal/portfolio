@@ -38,12 +38,13 @@ const downloads = [
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-6 pb-20 pt-16">
-      <div class="rounded-2xl border border-border bg-card p-6 shadow-2xs sm:p-10">
-        <p class="text-xs font-semibold uppercase tracking-wider text-accent">
+    <section class="mx-auto max-w-6xl px-6 pb-20 pt-16" data-reveal>
+      <div data-spotlight class="overflow-hidden rounded-3xl border border-accent/25 bg-card/85 p-6 shadow-xl shadow-accent/5 backdrop-blur-xl sm:p-10">
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
           {profile.name}
         </p>
-        <h1 class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
           {t(locale, 'cv.title')}
         </h1>
         <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
@@ -58,8 +59,8 @@ const downloads = [
                 download
                 class={
                   d.primary
-                    ? 'inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-bg shadow-2xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-                    : 'inline-flex items-center gap-2 rounded-xl border border-border bg-bg px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                    ? 'inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                    : 'inline-flex items-center gap-2 rounded-full border border-accent/25 bg-card/80 px-6 py-3.5 text-sm font-semibold text-fg transition-all hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
                 }
               >
                 <svg
@@ -84,7 +85,7 @@ const downloads = [
           <a
             href="/cv/omer-yasir-onal-showcase.pdf"
             download
-            class="inline-flex items-center gap-1.5 font-semibold text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 font-semibold text-accent transition-all hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'cv.downloadShowcase')} <span aria-hidden="true">→</span>
           </a>
