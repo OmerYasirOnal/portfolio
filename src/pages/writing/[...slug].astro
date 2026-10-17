@@ -16,7 +16,7 @@ export async function getStaticPaths() {
   return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
-const locale: Locale = 'en';
+const locale: Locale = 'tr';
 const { entry } = Astro.props;
 const { data } = entry;
 const path = localizePath(locale, `/writing/${entry.id}`);
@@ -51,7 +51,7 @@ const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
 ---
 
 <Base
-  title={`${data.title} — Ömer Yasir Önal`}
+  title={`${data.title} | Ömer Yasir Önal`}
   description={data.description}
   path={path}
   lang={locale}

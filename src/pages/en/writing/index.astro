@@ -14,8 +14,8 @@ import {
   jsonLdScript,
 } from '../../../lib/seo';
 
-const locale: Locale = 'tr';
-const path = '/tr/writing';
+const locale: Locale = 'en';
+const path = '/en/writing';
 
 const articles = (await getCollection('writing')).sort((a, b) =>
   a.data.date < b.data.date ? 1 : -1,
@@ -59,7 +59,7 @@ const pubsLd = pubs.map((p) =>
 ---
 
 <Base
-  title={`${t(locale, 'section.writing')} — Ömer Yasir Önal`}
+  title={`${t(locale, 'section.writing')} | Ömer Yasir Önal`}
   description={t(locale, 'seo.writing.description')}
   path={path}
   lang={locale}

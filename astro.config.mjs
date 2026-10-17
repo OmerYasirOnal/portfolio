@@ -8,8 +8,8 @@ export default defineConfig({
   site: 'https://omeryasironal.com',
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'tr'],
+    defaultLocale: 'tr',
+    locales: ['tr', 'en'],
     routing: { prefixDefaultLocale: false },
   },
 
@@ -18,10 +18,10 @@ export default defineConfig({
     sitemap({
       // The /cv-print/* pages are noindex PDF render sources, not public pages.
       filter: (page) => !page.includes('/cv-print/'),
-      // Emit <xhtml:link rel="alternate" hreflang> pairs for the EN/TR mirror.
+      // Emit <xhtml:link rel="alternate" hreflang> pairs for the TR/EN mirror.
       i18n: {
-        defaultLocale: 'en',
-        locales: { en: 'en', tr: 'tr' },
+        defaultLocale: 'tr',
+        locales: { tr: 'tr', en: 'en' },
       },
     }),
   ],

@@ -38,11 +38,11 @@ import {
 import { courseSlugOf } from '../../lib/courses';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
-const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0b
-const BG_CARD: [number, number, number] = [20, 20, 23]; //  --color-card  #141417
-const FG: [number, number, number] = [237, 237, 239]; //    --color-fg    #ededef
-const MUTED: [number, number, number] = [155, 155, 163]; // --color-muted #9b9ba3
-const ACCENT: [number, number, number] = [167, 139, 250]; // --color-accent #a78bfa
+const BG_DARK: [number, number, number] = [11, 15, 23]; //  --color-bg    #0b0f17
+const BG_CARD: [number, number, number] = [17, 24, 39]; //  --color-card  #111827
+const FG: [number, number, number] = [241, 245, 249]; //    --color-fg    #f1f5f9
+const MUTED: [number, number, number] = [148, 163, 184]; // --color-muted #94a3b8
+const ACCENT: [number, number, number] = [56, 189, 248]; // --color-accent #38bdf8
 
 interface OgPage {
   /** Large heading line. */
@@ -119,7 +119,7 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     border: { color: ACCENT, width: 12, side: 'inline-start' },
     padding: 72,
     font: {
-      // `families` must match each file's internal family name exactly — the
+      // `families` must match each file's internal family name exactly - the
       // generator uses ParagraphBuilder.Make (no glyph-level cross-family
       // fallback), so a mismatch would silently fall back to another font.
       title: {
@@ -139,7 +139,7 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     },
     // Each file merges the `latin` + `latin-ext` subsets into a single typeface
     // so a single family covers ASCII, Latin-1 (ö, ç) AND the Turkish glyphs
-    // (ğ, ş, ı, İ) used in the TR taglines — see src/assets/og-fonts/README.md.
+    // (ğ, ş, ı, İ) used in the TR taglines - see src/assets/og-fonts/README.md.
     fonts: [
       './src/assets/og-fonts/inter-700-full.ttf',
       './src/assets/og-fonts/jetbrains-500-full.ttf',

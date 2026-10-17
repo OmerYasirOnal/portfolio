@@ -18,7 +18,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const locale: Locale = 'en';
+const locale: Locale = 'tr';
 const { entry } = Astro.props;
 const { data } = entry;
 const path = localizePath(locale, `/projects/${entry.id}`);
@@ -48,7 +48,7 @@ const breadcrumbLd = breadcrumbJsonLd([
 ---
 
 <Base
-  title={`${data.title} — Ömer Yasir Önal`}
+  title={`${data.title} | Ömer Yasir Önal`}
   description={tagline}
   path={path}
   lang={locale}

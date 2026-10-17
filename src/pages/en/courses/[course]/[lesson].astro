@@ -20,7 +20,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const locale: Locale = 'tr';
+const locale: Locale = 'en';
 const { entry, course } = Astro.props;
 const slug = courseSlugOf(entry.id);
 const lessonSlug = lessonSlugOf(entry.id);
@@ -43,7 +43,7 @@ const breadcrumbLd = breadcrumbJsonLd([
 ---
 
 <Base
-  title={`${entry.data.title} — ${course.data.title} — Ömer Yasir Önal`}
+  title={`${entry.data.title} | ${course.data.title} | Ömer Yasir Önal`}
   description={entry.data.description ?? course.data.description}
   path={path}
   lang={locale}

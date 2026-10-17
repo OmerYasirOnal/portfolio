@@ -8,7 +8,7 @@ import { ogCoursesPath } from '../../lib/og';
 import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../lib/seo';
 import { courseSlugOf } from '../../lib/courses';
 
-const locale: Locale = 'en';
+const locale: Locale = 'tr';
 const path = '/courses';
 
 const courses = (await getCollection('courses', (e) => !e.data.draft)).sort(
@@ -24,7 +24,7 @@ const breadcrumbLd = breadcrumbJsonLd([
 ---
 
 <Base
-  title={`${t(locale, 'courses.title')} — Ömer Yasir Önal`}
+  title={`${t(locale, 'courses.title')} | Ömer Yasir Önal`}
   description={t(locale, 'seo.courses.description')}
   path={path}
   lang={locale}

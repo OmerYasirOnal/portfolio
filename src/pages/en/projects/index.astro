@@ -8,8 +8,8 @@ import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogProjectsPath } from '../../../lib/og';
 import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../../lib/seo';
 
-const locale: Locale = 'tr';
-const path = '/tr/projects';
+const locale: Locale = 'en';
+const path = '/en/projects';
 
 const breadcrumbLd = breadcrumbJsonLd([
   { name: t(locale, 'nav.work'), url: canonicalHref(localizePath(locale, '/projects'), Astro.site!) },
@@ -26,7 +26,7 @@ const more = all.filter((e) => !e.data.featured);
 ---
 
 <Base
-  title={`${t(locale, 'projects.title')} — Ömer Yasir Önal`}
+  title={`${t(locale, 'projects.title')} | Ömer Yasir Önal`}
   description={t(locale, 'seo.projects.description')}
   path={path}
   lang={locale}

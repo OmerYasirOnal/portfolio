@@ -1,6 +1,6 @@
 ---
 /**
- * Visual project-showcase — PDF render source (NOT a public page — noindex).
+ * Visual project-showcase - PDF render source (NOT a public page - noindex).
  *
  * `scripts/build-cv.mjs` builds the site, then prints the built HTML of
  * `dist/cv-print/showcase/index.html` to
@@ -8,7 +8,7 @@
  *
  * A one-page A4-LANDSCAPE visual companion to the text CV: the top projects as
  * cards (screenshot + name + one-line description + tech chips + link). Images
- * are fine here — this is a visual piece, not an ATS document. Copy is REUSED
+ * are fine here - this is a visual piece, not an ATS document. Copy is REUSED
  * from the content collections + `src/data/showcase.ts`; nothing is duplicated.
  *
  * Screenshots are inlined as data URIs so they resolve when Brave prints the
@@ -80,7 +80,7 @@ const fold = asciiFold;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>{fold(profile.name)} — {showcase.header.tagline}</title>
+    <title>{fold(profile.name)} - {showcase.header.tagline}</title>
     <style>
       /* Landscape A4; full-bleed sides so the violet band reaches both edges. */
       @page {
@@ -299,7 +299,7 @@ const fold = asciiFold;
     <!-- ============================== HEADER BAND ========================== -->
     <header class="band">
       <div>
-        <h1 class="name">{fold(profile.name)} — {showcase.header.tagline}</h1>
+        <h1 class="name">{fold(profile.name)} - {showcase.header.tagline}</h1>
         <p class="tagline">{fold(profile.role.en)}</p>
       </div>
       <div class="band-right">

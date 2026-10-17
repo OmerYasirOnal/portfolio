@@ -20,8 +20,8 @@ import {
   serviceOfferCatalogJsonLd,
 } from '../../lib/seo';
 
-const locale: Locale = 'tr';
-const path = '/tr/packages';
+const locale: Locale = 'en';
+const path = '/en/packages';
 
 const breadcrumbLd = breadcrumbJsonLd([
   { name: t(locale, 'packages.title'), url: canonicalHref(localizePath(locale, '/packages'), Astro.site!) },
@@ -41,7 +41,6 @@ const serviceLd = serviceOfferCatalogJsonLd(
       ...packageTiers.map((tier) => ({
         name: tier.name[locale],
         description: tier.tagline[locale],
-        priceFrom: tier.priceFrom,
       })),
     ],
   },
@@ -54,7 +53,7 @@ const faqLd = faqPageJsonLd(
 ---
 
 <Base
-  title={`${t(locale, 'packages.title')} — ${profile.name}`}
+  title={`${t(locale, 'packages.title')} | ${profile.name}`}
   description={t(locale, 'seo.packages.description')}
   path={path}
   lang={locale}

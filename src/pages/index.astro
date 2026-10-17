@@ -16,21 +16,21 @@ import { profile } from '../data/profile';
 import { personJsonLd, webSiteJsonLd, jsonLdScript } from '../lib/seo';
 import { ogHomePath } from '../lib/og';
 
-const locale: Locale = 'en';
+const locale: Locale = 'tr';
 const path = '/';
 
-// schema.org Person + WebSite, derived from profile.ts — injected on the home page.
+// schema.org Person + WebSite, derived from profile.ts | injected on the home page.
 const personLd = personJsonLd(Astro.site, locale);
 const siteLd = webSiteJsonLd(Astro.site);
 
-// Featured, non-draft projects, in curated order — single source of truth.
+// Featured, non-draft projects, in curated order | single source of truth.
 const featured = (
   await getCollection('projects', (e) => e.data.featured && !e.data.draft)
 ).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Base
-  title={`${profile.name} — ${profile.role[locale]}`}
+  title={`${profile.name} | ${profile.role[locale]}`}
   description={t(locale, 'seo.home.description')}
   path={path}
   lang={locale}

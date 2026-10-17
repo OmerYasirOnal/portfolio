@@ -7,8 +7,8 @@ import { t, localizePath, type Locale } from '../../data/i18n';
 import { ogCvPath } from '../../lib/og';
 import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../lib/seo';
 
-const locale: Locale = 'tr';
-const path = '/tr/cv';
+const locale: Locale = 'en';
+const path = '/en/cv';
 const mailto = `mailto:${profile.email}`;
 
 const breadcrumbLd = breadcrumbJsonLd([
@@ -17,16 +17,15 @@ const breadcrumbLd = breadcrumbJsonLd([
 
 const downloadIcon = `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>`;
 
-// Both languages are offered on both pages; the current locale's PDF is the
-// primary (filled) action, the other is the secondary (outline) action.
 const downloads = [
-  { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: true },
-  { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: false },
+  { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: true },
+  { key: 'cv.downloadEu', href: '/cv/omer-yasir-onal-eu.pdf', primary: false },
+  { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: false },
 ];
 ---
 
 <Base
-  title={`${t(locale, 'cv.title')} — ${profile.name}`}
+  title={`${t(locale, 'cv.title')} | ${profile.name}`}
   description={t(locale, 'seo.cv.description')
     .replace('{name}', profile.name)
     .replace('{role}', profile.role[locale])}

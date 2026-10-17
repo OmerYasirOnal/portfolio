@@ -79,7 +79,6 @@ export async function loadLlmsData(site: string): Promise<LlmsData> {
     packages: packageTiers.map((pkg) => ({
       name: pkg.name.en,
       tagline: pkg.tagline.en,
-      priceFrom: pkg.priceFrom,
       timeline: pkg.timeline.en,
       features: pkg.features.map((f) => f.en),
     })),
