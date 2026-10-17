@@ -1,13 +1,13 @@
 ---
 /**
- * ThemeToggle — a framework-free theme switch.
+ * ThemeToggle - a framework-free theme switch.
  *
  * Renders a plain <button> plus BOTH icons (sun/moon); the correct one is shown
  * purely via the Tailwind `dark:` variant, so the icon is right at first paint
  * (Base.astro's inline no-flash script sets the `.dark` class pre-paint). A small
  * hoisted <script> flips the `.dark` class on <html>, mirrors `color-scheme`,
  * persists the explicit choice to localStorage('theme'), and keeps a localized
- * aria-label/title in sync. Nothing is hard-coded — both action labels come from
+ * aria-label/title in sync. Nothing is hard-coded - both action labels come from
  * the i18n dictionary and are handed to the script via data-* attributes.
  */
 import { t, type Locale } from '../data/i18n';
@@ -34,7 +34,7 @@ const labelLight = t(locale, 'theme.switchToDark'); // shown WHEN light → go d
   data-label-light={labelLight}
   class="grid h-9 w-9 place-items-center rounded-md border border-border text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
 >
-  {/* Sun — shown when dark (action: switch to light). */}
+  {/* Sun - shown when dark (action: switch to light). */}
   <svg
     class="hidden dark:block"
     xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ const labelLight = t(locale, 'theme.switchToDark'); // shown WHEN light → go d
     <path d="m6.34 17.66-1.41 1.41"></path>
     <path d="m19.07 4.93-1.41 1.41"></path>
   </svg>
-  {/* Moon — shown when light (action: switch to dark). */}
+  {/* Moon - shown when light (action: switch to dark). */}
   <svg
     class="block dark:hidden"
     xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ const labelLight = t(locale, 'theme.switchToDark'); // shown WHEN light → go d
       try {
         localStorage.setItem('theme', nextDark ? 'dark' : 'light');
       } catch {
-        /* storage unavailable — the in-page toggle still works this session */
+        /* storage unavailable - the in-page toggle still works this session */
       }
       sync();
     });

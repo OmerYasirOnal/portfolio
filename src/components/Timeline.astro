@@ -1,13 +1,13 @@
 ---
 /**
- * Timeline — a vertical, chronological list of work / research experience.
+ * Timeline - a vertical, chronological list of work / research experience.
  *
  * Data is read straight from the `experience` content collection (single source
  * of truth) and sorted by `order`; nothing is hard-coded here. Locale-specific
  * fields (`role_*`, `bullets_*`) are selected by the incoming `locale`, so the
  * same component powers both the EN home and the /tr mirror.
  *
- * Visual: a single accent rail on the left with a node per role — a "commit
+ * Visual: a single accent rail on the left with a node per role - a "commit
  * graph" reading of a career. The rail and nodes are decorative (aria-hidden)
  * and inert under prefers-reduced-motion (no animation is used at all).
  */
@@ -51,7 +51,7 @@ const isPresent = (end: string) =>
             )}
           </span>
 
-          {/* date range — monospace tag */}
+          {/* date range - monospace tag */}
           <p class="font-mono text-xs tracking-tight text-muted">
             <time>{start}</time>
             <span aria-hidden="true" class="mx-1 text-border">→</span>

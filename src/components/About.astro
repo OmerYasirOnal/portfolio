@@ -1,12 +1,12 @@
 ---
 /**
- * About — a two-column portrait + prose block for the home page.
+ * About - a two-column portrait + prose block for the home page.
  *
  * All copy is read from `profile` (the about paragraph + signal badges) and the
- * i18n dictionary — nothing is hard-coded. The left column is a framed portrait
+ * i18n dictionary - nothing is hard-coded. The left column is a framed portrait
  * rendered through Astro's `<Image>` (optimized, responsive, no layout shift):
  * the real headshot sits inside a dev-tools frame with corner ticks. The frame
- * is decorative and static — inert under prefers-reduced-motion.
+ * is decorative and static - inert under prefers-reduced-motion.
  */
 import { Image } from 'astro:assets';
 import { profile } from '../data/profile';
@@ -24,12 +24,12 @@ const badges = profile.badges.map((b) => b[locale]);
 ---
 
 <div class="grid items-start gap-10 md:grid-cols-[minmax(0,18rem)_1fr] md:gap-12 lg:gap-16">
-  {/* Portrait — the real headshot inside a dev-tools frame. */}
+  {/* Portrait - the real headshot inside a dev-tools frame. */}
   <figure class="mx-auto w-full max-w-[18rem] md:mx-0">
     <div
       class="relative aspect-[4/5] overflow-hidden rounded-xl border border-border bg-card"
     >
-      {/* corner ticks — dev-tools framing (drawn above the image) */}
+      {/* corner ticks - dev-tools framing (drawn above the image) */}
       <span
         aria-hidden="true"
         class="pointer-events-none absolute left-2 top-2 z-10 h-3 w-3 border-l border-t border-accent/60"

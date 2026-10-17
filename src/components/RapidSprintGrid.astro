@@ -9,7 +9,6 @@ interface Props {
 }
 
 const { locale, compact = false } = Astro.props;
-const priceFormatter = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US');
 const hint = t(locale, 'social.opensNewTab');
 ---
 
@@ -45,18 +44,13 @@ const hint = t(locale, 'social.opensNewTab');
             {sprint.tagline[locale]}
           </p>
 
-          <div class="mt-5 flex flex-wrap items-end gap-x-3 gap-y-1">
-            <span class="text-3xl font-bold tracking-tight text-fg">
-              {priceFormatter.format(sprint.price)} TL
-            </span>
-            <span class="pb-1 font-mono text-xs text-muted">
-              / {sprint.timeline[locale]}
-            </span>
-          </div>
+          <p class="mt-4 font-mono text-xs text-muted">
+            {t(locale, 'packages.timeline')}: <strong class="text-fg">{sprint.timeline[locale]}</strong>
+          </p>
 
           {!compact && (
             <>
-              <ul class="mt-6 flex-1 space-y-2.5" role="list">
+              <ul class="mt-5 flex-1 space-y-2.5" role="list">
                 {sprint.features.map((feature) => (
                   <li class="flex items-start gap-2 text-sm leading-relaxed text-muted">
                     <svg
@@ -86,7 +80,7 @@ const hint = t(locale, 'social.opensNewTab');
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${t(locale, 'sprints.cta')} — ${sprint.name[locale]} (${hint})`}
+            aria-label={`${t(locale, 'sprints.cta')} - ${sprint.name[locale]} (${hint})`}
             class:list={[
               'mt-6 inline-flex w-fit items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
               sprint.highlighted

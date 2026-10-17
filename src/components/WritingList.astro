@@ -1,6 +1,6 @@
 ---
 /**
- * WritingList — the "Writing & publications" section.
+ * WritingList - the "Writing & publications" section.
  *
  * Three sources, one list: `posts` (native articles rendered on this site),
  * `writing` (external articles, e.g. Medium) and `publications` (peer-reviewed
@@ -8,7 +8,7 @@
  * reading list; native rows link internally (no new tab, no external glyph),
  * external rows keep target=_blank + rel=noopener. Locale-only fields are
  * selected by the incoming `locale`; sub-headings, hints and the native source
- * tag all come from the i18n dictionary — nothing is hard-coded.
+ * tag all come from the i18n dictionary - nothing is hard-coded.
  */
 import { getCollection } from 'astro:content';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -86,7 +86,7 @@ const publications = (await getCollection('publications')).sort(
 
 const hint = t(locale, 'social.opensNewTab');
 
-// external-link glyph (stroke, 24×24) — matches the ProjectCard "other" icon.
+// external-link glyph (stroke, 24×24) - matches the ProjectCard "other" icon.
 const EXTERNAL_ICON = [
   'M15 3h6v6',
   'M10 14 21 3',
@@ -112,7 +112,7 @@ const EXTERNAL_ICON = [
                 href={row.href}
                 target={row.external ? '_blank' : undefined}
                 rel={row.external ? 'noopener noreferrer' : undefined}
-                aria-label={row.external ? `${row.title} — ${row.source} (${hint})` : undefined}
+                aria-label={row.external ? `${row.title} - ${row.source} (${hint})` : undefined}
                 class="group flex items-baseline gap-4 py-4 transition-colors hover:bg-card/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <span
@@ -205,7 +205,7 @@ const EXTERNAL_ICON = [
                     href={entry.data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${title} — ${entry.data.venue} (${hint})`}
+                    aria-label={`${title} - ${entry.data.venue} (${hint})`}
                     class="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     <p class="text-sm font-medium leading-snug text-fg transition-colors group-hover:text-accent">
