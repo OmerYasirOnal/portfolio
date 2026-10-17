@@ -1,34 +1,32 @@
 ---
 title: AKIS
-tagline_en: Verifiable AI software-development platform.
-tagline_tr: Doğrulanabilir yapay zeka yazılım geliştirme platformu.
+tagline_en: University capstone project | AI agent orchestration platform with human-approved execution flows, traceable logs, and Dockerized build/boot checks.
+tagline_tr: Üniversite bitirme projesi | İnsan onaylı yürütme akışları, izlenebilir kayıtlar ve Docker tabanlı derleme/başlatma kontrollerine sahip AI ajan orkestrasyonu.
 category: AI-Agents
+group: product
+image: akis.jpg
 stack:
-  - TypeScript
-  - Node.js
-  - React 19
-  - PostgreSQL/pgvector
-  - Docker
-  - Multi-LLM
-  - Ed25519
-  - MCP
-status_en: Open source (Apache-2.0), self-hostable
-status_tr: Açık kaynak (Apache-2.0), self-hostable
+  - TypeScript & Node.js
+  - PostgreSQL Veri Tabanı
+  - AI Ajan Orkestrasyonu
+  - LLM API & MCP Entegrasyonu
+  - Docker & Otomatik Test Kontrolleri
+status_en: Capstone Project · Open Source
+status_tr: Bitirme Projesi · Açık Kaynak
 links:
   repo: https://github.com/OmerYasirOnal/akis
-  live: https://akisflow.com
 highlights_en:
-  - Multi-agent engine — Scribe, Proto, Critic and Trace — orchestrated behind 4 structural human-approval gates.
-  - Nothing ships until a human approves and a real boot-smoke test proves the build actually runs.
-  - Ed25519 build provenance and MCP-based approval gates for every external write.
+  - Developed agent task lifecycles, traceable audit logs, and human-approved execution workflows using TypeScript/Node.js and PostgreSQL.
+  - Integrated Model Context Protocol (MCP) and LLM APIs with Docker-based execution and automated test/build checks.
+  - Verified that generated applications actually compile and boot before marking tasks complete.
 highlights_tr:
-  - Scribe, Proto, Critic ve Trace ajanları, 4 yapısal insan-onay kapısı ardında orkestre edilir.
-  - Bir insan onaylamadan ve gerçek bir boot-smoke testi derlemenin çalıştığını kanıtlamadan hiçbir şey yayınlanmaz.
-  - Her dış yazma işlemi için Ed25519 kaynak kanıtı ve MCP tabanlı onay kapıları.
-problem_en: AI coding agents routinely report success without proof — "false green" — and can push unreviewed changes straight into real systems.
-problem_tr: Yapay zeka kodlama ajanları çoğu zaman kanıt olmadan başarı bildirir — "sahte yeşil" — ve gözden geçirilmemiş değişiklikleri doğrudan gerçek sistemlere gönderebilir.
-what_i_did_en: Built a multi-agent platform where every build passes four structural gates (spec approval, verify, push confirm, external write) and can only be marked done once a real boot-smoke test passes.
-what_i_did_tr: Her derlemenin dört yapısal kapıdan (spec onayı, doğrulama, push onayı, dış yazma) geçtiği ve yalnızca gerçek bir boot-smoke testi geçtiğinde tamamlanmış sayılabildiği çok ajanlı bir platform geliştirdim.
+  - TypeScript/Node.js ve PostgreSQL ile ajan görev yaşam döngüsü, izlenebilir kayıtlar ve insan onaylı yürütme akışları geliştirdim.
+  - MCP ve LLM API entegrasyonlarını, Docker tabanlı çalıştırmayı ve test/derleme kontrollerini bir araya getirdim.
+  - Üretilen uygulamaların gerçekten derlenip başlatılabildiğini otomatik kontrollerle doğrulayan bir mimari kurdum.
+problem_en: Autonomous AI coding workflows often lack traceable task lifecycles, human approval gates, and real verification that generated applications can actually boot.
+problem_tr: Otonom yapay zeka ajanları çoğu zaman izlenebilir görev kayıtları, insan onay adımları ve üretilen uygulamanın gerçekten çalıştığını doğrulayan kontroller olmadan işlem yapar.
+what_i_did_en: Built AKIS as my university capstone project using TypeScript/Node.js, PostgreSQL, Docker, MCP, and LLM APIs to orchestrate AI agents behind human approval flows and automated boot verification.
+what_i_did_tr: Üniversite bitirme projem olarak; TypeScript/Node.js, PostgreSQL, Docker, MCP ve LLM API entegrasyonlarıyla insan onaylı ve doğrulanabilir AI ajan orkestrasyon platformu AKIS’i geliştirdim.
 featured: true
-order: 1
+order: 6
 ---

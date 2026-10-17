@@ -1,6 +1,6 @@
 ---
 title: "Demo course (structure template)"
-description: "A skeleton course documenting how courses are authored in this repo. Kept as a draft — it never ships to the live site."
+description: "A skeleton course documenting how courses are authored in this repo. Kept as a draft - it never ships to the live site."
 level: beginner
 lang: en
 tags: ["demo"]

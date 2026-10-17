@@ -1,7 +1,6 @@
 ---
 /**
- * SiteFooter — shared footer for the home page and every sub-page. Brand, role
- * and location come from `profile`; every label comes from the i18n dictionary.
+ * SiteFooter - shared executive footer for the home page and every sub-page.
  */
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -15,14 +14,14 @@ const { locale } = Astro.props;
 const home = localizePath(locale, '/');
 ---
 
-<footer class="border-t border-border/60">
+<footer class="mt-10 border-t border-accent/20 bg-card/60 backdrop-blur-xl">
   <div
-    class="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between"
+    class="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between"
   >
-    <div class="space-y-1">
+    <div class="space-y-1.5">
       <a
         href={home}
-        class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="text-base font-bold tracking-tight text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {profile.name}
       </a>
@@ -36,27 +35,19 @@ const home = localizePath(locale, '/');
       />
       <a
         href="#top"
-        class="font-mono text-xs text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-semibold text-accent transition-all hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {t(locale, 'footer.backToTop')} ↑
       </a>
     </div>
   </div>
 
-  <div class="border-t border-border/40">
+  <div class="border-t border-accent/15">
     <p
-      class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-2 gap-y-1 px-6 py-5 font-mono text-xs text-muted"
+      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-6 py-5 text-xs text-muted"
     >
-      <span>© {new Date().getFullYear()} {profile.name}</span>
-      <span aria-hidden="true">·</span>
+      <span>© {new Date().getFullYear()} {profile.name}. {t(locale, 'footer.rights')}</span>
       <span>{t(locale, 'footer.builtWith')}</span>
-      <span aria-hidden="true">·</span>
-      <a
-        href="/proof.html"
-        class="text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        {t(locale, 'footer.deliveryProof')} ↗
-      </a>
     </p>
   </div>
 </footer>

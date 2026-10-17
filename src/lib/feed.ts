@@ -1,6 +1,6 @@
 /**
  * Pure builders for the machine feeds. `feed.json` implements the versioned
- * contract in docs/specs/2026-07-01-content-platform-design.md §5 — the
+ * contract in docs/specs/2026-07-01-content-platform-design.md §5 - the
  * Flutter app and AI crawlers depend on it, so changes within version "1"
  * must be additive only. Kept free of astro:content (unit-tested with Vitest);
  * the routes load the collections and hand plain objects in.
@@ -47,7 +47,7 @@ export interface FeedJson {
 const abs = (site: string, path: string) => new URL(path, site).toString();
 
 /** Feed title shared by the rss.xml channel and Base's autodiscovery link. */
-export const RSS_TITLE = 'Ömer Yasir Önal — Writing';
+export const RSS_TITLE = 'Ömer Yasir Önal - Writing';
 
 export function buildFeedJson(input: {
   site: string;

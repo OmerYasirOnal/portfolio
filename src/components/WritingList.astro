@@ -1,31 +1,17 @@
 ---
 /**
- * WritingList — the "Writing & publications" section.
- *
- * Three sources, one list: `posts` (native articles rendered on this site),
- * `writing` (external articles, e.g. Medium) and `publications` (peer-reviewed
- * venues). Native and external articles merge into a single newest-first
- * reading list; native rows link internally (no new tab, no external glyph),
- * external rows keep target=_blank + rel=noopener. Locale-only fields are
- * selected by the incoming `locale`; sub-headings, hints and the native source
- * tag all come from the i18n dictionary — nothing is hard-coded.
+ * WritingList - personal essays, technical articles, and peer-reviewed publications.
  */
 import { getCollection } from 'astro:content';
 import { t, localizePath, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
-  /**
-   * When true, show only the curated home-page articles (those flagged
-   * `home: true`), newest-first, plus a "See all writing" link. When omitted,
-   * every article is listed (the `/writing` index).
-   */
   home?: boolean;
 }
 
 const { locale, home = false } = Astro.props;
 
-/** One row of the reading list, normalized across native + external sources. */
 interface Row {
   title: string;
   href: string;
@@ -38,10 +24,8 @@ interface Row {
 }
 
 const writing = await getCollection('writing');
-const posts = await getCollection('posts', (e) => !e.data.draft);
+const posts = await getCollection('posts', (e) => !e.data.draft && e.data.lang === locale);
 
-// Newest first (ISO date strings sort lexically); `order` breaks ties (e.g. the
-// TR/EN pair published the same day). Native posts carry no order → 99.
 const allArticles: Row[] = [
   ...writing.map((e) => ({
     title: e.data.title,
@@ -72,21 +56,18 @@ const articles = home ? allArticles.filter((row) => row.home) : allArticles;
 const truncated = home && allArticles.length > articles.length;
 const seeAllHref = localizePath(locale, '/writing');
 
-// Publish month/year, rendered in the page's locale ("Dec 2025" / "Ara 2025").
 const dateFmt = new Intl.DateTimeFormat(locale === 'tr' ? 'tr-TR' : 'en-US', {
-  month: 'short',
+  month: 'long',
   year: 'numeric',
 });
 const formatDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00`));
 
-// Newest research first.
 const publications = (await getCollection('publications')).sort(
   (a, b) => b.data.year - a.data.year,
 );
 
 const hint = t(locale, 'social.opensNewTab');
 
-// external-link glyph (stroke, 24×24) — matches the ProjectCard "other" icon.
 const EXTERNAL_ICON = [
   'M15 3h6v6',
   'M10 14 21 3',
@@ -94,71 +75,74 @@ const EXTERNAL_ICON = [
 ];
 ---
 
-<div class="space-y-12">
-  {/* Articles */}
+<div class="space-y-12" data-reveal>
+  {
+    home && (
+      <p class="max-w-3xl text-base leading-relaxed text-muted">
+        {t(locale, 'writing.intro')}
+      </p>
+    )
+  }
+
+  {/* Articles & Personal Essays */}
   {
     articles.length > 0 && (
       <section aria-labelledby="writing-articles">
         <h3
           id="writing-articles"
-          class="mb-4 font-mono text-xs uppercase tracking-widest text-accent dark:text-accent/70"
+          class="mb-4 text-xs font-bold uppercase tracking-wider text-accent"
         >
           {t(locale, 'writing.articles')}
         </h3>
-        <ul class="divide-y divide-border/60 border-y border-border/60" role="list">
-          {articles.map((row, i) => (
+        <ul class="grid gap-5 sm:grid-cols-2" role="list">
+          {articles.map((row) => (
             <li>
               <a
                 href={row.href}
                 target={row.external ? '_blank' : undefined}
                 rel={row.external ? 'noopener noreferrer' : undefined}
-                aria-label={row.external ? `${row.title} — ${row.source} (${hint})` : undefined}
-                class="group flex items-baseline gap-4 py-4 transition-colors hover:bg-card/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                aria-label={row.external ? `${row.title} - ${row.source} (${hint})` : undefined}
+                data-spotlight
+                class="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-accent/20 bg-card/80 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/55 hover:shadow-lg hover:shadow-accent/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
-                <span
-                  class="font-mono text-xs tabular-nums text-muted"
-                  aria-hidden="true"
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span class="min-w-0 flex-1">
-                  <span class="text-base font-medium leading-snug text-fg decoration-accent/50 decoration-1 underline-offset-4 group-hover:text-accent group-hover:underline">
+                <div class="relative z-10">
+                  <div class="flex items-center justify-between gap-2 text-xs font-medium text-muted">
+                    <time datetime={row.date}>{formatDate(row.date)}</time>
+                    <span class="inline-flex items-center gap-1 rounded-full border border-accent/20 bg-bg/80 px-2.5 py-0.5 text-[0.7rem] font-semibold text-muted">
+                      {row.source}
+                      {row.external && (
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="text-accent"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
+                          {EXTERNAL_ICON.map((d) => (
+                            <path d={d} />
+                          ))}
+                        </svg>
+                      )}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-base font-bold leading-snug text-fg transition-colors group-hover:text-accent">
                     {row.title}
+                  </p>
+                </div>
+
+                <div class="relative z-10 mt-4 flex items-center justify-between border-t border-accent/15 pt-3 text-xs font-semibold text-accent">
+                  <span>{row.lang === 'tr' ? 'Türkçe Makale' : 'English Article'}</span>
+                  <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">
+                    →
                   </span>
-                  <span class="mt-1.5 flex items-center gap-2 font-mono text-xs text-muted">
-                    <time datetime={row.date} class="tabular-nums">
-                      {formatDate(row.date)}
-                    </time>
-                    <span aria-hidden="true" class="text-border">
-                      ·
-                    </span>
-                    <span class="rounded border border-border/70 px-1.5 py-px text-[0.65rem] uppercase tracking-wider text-muted/80">
-                      {row.lang}
-                    </span>
-                  </span>
-                </span>
-                <span class="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted">
-                  {row.source}
-                  {row.external && (
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="text-muted/70 transition-colors group-hover:text-accent"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      {EXTERNAL_ICON.map((d) => (
-                        <path d={d} />
-                      ))}
-                    </svg>
-                  )}
-                </span>
+                </div>
               </a>
             </li>
           ))}
@@ -166,7 +150,7 @@ const EXTERNAL_ICON = [
         {truncated && (
           <a
             href={seeAllHref}
-            class="group mt-4 inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="group mt-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/80 px-5 py-2.5 text-sm font-semibold text-accent shadow-2xs backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {t(locale, 'writing.seeAll')}
             <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">
@@ -178,13 +162,13 @@ const EXTERNAL_ICON = [
     )
   }
 
-  {/* Publications */}
+  {/* Academic Publications */}
   {
     publications.length > 0 && (
       <section aria-labelledby="writing-publications">
         <h3
           id="writing-publications"
-          class="mb-4 font-mono text-xs uppercase tracking-widest text-accent dark:text-accent/70"
+          class="mb-4 text-xs font-bold uppercase tracking-wider text-accent"
         >
           {t(locale, 'writing.publications')}
         </h3>
@@ -192,38 +176,42 @@ const EXTERNAL_ICON = [
           {publications.map((entry) => {
             const title = locale === 'tr' ? entry.data.title_tr : entry.data.title_en;
             const meta = (
-              <p class="mt-1 flex items-center gap-2 font-mono text-xs text-muted">
-                <span class="text-fg/80">{entry.data.venue}</span>
-                <span aria-hidden="true" class="text-border">·</span>
-                <span class="tabular-nums">{entry.data.year}</span>
+              <p class="mt-2.5 flex flex-wrap items-center gap-2 text-xs font-medium text-muted">
+                <span class="rounded-full border border-accent/25 bg-accent/10 px-3 py-0.5 font-semibold text-accent">
+                  {entry.data.venue}
+                </span>
+                <span aria-hidden="true" class="text-accent/50">·</span>
+                <span>{entry.data.year}</span>
               </p>
             );
             return (
-              <li class="rounded-lg border border-border bg-card/40 p-4">
+              <li
+                data-spotlight
+                class="relative overflow-hidden rounded-3xl border border-accent/25 bg-card/80 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/5"
+              >
                 {entry.data.url ? (
                   <a
                     href={entry.data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${title} — ${entry.data.venue} (${hint})`}
-                    class="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    aria-label={`${title} - ${entry.data.venue} (${hint})`}
+                    class="group relative z-10 block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    <p class="text-sm font-medium leading-snug text-fg transition-colors group-hover:text-accent">
-                      {title}
+                    <p class="text-base font-bold leading-snug text-fg transition-colors group-hover:text-accent sm:text-lg">
+                      {title} ↗
                     </p>
                     {meta}
                   </a>
                 ) : (
-                  <>
-                    <p class="text-sm font-medium leading-snug text-fg">{title}</p>
+                  <div class="relative z-10">
+                    <p class="text-base font-bold leading-snug text-fg sm:text-lg">{title}</p>
                     {meta}
-                  </>
+                  </div>
                 )}
               </li>
             );
           })}
         </ul>
       </section>
-    )
-  }
+    )}
 </div>

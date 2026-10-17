@@ -8,16 +8,13 @@ import { t, localizePath, type Locale } from '../../../data/i18n';
 import { ogProjectsPath } from '../../../lib/og';
 import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../../../lib/seo';
 
-const locale: Locale = 'tr';
-const path = '/tr/projects';
+const locale: Locale = 'en';
+const path = '/en/projects';
 
 const breadcrumbLd = breadcrumbJsonLd([
   { name: t(locale, 'nav.work'), url: canonicalHref(localizePath(locale, '/projects'), Astro.site!) },
 ]);
 
-// All non-draft projects, split into the curated featured set and the rest.
-// The content collection stays the single source of truth; ordering is by
-// each entry's `order` field.
 const all = (await getCollection('projects', (e) => !e.data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
@@ -26,7 +23,7 @@ const more = all.filter((e) => !e.data.featured);
 ---
 
 <Base
-  title={`${t(locale, 'projects.title')} — Ömer Yasir Önal`}
+  title={`${t(locale, 'projects.title')} | Ömer Yasir Önal`}
   description={t(locale, 'seo.projects.description')}
   path={path}
   lang={locale}
@@ -37,11 +34,11 @@ const more = all.filter((e) => !e.data.featured);
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
-      <p class="font-mono text-sm text-accent">
-        <span class="text-accent/70">/</span>{t(locale, 'nav.work').toLowerCase()}
+    <section class="mx-auto max-w-6xl px-6 pb-8 pt-16">
+      <p class="text-xs font-semibold uppercase tracking-wider text-accent">
+        {t(locale, 'section.eyebrow.work')}
       </p>
-      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
         {t(locale, 'projects.title')}
       </h1>
       <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
@@ -51,15 +48,11 @@ const more = all.filter((e) => !e.data.featured);
 
     {
       featured.length > 0 && (
-        <section class="mx-auto max-w-5xl px-6 py-8">
-          <header class="mb-8 flex items-baseline gap-3">
-            <span class="font-mono text-sm text-accent" aria-hidden="true">
-              01
-            </span>
+        <section class="mx-auto max-w-6xl px-6 py-8">
+          <header class="mb-8">
             <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
               {t(locale, 'section.selectedWork')}
             </h2>
-            <span class="h-px flex-1 bg-border" aria-hidden="true" />
           </header>
           <ProjectGrid locale={locale} items={featured} columns={3} />
         </section>
@@ -68,17 +61,13 @@ const more = all.filter((e) => !e.data.featured);
 
     {
       more.length > 0 && (
-        <section class="mx-auto max-w-5xl px-6 py-8 pb-20">
-          <header class="mb-8 flex items-baseline gap-3">
-            <span class="font-mono text-sm text-accent" aria-hidden="true">
-              02
-            </span>
+        <section class="mx-auto max-w-6xl border-t border-border/60 px-6 py-12 pb-20">
+          <header class="mb-8">
             <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
               {t(locale, 'section.more')}
             </h2>
-            <span class="h-px flex-1 bg-border" aria-hidden="true" />
           </header>
-          <ProjectGrid locale={locale} items={more} columns={3} />
+          <ProjectGrid locale={locale} items={more} columns={3} filterable={false} />
         </section>
       )
     }

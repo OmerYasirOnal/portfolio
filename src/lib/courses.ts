@@ -1,6 +1,6 @@
 /**
  * Helpers for the courses/lessons collections. A course lives in
- * `src/content/courses/<slug>/` — `index.md` is the course meta and each
+ * `src/content/courses/<slug>/` - `index.md` is the course meta and each
  * `NN-*.md` file is one lesson. Entry ids are `<slug>/index` and
  * `<slug>/NN-lesson`, so the course slug is always the first path segment
  * (robust even if a loader version strips the `index` segment).

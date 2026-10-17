@@ -1,12 +1,6 @@
 ---
 /**
- * PackageComparison — a side-by-side matrix of the three tiers on `/packages`.
- *
- * Every cell is read from `packageTiers` (single source of truth) — price,
- * timeline, page count, and brand-identity scope — so the table can never
- * disagree with the cards above it. The highlighted tier's column is accented
- * to match its card. The table scrolls horizontally inside its own container
- * on narrow screens so the page body never overflows.
+ * PackageComparison - side-by-side matrix of the four service pillars on `/packages`.
  */
 import { packageTiers } from '../data/packages';
 import { t, type Locale } from '../data/i18n';
@@ -17,26 +11,23 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const priceFormatter = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US');
-
 const rows = [
-  { key: 'packages.compare.price', cell: (i: number) => `${priceFormatter.format(packageTiers[i].priceFrom)} TL` },
   { key: 'packages.compare.timeline', cell: (i: number) => packageTiers[i].timeline[locale] },
   { key: 'packages.compare.pages', cell: (i: number) => packageTiers[i].pages[locale] },
   { key: 'packages.compare.brand', cell: (i: number) => packageTiers[i].brandScope[locale] },
 ];
 ---
 
-<section class="mx-auto max-w-5xl px-6 pb-16">
+<section class="mx-auto max-w-6xl px-6 pb-16" data-reveal>
   <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
     {t(locale, 'packages.compareTitle')}
   </h2>
 
-  <div class="mt-8 overflow-x-auto">
-    <table class="w-full min-w-[36rem] border-collapse text-left">
+  <div class="mt-8 overflow-x-auto rounded-3xl border border-accent/20 bg-card/80 p-4 shadow-sm backdrop-blur-xl sm:p-6">
+    <table class="w-full min-w-[44rem] border-collapse text-left">
       <thead>
-        <tr class="border-b border-border">
-          <th scope="col" class="py-3 pr-4 text-sm font-medium text-muted">
+        <tr class="border-b border-accent/20">
+          <th scope="col" class="py-3.5 pr-4 text-sm font-semibold text-muted">
             {t(locale, 'packages.compare.plan')}
           </th>
           {
@@ -44,7 +35,7 @@ const rows = [
               <th
                 scope="col"
                 class:list={[
-                  'py-3 pl-4 text-sm font-semibold',
+                  'py-3.5 pl-4 text-sm font-bold',
                   tier.highlighted ? 'text-accent' : 'text-fg',
                 ]}
               >
@@ -57,15 +48,15 @@ const rows = [
       <tbody>
         {
           rows.map((row) => (
-            <tr class="border-b border-border/60">
-              <th scope="row" class="py-3 pr-4 text-sm font-medium text-muted">
+            <tr class="border-b border-accent/15 last:border-b-0">
+              <th scope="row" class="py-3.5 pr-4 text-sm font-medium text-muted">
                 {t(locale, row.key)}
               </th>
               {packageTiers.map((tier, i) => (
                 <td
                   class:list={[
-                    'py-3 pl-4 text-sm',
-                    tier.highlighted ? 'font-medium text-fg' : 'text-muted',
+                    'py-3.5 pl-4 text-sm',
+                    tier.highlighted ? 'font-semibold text-fg' : 'text-muted',
                   ]}
                 >
                   {row.cell(i)}

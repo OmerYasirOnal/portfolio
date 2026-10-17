@@ -1,15 +1,13 @@
 ---
 /**
- * LangToggle — a static EN | TR segmented control that preserves the current
- * route across locales. Given the current `locale` and `path`, it computes the
- * twin route with `altLocalePath` and renders both locales as links; the active
- * one is marked `aria-current`. No island/JS needed — these are plain <a>s.
+ * LangToggle - a static TR | EN segmented control that preserves the current
+ * route across locales.
  */
 import { altLocalePath, t, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
-  /** Current page path in the current locale, e.g. "/" or "/tr/projects". */
+  /** Current page path in the current locale, e.g. "/" or "/en/projects". */
   path: string;
   class?: string;
 }
@@ -17,17 +15,10 @@ interface Props {
 const { locale, path, class: className = '' } = Astro.props;
 
 const twin = altLocalePath(locale, path);
-const enPath = locale === 'en' ? path : twin;
 const trPath = locale === 'tr' ? path : twin;
+const enPath = locale === 'en' ? path : twin;
 
 const segments = [
-  {
-    code: 'en' as const,
-    label: 'EN',
-    href: enPath,
-    active: locale === 'en',
-    aria: t(locale, 'lang.switchToEn'),
-  },
   {
     code: 'tr' as const,
     label: 'TR',
@@ -35,12 +26,19 @@ const segments = [
     active: locale === 'tr',
     aria: t(locale, 'lang.switchToTr'),
   },
+  {
+    code: 'en' as const,
+    label: 'EN',
+    href: enPath,
+    active: locale === 'en',
+    aria: t(locale, 'lang.switchToEn'),
+  },
 ];
 ---
 
 <div
   class:list={[
-    'inline-flex items-center rounded-md border border-border p-0.5 font-mono text-xs',
+    'inline-flex items-center rounded-full border border-accent/25 bg-card/70 p-1 text-xs font-semibold backdrop-blur-md',
     className,
   ]}
   role="group"
@@ -54,9 +52,9 @@ const segments = [
         aria-current={seg.active ? 'true' : undefined}
         aria-label={seg.active ? undefined : seg.aria}
         class:list={[
-          'rounded px-2 py-1 leading-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'rounded-full px-2.5 py-1 text-xs leading-none transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           seg.active
-            ? 'bg-accent/15 text-accent'
+            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-2xs'
             : 'text-muted hover:text-fg',
         ]}
       >

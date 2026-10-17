@@ -7,7 +7,7 @@ import { t, localizePath, type Locale } from '../data/i18n';
 import { ogCvPath } from '../lib/og';
 import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../lib/seo';
 
-const locale: Locale = 'en';
+const locale: Locale = 'tr';
 const path = '/cv';
 const mailto = `mailto:${profile.email}`;
 
@@ -17,17 +17,15 @@ const breadcrumbLd = breadcrumbJsonLd([
 
 const downloadIcon = `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>`;
 
-// The English page leads with the international/ATS English PDF (primary), then
-// offers the GDPR-consent EU variant and the Turkish résumé as secondary actions.
 const downloads = [
-  { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: true },
+  { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: true },
+  { key: 'cv.downloadEn', href: '/cv/omer-yasir-onal-en.pdf', primary: false },
   { key: 'cv.downloadEu', href: '/cv/omer-yasir-onal-eu.pdf', primary: false },
-  { key: 'cv.downloadTr', href: '/cv/omer-yasir-onal-tr.pdf', primary: false },
 ];
 ---
 
 <Base
-  title={`${t(locale, 'cv.title')} — ${profile.name}`}
+  title={`${t(locale, 'cv.title')} | ${profile.name}`}
   description={t(locale, 'seo.cv.description')
     .replace('{name}', profile.name)
     .replace('{role}', profile.role[locale])}
@@ -40,65 +38,68 @@ const downloads = [
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
-      <p class="font-mono text-sm text-accent">
-        <span class="text-accent/70">/</span>cv
-      </p>
-      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
-        {t(locale, 'cv.title')}
-      </h1>
-      <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
-        {t(locale, 'cv.intro')}
-      </p>
+    <section class="mx-auto max-w-6xl px-6 pb-20 pt-16" data-reveal>
+      <div data-spotlight class="overflow-hidden rounded-3xl border border-accent/25 bg-card/85 p-6 shadow-xl shadow-accent/5 backdrop-blur-xl sm:p-10">
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {profile.name}
+        </p>
+        <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'cv.title')}
+        </h1>
+        <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
+          {t(locale, 'cv.intro')}
+        </p>
 
-      <div class="mt-8 flex flex-wrap items-center gap-4">
-        {
-          downloads.map((d) => (
-            <a
-              href={d.href}
-              download
-              class={
-                d.primary
-                  ? 'inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-                  : 'inline-flex items-center gap-2 rounded-md border border-border px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-              }
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                set:html={downloadIcon}
-              />
-              {t(locale, d.key)}
-            </a>
-          ))
-        }
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          {
+            downloads.map((d) => (
+              <a
+                href={d.href}
+                download
+                class={
+                  d.primary
+                    ? 'inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                    : 'inline-flex items-center gap-2 rounded-full border border-accent/25 bg-card/80 px-6 py-3.5 text-sm font-semibold text-fg transition-all hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                }
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={downloadIcon}
+                />
+                {t(locale, d.key)}
+              </a>
+            ))
+          }
+        </div>
+
+        <p class="mt-6 text-sm">
+          <a
+            href="/cv/omer-yasir-onal-showcase.pdf"
+            download
+            class="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/8 px-4 py-2 font-semibold text-accent transition-all hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {t(locale, 'cv.downloadShowcase')} <span aria-hidden="true">→</span>
+          </a>
+        </p>
+
+        <p class="mt-6 text-sm text-muted">
+          <a
+            href={mailto}
+            class="font-semibold text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {t(locale, 'cv.emailInstead')}
+          </a>
+        </p>
       </div>
-
-      <p class="mt-5 text-sm">
-        <a
-          href="/cv/omer-yasir-onal-showcase.pdf"
-          download
-          class="inline-flex items-center gap-1.5 font-medium text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {t(locale, 'cv.downloadShowcase')} <span aria-hidden="true">→</span>
-        </a>
-      </p>
-
-      <p class="mt-6 text-sm text-muted">
-        <a
-          href={mailto}
-          class="font-medium text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {t(locale, 'cv.emailInstead')}
-        </a>
-      </p>
     </section>
   </main>
 

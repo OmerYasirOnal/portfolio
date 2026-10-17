@@ -1,8 +1,7 @@
 /**
  * Structured-data (JSON-LD) helpers.
  *
- * Everything here is derived from `profile.ts` — the single source of truth —
- * so the schema.org markup can never drift from the visible content. The output
+ * Everything here is derived from `profile.ts` - the single source of truth - * so the schema.org markup can never drift from the visible content. The output
  * is injected once, on the home page, inside a `<script type="application/ld+json">`.
  */
 import { profile } from '../data/profile';
@@ -36,14 +35,14 @@ export function hreflangLinks(
   path: string,
   site: URL | string,
 ): { hreflang: string; href: string }[] {
-  const enPath = lang === 'en' ? path : altLocalePath(lang, path);
   const trPath = lang === 'tr' ? path : altLocalePath(lang, path);
-  const enUrl = canonicalHref(enPath, site);
+  const enPath = lang === 'en' ? path : altLocalePath(lang, path);
   const trUrl = canonicalHref(trPath, site);
+  const enUrl = canonicalHref(enPath, site);
   return [
-    { hreflang: 'en', href: enUrl },
     { hreflang: 'tr', href: trUrl },
-    { hreflang: 'x-default', href: enUrl },
+    { hreflang: 'en', href: enUrl },
+    { hreflang: 'x-default', href: trUrl },
   ];
 }
 
@@ -69,12 +68,8 @@ export interface PersonJsonLd {
 
 /**
  * Build the schema.org `Person` node for Ömer Yasir Önal.
- *
- * @param site - The absolute site origin (`Astro.site`). When omitted, `url`
- *   falls back to the canonical production domain so the function stays pure and
- *   testable outside an Astro render context.
  */
-export function personJsonLd(site?: URL | string, locale: Locale = 'en'): PersonJsonLd {
+export function personJsonLd(site?: URL | string, locale: Locale = 'tr'): PersonJsonLd {
   const origin = site ? new URL(site).origin : 'https://omeryasironal.com';
 
   // Every public profile/social link from the single source of truth.
@@ -116,7 +111,7 @@ export function webSiteJsonLd(site?: URL | string) {
     '@type': 'WebSite',
     name: profile.name,
     url: origin(site),
-    inLanguage: ['en', 'tr'],
+    inLanguage: ['tr', 'en'],
     author: authorNode(site),
   };
 }
@@ -190,13 +185,13 @@ export function scholarlyArticleJsonLd(
   };
 }
 
-/** A Service with an OfferCatalog of fixed-scope package tiers (/packages). */
+/** A Service with an OfferCatalog of service tiers (/packages). */
 export function serviceOfferCatalogJsonLd(
   input: {
     name: string;
     description: string;
     url: string;
-    tiers: { name: string; description: string; priceFrom: number }[];
+    tiers: { name: string; description: string; priceFrom?: number }[];
   },
   site?: URL | string,
 ) {
@@ -214,8 +209,9 @@ export function serviceOfferCatalogJsonLd(
       itemListElement: input.tiers.map((tier) => ({
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: tier.name, description: tier.description },
-        priceCurrency: 'TRY',
-        price: tier.priceFrom,
+        ...(typeof tier.priceFrom === 'number'
+          ? { priceCurrency: 'TRY', price: tier.priceFrom }
+          : {}),
       })),
     },
   };

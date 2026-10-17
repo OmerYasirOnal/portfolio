@@ -1,30 +1,32 @@
 ---
 title: A2 Reklam
-tagline_en: Freelance corporate site, live in production.
-tagline_tr: Yayında olan freelance kurumsal web sitesi.
+tagline_en: Multi-language corporate website built with Astro and Cloudflare, complete with SEO, GTM/GA4 analytics infrastructure, and Google Ads management.
+tagline_tr: Astro ve Cloudflare ile geliştirilen çok dilli kurumsal web sitesi, SEO ve GTM/GA4 ölçüm altyapısı ve Google Ads kampanya yönetimi.
 category: Web
+group: client
+image: a2reklam.jpg
 stack:
-  - Astro 5
-  - Tailwind CSS
-  - PHP
-  - Schema.org
-  - GTM/GA4
-status_en: Live in production
-status_tr: Yayında
+  - Astro & Cloudflare
+  - Çok Dilli Kurumsal Web (TR/EN/AR)
+  - Yerel SEO (341 Sayfa)
+  - GTM / GA4 Ölçüm Altyapısı
+  - Google Ads Kampanya Yönetimi
+status_en: Live at a2reklam.com
+status_tr: a2reklam.com Yayında
 links:
   live: https://a2reklam.com
 highlights_en:
-  - 341 statically generated pages for fast loads and clean SEO.
-  - Trilingual TR / EN / AR i18n.
-  - Schema.org local-SEO markup, a hardened PHP contact endpoint, and GTM/GA4 analytics.
+  - Developed a fast, multi-language (Turkish, English, Arabic) corporate website using Astro and Cloudflare covering services and 39 Istanbul districts.
+  - Established the technical SEO architecture and Google Tag Manager (GTM) / GA4 conversion measurement infrastructure.
+  - Actively manage ongoing Google Ads campaigns and post-launch technical optimization to drive qualified quote requests.
 highlights_tr:
-  - Hızlı yükleme ve temiz SEO için 341 statik sayfa.
-  - Üç dilli TR / EN / AR i18n.
-  - Schema.org yerel-SEO işaretlemesi, sertleştirilmiş bir PHP iletişim uç noktası ve GTM/GA4 analitiği.
-problem_en: A commercial-signage company needed a fast, multilingual marketing site that ranks locally and converts, delivered on a freelance budget and timeline.
-problem_tr: Bir reklam/tabela firması, freelance bütçe ve takvimiyle teslim edilen; yerelde üst sıralara çıkan ve dönüşüm sağlayan hızlı, çok dilli bir tanıtım sitesine ihtiyaç duyuyordu.
-what_i_did_en: Built and shipped a 341-page Astro + Tailwind site with TR/EN/AR i18n, Schema.org local SEO, a hardened PHP contact endpoint and GTM/GA4 — now live in production.
-what_i_did_tr: TR/EN/AR i18n, Schema.org yerel SEO, sertleştirilmiş bir PHP iletişim uç noktası ve GTM/GA4 içeren 341 sayfalık bir Astro + Tailwind sitesi geliştirip yayınladım — şu anda üretimde.
+  - Astro ve Cloudflare ile İstanbul’un 39 ilçesini ve hizmet kalemlerini kapsayan, yüksek hızlı ve çok dilli (TR/EN/AR) kurumsal web sitesi geliştirdim.
+  - Teknik SEO mimarisini ve Google Tag Manager (GTM) / GA4 dönüşüm ölçüm altyapısını kurdum.
+  - Ziyaretçileri doğrudan teklif ve WhatsApp dönüşümüne yönlendiren Google Ads kampanya yönetimini ve teknik desteği sürdürüyorum.
+problem_en: An outdoor advertising and signage company needed a fast, multi-language web platform with strong Google organic/paid visibility and reliable conversion tracking.
+problem_tr: Kurumsal tabela ve reklam firmasının; çok dilli ve hızlı bir web sitesine, güçlü bir yerel SEO yapısına, doğru çalışan GTM/GA4 dönüşüm ölçümüne ve etkin Google Ads yönetimine ihtiyacı vardı.
+what_i_did_en: Built and launched a2reklam.com with Astro and Cloudflare, set up SEO and GTM/GA4 tracking, and continue to manage Google Ads campaigns and technical maintenance.
+what_i_did_tr: Astro ve Cloudflare ile çok dilli kurumsal web sitesini geliştirdim, SEO ve GTM/GA4 ölçüm altyapısını kurdum ve Google Ads kampanya yönetimini üstlendim.
 featured: true
 order: 4
 ---

@@ -1,89 +1,87 @@
 ---
 /**
- * PackageGrid — the three fixed-scope package tiers on `/packages`.
- *
- * Data comes straight from `packageTiers` (single source of truth); nothing is
- * hard-coded here. The middle (`highlighted`) tier gets an accent border and a
- * "most popular" badge — exactly one tier is expected to carry that flag.
+ * PackageGrid - the four corporate service pillars on `/packages`.
  */
 import { packageTiers } from '../data/packages';
-import { t, type Locale } from '../data/i18n';
-import { profile } from '../data/profile';
+import { t, localizePath, type Locale } from '../data/i18n';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-
-const priceFormatter = new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US');
-const mailto = `mailto:${profile.email}`;
+const contactHref = `${localizePath(locale, '/')}#contact`;
 ---
 
-<ul class="grid gap-6 lg:grid-cols-3" role="list">
+<ul class="grid gap-6 md:grid-cols-2" role="list">
   {
     packageTiers.map((tier) => (
       <li
+        data-spotlight
         class:list={[
-          'flex h-full flex-col rounded-xl border p-6',
-          tier.highlighted ? 'border-accent bg-card' : 'border-border bg-card/60',
+          'group relative flex h-full flex-col overflow-hidden rounded-3xl border p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 sm:p-8',
+          tier.highlighted
+            ? 'border-accent/60 bg-gradient-to-br from-card via-card to-emerald-500/[0.07] shadow-lg shadow-accent/10'
+            : 'border-accent/20 bg-card/80 shadow-sm hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5',
         ]}
       >
-        {tier.highlighted && (
-          <p class="mb-3 inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-0.5 font-mono text-[0.7rem] font-medium text-bg">
-            {t(locale, 'packages.mostPopular')}
-          </p>
-        )}
-
-        <h3 class="text-lg font-semibold tracking-tight text-fg">{tier.name[locale]}</h3>
-        <p class="mt-1.5 text-sm leading-relaxed text-muted">{tier.tagline[locale]}</p>
-
-        <p class="mt-5">
-          <span class="text-2xl font-bold tracking-tight text-fg">
-            {priceFormatter.format(tier.priceFrom)} TL
+        <div class="relative z-10 flex flex-wrap items-center justify-between gap-2">
+          <span class="rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-semibold text-accent">
+            {tier.pages[locale]}
           </span>
-          <span class="ml-1.5 text-sm text-muted">{t(locale, 'packages.priceFrom')}</span>
+          {tier.highlighted && (
+            <span class="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-3.5 py-1 text-xs font-semibold text-white shadow-xs">
+              {t(locale, 'packages.mostPopular')}
+            </span>
+          )}
+        </div>
+
+        <h3 class="relative z-10 mt-5 text-xl font-bold tracking-tight text-fg transition-colors group-hover:text-accent sm:text-2xl">
+          {tier.name[locale]}
+        </h3>
+        <p class="relative z-10 mt-2 text-sm leading-relaxed text-muted">{tier.tagline[locale]}</p>
+
+        <p class="relative z-10 mt-4 text-xs font-medium text-muted">
+          {t(locale, 'packages.timeline')}: <strong class="font-semibold text-fg">{tier.timeline[locale]}</strong>
         </p>
 
-        <p class="mt-1 font-mono text-xs text-muted">
-          {t(locale, 'packages.timeline')}: {tier.timeline[locale]}
-        </p>
-
-        <ul class="mt-6 flex-1 space-y-2.5" role="list">
+        <ul class="relative z-10 mt-6 flex-1 space-y-2.5 border-t border-accent/15 pt-5" role="list">
           {tier.features.map((feature) => (
-            <li class="flex items-start gap-2 text-sm leading-relaxed text-muted">
-              <svg
-                class="mt-0.5 h-4 w-4 shrink-0 text-accent"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M20 6 9 17l-5-5" />
-              </svg>
+            <li class="flex items-start gap-2.5 text-sm leading-relaxed text-muted">
+              <span class="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-accent/15 text-accent">
+                <svg
+                  class="h-2.5 w-2.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </span>
               <span>{feature[locale]}</span>
             </li>
           ))}
         </ul>
 
         <a
-          href={mailto}
+          href={contactHref}
           class:list={[
-            'mt-6 inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            'relative z-10 mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
             tier.highlighted
-              ? 'bg-accent text-bg hover:opacity-90'
-              : 'border border-border text-fg hover:border-accent hover:text-accent',
+              ? 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-600/25 hover:-translate-y-0.5 hover:shadow-lg'
+              : 'border border-accent/25 bg-bg/80 text-fg hover:border-accent hover:bg-accent hover:text-white',
           ]}
         >
-          {t(locale, 'packages.cta')}
+          {t(locale, 'packages.cta')} →
         </a>
       </li>
     ))
   }
 </ul>
 
-<p class="mt-8 max-w-2xl text-sm text-muted">{t(locale, 'packages.priceNote')}</p>
+<p class="mt-8 max-w-2xl text-sm leading-relaxed text-muted">{t(locale, 'packages.priceNote')}</p>

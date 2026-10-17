@@ -1,6 +1,5 @@
 /**
- * Reading-time estimate for a markdown body. Fenced code blocks are excluded —
- * they're skimmed, not read linearly — and the result never drops below one
+ * Reading-time estimate for a markdown body. Fenced code blocks are excluded - * they're skimmed, not read linearly - and the result never drops below one
  * minute so the label stays honest for short notes.
  */
 const WORDS_PER_MINUTE = 200;

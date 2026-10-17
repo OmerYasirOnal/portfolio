@@ -1,15 +1,10 @@
 ---
 /**
- * ProjectCaseStudy — the structured, locale-correct case study for a project
- * detail page.
- *
- * Renders problem / what-I-did / highlights from the entry's `_${locale}`
- * frontmatter fields (problem_{en,tr}, what_i_did_{en,tr}, highlights_{en,tr})
- * so EN and TR surface exactly the SAME facts, translated — never the raw
- * English markdown body. This guarantees locale parity and keeps the two detail
- * pages DRY. Sections with no content are omitted, so both locales degrade
- * identically when a project lacks a given field.
+ * ProjectCaseStudy - structured, locale-correct case study for a project
+ * detail page, including optional visual showcase preview.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import { t, type Locale } from '../data/i18n';
 
@@ -24,7 +19,30 @@ const { data } = entry;
 const problem = locale === 'en' ? data.problem_en : data.problem_tr;
 const whatIDid = locale === 'en' ? data.what_i_did_en : data.what_i_did_tr;
 const highlights = locale === 'en' ? data.highlights_en : data.highlights_tr;
+
+const showcaseImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/showcase/*.{jpg,jpeg,png,webp}',
+  { eager: true },
+);
+const imageMeta = data.image
+  ? showcaseImages[`../assets/showcase/${data.image}`]?.default
+  : undefined;
 ---
+
+{
+  imageMeta && (
+    <div class="mt-8 overflow-hidden rounded-3xl border border-accent/25 bg-card/80 shadow-lg backdrop-blur-xl">
+      <Image
+        src={imageMeta}
+        alt={data.title}
+        width={1280}
+        height={800}
+        densities={[1, 2]}
+        class="w-full object-cover object-top"
+      />
+    </div>
+  )
+}
 
 <div class="prose mt-10">
   {
@@ -58,8 +76,6 @@ const highlights = locale === 'en' ? data.highlights_en : data.highlights_tr;
 </div>
 
 <style>
-  /* Scoped typographic styles for the structured case study — no typography
-     plugin; stays within the dev-tools-minimal tokens. */
   .prose {
     color: var(--color-muted);
     line-height: 1.75;

@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Hero from '../../components/Hero.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import FreelanceServices from '../../components/FreelanceServices.astro';
+import About from '../../components/About.astro';
+import Timeline from '../../components/Timeline.astro';
+import SkillGroups from '../../components/SkillGroups.astro';
+import WritingList from '../../components/WritingList.astro';
+import Contact from '../../components/Contact.astro';
+import { t, localizePath, type Locale } from '../../data/i18n';
+import { profile } from '../../data/profile';
+import { personJsonLd, webSiteJsonLd, jsonLdScript } from '../../lib/seo';
+import { ogHomePath } from '../../lib/og';
+
+const locale: Locale = 'en';
+const path = '/en/';
+
+const personLd = personJsonLd(Astro.site, locale);
+const siteLd = webSiteJsonLd(Astro.site);
+
+const featured = (
+  await getCollection('projects', (e) => e.data.featured && !e.data.draft)
+).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title={`${profile.name} | ${profile.role[locale]}`}
+  description={t(locale, 'seo.home.description')}
+  path={path}
+  lang={locale}
+  ogImage={ogHomePath(locale)}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(personLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(siteLd)} />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <Hero locale={locale} />
+
+    <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.services')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.services')}
+        </h2>
+      </header>
+      <FreelanceServices locale={locale} />
+    </section>
+
+    <section id="work" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9 flex flex-wrap items-end justify-between gap-4" data-reveal>
+        <div>
+          <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+            <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+            {t(locale, 'section.eyebrow.work')}
+          </p>
+          <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+            {t(locale, 'section.selectedWork')}
+          </h2>
+        </div>
+        <a
+          href={localizePath(locale, '/projects')}
+          class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/80 px-5 py-2.5 text-sm font-semibold text-accent shadow-2xs backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {t(locale, 'work.viewAll')} →
+        </a>
+      </header>
+      <ProjectGrid locale={locale} items={featured} columns={3} />
+    </section>
+
+    <section id="about" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.about')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.about')}
+        </h2>
+      </header>
+      <About locale={locale} />
+    </section>
+
+    <section id="skills" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.skills')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.skills')}
+        </h2>
+      </header>
+      <SkillGroups locale={locale} />
+    </section>
+
+    <section id="experience" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.experience')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.experience')}
+        </h2>
+      </header>
+      <Timeline locale={locale} />
+    </section>
+
+    <section id="writing" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.writing')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.writing')}
+        </h2>
+      </header>
+      <WritingList locale={locale} home />
+    </section>
+
+    <section id="contact" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-22">
+      <header class="mb-9" data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {t(locale, 'section.eyebrow.contact')}
+        </p>
+        <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-fg sm:text-4xl">
+          {t(locale, 'section.contact')}
+        </h2>
+      </header>
+      <Contact locale={locale} />
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

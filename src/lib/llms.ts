@@ -37,7 +37,7 @@ export interface LlmsPost {
   description: string;
   date: string;
   lang: string;
-  /** Raw markdown body — inlined into llms-full.txt. */
+  /** Raw markdown body, inlined into llms-full.txt. */
   body: string;
 }
 export interface LlmsCourse {
@@ -51,8 +51,7 @@ export interface LlmsCourse {
 export interface LlmsPackage {
   name: string;
   tagline: string;
-  /** Starting price in Turkish lira (TRY). */
-  priceFrom: number;
+  priceFrom?: number;
   timeline: string;
   features: string[];
 }
@@ -73,16 +72,18 @@ export function llmsTxt(data: LlmsData): string {
   const lines: string[] = [];
   lines.push('# Ömer Yasir Önal');
   lines.push('');
-  lines.push(`> ${profile.role.en} in Istanbul, Türkiye — ${profile.availability.en}`);
+  lines.push(`> ${profile.role.en} in Istanbul, Türkiye | ${profile.availability.en}`);
   lines.push('');
   lines.push(profile.about.en);
   lines.push('');
-  lines.push('## Packages');
-  lines.push(`Fixed-scope brand identity + website packages: ${abs(site, '/packages/')}`);
+  lines.push('## Services & Packages');
+  lines.push(`Software engineering, mobile apps, corporate web, brand setup & SEO/AIO: ${abs(site, '/packages/')}`);
   for (const pkg of data.packages) {
-    lines.push(
-      `- ${pkg.name} (from ${pkg.priceFrom.toLocaleString('en-US')} TRY, ${pkg.timeline}): ${pkg.tagline}`,
-    );
+    const meta =
+      typeof pkg.priceFrom === 'number'
+        ? `from ${pkg.priceFrom.toLocaleString('en-US')} TRY, ${pkg.timeline}`
+        : pkg.timeline;
+    lines.push(`- ${pkg.name} (${meta}): ${pkg.tagline}`);
   }
   lines.push('');
   lines.push('## Projects');
@@ -105,7 +106,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Publications');
   for (const pub of data.publications) {
-    lines.push(`- ${pub.title} — ${pub.venue}, ${pub.year}${pub.url ? ` (${pub.url})` : ''}`);
+    lines.push(`- ${pub.title} | ${pub.venue}, ${pub.year}${pub.url ? ` (${pub.url})` : ''}`);
   }
   lines.push('');
   lines.push('## Courses');
@@ -116,7 +117,7 @@ export function llmsTxt(data: LlmsData): string {
       );
     }
   } else {
-    lines.push('_Coming soon — small, focused courses will be published here and in the mobile app._');
+    lines.push('_Coming soon: small, focused courses will be published here and in the mobile app._');
   }
   lines.push('');
   lines.push('## Feeds');
@@ -141,7 +142,7 @@ export function llmsTxt(data: LlmsData): string {
 export function llmsFullTxt(data: LlmsData): string {
   const { site } = data;
   const s: string[] = [];
-  s.push('# Ömer Yasir Önal — Full Profile');
+  s.push('# Ömer Yasir Önal | Full Profile');
   s.push('');
   s.push('## About');
   s.push(profile.about.en);
@@ -157,16 +158,20 @@ export function llmsFullTxt(data: LlmsData): string {
     `${profile.education.degree_en}, ${profile.education.school_en} (${profile.education.graduation_en})`,
   );
   s.push('');
-  s.push(`## Packages — ${abs(site, '/packages/')}`);
+  s.push(`## Services & Packages | ${abs(site, '/packages/')}`);
   for (const pkg of data.packages) {
-    s.push(`### ${pkg.name} — from ${pkg.priceFrom.toLocaleString('en-US')} TRY (${pkg.timeline})`);
+    const meta =
+      typeof pkg.priceFrom === 'number'
+        ? `from ${pkg.priceFrom.toLocaleString('en-US')} TRY (${pkg.timeline})`
+        : pkg.timeline;
+    s.push(`### ${pkg.name} | ${meta}`);
     s.push(pkg.tagline);
     if (pkg.features.length) s.push(`Includes: ${pkg.features.join('; ')}`);
     s.push('');
   }
   s.push('## Projects');
   for (const p of data.projects) {
-    s.push(`### ${p.title} — ${abs(site, `/projects/${p.slug}/`)}`);
+    s.push(`### ${p.title} | ${abs(site, `/projects/${p.slug}/`)}`);
     s.push(`${p.tagline}`);
     s.push(`Status: ${p.status}. Stack: ${p.stack.join(', ')}.`);
     if (p.problem) s.push(`Problem: ${p.problem}`);
@@ -181,7 +186,7 @@ export function llmsFullTxt(data: LlmsData): string {
   s.push('');
   s.push('## Articles (native, full text)');
   for (const p of data.posts) {
-    s.push(`### ${p.title} — ${abs(site, `/writing/${p.slug}/`)}`);
+    s.push(`### ${p.title} | ${abs(site, `/writing/${p.slug}/`)}`);
     s.push(`${p.description} (${p.date}, ${p.lang})`);
     s.push('');
     s.push(p.body.trim());
@@ -189,7 +194,7 @@ export function llmsFullTxt(data: LlmsData): string {
   }
   s.push('## Courses');
   for (const c of data.courses) {
-    s.push(`### ${c.title} — ${abs(site, `/courses/${c.slug}/`)}`);
+    s.push(`### ${c.title} | ${abs(site, `/courses/${c.slug}/`)}`);
     s.push(`${c.description} (level: ${c.level}, ${c.lang})`);
     for (const l of c.lessons) {
       s.push(`- ${l.title}: ${abs(site, `/courses/${c.slug}/${l.slug}/`)}`);
@@ -197,7 +202,7 @@ export function llmsFullTxt(data: LlmsData): string {
     s.push('');
   }
   s.push('## Publications');
-  for (const pub of data.publications) s.push(`- ${pub.title} — ${pub.venue}, ${pub.year}`);
+  for (const pub of data.publications) s.push(`- ${pub.title} | ${pub.venue}, ${pub.year}`);
   s.push('');
   return s.join('\n');
 }

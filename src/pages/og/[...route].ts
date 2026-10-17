@@ -38,11 +38,11 @@ import {
 import { courseSlugOf } from '../../lib/courses';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
-const BG_DARK: [number, number, number] = [10, 10, 11]; //  --color-bg    #0a0a0b
-const BG_CARD: [number, number, number] = [20, 20, 23]; //  --color-card  #141417
-const FG: [number, number, number] = [237, 237, 239]; //    --color-fg    #ededef
-const MUTED: [number, number, number] = [155, 155, 163]; // --color-muted #9b9ba3
-const ACCENT: [number, number, number] = [167, 139, 250]; // --color-accent #a78bfa
+const BG_DARK: [number, number, number] = [4, 13, 9]; //     --color-bg     #040d09
+const BG_CARD: [number, number, number] = [9, 26, 20]; //    --color-card   #091a14
+const FG: [number, number, number] = [236, 253, 245]; //     --color-fg     #ecfdf5
+const MUTED: [number, number, number] = [143, 178, 163]; //  --color-muted  #8fb2a3
+const ACCENT: [number, number, number] = [16, 185, 129]; //  --color-accent #10b981
 
 interface OgPage {
   /** Large heading line. */
@@ -119,7 +119,7 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     border: { color: ACCENT, width: 12, side: 'inline-start' },
     padding: 72,
     font: {
-      // `families` must match each file's internal family name exactly — the
+      // `families` must match each file's internal family name exactly - the
       // generator uses ParagraphBuilder.Make (no glyph-level cross-family
       // fallback), so a mismatch would silently fall back to another font.
       title: {
@@ -139,7 +139,7 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     },
     // Each file merges the `latin` + `latin-ext` subsets into a single typeface
     // so a single family covers ASCII, Latin-1 (ö, ç) AND the Turkish glyphs
-    // (ğ, ş, ı, İ) used in the TR taglines — see src/assets/og-fonts/README.md.
+    // (ğ, ş, ı, İ) used in the TR taglines - see src/assets/og-fonts/README.md.
     fonts: [
       './src/assets/og-fonts/inter-700-full.ttf',
       './src/assets/og-fonts/jetbrains-500-full.ttf',

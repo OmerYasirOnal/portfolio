@@ -20,7 +20,7 @@ interface Props {
 const {
   title,
   description,
-  lang = 'en',
+  lang = 'tr',
   path,
   ogImage,
   ogType = 'website',
@@ -28,17 +28,13 @@ const {
   canonicalUrl,
 } = Astro.props;
 const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
-// A page deferring to an external canonical must not claim itself (or its
-// twin) as a language alternate — hreflang targets must be canonical pages.
 const alternates = canonicalUrl ? [] : hreflangLinks(lang, path, Astro.site!);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
-// Width/height hints are only known for the generated 1200x630 OG cards;
-// arbitrary `cover` images must not claim dimensions they may not have.
 const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
 ---
 
 <!doctype html>
-<html lang={lang} class="dark">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,7 +42,8 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     <meta name="description" content={description} />
     <meta name="author" content="Ömer Yasir Önal" />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#0a0a0b" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f7f4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#040d09" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -79,25 +76,39 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <script is:inline>
-      // No-flash theme: dark is the default; honor a stored explicit choice.
+      // No-flash theme: luminous sage-emerald light is default; honor stored dark choice.
       try {
         const stored = localStorage.getItem('theme');
         const root = document.documentElement;
-        if (stored === 'light') {
-          root.classList.remove('dark');
-          root.style.colorScheme = 'light';
-        } else {
+        if (stored === 'dark') {
           root.classList.add('dark');
           root.style.colorScheme = 'dark';
+        } else {
+          root.classList.remove('dark');
+          root.style.colorScheme = 'light';
         }
       } catch (_) {
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('dark');
       }
     </script>
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen font-sans bg-bg text-fg antialiased">
+  <body class="relative min-h-screen overflow-x-hidden font-sans bg-bg text-fg antialiased selection:bg-accent/20 selection:text-accent">
+    {/* Global Futuristic Emerald & Sage Aurora Backdrop */}
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div class="bg-futuristic-mesh absolute inset-0 opacity-75 dark:opacity-50"></div>
+      <div
+        class="animate-aurora-1 absolute -left-32 -top-36 h-[34rem] w-[38rem] rounded-full bg-emerald-500/12 blur-[130px] dark:bg-emerald-500/16"
+      ></div>
+      <div
+        class="animate-aurora-2 absolute -right-32 top-[22%] h-[30rem] w-[36rem] rounded-full bg-teal-500/10 blur-[140px] dark:bg-teal-400/12"
+      ></div>
+      <div
+        class="animate-aurora-1 absolute bottom-[-10rem] left-1/3 h-[28rem] w-[42rem] rounded-full bg-emerald-600/8 blur-[150px] dark:bg-emerald-500/10"
+      ></div>
+    </div>
+
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
@@ -105,5 +116,34 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
       {t(lang, 'a11y.skip')}
     </a>
     <slot />
+
+    <script>
+      // Cursor-tracking spotlight for [data-spotlight] surfaces
+      document.querySelectorAll<HTMLElement>('[data-spotlight]').forEach((card) => {
+        card.addEventListener('pointermove', (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        });
+      });
+
+      // Scroll-triggered reveal animation for [data-reveal] elements
+      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (revealEls.length > 0 && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('reveal-ready');
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' },
+        );
+        revealEls.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>

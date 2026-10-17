@@ -1,14 +1,9 @@
 ---
 /**
- * ProjectGrid — responsive grid of ProjectCards.
- *
- * Presentational only: it receives already-sorted/filtered `projects` entries
- * from the page (single source of truth stays in the content collection) and
- * lays them out. `columns` controls the widest breakpoint; the grid always
- * collapses to a single column on mobile.
+ * ProjectGrid - responsive grid of ProjectCards with interactive category filter tabs.
  */
 import type { CollectionEntry } from 'astro:content';
-import type { Locale } from '../data/i18n';
+import { t, type Locale } from '../data/i18n';
 import ProjectCard from './ProjectCard.astro';
 
 interface Props {
@@ -16,21 +11,92 @@ interface Props {
   items: CollectionEntry<'projects'>[];
   /** Max columns at the widest breakpoint. Defaults to 2. */
   columns?: 2 | 3;
+  /** Show interactive group filter tabs above the grid. Defaults to true. */
+  filterable?: boolean;
 }
 
-const { locale, items, columns = 2 } = Astro.props;
+const { locale, items, columns = 2, filterable = true } = Astro.props;
 
-// Literal class strings so Tailwind can statically detect them.
 const colClass =
   columns === 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2';
+
+const hasBothGroups =
+  items.some((e) => e.data.group === 'product') &&
+  items.some((e) => e.data.group === 'client');
 ---
 
-<ul class:list={['grid grid-cols-1 gap-4', colClass]} role="list">
+<div data-project-grid-root data-reveal>
   {
-    items.map((entry) => (
-      <li class="h-full">
-        <ProjectCard locale={locale} entry={entry} />
-      </li>
-    ))
+    filterable && hasBothGroups && (
+      <div
+        class="mb-8 inline-flex flex-wrap items-center gap-1.5 rounded-full border border-accent/25 bg-card/80 p-1.5 shadow-sm backdrop-blur-xl"
+        role="tablist"
+        aria-label={t(locale, 'work.title')}
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected="true"
+          data-filter-btn="all"
+          class="cursor-pointer rounded-full bg-accent px-5 py-2 text-xs font-bold text-white shadow-xs transition-all sm:text-sm"
+        >
+          {t(locale, 'work.filterAll')}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          data-filter-btn="client"
+          class="cursor-pointer rounded-full px-5 py-2 text-xs font-semibold text-muted transition-all hover:text-fg sm:text-sm"
+        >
+          {t(locale, 'work.filterClient')}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          data-filter-btn="product"
+          class="cursor-pointer rounded-full px-5 py-2 text-xs font-semibold text-muted transition-all hover:text-fg sm:text-sm"
+        >
+          {t(locale, 'work.filterProduct')}
+        </button>
+      </div>
+    )
   }
-</ul>
+
+  <ul class:list={['grid grid-cols-1 gap-6', colClass]} role="list">
+    {
+      items.map((entry) => (
+        <li class="h-full" data-project-item={entry.data.group}>
+          <ProjectCard locale={locale} entry={entry} />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-project-grid-root]').forEach((root) => {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-filter-btn]');
+    const items = root.querySelectorAll<HTMLElement>('[data-project-item]');
+    if (!buttons.length) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.filterBtn ?? 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-selected', String(active));
+          b.classList.toggle('bg-accent', active);
+          b.classList.toggle('text-white', active);
+          b.classList.toggle('text-muted', !active);
+        });
+        items.forEach((item) => {
+          const group = item.dataset.projectItem;
+          const show = target === 'all' || group === target;
+          item.classList.toggle('hidden', !show);
+        });
+      });
+    });
+  });
+</script>

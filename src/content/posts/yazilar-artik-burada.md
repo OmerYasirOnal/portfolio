@@ -1,18 +1,18 @@
 ---
-title: "Yazılar artık burada"
-description: "Yeni makaleler artık doğrudan bu sitede yayımlanıyor — RSS, JSON feed ve yapay zekâ için okunabilir bir dizinle. Medium arşivi yerinde duruyor."
+title: "Yazılarım ve Notlarım Artık Kendi Sitemde"
+description: "Teknoloji, dijital ürün geliştirme, marka kurulumu ve yapay zeka üzerine kişisel değerlendirmelerimi ve notlarımı artık doğrudan omeryasironal.com üzerinden paylaşıyorum."
 date: "2026-07-01"
 lang: tr
-tags: ["meta", "site"]
+tags: ["Dijital Ürünler", "Teknoloji", "Notlar"]
 home: true
 ---
 
-Şimdiye kadar yazdığım her şey [Medium](https://medium.com/@engomeryasironal)'da yaşıyordu. O on bir makale olduğu yerde kalıyor; ama bu yazıdan itibaren yeni içerikler önce burada yayımlanacak.
+Bugüne kadar yazılım, yapay zeka ve mühendislik üzerine kaleme aldığım makaleleri [Medium](https://medium.com/@engomeryasironal) profilimde yayımlıyordum. Oradaki arşivim olduğu gibi kalmaya devam edecek; ancak bundan sonraki yeni yazılarımı, proje deneyimlerimi ve kişisel notlarımı doğrudan kendi web sitemde paylaşacağım.
 
-Neden taşındım?
+Burada neler yer alacak?
 
-- **Sahiplik.** Markdown, bu siteyle aynı repoda duruyor. Kelimelerle okuyucu arasında bir platform yok.
-- **Feed'ler.** Her şey makine tarafından okunabilir: okuyucular için [RSS](/rss.xml), yakında çıkacak mobil uygulama için [`feed.json`](/feed.json), yapay zekâ asistanları için [`llms.txt`](/llms.txt).
-- **Kurslar.** Makaleler planın yarısı. Küçük, odaklı [kurslar](/tr/courses/) diğer yarısı — aynı repo, aynı feed'ler.
+- **Dijital Ürün ve Marka Deneyimleri:** Bir fikrin mobil uygulamaya veya kurumsal bir dijital markaya dönüşme sürecinde karşılaşılan gerçek ihtiyaçlar, doğru bilinen yanlışlar ve pratik çözümler.
+- **Yapay Zeka ve Arama Görünürlüğü (SEO & AIO):** İşletmelerin ve ürünlerin yalnızca klasik arama motorlarında değil, yapay zeka asistanlarında da nasıl doğru konumlanabileceğine dair güncel notlar.
+- **Kişisel Notlar ve Değerlendirmeler:** Geliştirdiğim ürünlerden, yürüttüğüm projelerden ve teknoloji dünyasındaki gelişmelerden süzülen düşünceler.
 
-Teknoloji bilinçli olarak sıkıcı: Astro, markdown, CDN üzerinde statik HTML. Giriş yapılacak bir şey yok, beklenecek bir şey yok.
+Tüm yazılara [Yazılar](/writing) sayfasından veya [RSS](/rss.xml) akışı üzerinden ulaşabilirsiniz.

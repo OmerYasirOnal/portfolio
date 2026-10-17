@@ -2,10 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { packageTiers, packageFaqs, packageProcess, rapidSprints } from '../src/data/packages';
 
 describe('rapidSprints', () => {
-  it('offers one web and one mobile sprint with fixed positive prices', () => {
+  it('offers one web and one mobile sprint with timelines and features', () => {
     expect(rapidSprints.map((sprint) => sprint.id)).toEqual(['web-sprint', 'mobile-mvp']);
     for (const sprint of rapidSprints) {
-      expect(sprint.price).toBeGreaterThan(0);
       expect(sprint.timeline.en).toBeTruthy();
       expect(sprint.timeline.tr).toBeTruthy();
       expect(sprint.features.length).toBeGreaterThan(0);
@@ -20,13 +19,9 @@ describe('rapidSprints', () => {
 });
 
 describe('packageTiers', () => {
-  it('has exactly one highlighted (most popular) tier', () => {
+  it('has the four core service pillars and exactly one highlighted tier', () => {
+    expect(packageTiers.map((tier) => tier.id)).toEqual(['mobile', 'web', 'brand', 'seo-aio']);
     expect(packageTiers.filter((tier) => tier.highlighted)).toHaveLength(1);
-  });
-
-  it('is priced in ascending order', () => {
-    const prices = packageTiers.map((tier) => tier.priceFrom);
-    expect(prices).toEqual([...prices].sort((a, b) => a - b));
   });
 
   it('gives every tier bilingual copy and at least one feature', () => {

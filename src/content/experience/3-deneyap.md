@@ -1,13 +1,13 @@
 ---
-role_en: Instructor / Mentor
-role_tr: Eğitmen / Mentor
-org: T3 Foundation — Deneyap Technology Workshops
+role_en: Instructor & Mentor Scholar
+role_tr: Eğitmen Mentor Bursiyeri
+org: T3 Vakfı Deneyap
 location: Istanbul
 start: "2024"
 end: "2025"
 bullets_en:
-  - Taught and mentored students in the Deneyap technology workshops.
+  - "Taught students in technology workshops and mentored teams in project development and problem solving."
 bullets_tr:
-  - Deneyap teknoloji atölyelerinde öğrencilere eğitim verdim ve mentorluk yaptım.
-order: 3
+  - "Teknoloji atölyelerinde öğrencilere eğitim verdim; proje geliştirme ve problem çözme çalışmalarında mentorluk yaptım."
+order: 5
 ---

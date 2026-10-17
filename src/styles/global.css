@@ -7,49 +7,168 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Two palettes drive every surface. Tailwind v4 emits the `@theme` tokens as
- * `:root` CSS variables and references them (via `var()`) from the generated
- * utilities (`bg-bg`, `text-fg`, `border-border`, `text-accent`, …). Because
- * those utilities read the variables at runtime, overriding the same variables
- * under `.dark` makes toggling the class actually reflow every color.
+ * Futuristic Emerald & Sage Executive Palette
  *
- * The `@theme` block below is the DEFAULT (LIGHT) palette. The `.dark` block
- * overrides it with the DARK palette. Base.astro sets `class="dark"` before
- * first paint, so dark stays the default; removing `.dark` yields light.
- *
- * Contrast (WCAG AA, verified):
- *   Light  fg #18181b / bg #fbfbfc → ~17:1  · muted #52525b / bg → ~7.1:1
- *          accent-as-text #6d28d9 / bg → ~6.9:1 (normal-text AA pass)
- *   Dark   fg #ededef / bg #0a0a0b → ~15:1  · muted #9b9ba3 / bg → ~6.7:1
- *          accent-as-text #a78bfa / bg → ~7.3:1 (normal-text AA pass)
+ * Harmonized with Ömer Yasir Önal's portrait and designed to feel both
+ * prestigious for corporate clients and futuristic/fluid in motion.
  */
 @theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  /* Default = light palette (used when `.dark` is absent). */
-  --color-bg: #fbfbfc;
-  --color-fg: #18181b;
-  --color-muted: #52525b;
-  --color-accent: #6d28d9;
-  --color-card: #f4f4f6;
-  --color-border: #e4e4e8;
+  /* Default = Luminous Sage & Emerald Light palette */
+  --color-bg: #f1f7f4;
+  --color-fg: #051c14;
+  --color-muted: #35584a;
+  --color-accent: #059669;
+  --color-card: #ffffff;
+  --color-border: #cde3d8;
 }
 
-/* Dark palette — applied under the `.dark` class (Base's default). */
+/* Cyber-Forest Night & Bio-Emerald Dark palette */
 .dark {
-  --color-bg: #0a0a0b;
-  --color-fg: #ededef;
-  --color-muted: #9b9ba3;
-  --color-accent: #a78bfa;
-  --color-card: #141417;
-  --color-border: #232329;
+  --color-bg: #040d09;
+  --color-fg: #ecfdf5;
+  --color-muted: #8fb2a3;
+  --color-accent: #10b981;
+  --color-card: #091a14;
+  --color-border: #15382a;
 }
 
 :root { color-scheme: light; }
 .dark { color-scheme: dark; }
 
-html { background: var(--color-bg); color: var(--color-fg); }
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  scroll-behavior: smooth;
+}
+
+/* Subtle futuristic dot-grid mesh overlay */
+.bg-futuristic-mesh {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-accent) 20%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 25%, #000 35%, transparent 100%);
+}
+
+/* Animated aurora ambient blobs */
+@keyframes aurora-drift-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(45px, 30px, 0) scale(1.1);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-40px, -25px, 0) scale(1.08);
+  }
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-aurora-1 {
+  animation: aurora-drift-1 16s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-drift-2 20s ease-in-out infinite;
+}
+
+.animate-orbit-slow {
+  animation: orbit-spin 36s linear infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-gentle 6s ease-in-out 2s infinite;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Interactive cursor-tracking spotlight surface */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-spotlight]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in srgb, var(--color-accent) 13%, transparent),
+    transparent 65%
+  );
+}
+
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+
+/* Scroll-triggered fluid reveal */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px) scale(0.99);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
@@ -59,12 +178,12 @@ html { background: var(--color-bg); color: var(--color-fg); }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal-ready [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
-/*
- * Map the typography plugin's palette onto the site tokens. The tokens flip
- * under `.dark`, so prose follows the theme without `prose-invert`.
- */
 .prose {
   --tw-prose-body: var(--color-fg);
   --tw-prose-headings: var(--color-fg);
@@ -83,6 +202,6 @@ html { background: var(--color-bg); color: var(--color-fg); }
   --tw-prose-th-borders: var(--color-border);
   --tw-prose-td-borders: var(--color-border);
   --tw-prose-kbd: var(--color-fg);
-  /* kbd box-shadow channels (plugin expects space-separated RGB) — neutral gray works on both palettes. */
   --tw-prose-kbd-shadows: 128 128 128;
 }
+

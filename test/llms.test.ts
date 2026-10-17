@@ -43,11 +43,10 @@ const data = {
   ],
   packages: [
     {
-      name: 'Starter',
-      tagline: 'A fast, credible one-page site.',
-      priceFrom: 15000,
-      timeline: '~1 week',
-      features: ['One-page landing site'],
+      name: 'Corporate Web & Custom Software',
+      tagline: 'High-speed, multi-language corporate websites.',
+      timeline: '2 - 4 weeks',
+      features: ['Modern Astro or Next.js architecture'],
     },
   ],
 };
@@ -79,23 +78,23 @@ describe('llmsFullTxt', () => {
   const out = llmsFullTxt(data);
   it('inlines the full bio and per-project problem/what-I-did', () => {
     expect(out).toContain(data.projects[0].problem);
-    expect(out).toContain('Ömer Yasir Önal is a back-end');
+    expect(out).toContain('Ömer Yasir Önal is a Computer Engineer');
   });
 });
 
 describe('llmsTxt packages section', () => {
   const out = llmsTxt(data);
-  it('links to the packages page and lists each tier with its starting price', () => {
+  it('links to the packages page and lists each service pillar with its timeline', () => {
     expect(out).toContain('https://omeryasironal.com/packages/');
-    expect(out).toContain('- Starter (from 15,000 TRY, ~1 week): A fast, credible one-page site.');
+    expect(out).toContain('- Corporate Web & Custom Software (2 - 4 weeks): High-speed, multi-language corporate websites.');
   });
 });
 
 describe('llmsFullTxt packages section', () => {
   const out = llmsFullTxt(data);
   it('inlines package features', () => {
-    expect(out).toContain('### Starter — from 15,000 TRY (~1 week)');
-    expect(out).toContain('Includes: One-page landing site');
+    expect(out).toContain('### Corporate Web & Custom Software | 2 - 4 weeks');
+    expect(out).toContain('Includes: Modern Astro or Next.js architecture');
   });
 });
 

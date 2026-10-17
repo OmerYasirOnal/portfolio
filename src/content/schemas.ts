@@ -5,7 +5,7 @@ import { z } from 'astro/zod';
  *
  * These are defined here (independent of `astro:content`) so they can be
  * unit-tested directly with Vitest. `src/content.config.ts` wraps each one in
- * `defineCollection` — this module stays the single source of truth for the
+ * `defineCollection` - this module stays the single source of truth for the
  * frontmatter shape.
  */
 
@@ -42,6 +42,8 @@ export const projectSchema = z.object({
   problem_tr: z.string().optional(),
   what_i_did_en: z.string().optional(),
   what_i_did_tr: z.string().optional(),
+  image: z.string().optional(),
+  group: z.enum(['product', 'client']).default('product'),
   featured: z.boolean().default(false),
   order: z.number().default(99),
   draft: z.boolean().default(false),
@@ -90,9 +92,9 @@ const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date must be YYYY-MM-DD
 export const postSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
-  /** Publish date — drives newest-first ordering and datePublished. */
+  /** Publish date - drives newest-first ordering and datePublished. */
   date: isoDate,
-  /** Last substantive revision — feeds dateModified when present. */
+  /** Last substantive revision - feeds dateModified when present. */
   updated: isoDate.optional(),
   /** Language the post body is written in. */
   lang: z.enum(['en', 'tr']),

@@ -1,24 +1,23 @@
 ---
 /**
- * PDF render source (NOT a public page — noindex).
+ * PDF render source (NOT a public page - noindex).
  *
  * `scripts/build-cv.mjs` builds the site, then prints the built HTML of
  * `dist/cv-print/{tr,en,eu}/index.html` to `public/cv/omer-yasir-onal-{tr,en,eu}.pdf`
  * via headless Brave. The layout is a single ATS-safe main column with real,
- * selectable text — no text-as-image, no column splitting. A full-bleed violet
+ * selectable text - no text-as-image, no column splitting. A full-bleed violet
  * header band opens the page.
  *
  * Three OUTPUT variants (`getStaticPaths` below), each a `{ lang, photo, ascii,
  * availabilityNote, gdpr }` recipe:
- *   - `tr` — Turkish, headshot, full diacritics (`Ömer Yasir Önal`).
- *   - `en` — English, no photo, ASCII-folded (`Omer Yasir Onal`) so Workday /
+ *   - `tr` - Turkish, headshot, full diacritics (`Ömer Yasir Önal`).
+ *   - `en` - English, no photo, ASCII-folded (`Omer Yasir Onal`) so Workday /
  *     Greenhouse parsers survive it; adds a remote-availability note. The
  *     international / remote variant.
- *   - `eu` — same as `en` PLUS a GDPR recruitment-consent footer; may run to a
+ *   - `eu` - same as `en` PLUS a GDPR recruitment-consent footer; may run to a
  *     second page.
  *
- * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections —
- * nothing is duplicated here. Turkish date/location strings are localized at
+ * All copy is REUSED from `profile.ts`, `cv.ts` and the content collections - * nothing is duplicated here. Turkish date/location strings are localized at
  * RENDER time via `cv-format.ts`; the `en`/`eu` variants ASCII-fold every
  * rendered string via `asciiFold` (the source frontmatter is never mutated).
  */
@@ -66,7 +65,7 @@ const experience = (await getCollection('experience')).sort((a, b) => a.data.ord
 // Curated résumé projects: `cv.projects` fixes the order + carries a CV-only
 // impact note; the matching content-collection entry supplies the tech line and
 // the primary link. `flatMap` drops any slug that doesn't resolve (strict-TS
-// safe — no non-null assertion needed).
+// safe - no non-null assertion needed).
 const allProjects = await getCollection('projects');
 const cvProjects = cv.projects.flatMap((cp) => {
   const entry = allProjects.find((p) => p.id === cp.slug);
@@ -106,9 +105,9 @@ const socialLinks = [
 // Education reads as *graduated* now (word order differs by locale), framed at
 // render time so the reusable `profile.education` fields stay date-only.
 const grad = isTr ? profile.education.graduation_tr : profile.education.graduation_en;
-const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en} — ${
+const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en} - ${
   isTr ? profile.education.school_tr : profile.education.school_en
-} — ${isTr ? `${grad} mezunu` : `Graduated ${grad}`}`;
+} - ${isTr ? `${grad} mezunu` : `Graduated ${grad}`}`;
 ---
 
 <!doctype html>
@@ -117,7 +116,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>{fold(profile.name)} — {fold(isTr ? 'Özgeçmiş' : 'Résumé')}</title>
+    <title>{fold(profile.name)} - {fold(isTr ? 'Özgeçmiş' : 'Résumé')}</title>
     <style>
       /* Full-bleed sides (band reaches both edges); top/bottom keep a margin so
          a spillover page never butts content against the paper edge. */
@@ -127,13 +126,13 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
       }
 
       :root {
-        --accent: #6d28d9;
-        --accent-soft: #c4b5fd;
-        --accent-tint: #f5f3ff;
-        --fg: #18181b;
-        --muted: #52525b;
-        --faint: #a1a1aa;
-        --rule: #e4e0f4;
+        --accent: #047857;
+        --accent-soft: #a7f3d0;
+        --accent-tint: #ecfdf5;
+        --fg: #051c14;
+        --muted: #35584a;
+        --faint: #8fb2a3;
+        --rule: #cde3d8;
         --pad: 15mm; /* horizontal inset of the content + band interior */
       }
 
@@ -447,7 +446,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
               <div class="entry-head">
                 <div>
                   <span class="entry-title">{fold(isTr ? e.data.role_tr : e.data.role_en)}</span>
-                  <span class="entry-org"> {fold('—')} {fold(e.data.org)}</span>
+                  <span class="entry-org"> {fold(' - ')} {fold(e.data.org)}</span>
                 </div>
                 <div class="entry-meta">
                   {fold(localizeLocation(e.data.location, lang))} ·{' '}
@@ -505,7 +504,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
           publications.map((pub) => (
             <p class="entry">
               <span class="entry-title">{fold(isTr ? pub.data.title_tr : pub.data.title_en)}</span>
-              {fold(' — ')}
+              {fold(' - ')}
               <span class="entry-org">
                 {fold(pub.data.venue)}, {pub.data.year}
               </span>
@@ -519,7 +518,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
         <h2>{s('writing')}</h2>
         <p>
           {fold((isTr ? cv.writing.tr : cv.writing.en).replace('{n}', String(writingCount)))}
-          {fold(' — ')}
+          {fold(' - ')}
           <a href={profile.links.medium.url}>{displayUrl(profile.links.medium.url)}</a>
         </p>
       </section>
@@ -536,7 +535,7 @@ const educationLine = `${isTr ? cv.education.degree.tr : cv.education.degree.en}
               )}`;
               return (
                 <li>
-                  <span class="entry-title">{fold(c.title)}</span> {fold('—')} {fold(meta)}
+                  <span class="entry-title">{fold(c.title)}</span> {fold(' - ')} {fold(meta)}
                 </li>
               );
             })
