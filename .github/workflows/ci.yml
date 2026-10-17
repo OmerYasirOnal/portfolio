@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
@@ -34,17 +34,17 @@ jobs:
 
       # Link check over the WHOLE built site. `--recurse` follows every internal
       # link from the home page, so now that /projects and /writing are reachable
-      # it crawls all pages (both locales, every project case study) — not just
+      # it crawls all pages (both locales, every project case study) - not just
       # the home page. Any broken internal/external link fails the job (enforces
       # the accuracy rule).
       #
       # Skips / tolerations (all valid in a real browser, hostile only to bots):
-      #   - LinkedIn returns 999, Medium returns 403 to non-browser clients.
+      #   - LinkedIn returns 999, Medium returns 403, IEEE doi.org blocks bots.
       #   - The Apple App Store rate-limits crawlers with 429; 429 means
       #     "alive but throttled", never a dead link, so it is treated as OK.
       #   - The canonical/OG absolute URLs point at the production domain
       #     (https://omeryasironal.com, live on Vercel); crawling them from CI
-      #     would just hammer the live site, so self-references are skipped —
+      #     would just hammer the live site, so self-references are skipped -
       #     dist/ itself is what's being checked.
       - name: Link check (dist)
         run: >-
@@ -52,4 +52,5 @@ jobs:
           --skip "^https://www.linkedin.com"
           --skip "^https://medium.com"
           --skip "^https://omeryasironal.com"
+          --skip "^https://doi.org"
           --status-code "429:ok"

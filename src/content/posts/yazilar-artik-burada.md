@@ -13,6 +13,6 @@ Neden taşındım?
 
 - **Sahiplik.** Markdown, bu siteyle aynı repoda duruyor. Kelimelerle okuyucu arasında bir platform yok.
 - **Feed'ler.** Her şey makine tarafından okunabilir: okuyucular için [RSS](/rss.xml), yakında çıkacak mobil uygulama için [`feed.json`](/feed.json), yapay zekâ asistanları için [`llms.txt`](/llms.txt).
-- **Kurslar.** Makaleler planın yarısı. Küçük, odaklı [kurslar](/tr/courses/) diğer yarısı - aynı repo, aynı feed'ler.
+- **Kurslar.** Makaleler planın yarısı. Küçük, odaklı [kurslar](/courses/) diğer yarısı - aynı repo, aynı feed'ler.
 
 Teknoloji bilinçli olarak sıkıcı: Astro, markdown, CDN üzerinde statik HTML. Giriş yapılacak bir şey yok, beklenecek bir şey yok.

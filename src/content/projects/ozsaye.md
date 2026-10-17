@@ -16,7 +16,6 @@ status_en: Live at ozsaye.com
 status_tr: ozsaye.com adresinde yayında
 links:
   live: https://ozsaye.com
-  repo: https://github.com/OmerYasirOnal/ozsaye-psikoloji
 highlights_en:
   - "Full-stack Next.js 16 + PostgreSQL/Prisma platform with a role-based (Admin/Psychologist) management panel."
   - "Dynamic clinical assessment & psychological scale engine with custom scoring rules and automated result ranges."

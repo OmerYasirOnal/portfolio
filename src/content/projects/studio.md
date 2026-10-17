@@ -12,8 +12,6 @@ stack:
   - FastAPI
 status_en: Open source (MIT), alpha
 status_tr: Açık kaynak (MIT), alfa
-links:
-  repo: https://github.com/OmerYasirOnal/studio
 highlights_en:
   - Orchestrates 16 specialist agents that coordinate through the filesystem.
   - Three.js + React Three Fiber runtime, packaged for mobile with Capacitor.

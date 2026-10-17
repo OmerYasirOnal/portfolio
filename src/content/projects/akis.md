@@ -14,11 +14,10 @@ stack:
   - Multi-LLM
   - Ed25519
   - MCP
-status_en: Open source (Apache-2.0), live at akisflow.com
-status_tr: Açık kaynak (Apache-2.0), akisflow.com’da yayında
+status_en: Open source (Apache-2.0)
+status_tr: Açık kaynak (Apache-2.0)
 links:
   repo: https://github.com/OmerYasirOnal/akis
-  live: https://akisflow.com
 highlights_en:
   - Multi-agent engine (Scribe, Proto, Critic, Trace) orchestrated behind 4 structural human-approval gates.
   - Tasks are marked complete only after human approval and a real boot-smoke verification test pass.
