@@ -33,39 +33,39 @@ describe('canonicalHref', () => {
   it('builds an absolute, trailing-slashed URL matching the sitemap loc', () => {
     expect(canonicalHref('/cv', SITE)).toBe('https://omeryasironal.com/cv/');
     expect(canonicalHref('/', SITE)).toBe('https://omeryasironal.com/');
-    expect(canonicalHref('/tr/projects/akis', SITE)).toBe(
-      'https://omeryasironal.com/tr/projects/akis/',
+    expect(canonicalHref('/en/projects/akis', SITE)).toBe(
+      'https://omeryasironal.com/en/projects/akis/',
     );
   });
 });
 
 describe('hreflangLinks', () => {
-  it('emits en, tr, and x-default with x-default pointing at the EN twin', () => {
-    const links = hreflangLinks('en', '/cv', SITE);
+  it('emits tr, en, and x-default with x-default pointing at the TR root twin', () => {
+    const links = hreflangLinks('tr', '/cv', SITE);
     expect(links).toEqual([
-      { hreflang: 'en', href: 'https://omeryasironal.com/cv/' },
-      { hreflang: 'tr', href: 'https://omeryasironal.com/tr/cv/' },
+      { hreflang: 'tr', href: 'https://omeryasironal.com/cv/' },
+      { hreflang: 'en', href: 'https://omeryasironal.com/en/cv/' },
       { hreflang: 'x-default', href: 'https://omeryasironal.com/cv/' },
     ]);
   });
-  it('computes the EN twin from a TR page', () => {
-    const links = hreflangLinks('tr', '/tr/cv', SITE);
-    expect(links[0]).toEqual({ hreflang: 'en', href: 'https://omeryasironal.com/cv/' });
-    expect(links[1]).toEqual({ hreflang: 'tr', href: 'https://omeryasironal.com/tr/cv/' });
+  it('computes the TR twin from an EN page', () => {
+    const links = hreflangLinks('en', '/en/cv', SITE);
+    expect(links[0]).toEqual({ hreflang: 'tr', href: 'https://omeryasironal.com/cv/' });
+    expect(links[1]).toEqual({ hreflang: 'en', href: 'https://omeryasironal.com/en/cv/' });
   });
   it('handles the home pair', () => {
-    const links = hreflangLinks('en', '/', SITE);
+    const links = hreflangLinks('tr', '/', SITE);
     expect(links[0].href).toBe('https://omeryasironal.com/');
-    expect(links[1].href).toBe('https://omeryasironal.com/tr/');
+    expect(links[1].href).toBe('https://omeryasironal.com/en/');
   });
 });
 
 describe('personJsonLd', () => {
   it('uses the locale-specific jobTitle', () => {
-    expect(personJsonLd(SITE, 'en').jobTitle).toBe('Back-End & Applied AI Engineer');
-    expect(personJsonLd(SITE, 'tr').jobTitle).toContain('Yapay Zeka');
+    expect(personJsonLd(SITE, 'en').jobTitle).toContain('Computer Engineer');
+    expect(personJsonLd(SITE, 'tr').jobTitle).toContain('Bilgisayar Mühendisi');
   });
-  it('defaults to English and lists social profiles in sameAs', () => {
+  it('defaults to Turkish and lists social profiles in sameAs', () => {
     const p = personJsonLd(SITE);
     expect(p['@type']).toBe('Person');
     expect(p.sameAs).toContain('https://github.com/OmerYasirOnal');
@@ -77,7 +77,7 @@ describe('webSiteJsonLd', () => {
     const w = webSiteJsonLd(SITE);
     expect(w['@type']).toBe('WebSite');
     expect(w.url).toBe('https://omeryasironal.com');
-    expect(w.inLanguage).toEqual(['en', 'tr']);
+    expect(w.inLanguage).toEqual(['tr', 'en']);
   });
 });
 
@@ -167,15 +167,15 @@ describe('blogPostingJsonLd', () => {
 });
 
 describe('serviceOfferCatalogJsonLd', () => {
-  it('emits a Service with an OfferCatalog of priced tiers', () => {
+  it('emits a Service with an OfferCatalog supporting both priced and custom-quoted tiers', () => {
     const s = serviceOfferCatalogJsonLd(
       {
-        name: 'Packages',
-        description: 'Fixed-scope brand + website tiers.',
+        name: 'Services',
+        description: 'Software & digital infrastructure services.',
         url: SITE + '/packages/',
         tiers: [
-          { name: 'Starter', description: 'One-page site.', priceFrom: 15000 },
-          { name: 'Growth', description: 'Multi-page site.', priceFrom: 35000 },
+          { name: 'Mobile App Development', description: 'Native & cross-platform apps.' },
+          { name: 'Corporate Web', description: 'Multi-page site.', priceFrom: 35000 },
         ],
       },
       SITE,
@@ -184,6 +184,7 @@ describe('serviceOfferCatalogJsonLd', () => {
     expect(s.provider.name).toBe('Ömer Yasir Önal');
     expect(s.hasOfferCatalog['@type']).toBe('OfferCatalog');
     expect(s.hasOfferCatalog.itemListElement).toHaveLength(2);
+    expect('price' in s.hasOfferCatalog.itemListElement[0]).toBe(false);
     expect(s.hasOfferCatalog.itemListElement[1].price).toBe(35000);
     expect(s.hasOfferCatalog.itemListElement[1].priceCurrency).toBe('TRY');
   });
@@ -192,15 +193,15 @@ describe('serviceOfferCatalogJsonLd', () => {
 describe('faqPageJsonLd', () => {
   it('emits a FAQPage with each Q wrapped as a Question + accepted Answer', () => {
     const f = faqPageJsonLd([
-      { question: 'Are these the final prices?', answer: 'They are starting points.' },
-      { question: 'How long does it take?', answer: 'About a week.' },
+      { question: 'How is pricing determined?', answer: 'Based on scope.' },
+      { question: 'How long does it take?', answer: 'About two weeks.' },
     ]);
     expect(f['@type']).toBe('FAQPage');
     expect(f.mainEntity).toHaveLength(2);
     expect(f.mainEntity[0]['@type']).toBe('Question');
-    expect(f.mainEntity[0].name).toBe('Are these the final prices?');
+    expect(f.mainEntity[0].name).toBe('How is pricing determined?');
     expect(f.mainEntity[0].acceptedAnswer['@type']).toBe('Answer');
-    expect(f.mainEntity[0].acceptedAnswer.text).toBe('They are starting points.');
+    expect(f.mainEntity[0].acceptedAnswer.text).toBe('Based on scope.');
   });
 });
 
