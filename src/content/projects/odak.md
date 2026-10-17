@@ -1,35 +1,32 @@
 ---
 title: Odak
-tagline_en: Native iOS, iPadOS & macOS task, planning and Pomodoro focus app on the App Store.
-tagline_tr: iOS, iPadOS ve macOS için App Store’da yayında olan native görev, planlama ve Pomodoro odak uygulaması.
+tagline_en: Native iPhone, iPad, and Mac task planning and Pomodoro focus app published on the App Store.
+tagline_tr: iPhone, iPad ve Mac için App Store’da yayında olan görev yönetimi, günlük planlama ve Pomodoro odaklanma uygulaması.
 category: Mobile
 group: product
 image: odak.jpg
 stack:
-  - Swift 6
-  - SwiftUI
-  - SwiftData
-  - CloudKit
-  - ActivityKit
-  - WidgetKit
-  - StoreKit 2
-  - SwiftPM
-status_en: Live on the App Store (iOS, iPadOS & macOS)
-status_tr: App Store’da yayında (iOS, iPadOS ve macOS)
+  - iOS, iPadOS & macOS
+  - App Store Product
+  - iCloud Sync
+  - Live Activities & Widgets
+  - Swift & SwiftUI
+status_en: Live on the App Store
+status_tr: App Store’da Yayında
 links:
   appstore: https://apps.apple.com/tr/app/odak-g%C3%B6rev-pomodoro/id6787764117
 highlights_en:
-  - Shared OdakKit SwiftPM core powering native iOS, iPadOS, and macOS apps from a unified domain model.
-  - Lock Screen & Dynamic Island Live Activities on iPhone, plus a native macOS menu-bar timer and global shortcut.
-  - Offline-first SwiftData persistence with automatic iCloud (CloudKit) sync across Apple devices.
+  - Designed and built natively for iPhone, iPad, and Mac with a seamless, distraction-free user experience.
+  - Lock Screen and Dynamic Island Live Activity timer on iPhone, plus a dedicated Mac menu-bar focus assistant.
+  - Works offline at full speed and automatically syncs tasks, routines, and focus history across all Apple devices via iCloud.
 highlights_tr:
-  - Tek bir OdakKit SwiftPM çekirdeği üzerinde çalışan native iPhone, iPad ve Mac uygulaması.
-  - iPhone’da Kilit Ekranı ve Dynamic Island Canlı Etkinlik (Live Activity) sayacı; Mac’te menü çubuğu (MenuBarExtra) ve global kısayol.
-  - Çevrimdışı öncelikli SwiftData veri katmanı ve cihazlar arası otomatik iCloud (CloudKit) senkronizasyonu.
-problem_en: Most task managers and Pomodoro timers split daily planning, recurring habits, and focus sessions into disconnected tools or bloated web wrappers that feel alien on Apple devices.
-problem_tr: Görev yöneticileri ve Pomodoro sayaçları genellikle günlük planlamayı, tekrarlayan rutinleri ve odak oturumlarını kopuk araçlara böler ya da Apple ekosisteminde hantal kalan web sarmalayıcıları kullanır.
-what_i_did_en: Designed, engineered, and shipped Odak to the App Store as a native SwiftUI application across iOS, iPadOS, and macOS with a shared SwiftPM domain package (OdakKit), SwiftData + CloudKit sync, Live Activities, interactive widgets, and StoreKit 2.
-what_i_did_tr: Odak’ı ortak bir SwiftPM paketi (OdakKit) üzerinde iOS, iPadOS ve macOS için native SwiftUI mimarisiyle tasarlayıp geliştirdim; SwiftData + CloudKit senkronizasyonu, Canlı Etkinlikler, interaktif widget’lar ve StoreKit 2 entegrasyonuyla App Store’da yayınladım.
+  - iPhone, iPad ve Mac cihazlarda birbiriyle tam uyumlu çalışan, sade ve dikkat dağıtmayan kullanıcı deneyimi.
+  - iPhone Kilit Ekranı ve Dynamic Island üzerinde canlı sayaç takibi; Mac’te menü çubuğundan anında kontrol.
+  - İnternet bağlantısı olmasa bile kesintisiz çalışma ve tüm Apple cihazları arasında otomatik iCloud senkronizasyonu.
+problem_en: Most task managers and focus timers either feel cluttered and complicated or fail to work cohesively across iPhone, iPad, and Mac.
+problem_tr: Günlük işlerini ve çalışma seanslarını planlamak isteyen kullanıcılar, genellikle ya karmaşık ekranlara sahip ya da telefon ve bilgisayar arasında kopuk çalışan uygulamalarla karşılaşıyor.
+what_i_did_en: Conceived, designed, developed, and published Odak to the Apple App Store end to end, combining daily task management, recurring habits, Pomodoro focus sessions, interactive widgets, and iCloud synchronization in a single refined product.
+what_i_did_tr: Fikir aşamasından arayüz tasarımına, yazılım mimarisinden App Store yayınına kadar tüm süreci tek başıma üstlenerek; görev yönetimini, rutin takibini ve Pomodoro odak seanslarını tek çatı altında buluşturan Odak uygulamasını hayata geçirdim.
 featured: true
 order: 1
 ---

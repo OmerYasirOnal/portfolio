@@ -20,7 +20,7 @@ interface Props {
 const {
   title,
   description,
-  lang = 'en',
+  lang = 'tr',
   path,
   ogImage,
   ogType = 'website',
@@ -28,17 +28,13 @@ const {
   canonicalUrl,
 } = Astro.props;
 const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
-// A page deferring to an external canonical must not claim itself (or its
-// twin) as a language alternate - hreflang targets must be canonical pages.
 const alternates = canonicalUrl ? [] : hreflangLinks(lang, path, Astro.site!);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
-// Width/height hints are only known for the generated 1200x630 OG cards;
-// arbitrary `cover` images must not claim dimensions they may not have.
 const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
 ---
 
 <!doctype html>
-<html lang={lang} class="dark">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,7 +42,7 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     <meta name="description" content={description} />
     <meta name="author" content="Ömer Yasir Önal" />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" content="#0a0a0b" />
+    <meta name="theme-color" content="#faf9f6" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -79,25 +75,25 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <script is:inline>
-      // No-flash theme: dark is the default; honor a stored explicit choice.
+      // No-flash theme: executive light is the default; honor a stored explicit dark choice.
       try {
         const stored = localStorage.getItem('theme');
         const root = document.documentElement;
-        if (stored === 'light') {
-          root.classList.remove('dark');
-          root.style.colorScheme = 'light';
-        } else {
+        if (stored === 'dark') {
           root.classList.add('dark');
           root.style.colorScheme = 'dark';
+        } else {
+          root.classList.remove('dark');
+          root.style.colorScheme = 'light';
         }
       } catch (_) {
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('dark');
       }
     </script>
 
     <slot name="head" />
   </head>
-  <body class="min-h-screen font-sans bg-bg text-fg antialiased">
+  <body class="min-h-screen font-sans bg-bg text-fg antialiased selection:bg-accent/15 selection:text-accent">
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"

@@ -7,31 +7,32 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Corporate Slate & Cobalt / Sky palette.
+ * Warm Executive Light (default) & Refined Midnight Dark palettes.
  *
- * The `@theme` block below is the DEFAULT (LIGHT) palette. The `.dark` block
- * overrides it with the DARK palette. Base.astro sets `class="dark"` before
- * first paint, so dark stays the default; removing `.dark` yields light.
+ * Designed for a prestigious, client-facing personal brand and software
+ * consultancy: warm alabaster background (#FAF9F6), crisp white elevated
+ * cards (#FFFFFF), deep navy-charcoal ink (#0F172A), and executive royal blue
+ * accent (#1D4ED8).
  */
 @theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  /* Light palette (corporate slate + deep sky blue accent) */
-  --color-bg: #f8fafc;
+  /* Default = Warm Executive Light palette */
+  --color-bg: #faf9f6;
   --color-fg: #0f172a;
   --color-muted: #475569;
-  --color-accent: #0284c7;
+  --color-accent: #1d4ed8;
   --color-card: #ffffff;
   --color-border: #e2e8f0;
 }
 
-/* Dark palette (deep navy-slate + crisp sky accent) */
+/* Dark palette - applied only when the visitor explicitly switches to dark mode. */
 .dark {
-  --color-bg: #0b0f17;
-  --color-fg: #f1f5f9;
+  --color-bg: #0b0f19;
+  --color-fg: #f8fafc;
   --color-muted: #94a3b8;
-  --color-accent: #38bdf8;
+  --color-accent: #60a5fa;
   --color-card: #111827;
   --color-border: #1e293b;
 }

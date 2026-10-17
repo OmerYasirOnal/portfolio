@@ -1,11 +1,11 @@
 ---
 /**
- * Contact - interactive corporate contact form + direct contact channels.
+ * Contact - executive contact form + direct contact channels.
  *
  * Visitors can fill out the form (Name, Email, Phone/WhatsApp, Topic, Message)
  * to send an inquiry to `engomeryasironal@gmail.com` via `/api/contact`
  * (with automatic mailto fallback if the serverless API key is not configured),
- * or reach out directly via email, WhatsApp, and social profiles.
+ * or reach out directly via email, WhatsApp, and professional profiles.
  */
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -26,8 +26,8 @@ const cvHref = localizePath(locale, '/cv');
 const availability = t(locale, 'contact.availability');
 
 const topics = [
-  { value: 'mobile', label: t(locale, 'contact.form.topics.mobile') },
   { value: 'web', label: t(locale, 'contact.form.topics.web') },
+  { value: 'mobile', label: t(locale, 'contact.form.topics.mobile') },
   { value: 'brand', label: t(locale, 'contact.form.topics.brand') },
   { value: 'seo-aio', label: t(locale, 'contact.form.topics.seo') },
   { value: 'ai', label: t(locale, 'contact.form.topics.ai') },
@@ -36,10 +36,10 @@ const topics = [
 ---
 
 <div
-  class="rounded-2xl border border-border bg-card/60 p-6 shadow-xs sm:p-10"
+  class="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-10"
   data-contact
 >
-  <div class="grid gap-10 lg:grid-cols-[1.25fr_0.9fr] lg:items-start">
+  <div class="grid gap-10 lg:grid-cols-[1.3fr_0.9fr] lg:items-start">
     {/* Left column: Interactive contact form */}
     <div>
       <p class="max-w-xl text-base leading-relaxed text-muted">
@@ -65,7 +65,7 @@ const topics = [
 
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
-            <label for="contact-name" class="block text-xs font-medium text-fg">
+            <label for="contact-name" class="block text-xs font-semibold text-fg">
               {t(locale, 'contact.form.name')} *
             </label>
             <input
@@ -76,12 +76,12 @@ const topics = [
               minlength="2"
               maxlength="120"
               placeholder={t(locale, 'contact.form.namePlaceholder')}
-              class="mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
+              class="mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
             />
           </div>
 
           <div>
-            <label for="contact-email" class="block text-xs font-medium text-fg">
+            <label for="contact-email" class="block text-xs font-semibold text-fg">
               {t(locale, 'contact.form.email')} *
             </label>
             <input
@@ -91,14 +91,14 @@ const topics = [
               required
               maxlength="160"
               placeholder={t(locale, 'contact.form.emailPlaceholder')}
-              class="mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
+              class="mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
             />
           </div>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
-            <label for="contact-phone" class="block text-xs font-medium text-fg">
+            <label for="contact-phone" class="block text-xs font-semibold text-fg">
               {t(locale, 'contact.form.phone')}
             </label>
             <input
@@ -107,18 +107,18 @@ const topics = [
               type="tel"
               maxlength="40"
               placeholder={t(locale, 'contact.form.phonePlaceholder')}
-              class="mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
+              class="mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
             />
           </div>
 
           <div>
-            <label for="contact-topic" class="block text-xs font-medium text-fg">
+            <label for="contact-topic" class="block text-xs font-semibold text-fg">
               {t(locale, 'contact.form.topic')}
             </label>
             <select
               id="contact-topic"
               name="topic"
-              class="mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-fg focus:border-accent focus:outline-none"
+              class="mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-fg focus:border-accent focus:outline-none"
             >
               {
                 topics.map((tp) => (
@@ -130,7 +130,7 @@ const topics = [
         </div>
 
         <div>
-          <label for="contact-message" class="block text-xs font-medium text-fg">
+          <label for="contact-message" class="block text-xs font-semibold text-fg">
             {t(locale, 'contact.form.message')} *
           </label>
           <textarea
@@ -141,7 +141,7 @@ const topics = [
             minlength="10"
             maxlength="4000"
             placeholder={t(locale, 'contact.form.messagePlaceholder')}
-            class="mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
+            class="mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none"
           ></textarea>
         </div>
 
@@ -150,7 +150,7 @@ const topics = [
             type="submit"
             data-submit-btn
             data-default-label={t(locale, 'contact.form.submit')}
-            class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-bg shadow-xs transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <svg
               width="16"
@@ -173,43 +173,41 @@ const topics = [
             data-form-status
             role="status"
             aria-live="polite"
-            class="hidden text-xs font-medium"
+            class="hidden text-xs font-semibold"
           ></p>
         </div>
       </form>
     </div>
 
     {/* Right column: Direct channels, availability & CV */}
-    <div class="space-y-6 rounded-xl border border-border bg-bg/60 p-5 sm:p-6">
+    <div class="space-y-6 rounded-2xl border border-border bg-bg/70 p-6">
       <div>
-        <h3 class="font-mono text-xs font-semibold uppercase tracking-widest text-accent">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-accent">
           {t(locale, 'contact.directTitle')}
         </h3>
 
         <p
-          class="mt-3 inline-flex items-start gap-2.5 rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] px-3.5 py-2.5 font-mono text-xs leading-snug text-emerald-700 dark:text-emerald-300/90"
+          class="mt-3 inline-flex items-start gap-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.07] px-3.5 py-2.5 text-xs font-medium leading-relaxed text-emerald-800 dark:text-emerald-300"
         >
           <span
             class="relative mt-1 flex h-2 w-2 shrink-0"
             aria-hidden="true"
           >
             <span
-              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60"
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/60"
             ></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
           </span>
           {availability}
         </p>
       </div>
 
-      {/* Email chip: mono address + copy button */}
+      {/* Email address + copy button */}
       <div>
-        <div
-          class="flex items-center gap-2 rounded-lg border border-border bg-card p-2 pl-3.5"
-        >
+        <div class="flex items-center gap-2 rounded-xl border border-border bg-card p-2.5 pl-4 shadow-2xs">
           <a
             href={mailto}
-            class="min-w-0 flex-1 truncate font-mono text-xs text-fg transition-colors hover:text-accent sm:text-sm"
+            class="min-w-0 flex-1 truncate text-sm font-semibold text-fg transition-colors hover:text-accent"
           >
             {email}
           </a>
@@ -220,7 +218,7 @@ const topics = [
             data-label-copy={t(locale, 'contact.copyEmail')}
             data-label-copied={t(locale, 'contact.copied')}
             aria-label={t(locale, 'contact.copyEmail')}
-            class="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-border text-muted transition-colors hover:border-accent hover:text-accent"
+            class="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg border border-border text-muted transition-colors hover:border-accent hover:text-accent"
           >
             <svg
               data-icon-copy
@@ -262,24 +260,22 @@ const topics = [
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2 text-xs font-semibold text-[#0a0a0b] transition-opacity hover:opacity-90"
+          class="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-4 py-2.5 text-xs font-semibold text-[#0a0a0b] shadow-2xs transition-opacity hover:opacity-90"
         >
           {t(locale, 'contact.whatsappMe')} ↗
         </a>
 
         <a
           href={cvHref}
-          class="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-xs font-medium text-fg transition-colors hover:border-accent hover:text-accent"
+          class="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-fg shadow-2xs transition-colors hover:border-accent hover:text-accent"
         >
           {t(locale, 'contact.viewCv')}
         </a>
       </div>
 
       {/* Socials */}
-      <div class="border-t border-border/60 pt-4">
-        <p
-          class="mb-2 font-mono text-xs uppercase tracking-widest text-accent/80"
-        >
+      <div class="border-t border-border/70 pt-4">
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
           {t(locale, 'contact.elsewhere')}
         </p>
         <SocialLinks
@@ -293,7 +289,6 @@ const topics = [
 </div>
 
 <script>
-  // Copy email button
   const btn = document.querySelector<HTMLButtonElement>('[data-copy-email]');
   if (btn && navigator.clipboard) {
     const copyIcon = btn.querySelector<SVGElement>('[data-icon-copy]');
@@ -320,7 +315,6 @@ const topics = [
     });
   }
 
-  // Interactive contact form submission (/api/contact with mailto fallback)
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
   if (form) {
     const submitBtn = form.querySelector<HTMLButtonElement>('[data-submit-btn]');
@@ -354,7 +348,7 @@ const topics = [
 
       const fd = new FormData(form);
       const website = String(fd.get('website') ?? '').trim();
-      if (website) return; // Honeypot
+      if (website) return;
 
       const name = String(fd.get('name') ?? '').trim();
       const email = String(fd.get('email') ?? '').trim();
@@ -380,18 +374,17 @@ const topics = [
 
         if (res.ok && data.ok) {
           statusEl.textContent = form.dataset.msgSuccess ?? 'Sent!';
-          statusEl.className = 'text-xs font-medium text-emerald-500';
+          statusEl.className = 'text-xs font-semibold text-emerald-600 dark:text-emerald-400';
           form.reset();
         } else {
-          // Graceful mailto fallback if serverless key isn't active yet
           openMailtoFallback({ name, email, phone, topicLabel, message });
           statusEl.textContent = form.dataset.msgFallback ?? '';
-          statusEl.className = 'text-xs font-medium text-accent';
+          statusEl.className = 'text-xs font-semibold text-accent';
         }
       } catch {
         openMailtoFallback({ name, email, phone, topicLabel, message });
         statusEl.textContent = form.dataset.msgFallback ?? '';
-        statusEl.className = 'text-xs font-medium text-accent';
+        statusEl.className = 'text-xs font-semibold text-accent';
       } finally {
         submitBtn.disabled = false;
         submitLabel.textContent = submitBtn.dataset.defaultLabel ?? 'Send';

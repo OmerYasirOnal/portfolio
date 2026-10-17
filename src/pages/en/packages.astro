@@ -7,10 +7,9 @@ import PackageComparison from '../../components/PackageComparison.astro';
 import PackageProcess from '../../components/PackageProcess.astro';
 import PackageCta from '../../components/PackageCta.astro';
 import PackageFaq from '../../components/PackageFaq.astro';
-import RapidSprintGrid from '../../components/RapidSprintGrid.astro';
 import { t, localizePath, type Locale } from '../../data/i18n';
 import { profile } from '../../data/profile';
-import { packageTiers, packageFaqs, rapidSprints } from '../../data/packages';
+import { packageTiers, packageFaqs } from '../../data/packages';
 import { ogPackagesPath } from '../../lib/og';
 import {
   breadcrumbJsonLd,
@@ -32,17 +31,10 @@ const serviceLd = serviceOfferCatalogJsonLd(
     name: t(locale, 'packages.title'),
     description: t(locale, 'packages.intro'),
     url: canonicalHref(localizePath(locale, '/packages'), Astro.site!),
-    tiers: [
-      ...rapidSprints.map((sprint) => ({
-        name: sprint.name[locale],
-        description: sprint.tagline[locale],
-        priceFrom: sprint.price,
-      })),
-      ...packageTiers.map((tier) => ({
-        name: tier.name[locale],
-        description: tier.tagline[locale],
-      })),
-    ],
+    tiers: packageTiers.map((tier) => ({
+      name: tier.name[locale],
+      description: tier.tagline[locale],
+    })),
   },
   Astro.site,
 );
@@ -66,11 +58,11 @@ const faqLd = faqPageJsonLd(
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <section class="mx-auto max-w-5xl px-6 pb-8 pt-16">
-      <p class="font-mono text-sm text-accent">
-        <span class="text-accent/70">/</span>paketler
+    <section class="mx-auto max-w-6xl px-6 pb-8 pt-16">
+      <p class="text-xs font-semibold uppercase tracking-wider text-accent">
+        {t(locale, 'section.eyebrow.services')}
       </p>
-      <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
         {t(locale, 'packages.title')}
       </h1>
       <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
@@ -78,28 +70,8 @@ const faqLd = faqPageJsonLd(
       </p>
     </section>
 
-    <section class="mx-auto max-w-5xl px-6 pb-16 pt-4">
-      <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
-        {t(locale, 'sprints.title')}
-      </h2>
-      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
-        {t(locale, 'sprints.intro')}
-      </p>
-      <div class="mt-8">
-        <RapidSprintGrid locale={locale} />
-      </div>
-    </section>
-
-    <section class="mx-auto max-w-5xl px-6 pb-16">
-      <h2 class="text-2xl font-bold tracking-tight text-fg sm:text-3xl">
-        {t(locale, 'packages.fullTitle')}
-      </h2>
-      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
-        {t(locale, 'packages.fullIntro')}
-      </p>
-      <div class="mt-8">
-        <PackageGrid locale={locale} />
-      </div>
+    <section class="mx-auto max-w-6xl px-6 pb-16 pt-4">
+      <PackageGrid locale={locale} />
     </section>
 
     <PackageComparison locale={locale} />

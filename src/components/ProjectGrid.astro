@@ -1,7 +1,6 @@
 ---
 /**
- * ProjectGrid - responsive grid of ProjectCards with optional interactive
- * category filter tabs (All / Own Products & AI / Corporate Web & Brand).
+ * ProjectGrid - responsive grid of ProjectCards with interactive category filter tabs.
  */
 import type { CollectionEntry } from 'astro:content';
 import { t, type Locale } from '../data/i18n';
@@ -30,7 +29,7 @@ const hasBothGroups =
   {
     filterable && hasBothGroups && (
       <div
-        class="mb-6 inline-flex flex-wrap items-center gap-1.5 rounded-lg border border-border bg-card/60 p-1"
+        class="mb-8 inline-flex flex-wrap items-center gap-1.5 rounded-xl border border-border bg-card p-1.5 shadow-2xs"
         role="tablist"
         aria-label={t(locale, 'work.title')}
       >
@@ -39,7 +38,7 @@ const hasBothGroups =
           role="tab"
           aria-selected="true"
           data-filter-btn="all"
-          class="rounded-md bg-accent px-3.5 py-1.5 font-mono text-xs font-medium text-bg transition-colors"
+          class="cursor-pointer rounded-lg bg-accent px-4 py-2 text-xs font-semibold text-bg transition-colors sm:text-sm"
         >
           {t(locale, 'work.filterAll')}
         </button>
@@ -47,25 +46,25 @@ const hasBothGroups =
           type="button"
           role="tab"
           aria-selected="false"
-          data-filter-btn="product"
-          class="rounded-md px-3.5 py-1.5 font-mono text-xs font-medium text-muted transition-colors hover:text-fg"
+          data-filter-btn="client"
+          class="cursor-pointer rounded-lg px-4 py-2 text-xs font-semibold text-muted transition-colors hover:text-fg sm:text-sm"
         >
-          {t(locale, 'work.filterProduct')}
+          {t(locale, 'work.filterClient')}
         </button>
         <button
           type="button"
           role="tab"
           aria-selected="false"
-          data-filter-btn="client"
-          class="rounded-md px-3.5 py-1.5 font-mono text-xs font-medium text-muted transition-colors hover:text-fg"
+          data-filter-btn="product"
+          class="cursor-pointer rounded-lg px-4 py-2 text-xs font-semibold text-muted transition-colors hover:text-fg sm:text-sm"
         >
-          {t(locale, 'work.filterClient')}
+          {t(locale, 'work.filterProduct')}
         </button>
       </div>
     )
   }
 
-  <ul class:list={['grid grid-cols-1 gap-5', colClass]} role="list">
+  <ul class:list={['grid grid-cols-1 gap-6', colClass]} role="list">
     {
       items.map((entry) => (
         <li class="h-full" data-project-item={entry.data.group}>

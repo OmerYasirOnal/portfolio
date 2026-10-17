@@ -1,15 +1,6 @@
 ---
 /**
- * Timeline - a vertical, chronological list of work / research experience.
- *
- * Data is read straight from the `experience` content collection (single source
- * of truth) and sorted by `order`; nothing is hard-coded here. Locale-specific
- * fields (`role_*`, `bullets_*`) are selected by the incoming `locale`, so the
- * same component powers both the EN home and the /tr mirror.
- *
- * Visual: a single accent rail on the left with a node per role - a "commit
- * graph" reading of a career. The rail and nodes are decorative (aria-hidden)
- * and inert under prefers-reduced-motion (no animation is used at all).
+ * Timeline - chronological list of work, consulting, and research experience.
  */
 import { getCollection } from 'astro:content';
 import type { Locale } from '../data/i18n';
@@ -28,7 +19,7 @@ const isPresent = (end: string) =>
   end.trim().toLowerCase() === 'present' || end.trim().toLowerCase() === 'devam';
 ---
 
-<ol class="relative ml-1.5 space-y-10 border-l border-border pl-8" role="list">
+<ol class="relative ml-2 space-y-8 border-l-2 border-border pl-7 sm:pl-8" role="list">
   {
     items.map((entry) => {
       const { role_en, role_tr, org, location, start, end, bullets_en, bullets_tr } =
@@ -37,12 +28,12 @@ const isPresent = (end: string) =>
       const bullets = locale === 'tr' ? bullets_tr : bullets_en;
       const current = isPresent(end);
       return (
-        <li class="relative">
+        <li class="relative rounded-2xl border border-border bg-card p-5 shadow-2xs sm:p-6">
           {/* node on the rail */}
           <span
             aria-hidden="true"
             class:list={[
-              'absolute -left-[2.55rem] top-1.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 bg-bg',
+              'absolute -left-[2.3rem] top-6 grid h-3.5 w-3.5 place-items-center rounded-full border-2 bg-bg sm:-left-[2.55rem]',
               current ? 'border-accent' : 'border-border',
             ]}
           >
@@ -51,34 +42,38 @@ const isPresent = (end: string) =>
             )}
           </span>
 
-          {/* date range - monospace tag */}
-          <p class="font-mono text-xs tracking-tight text-muted">
-            <time>{start}</time>
-            <span aria-hidden="true" class="mx-1 text-border">→</span>
-            {current ? (
-              <span class="text-accent">{end}</span>
-            ) : (
-              <time>{end}</time>
-            )}
-          </p>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-base font-bold tracking-tight text-fg sm:text-lg">
+              {role}
+            </h3>
 
-          <h3 class="mt-1.5 text-lg font-semibold tracking-tight text-fg">
-            {role}
-          </h3>
+            <span
+              class:list={[
+                'inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold',
+                current
+                  ? 'bg-accent/10 text-accent'
+                  : 'border border-border bg-bg text-muted',
+              ]}
+            >
+              <time>{start}</time>
+              <span aria-hidden="true" class="mx-1.5">-</span>
+              {current ? <span>{end}</span> : <time>{end}</time>}
+            </span>
+          </div>
 
-          <p class="mt-0.5 text-sm text-muted">
-            <span class="font-medium text-fg/90">{org}</span>
+          <p class="mt-1 text-sm font-medium text-muted">
+            <span class="text-fg/90">{org}</span>
             <span aria-hidden="true" class="mx-1.5 text-border">·</span>
-            <span class="font-mono text-xs">{location}</span>
+            <span>{location}</span>
           </p>
 
           {bullets.length > 0 && (
-            <ul class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted" role="list">
+            <ul class="mt-3.5 space-y-2 text-sm leading-relaxed text-muted" role="list">
               {bullets.map((bullet) => (
                 <li class="relative pl-4">
                   <span
                     aria-hidden="true"
-                    class="absolute left-0 top-[0.55em] h-1 w-1 rounded-full bg-accent/60"
+                    class="absolute left-0 top-[0.55em] h-1.5 w-1.5 rounded-full bg-accent/70"
                   />
                   {bullet}
                 </li>

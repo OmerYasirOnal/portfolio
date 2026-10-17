@@ -1,11 +1,6 @@
 ---
 /**
- * SiteHeader - the sticky top nav shared by the home page and every sub-page.
- *
- * Section links point at the home page's anchors (`/#work`, `/#about`, …) so
- * they resolve correctly whether the visitor is on the home page or a sub-page.
- * All labels come from the i18n dictionary; the brand + toggles read `profile`
- * / the locale - nothing is hard-coded here.
+ * SiteHeader - sticky executive navigation bar shared across the home page and sub-pages.
  */
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
@@ -22,38 +17,48 @@ const { locale, path } = Astro.props;
 
 const home = localizePath(locale, '/');
 
-// Work/About/Contact are home-section anchors; Packages/Writing point at their
-// own full pages (absolute localized paths) so they stay reachable from any
-// sub-page. Labels come from the i18n dictionary (no hard-coded copy).
 const navLinks = [
+  { key: 'nav.services', href: `${home}#services` },
   { key: 'nav.work', href: `${home}#work` },
-  { key: 'nav.packages', href: localizePath(locale, '/packages') },
   { key: 'nav.about', href: `${home}#about` },
   { key: 'nav.writing', href: localizePath(locale, '/writing') },
-  { key: 'nav.contact', href: `${home}#contact` },
+  { key: 'nav.cv', href: localizePath(locale, '/cv') },
 ];
 ---
 
-<header id="top" class="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur">
+<header id="top" class="sticky top-0 z-40 border-b border-border/80 bg-bg/90 backdrop-blur-md">
   <nav
-    class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3"
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5"
     aria-label="Primary"
   >
     <a
       href={home}
-      class="font-mono text-sm font-medium text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      class="group flex items-center gap-3 text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
-      {profile.name}
+      <span
+        class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-xs font-bold tracking-tight text-bg shadow-2xs"
+        aria-hidden="true"
+      >
+        ÖY
+      </span>
+      <span class="flex flex-col">
+        <span class="text-sm font-bold tracking-tight text-fg sm:text-base">
+          {profile.name}
+        </span>
+        <span class="hidden text-[0.7rem] font-medium text-muted lg:inline">
+          {locale === 'tr' ? 'Bilgisayar Mühendisi' : 'Computer Engineer'}
+        </span>
+      </span>
     </a>
 
-    <div class="flex items-center gap-1">
-      <ul class="mr-2 hidden items-center gap-1 sm:flex" role="list">
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <ul class="mr-1 hidden items-center gap-0.5 md:flex" role="list">
         {
           navLinks.map((item) => (
             <li>
               <a
                 href={item.href}
-                class="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                class="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-card hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 {t(locale, item.key)}
               </a>
@@ -61,8 +66,16 @@ const navLinks = [
           ))
         }
       </ul>
+
       <LangToggle locale={locale} path={path} />
       <ThemeToggle locale={locale} />
+
+      <a
+        href={`${home}#contact`}
+        class="ml-1 inline-flex items-center gap-1.5 rounded-lg bg-accent px-3.5 py-2 text-xs font-semibold text-bg shadow-2xs transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:px-4 sm:text-sm"
+      >
+        {t(locale, 'nav.cta')}
+      </a>
     </div>
   </nav>
 </header>

@@ -1,18 +1,18 @@
 ---
-title: "Writing comes home"
-description: "New articles now publish natively on this site - with RSS, a JSON feed, and an AI-readable index. The Medium archive stays put."
+title: "A New Home for My Articles and Notes"
+description: "Sharing my personal essays, digital product insights, brand strategy notes, and AI perspectives directly on omeryasironal.com."
 date: "2026-07-01"
 lang: en
-tags: ["meta", "site"]
+tags: ["Digital Products", "Technology", "Essays"]
 home: true
 ---
 
-Until now, everything I wrote lived on [Medium](https://medium.com/@engomeryasironal). Those eleven articles stay where they are - but starting with this post, new writing publishes here first.
+Until now, most of my articles on software architecture and artificial intelligence lived on [Medium](https://medium.com/@engomeryasironal). That archive stays right where it is, while new essays, project reflections, and personal notes now publish directly here on my own website first.
 
-Why move?
+What I will be sharing here:
 
-- **Ownership.** The markdown lives in the same repo as this site. No platform sits between the words and the reader.
-- **Feeds.** Everything is machine-readable: [RSS](/rss.xml) for readers, [`feed.json`](/feed.json) for the upcoming mobile app, and [`llms.txt`](/llms.txt) for AI assistants.
-- **Courses.** Articles are half of the plan. Small, focused [courses](/courses/) are the other half - same repo, same feeds.
+- **Building Digital Products & Brands:** Practical lessons from turning ideas into mobile applications and establishing trustworthy corporate web platforms.
+- **Search & AI Visibility (SEO & AIO):** How businesses and products can stay discoverable across both Google Search and modern AI assistants.
+- **Personal Perspectives:** Thoughts, notes, and observations from ongoing product work, consulting, and research.
 
-The stack stays boring on purpose: Astro, markdown, static HTML on a CDN. Nothing to log into, nothing to wait for.
+You can browse all published pieces on the [Writing](/en/writing) page or subscribe via [RSS](/rss.xml).

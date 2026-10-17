@@ -2,8 +2,8 @@
  * Corporate software & digital engineering service pillars.
  *
  * Single source of truth for the home-page services preview and the `/packages`
- * services page. Per user preference, fixed price tags are removed and visitors
- * are guided to request a tailored quote via the contact form.
+ * services page. Fixed price tags are intentionally omitted; visitors are
+ * invited to request a tailored proposal via the contact form.
  */
 import type { Bilingual } from './profile';
 
@@ -25,7 +25,7 @@ export interface PackageTier {
   timeline: Bilingual;
   /** Deliverable summary for the comparison table. */
   pages: Bilingual;
-  /** Technical & infrastructure scope for the comparison table. */
+  /** Technical & business outcome scope for the comparison table. */
   brandScope: Bilingual;
   features: Bilingual[];
   /** Surfaced as a highlighted pillar. */
@@ -42,50 +42,70 @@ export interface ProcessStep {
   description: Bilingual;
 }
 
-/**
- * Fast-track validation sprints for teams or founders who want a rapid prototype
- * or focused landing page before a full-scale build.
- */
 export const rapidSprints: RapidSprint[] = [
   {
     id: 'web-sprint',
-    eyebrow: { en: 'Fast-Track Web Launch', tr: 'Hızlı Web Başlangıcı' },
-    name: { en: 'Conversion Landing Page', tr: 'Dönüşüm Odaklı Tanıtım Sitesi' },
+    eyebrow: { en: 'Fast-Track Launch', tr: 'Hızlı Başlangıç' },
+    name: { en: 'Executive Launch Website', tr: 'Hızlı Kurumsal Tanıtım Sitesi' },
     tagline: {
-      en: 'A fast, mobile-first single-page site designed to turn visitors into form submissions, calls, and WhatsApp inquiries.',
-      tr: 'Ziyaretçileri iletişim formuna, aramaya ve WhatsApp görüşmesine yönlendiren hızlı, mobil uyumlu tek sayfa kurumsal site.',
+      en: 'A refined, mobile-first single-page site designed to turn visitors into inquiries, calls, and WhatsApp conversations.',
+      tr: 'Ziyaretçileri doğrudan iletişime, aramaya ve WhatsApp görüşmesine yönlendiren şık, hızlı ve mobil uyumlu tanıtım sitesi.',
     },
     timeline: { en: '3 - 5 business days', tr: '3 - 5 iş günü' },
     features: [
-      { en: 'Custom responsive design and high-speed Astro build', tr: 'Özel mobil uyumlu tasarım ve yüksek hızlı Astro altyapısı' },
-      { en: 'Contact form, WhatsApp, phone, and map integrations', tr: 'İletişim formu, WhatsApp, telefon ve harita entegrasyonları' },
-      { en: 'On-page SEO, Schema.org metadata, and clean copy structure', tr: 'Temel teknik SEO, Schema.org yapısal verisi ve kurumsal metin kurgusu' },
-      { en: 'Domain connection, SSL setup, and source-code handoff', tr: 'Alan adı bağlantısı, SSL kurulumu ve kaynak kod teslimi' },
+      {
+        en: 'Custom mobile-first design and instant-loading infrastructure',
+        tr: 'Markanıza özel mobil uyumlu tasarım ve anında açılan altyapı',
+      },
+      {
+        en: 'Contact form, WhatsApp, phone, and Google Maps integrations',
+        tr: 'İletişim formu, WhatsApp, telefon ve harita entegrasyonları',
+      },
+      {
+        en: 'Foundational Google SEO setup and persuasive corporate copy structure',
+        tr: 'Temel Google SEO kurulumu ve güven veren kurumsal metin kurgusu',
+      },
+      {
+        en: 'Domain connection, SSL security, and full account ownership',
+        tr: 'Alan adı bağlantısı, SSL güvenliği ve tüm hesapların teslimi',
+      },
     ],
     exclusions: {
-      en: 'Multi-language architecture, custom admin panels, and complex third-party integrations are scoped in full projects.',
-      tr: 'Çok dilli mimari, özel yönetim paneli ve kapsamlı dış servis entegrasyonları ana projelerde kapsamlandırılır.',
+      en: 'Multi-language architecture and custom management panels are scoped within full corporate projects.',
+      tr: 'Çok dilli yapı ve özel yönetim panelleri kapsamlı kurumsal projelerde planlanır.',
     },
     highlighted: false,
   },
   {
     id: 'mobile-mvp',
-    eyebrow: { en: 'Fast-Track Product', tr: 'Hızlı Ürün Doğrulama' },
-    name: { en: 'Mobile or Web MVP', tr: 'Mobil veya Web MVP' },
+    eyebrow: { en: 'Product Validation', tr: 'Ürün Doğrulama' },
+    name: { en: 'Mobile or Web Product MVP', tr: 'Mobil veya Web Ürün MVP' },
     tagline: {
-      en: 'Turn a core product idea into a working, testable mobile or web MVP with clean architecture.',
-      tr: 'Net bir ürün fikrini gerçek kullanıcılara sunabileceğiniz, temiz mimarili çalışan bir mobil veya web MVP’ye dönüştürün.',
+      en: 'Turn your product idea into a working, testable mobile or web application ready for real users.',
+      tr: 'Ürün fikrinizi gerçek kullanıcılara sunabileceğiniz, çalışan ve ölçeklenmeye hazır bir uygulamaya dönüştürün.',
     },
     timeline: { en: '1 - 2 weeks', tr: '1 - 2 hafta' },
     features: [
-      { en: 'Core user flows built with SwiftUI, Flutter, or Next.js', tr: 'SwiftUI, Flutter veya Next.js ile temel kullanıcı akışlarının geliştirilmesi' },
-      { en: 'Authentication and API / database integration', tr: 'Kimlik doğrulama ve API / veritabanı bağlantısı' },
-      { en: 'Testable build (TestFlight or live preview URL)', tr: 'Test edilebilir sürüm (TestFlight veya canlı önizleme bağlantısı)' },
-      { en: 'Clean, maintainable repository ready to scale', tr: 'Büyümeye hazır, temiz ve sürdürülebilir kaynak kod teslimi' },
+      {
+        en: 'Core user experience built for iOS, Android, or Web',
+        tr: 'iOS, Android veya Web için temel kullanıcı akışlarının geliştirilmesi',
+      },
+      {
+        en: 'User sign-in, database, and server infrastructure',
+        tr: 'Kullanıcı girişi, veritabanı ve güvenli sunucu bağlantısı',
+      },
+      {
+        en: 'Live testable release (TestFlight or preview link)',
+        tr: 'Gerçek cihazlarda test edilebilir canlı sürüm (TestFlight veya önizleme)',
+      },
+      {
+        en: 'Solid technical foundation ready to grow into a full product',
+        tr: 'Tam kapsamlı ürüne büyümeye hazır, sağlam teknik temel',
+      },
     ],
     exclusions: {
-      en: 'Full App Store / Play Store commercial release management and enterprise ERP integrations are scoped separately.',
-      tr: 'Tam kapsamlı mağaza yayın yönetimi ve kurumsal ERP entegrasyonları proje kapsamına göre ayrıca planlanır.',
+      en: 'Full commercial store release management and enterprise integrations are scoped separately.',
+      tr: 'Tam kapsamlı mağaza yayın yönetimi ve kurumsal entegrasyonlar ayrıca planlanır.',
     },
     highlighted: true,
   },
@@ -96,118 +116,130 @@ export const packageTiers: PackageTier[] = [
     id: 'mobile',
     name: { en: 'Mobile App Development', tr: 'Mobil Uygulama Geliştirme' },
     tagline: {
-      en: 'Native iOS/macOS (SwiftUI) and cross-platform (Flutter) applications built from scratch and shipped to the stores.',
-      tr: 'iOS, iPadOS, macOS (SwiftUI) ve çoklu platform (Flutter) için sıfırdan tasarlanan, mağazaya çıkmaya hazır mobil uygulamalar.',
+      en: 'Polished, high-performance iOS, Android, and macOS applications built from the ground up and published on the App Store and Google Play.',
+      tr: 'Fikir aşamasından App Store ve Google Play yayınına kadar; iPhone, iPad, Mac ve Android için sıfırdan tasarlanan, hızlı ve güvenilir mobil uygulamalar.',
     },
-    timeline: { en: 'Project-based', tr: 'Kapsama göre planlanır' },
-    pages: { en: 'iOS, iPadOS, macOS & Android', tr: 'iOS, iPadOS, macOS ve Android' },
-    brandScope: { en: 'UI/UX + Backend API + Store Launch', tr: 'UI/UX + Backend API + Mağaza Yayını' },
+    timeline: { en: 'Tailored to project scope', tr: 'Proje kapsamına göre planlanır' },
+    pages: { en: 'iOS, Android, iPad & Mac', tr: 'iOS, Android, iPad ve Mac' },
+    brandScope: {
+      en: 'Design + Software + Store Launch',
+      tr: 'Tasarım + Yazılım + Mağaza Yayını',
+    },
     features: [
       {
-        en: 'Native SwiftUI (iOS/macOS) or cross-platform Flutter development',
-        tr: 'Native SwiftUI (iOS/macOS) veya Flutter ile yüksek performanslı geliştirme',
+        en: 'Native Apple apps (iPhone, iPad, Mac) or unified iOS & Android apps',
+        tr: 'Apple ekosistemine özel (iPhone, iPad, Mac) veya hem iOS hem Android uyumlu uygulama geliştirme',
       },
       {
-        en: 'Offline-first data, iCloud/CloudKit sync, or custom REST API backend',
-        tr: 'Çevrimdışı çalışma, iCloud/CloudKit senkronizasyonu veya özel REST API altyapısı',
+        en: 'Offline support, cloud sync, user accounts, and custom server infrastructure',
+        tr: 'Çevrimdışı çalışma, bulut senkronizasyonu, kullanıcı hesapları ve güvenli sunucu altyapısı',
       },
       {
-        en: 'Widgets, Live Activities, notifications, and in-app subscriptions',
-        tr: 'Widget, Canlı Etkinlikler (Live Activity), bildirim ve abonelik kurguları',
+        en: 'Notifications, lock-screen widgets, live activities, and in-app subscriptions',
+        tr: 'Bildirim kurguları, ekran widget’ları, canlı etkinlikler ve uygulama içi abonelik sistemleri',
       },
       {
-        en: 'App Store & Google Play preparation, screenshots, and review submission',
-        tr: 'App Store ve Google Play mağaza hazırlığı, görseller ve onay süreci yönetimi',
+        en: 'End-to-end App Store and Google Play store visuals, submission, and approval management',
+        tr: 'App Store ve Google Play mağaza görselleri, başvuru ve onay süreçlerinin uçtan uca yönetimi',
       },
     ],
     highlighted: false,
   },
   {
     id: 'web',
-    name: { en: 'Corporate Web & Custom Software', tr: 'Kurumsal Web Sitesi & Özel Yazılım' },
+    name: { en: 'Corporate Websites & Custom Systems', tr: 'Kurumsal Web Sitesi ve Özel Sistemler' },
     tagline: {
-      en: 'High-speed, multi-language corporate websites, custom admin panels, and full-stack web applications.',
-      tr: 'Yüksek hızlı, çok dilli kurumsal web siteleri, özel yönetim panelleri ve uçtan uca web uygulamaları.',
+      en: 'Prestigious, fast-loading corporate websites and custom management platforms that build trust and turn visitors into clients.',
+      tr: 'Markanızın prestijini yansıtan, saniyenin altında açılan, ziyaretçileri müşteriye dönüştüren çok dilli kurumsal web siteleri ve özel yönetim panelleri.',
     },
     timeline: { en: '2 - 4 weeks', tr: '2 - 4 hafta' },
-    pages: { en: 'Multi-page & Multi-language', tr: 'Çok sayfalı ve çok dilli mimari' },
-    brandScope: { en: 'Custom Design + Admin/CMS + API', tr: 'Özel Tasarım + Yönetim Paneli + API' },
+    pages: { en: 'Multi-Page & Multi-Language', tr: 'Çok Sayfalı ve Çok Dilli Yapı' },
+    brandScope: {
+      en: 'Custom Design + Management Panel',
+      tr: 'Özel Tasarım + Yönetim Paneli',
+    },
     features: [
       {
-        en: 'Modern Astro or Next.js architecture with sub-second page loads',
-        tr: 'Astro veya Next.js ile saniyenin altında açılan modern web mimarisi',
+        en: 'Bespoke corporate design that works flawlessly on phones, tablets, and desktops',
+        tr: 'Telefon, tablet ve bilgisayarda kusursuz görünen, markanıza özel kurumsal arayüz tasarımı',
       },
       {
-        en: 'Multi-language (TR/EN/AR) routing and responsive corporate UI',
-        tr: 'Çok dilli (TR/EN/AR) sayfa yapısı ve tüm cihazlara uyumlu kurumsal arayüz',
+        en: 'Multi-language support (Turkish, English, Arabic, etc.) for international reach',
+        tr: 'Yurt içi ve yurt dışı müşteriler için çok dilli yapı (Türkçe, İngilizce, Arapça vb.)',
       },
       {
-        en: 'Custom admin panel, blog/content management, and lead forms',
-        tr: 'Özel yönetim paneli, blog/içerik yönetimi ve güvenli iletişim formları',
+        en: 'Easy-to-use management panel for updating blog posts, services, appointments, or tests',
+        tr: 'Yazılarınızı, hizmetlerinizi, randevu taleplerini veya ölçekleri kolayca yönetebileceğiniz kontrol paneli',
       },
       {
-        en: 'PostgreSQL/MySQL database, Node.js/FastAPI backend, and AI integrations',
-        tr: 'PostgreSQL/MySQL veritabanı, Node.js/FastAPI backend ve yapay zeka entegrasyonları',
+        en: 'Direct inquiry forms, WhatsApp integration, and KVKK/privacy-compliant lead flows',
+        tr: 'E-postanıza düşen teklif ve iletişim formları, WhatsApp entegrasyonu ve KVKK uyumlu yapı',
       },
     ],
     highlighted: true,
   },
   {
     id: 'brand',
-    name: { en: 'Brand Setup & Digital Infrastructure', tr: 'Marka Kurulumu & Dijital Altyapı' },
+    name: { en: 'Digital Brand Setup & Infrastructure', tr: 'Dijital Marka Kurulumu ve Kurumsal Altyapı' },
     tagline: {
-      en: 'Complete digital foundation for new or growing brands: domain, corporate email, Cloudflare, and Google ecosystem.',
-      tr: 'Yeni kurulan veya yenilenen markalar için alan adından kurumsal e-postaya ve Google ekosistemine kadar tam dijital kurulum.',
+      en: 'Everything a new or growing business needs to look established online: domain, corporate email, Google Maps, and analytics.',
+      tr: 'Yeni kurulan veya yenilenen işletmeler için alan adından kurumsal e-postaya, Google Haritalar kaydından analitiğe kadar eksiksiz dijital kurulum.',
     },
     timeline: { en: '1 - 2 weeks', tr: '1 - 2 hafta' },
-    pages: { en: 'End-to-End Brand Kit & Infra', tr: 'Uçtan Uca Dijital Kurulum' },
-    brandScope: { en: 'Domain + Corporate Mail + Google', tr: 'Domain + Kurumsal E-Posta + Google' },
+    pages: { en: 'Turnkey Brand Infrastructure', tr: 'Anahtar Teslim Dijital Kurulum' },
+    brandScope: {
+      en: 'Domain + Corporate Mail + Google',
+      tr: 'Alan Adı + Kurumsal E-posta + Google',
+    },
     features: [
       {
-        en: 'Domain registration, Cloudflare DNS, SSL, and edge security setup',
-        tr: 'Alan adı (domain), Cloudflare DNS, SSL ve güvenlik duvarı kurulumu',
+        en: 'Domain registration, Cloudflare security shield, and SSL certificate setup',
+        tr: 'Alan adı (domain) tescili, güvenlik duvarı ve SSL güvenlik sertifikası kurulumu',
       },
       {
-        en: 'Corporate email setup (info@yourdomain.com) with SPF, DKIM, and DMARC',
-        tr: 'Kurumsal e-posta kurulumu (info@markaniz.com) ve SPF, DKIM, DMARC doğrulamaları',
+        en: 'Professional corporate email setup (info@yourcompany.com) with high inbox deliverability',
+        tr: 'Kurumsal e-posta kurulumu (info@markaniz.com) ve e-postaların spam’e düşmesini önleyen doğrulamalar',
       },
       {
-        en: 'Visual identity direction (color palette, typography, social templates)',
-        tr: 'Görsel kimlik kurgusu (renk paleti, tipografi, sosyal medya ve profil şablonları)',
+        en: 'Cohesive digital visual identity (color palette, typography, social media profile kit)',
+        tr: 'Dijital kurumsal kimlik uyumu (renk paleti, yazı karakterleri, sosyal medya profil ve kapak şablonları)',
       },
       {
-        en: 'Google Business Profile, Google Tag Manager (GTM), and GA4 analytics',
-        tr: 'Google İşletme Profili (Haritalar), Google Tag Manager (GTM) ve GA4 kurulumu',
+        en: 'Google Business Profile (Maps), Google Analytics (GA4), and advertising conversion setup',
+        tr: 'Google İşletme Profili (Haritalar), Google Analytics (GA4) ve reklam dönüşüm altyapısının kurulması',
       },
     ],
     highlighted: false,
   },
   {
     id: 'seo-aio',
-    name: { en: 'SEO & AIO (AI Search Optimization)', tr: 'SEO & AIO (Yapay Zeka Optimizasyonu)' },
+    name: { en: 'Google SEO & AI Search (AIO) Visibility', tr: 'Google SEO ve Yapay Zeka Araması (AIO)' },
     tagline: {
-      en: 'Make your business visible both on Google Search and inside AI assistants like ChatGPT, Claude, Perplexity, and Gemini.',
-      tr: 'İşletmenizi hem Google aramalarında hem de ChatGPT, Claude, Perplexity ve Gemini gibi yapay zeka yanıtlarında görünür kılın.',
+      en: 'Ensure potential clients find and trust your business both on Google Search/Maps and on AI assistants like ChatGPT, Gemini, and Perplexity.',
+      tr: 'Potansiyel müşterileriniz hizmetlerinizi hem Google’da hem de ChatGPT, Gemini ve Perplexity gibi yapay zeka asistanlarında aradığında markanızın ilk sıralarda önerilmesini sağlayın.',
     },
     timeline: { en: '1 - 3 weeks', tr: '1 - 3 hafta' },
-    pages: { en: 'Site-wide Technical & Semantic Audit', tr: 'Site Geneli Teknik & Semantik Yapı' },
-    brandScope: { en: 'Schema.org + llms.txt + Core Web Vitals', tr: 'Schema.org + llms.txt + Hız Optimizasyonu' },
+    pages: { en: 'Google & AI Search Optimization', tr: 'Google ve Yapay Zeka Görünürlüğü' },
+    brandScope: {
+      en: 'Organic Traffic + AI Recommendations',
+      tr: 'Organik Müşteri + Yapay Zeka Önerisi',
+    },
     features: [
       {
-        en: 'Rich Schema.org JSON-LD structured data (LocalBusiness, Service, FAQPage)',
-        tr: 'Zengin Schema.org JSON-LD yapısal verileri (LocalBusiness, Service, FAQPage)',
+        en: 'Comprehensive technical SEO and service/location pages tailored to customer search intent',
+        tr: 'Müşterilerin arama alışkanlıklarına uygun hizmet/bölge sayfaları ve kapsamlı teknik SEO kurulumu',
       },
       {
-        en: 'AIO corpus setup (llms.txt, llms-full.txt, semantic entity hierarchy)',
-        tr: 'Yapay zeka botları için llms.txt, llms-full.txt ve semantik içerik mimarisi',
+        en: 'AI Search Optimization (AIO) so ChatGPT, Gemini, and Claude accurately cite and recommend your business',
+        tr: 'ChatGPT, Gemini ve Claude gibi yapay zeka asistanlarının işletmenizi doğru tanıması ve önermesi için özel veri altyapısı (AIO)',
       },
       {
-        en: 'Search Console, Bing Webmaster Tools, IndexNow, and sitemap automation',
-        tr: 'Google Search Console, Bing Webmaster, IndexNow ve otomatik site haritası kaydı',
+        en: 'Google Search Console, Bing, and automated search indexing configuration',
+        tr: 'Google ve diğer arama motorlarına resmi kayıt, site haritası ve hızlı dizine ekleme otomasyonu',
       },
       {
-        en: 'Core Web Vitals performance tuning and semantic content restructuring',
-        tr: 'Core Web Vitals hız optimizasyonu ve arama niyetine uygun içerik yapılandırması',
+        en: 'Page-speed optimization for higher visitor retention and stronger search rankings',
+        tr: 'Sayfa açılış hızı optimizasyonu ile ziyaretçi memnuniyeti ve arama sıralaması artışı',
       },
     ],
     highlighted: false,
@@ -220,86 +252,96 @@ export const packageTiers: PackageTier[] = [
 export const packageFaqs: PackageFaq[] = [
   {
     question: {
-      en: 'How is project pricing determined?',
-      tr: 'Proje fiyatlandırması nasıl belirleniyor?',
+      en: 'How do we determine the scope and budget for a project?',
+      tr: 'Proje kapsamı ve bütçesi nasıl belirleniyor?',
     },
     answer: {
-      en: 'Every project has different technical requirements: a single-language corporate site, a multi-language platform with an admin panel, and a native mobile app have very different scopes. After a short discovery call or form message, I share a transparent, written proposal with clear deliverables and timeline.',
-      tr: 'Her projenin teknik ihtiyacı farklıdır; tek dilli bir kurumsal site, yönetim panelli çok dilli bir platform veya App Store’a çıkacak bir mobil uygulama farklı kapsamlar gerektirir. İhtiyacınızı iletişim formundan ilettiğinizde kapsamı netleştirip şeffaf, yazılı bir teklif ve takvim paylaşıyorum.',
+      en: 'Every business has different goals: a single-language corporate site, a clinic platform with an admin panel, and a mobile app on the App Store require different plans. Once you share your goals via the contact form or WhatsApp, I prepare a clear, transparent written proposal with deliverables and timeline.',
+      tr: 'Her işletmenin ihtiyacı farklıdır; kurumsal bir tanıtım sitesi, yönetim panelli kapsamlı bir klinik/şirket platformu veya App Store’da yayımlanacak bir mobil uygulama farklı planlama gerektirir. İhtiyacınızı iletişim formundan veya WhatsApp’tan ilettiğinizde, yapılacak işleri ve teslim takvimini içeren net ve şeffaf bir teklif paylaşıyorum.',
     },
   },
   {
     question: {
-      en: 'Can you handle everything from domain purchase to going live?',
-      tr: 'Alan adı alımından canlı yayına kadar tüm süreci üstleniyor musunuz?',
+      en: 'Can you handle the entire process from domain purchase to launch?',
+      tr: 'Alan adı alımından canlı yayına kadar her şeyi tek elden yönetiyor musunuz?',
     },
     answer: {
-      en: 'Yes. I handle domain registration, Cloudflare DNS, corporate email routing, design, development, SEO/AIO configuration, and production deployment so you do not have to coordinate multiple agencies or freelancers.',
-      tr: 'Evet. Alan adı tescili, Cloudflare DNS, kurumsal e-posta kurulumu, tasarım, yazılım geliştirme, SEO/AIO ayarları ve canlıya alma adımlarının tamamını tek elden yönetiyorum.',
+      en: 'Yes. You do not need to coordinate separate agencies or technical people. I handle domain registration, corporate email setup, design, software development, Google/AI search optimization, and launch end to end.',
+      tr: 'Evet. Farklı ajanslarla veya birden fazla teknik kişiyle uğraşmanıza gerek kalmaz. Alan adı alımı, kurumsal e-posta kurulumu, tasarım, yazılım geliştirme, Google/yapay zeka görünürlüğü ve yayına alma süreçlerinin tamamını tek muhatap olarak yönetiyorum.',
     },
   },
   {
     question: {
-      en: 'What is AIO (AI Search Optimization) and why does it matter?',
-      tr: 'AIO (Yapay Zeka Arama Optimizasyonu) nedir ve neden önemlidir?',
+      en: 'What is AI Search Optimization (AIO) and how does it help my business?',
+      tr: 'Yapay Zeka Araması (AIO) nedir, işletmeme ne kazandırır?',
     },
     answer: {
-      en: 'Customers increasingly ask ChatGPT, Gemini, Perplexity, and Claude for service recommendations. AIO uses structured Schema.org JSON-LD graphs, llms.txt files, and clear semantic hierarchy so AI models accurately understand and recommend your business.',
-      tr: 'Kullanıcılar artık hizmet ve firma araştırmalarını yalnızca Google’da değil; ChatGPT, Gemini, Perplexity ve Claude üzerinden de yapıyor. AIO; sitenize eklenen Schema.org JSON-LD verileri, llms.txt dosyaları ve semantik içerik kurgusuyla yapay zeka modellerinin markanızı doğru tanıyıp önermesini sağlar.',
+      en: 'People increasingly ask ChatGPT, Gemini, and Perplexity questions like "Which company/clinic do you recommend in Istanbul?". AIO structures your website’s data so AI assistants clearly understand your services, location, and expertise and recommend your brand with confidence.',
+      tr: 'Müşteriler artık yalnızca Google’da arama yapmıyor; ChatGPT, Gemini ve Perplexity gibi yapay zeka araçlarına "İstanbul’da hangi firmayı/kliniği önerirsin?" diye soruyor. Kurduğum AIO altyapısı sayesinde yapay zeka modelleri işletmenizin hizmetlerini, uzmanlığını ve iletişim bilgilerini doğrudan okuyup müşterilere doğru şekilde önerir.',
     },
   },
   {
     question: {
-      en: 'Do you build both iOS and Android mobile applications?',
-      tr: 'Hem iOS hem Android için mobil uygulama geliştiriyor musunuz?',
+      en: 'Do you develop mobile apps for both iPhone (iOS) and Android?',
+      tr: 'Hem iPhone (iOS) hem de Android için mobil uygulama yapıyor musunuz?',
     },
     answer: {
-      en: 'Yes. For Apple-ecosystem products (iOS, iPadOS, macOS, Widgets, Live Activities, iCloud sync) I build natively with Swift and SwiftUI. For cross-platform iOS and Android apps from a single codebase, I build with Flutter and Node.js/FastAPI backends.',
-      tr: 'Evet. Apple ekosistemine özel ürünlerde (iOS, iPadOS, macOS, Widget, Live Activity, iCloud senkronizasyonu) Swift ve SwiftUI ile native geliştirme yapıyorum. Tek kod tabanıyla hem iOS hem Android hedefleyen projelerde ise Flutter ve Node.js/FastAPI altyapılarını kullanıyorum.',
+      en: 'Yes. Depending on your goal, I develop native Apple applications (iPhone, iPad, Mac) or cross-platform apps that run on both iOS and Android from a single codebase, including server infrastructure and store submission.',
+      tr: 'Evet. Projenizin hedef kitlesine göre hem Apple ekosistemine özel (iPhone, iPad, Mac) native uygulamalar hem de tek altyapıyla hem iOS hem Android’de çalışan mobil uygulamalar geliştiriyor; sunucu sisteminden mağaza onayına kadar tüm süreci tamamlıyorum.',
     },
   },
   {
     question: {
-      en: 'Do you provide maintenance and support after launch?',
-      tr: 'Proje yayına alındıktan sonra teknik destek ve bakım sağlıyor musunuz?',
+      en: 'Will I own all accounts, domain names, and source code?',
+      tr: 'Site, alan adı ve hesapların mülkiyeti tamamen bana mı ait oluyor?',
     },
     answer: {
-      en: 'Yes. Every project includes post-launch stabilization support, and we can set up a monthly maintenance or feature-development retainer based on your needs.',
-      tr: 'Evet. Teslim edilen her projede yayın sonrası doğrulama desteği bulunur; ayrıca talebinize göre düzenli bakım, içerik güncelleme ve yeni özellik geliştirme desteği sağlıyorum.',
+      en: 'Absolutely. All domain names, hosting/cloud accounts, Google profiles, and software source code are registered under your ownership and handed over transparently.',
+      tr: 'Kesinlikle. Alan adınız, kurumsal e-postanız, Google İşletme ve analitik hesaplarınız ile yazılım kaynak kodlarının tamamı sizin adınıza tanımlanır ve şeffaf biçimde teslim edilir; dışa bağımlı kalmazsınız.',
+    },
+  },
+  {
+    question: {
+      en: 'Do you provide support and updates after the project goes live?',
+      tr: 'Proje tamamlandıktan sonra destek ve güncelleme sağlıyor musunuz?',
+    },
+    answer: {
+      en: 'Yes. Every delivery includes post-launch support to ensure everything runs smoothly. For ongoing content updates, new features, or continuous SEO/AIO growth, we can also continue with regular support.',
+      tr: 'Evet. Her projede canlıya geçiş sonrası doğrulama ve teknik destek yer alır. İlerleyen dönemde yeni özellik ekleme, içerik güncelleme veya düzenli bakım ihtiyaçlarınız için de yanınızda olmaya devam ediyorum.',
     },
   },
 ];
 
 /**
- * The four-step engineering delivery process shown on /packages.
+ * The four-step delivery process shown on /packages.
  */
 export const packageProcess: ProcessStep[] = [
   {
-    title: { en: 'Discovery & Scope', tr: 'Keşif & Kapsam' },
+    title: { en: '1. Listening & Roadmap', tr: '1. İhtiyacı Dinleme ve Planlama' },
     description: {
-      en: 'We clarify your business goals, target audience, technical requirements, and timeline in a focused kickoff.',
-      tr: 'İş hedeflerinizi, hedef kitlenizi ve teknik gereksinimleri netleştirip yol haritasını ve teslim takvimini çıkarıyoruz.',
+      en: 'We talk through your business goals, target audience, and expectations, then establish a clear scope and timeline.',
+      tr: 'İşletmenizin hedeflerini, müşteri kitlenizi ve beklentilerinizi dinliyor; yapılacak işleri ve teslim takvimini net bir plana döküyoruz.',
     },
   },
   {
-    title: { en: 'Architecture & UI Design', tr: 'Mimari & Tasarım' },
+    title: { en: '2. Design & Brand Architecture', tr: '2. Kurumsal Tasarım ve Kurgulama' },
     description: {
-      en: 'Information architecture, brand visual direction, database/API schema, and interface layouts are aligned before implementation.',
-      tr: 'Bilgi mimarisi, kurumsal görsel dil, veritabanı/API şeması ve ekran tasarımları geliştirme öncesinde netleştirilir.',
+      en: 'We shape a clean, trustworthy visual design and page structure that reflects your brand’s prestige on every device.',
+      tr: 'Markanızın prestijini yansıtan, ziyaretçiye güven veren ve her ekranda kusursuz görünen sade, modern bir tasarım hazırlıyoruz.',
     },
   },
   {
-    title: { en: 'Engineering & SEO/AIO', tr: 'Geliştirme & SEO/AIO' },
+    title: { en: '3. Development & Search Visibility', tr: '3. Geliştirme, SEO ve Yapay Zeka Altyapısı' },
     description: {
-      en: 'Clean, tested mobile or web implementation with technical SEO, Schema.org JSON-LD, llms.txt, and security hardening.',
-      tr: 'Mobil veya web uygulaması; teknik SEO, Schema.org JSON-LD, llms.txt ve güvenlik katmanlarıyla birlikte geliştirilir ve test edilir.',
+      en: 'Your mobile app or website is built for speed and security, complete with Google SEO and AI search (AIO) infrastructure.',
+      tr: 'Uygulamanızı veya web sitenizi yüksek hız, güvenlik, Google SEO ve yapay zeka araması (AIO) uyumuyla eksiksiz olarak geliştiriyoruz.',
     },
   },
   {
-    title: { en: 'Launch & Handover', tr: 'Canlıya Alma & Teslim' },
+    title: { en: '4. Launch & Full Handover', tr: '4. Yayına Alma ve Anahtar Teslim' },
     description: {
-      en: 'Production deployment, DNS/SSL, Search Console & analytics verification, full source-code ownership, and post-launch support.',
-      tr: 'Canlı sunucu/mağaza yayını, DNS/SSL, Search Console ve analitik kurulumları tamamlanarak tüm hesap ve kaynak kodlar teslim edilir.',
+      en: 'We launch your project, verify email, Maps, and analytics flows, hand over all accounts, and stay with you for post-launch support.',
+      tr: 'Projenizi canlı yayına alıyor; kurumsal e-posta, harita ve analitik kontrollerini tamamlayıp tüm hesaplarla birlikte anahtar teslim sunuyoruz.',
     },
   },
 ];
