@@ -1,10 +1,9 @@
 /**
- * Freelance service packages (brand identity + website builds).
+ * Corporate software & digital engineering service pillars.
  *
- * Single source of truth for the `/packages` page: three fixed tiers, each a
- * price-from figure (TRY), a one-line pitch, and a feature list. Nothing here
- * is content-collection material (it's not article-shaped, doesn't need
- * drafts/ordering-by-file), so it lives as plain data, same as `profile.ts`.
+ * Single source of truth for the home-page services preview and the `/packages`
+ * services page. Per user preference, fixed price tags are removed and visitors
+ * are guided to request a tailored quote via the contact form.
  */
 import type { Bilingual } from './profile';
 
@@ -13,7 +12,6 @@ export interface RapidSprint {
   eyebrow: Bilingual;
   name: Bilingual;
   tagline: Bilingual;
-  price: number;
   timeline: Bilingual;
   features: Bilingual[];
   exclusions: Bilingual;
@@ -21,18 +19,16 @@ export interface RapidSprint {
 }
 
 export interface PackageTier {
-  id: 'starter' | 'growth' | 'premium';
+  id: 'mobile' | 'web' | 'brand' | 'seo-aio';
   name: Bilingual;
   tagline: Bilingual;
-  /** Starting price in Turkish lira (whole numbers, no currency symbol). */
-  priceFrom: number;
   timeline: Bilingual;
-  /** Page-count summary for the comparison table (faithful to `features`). */
+  /** Deliverable summary for the comparison table. */
   pages: Bilingual;
-  /** Brand-identity scope for the comparison table (faithful to `features`). */
+  /** Technical & infrastructure scope for the comparison table. */
   brandScope: Bilingual;
   features: Bilingual[];
-  /** Surfaced as the "most popular" tier — exactly one should be true. */
+  /** Surfaced as a highlighted pillar. */
   highlighted: boolean;
 }
 
@@ -47,53 +43,49 @@ export interface ProcessStep {
 }
 
 /**
- * Small, sharply bounded validation offers for buyers who need a working
- * result before committing to a full product or brand build. These are kept
- * separate from the larger package tiers so neither scope nor pricing is
- * ambiguous.
+ * Fast-track validation sprints for teams or founders who want a rapid prototype
+ * or focused landing page before a full-scale build.
  */
 export const rapidSprints: RapidSprint[] = [
   {
     id: 'web-sprint',
-    eyebrow: { en: '72-hour web sprint', tr: '72 saatlik web sprinti' },
-    name: { en: 'WhatsApp Lead Page', tr: 'WhatsApp Müşteri Sayfası' },
+    eyebrow: { en: 'Fast-Track Web Launch', tr: 'Hızlı Web Başlangıcı' },
+    name: { en: 'Conversion Landing Page', tr: 'Dönüşüm Odaklı Tanıtım Sitesi' },
     tagline: {
-      en: 'A focused one-page site that turns mobile visitors into calls and WhatsApp conversations.',
-      tr: 'Mobil ziyaretçileri aramaya ve WhatsApp görüşmesine yönlendiren odaklı tek sayfalık site.',
+      en: 'A fast, mobile-first single-page site designed to turn visitors into form submissions, calls, and WhatsApp inquiries.',
+      tr: 'Ziyaretçileri iletişim formuna, aramaya ve WhatsApp görüşmesine yönlendiren hızlı, mobil uyumlu tek sayfa kurumsal site.',
     },
-    price: 2500,
-    timeline: { en: '72 hours', tr: '72 saat' },
+    timeline: { en: '3 - 5 business days', tr: '3 - 5 iş günü' },
     features: [
-      { en: 'One responsive, fast-loading landing page', tr: 'Mobil uyumlu, hızlı yüklenen tek sayfalık site' },
-      { en: 'WhatsApp, call, map, and contact actions', tr: 'WhatsApp, arama, konum ve iletişim aksiyonları' },
-      { en: 'Basic SEO and AI-assisted page copy', tr: 'Temel SEO ve yapay zekâ destekli sayfa metinleri' },
-      { en: 'One revision round and source-code handoff', tr: '1 revizyon turu ve kaynak kod teslimi' },
+      { en: 'Custom responsive design and high-speed Astro build', tr: 'Özel mobil uyumlu tasarım ve yüksek hızlı Astro altyapısı' },
+      { en: 'Contact form, WhatsApp, phone, and map integrations', tr: 'İletişim formu, WhatsApp, telefon ve harita entegrasyonları' },
+      { en: 'On-page SEO, Schema.org metadata, and clean copy structure', tr: 'Temel teknik SEO, Schema.org yapısal verisi ve kurumsal metin kurgusu' },
+      { en: 'Domain connection, SSL setup, and source-code handoff', tr: 'Alan adı bağlantısı, SSL kurulumu ve kaynak kod teslimi' },
     ],
     exclusions: {
-      en: 'Domain, hosting, CMS, e-commerce, and custom back-end work are quoted separately.',
-      tr: 'Alan adı, hosting, CMS, e-ticaret ve özel back-end çalışmaları ayrıca fiyatlandırılır.',
+      en: 'Multi-language architecture, custom admin panels, and complex third-party integrations are scoped in full projects.',
+      tr: 'Çok dilli mimari, özel yönetim paneli ve kapsamlı dış servis entegrasyonları ana projelerde kapsamlandırılır.',
     },
     highlighted: false,
   },
   {
     id: 'mobile-mvp',
-    eyebrow: { en: '72-hour mobile sprint', tr: '72 saatlik mobil sprint' },
-    name: { en: 'Working Mobile MVP', tr: 'Çalışan Mobil MVP' },
+    eyebrow: { en: 'Fast-Track Product', tr: 'Hızlı Ürün Doğrulama' },
+    name: { en: 'Mobile or Web MVP', tr: 'Mobil veya Web MVP' },
     tagline: {
-      en: 'Turn one clear app idea into a testable mobile MVP you can put in front of real users.',
-      tr: 'Net bir uygulama fikrini gerçek kullanıcılara gösterebileceğin, test edilebilir mobil MVP’ye dönüştür.',
+      en: 'Turn a core product idea into a working, testable mobile or web MVP with clean architecture.',
+      tr: 'Net bir ürün fikrini gerçek kullanıcılara sunabileceğiniz, temiz mimarili çalışan bir mobil veya web MVP’ye dönüştürün.',
     },
-    price: 4500,
-    timeline: { en: '72 hours', tr: '72 saat' },
+    timeline: { en: '1 - 2 weeks', tr: '1 - 2 hafta' },
     features: [
-      { en: 'Up to 3–4 focused screens', tr: 'En fazla 3-4 odaklı ekran' },
-      { en: 'React Native + Expo implementation', tr: 'React Native + Expo ile geliştirme' },
-      { en: 'Navigation plus simple Firebase/Supabase data flow', tr: 'Navigasyon ve basit Firebase/Supabase veri akışı' },
-      { en: 'Testable demo, source code, and one revision round', tr: 'Test edilebilir demo, kaynak kod ve 1 revizyon turu' },
+      { en: 'Core user flows built with SwiftUI, Flutter, or Next.js', tr: 'SwiftUI, Flutter veya Next.js ile temel kullanıcı akışlarının geliştirilmesi' },
+      { en: 'Authentication and API / database integration', tr: 'Kimlik doğrulama ve API / veritabanı bağlantısı' },
+      { en: 'Testable build (TestFlight or live preview URL)', tr: 'Test edilebilir sürüm (TestFlight veya canlı önizleme bağlantısı)' },
+      { en: 'Clean, maintainable repository ready to scale', tr: 'Büyümeye hazır, temiz ve sürdürülebilir kaynak kod teslimi' },
     ],
     exclusions: {
-      en: 'Store review, payments, live chat, complex integrations, and admin panels are outside this sprint.',
-      tr: 'Mağaza onayı, ödeme, canlı mesajlaşma, karmaşık entegrasyonlar ve yönetim paneli bu sprintin dışındadır.',
+      en: 'Full App Store / Play Store commercial release management and enterprise ERP integrations are scoped separately.',
+      tr: 'Tam kapsamlı mağaza yayın yönetimi ve kurumsal ERP entegrasyonları proje kapsamına göre ayrıca planlanır.',
     },
     highlighted: true,
   },
@@ -101,65 +93,122 @@ export const rapidSprints: RapidSprint[] = [
 
 export const packageTiers: PackageTier[] = [
   {
-    id: 'starter',
-    name: { en: 'Starter', tr: 'Başlangıç' },
+    id: 'mobile',
+    name: { en: 'Mobile App Development', tr: 'Mobil Uygulama Geliştirme' },
     tagline: {
-      en: 'A fast, credible one-page site to get a brand online.',
-      tr: 'Bir markayı hızlıca ve güvenilir şekilde internete taşıyan tek sayfalık site.',
+      en: 'Native iOS/macOS (SwiftUI) and cross-platform (Flutter) applications built from scratch and shipped to the stores.',
+      tr: 'iOS, iPadOS, macOS (SwiftUI) ve çoklu platform (Flutter) için sıfırdan tasarlanan, mağazaya çıkmaya hazır mobil uygulamalar.',
     },
-    priceFrom: 15000,
-    timeline: { en: '~1 week', tr: '~1 hafta' },
-    pages: { en: '1 page', tr: '1 sayfa' },
-    brandScope: { en: 'Basic logo + palette', tr: 'Temel logo + palet' },
+    timeline: { en: 'Project-based', tr: 'Kapsama göre planlanır' },
+    pages: { en: 'iOS, iPadOS, macOS & Android', tr: 'iOS, iPadOS, macOS ve Android' },
+    brandScope: { en: 'UI/UX + Backend API + Store Launch', tr: 'UI/UX + Backend API + Mağaza Yayını' },
     features: [
-      { en: 'One-page landing site, designed and built', tr: 'Tek sayfa (landing page) tasarım ve geliştirme' },
-      { en: 'Basic logo + color palette', tr: 'Temel logo ve renk paleti' },
-      { en: 'Mobile-friendly, fast-loading build', tr: 'Mobil uyumlu, hızlı yüklenen site' },
-      { en: 'One round of revisions', tr: '1 revizyon turu' },
+      {
+        en: 'Native SwiftUI (iOS/macOS) or cross-platform Flutter development',
+        tr: 'Native SwiftUI (iOS/macOS) veya Flutter ile yüksek performanslı geliştirme',
+      },
+      {
+        en: 'Offline-first data, iCloud/CloudKit sync, or custom REST API backend',
+        tr: 'Çevrimdışı çalışma, iCloud/CloudKit senkronizasyonu veya özel REST API altyapısı',
+      },
+      {
+        en: 'Widgets, Live Activities, notifications, and in-app subscriptions',
+        tr: 'Widget, Canlı Etkinlikler (Live Activity), bildirim ve abonelik kurguları',
+      },
+      {
+        en: 'App Store & Google Play preparation, screenshots, and review submission',
+        tr: 'App Store ve Google Play mağaza hazırlığı, görseller ve onay süreci yönetimi',
+      },
     ],
     highlighted: false,
   },
   {
-    id: 'growth',
-    name: { en: 'Growth', tr: 'Büyüme' },
+    id: 'web',
+    name: { en: 'Corporate Web & Custom Software', tr: 'Kurumsal Web Sitesi & Özel Yazılım' },
     tagline: {
-      en: 'A multi-page site with a full brand identity behind it.',
-      tr: 'Tam bir marka kimliğiyle desteklenen çok sayfalı web sitesi.',
+      en: 'High-speed, multi-language corporate websites, custom admin panels, and full-stack web applications.',
+      tr: 'Yüksek hızlı, çok dilli kurumsal web siteleri, özel yönetim panelleri ve uçtan uca web uygulamaları.',
     },
-    priceFrom: 35000,
-    timeline: { en: '~2–3 weeks', tr: '~2-3 hafta' },
-    pages: { en: '5–7 pages', tr: '5-7 sayfa' },
-    brandScope: { en: 'Full brand identity', tr: 'Tam marka kimliği' },
+    timeline: { en: '2 - 4 weeks', tr: '2 - 4 hafta' },
+    pages: { en: 'Multi-page & Multi-language', tr: 'Çok sayfalı ve çok dilli mimari' },
+    brandScope: { en: 'Custom Design + Admin/CMS + API', tr: 'Özel Tasarım + Yönetim Paneli + API' },
     features: [
-      { en: '5–7 page custom-designed website', tr: '5-7 sayfalık özel tasarım web sitesi' },
       {
-        en: 'Full brand identity (logo, palette, typography, brand guide)',
-        tr: 'Tam marka kimliği (logo, renk paleti, tipografi, marka rehberi)',
+        en: 'Modern Astro or Next.js architecture with sub-second page loads',
+        tr: 'Astro veya Next.js ile saniyenin altında açılan modern web mimarisi',
       },
-      { en: 'SEO fundamentals + Google visibility setup', tr: 'SEO temelleri ve Google’da görünürlük kurulumu' },
-      { en: 'Two rounds of revisions', tr: '2 revizyon turu' },
+      {
+        en: 'Multi-language (TR/EN/AR) routing and responsive corporate UI',
+        tr: 'Çok dilli (TR/EN/AR) sayfa yapısı ve tüm cihazlara uyumlu kurumsal arayüz',
+      },
+      {
+        en: 'Custom admin panel, blog/content management, and lead forms',
+        tr: 'Özel yönetim paneli, blog/içerik yönetimi ve güvenli iletişim formları',
+      },
+      {
+        en: 'PostgreSQL/MySQL database, Node.js/FastAPI backend, and AI integrations',
+        tr: 'PostgreSQL/MySQL veritabanı, Node.js/FastAPI backend ve yapay zeka entegrasyonları',
+      },
     ],
     highlighted: true,
   },
   {
-    id: 'premium',
-    name: { en: 'Premium', tr: 'Premium' },
+    id: 'brand',
+    name: { en: 'Brand Setup & Digital Infrastructure', tr: 'Marka Kurulumu & Dijital Altyapı' },
     tagline: {
-      en: 'An end-to-end brand and web experience for a growing business.',
-      tr: 'Büyüyen bir işletme için uçtan uca marka ve web deneyimi.',
+      en: 'Complete digital foundation for new or growing brands: domain, corporate email, Cloudflare, and Google ecosystem.',
+      tr: 'Yeni kurulan veya yenilenen markalar için alan adından kurumsal e-postaya ve Google ekosistemine kadar tam dijital kurulum.',
     },
-    priceFrom: 65000,
-    timeline: { en: '~4–6 weeks', tr: '~4-6 hafta' },
-    pages: { en: 'Unlimited', tr: 'Sınırsız' },
-    brandScope: { en: 'Full brand system', tr: 'Kapsamlı marka sistemi' },
+    timeline: { en: '1 - 2 weeks', tr: '1 - 2 hafta' },
+    pages: { en: 'End-to-End Brand Kit & Infra', tr: 'Uçtan Uca Dijital Kurulum' },
+    brandScope: { en: 'Domain + Corporate Mail + Google', tr: 'Domain + Kurumsal E-Posta + Google' },
     features: [
-      { en: 'Unlimited pages, custom design + interactions', tr: 'Sınırsız sayfa, özel tasarım ve etkileşimler' },
       {
-        en: 'Full brand system (incl. deck + social media templates)',
-        tr: 'Kapsamlı marka kimliği sistemi (sunum ve sosyal medya şablonları dahil)',
+        en: 'Domain registration, Cloudflare DNS, SSL, and edge security setup',
+        tr: 'Alan adı (domain), Cloudflare DNS, SSL ve güvenlik duvarı kurulumu',
       },
-      { en: 'Blog/CMS integration, multi-language support', tr: 'Blog/CMS entegrasyonu, çoklu dil desteği' },
-      { en: 'Priority support + 3 months of maintenance', tr: 'Öncelikli destek ve 3 ay bakım' },
+      {
+        en: 'Corporate email setup (info@yourdomain.com) with SPF, DKIM, and DMARC',
+        tr: 'Kurumsal e-posta kurulumu (info@markaniz.com) ve SPF, DKIM, DMARC doğrulamaları',
+      },
+      {
+        en: 'Visual identity direction (color palette, typography, social templates)',
+        tr: 'Görsel kimlik kurgusu (renk paleti, tipografi, sosyal medya ve profil şablonları)',
+      },
+      {
+        en: 'Google Business Profile, Google Tag Manager (GTM), and GA4 analytics',
+        tr: 'Google İşletme Profili (Haritalar), Google Tag Manager (GTM) ve GA4 kurulumu',
+      },
+    ],
+    highlighted: false,
+  },
+  {
+    id: 'seo-aio',
+    name: { en: 'SEO & AIO (AI Search Optimization)', tr: 'SEO & AIO (Yapay Zeka Optimizasyonu)' },
+    tagline: {
+      en: 'Make your business visible both on Google Search and inside AI assistants like ChatGPT, Claude, Perplexity, and Gemini.',
+      tr: 'İşletmenizi hem Google aramalarında hem de ChatGPT, Claude, Perplexity ve Gemini gibi yapay zeka yanıtlarında görünür kılın.',
+    },
+    timeline: { en: '1 - 3 weeks', tr: '1 - 3 hafta' },
+    pages: { en: 'Site-wide Technical & Semantic Audit', tr: 'Site Geneli Teknik & Semantik Yapı' },
+    brandScope: { en: 'Schema.org + llms.txt + Core Web Vitals', tr: 'Schema.org + llms.txt + Hız Optimizasyonu' },
+    features: [
+      {
+        en: 'Rich Schema.org JSON-LD structured data (LocalBusiness, Service, FAQPage)',
+        tr: 'Zengin Schema.org JSON-LD yapısal verileri (LocalBusiness, Service, FAQPage)',
+      },
+      {
+        en: 'AIO corpus setup (llms.txt, llms-full.txt, semantic entity hierarchy)',
+        tr: 'Yapay zeka botları için llms.txt, llms-full.txt ve semantik içerik mimarisi',
+      },
+      {
+        en: 'Search Console, Bing Webmaster Tools, IndexNow, and sitemap automation',
+        tr: 'Google Search Console, Bing Webmaster, IndexNow ve otomatik site haritası kaydı',
+      },
+      {
+        en: 'Core Web Vitals performance tuning and semantic content restructuring',
+        tr: 'Core Web Vitals hız optimizasyonu ve arama niyetine uygun içerik yapılandırması',
+      },
     ],
     highlighted: false,
   },
@@ -167,107 +216,90 @@ export const packageTiers: PackageTier[] = [
 
 /**
  * FAQ shown on the /packages page and mirrored as FAQPage JSON-LD.
- *
- * Every answer is grounded in the tier data above (prices, timelines,
- * features, the tailor-the-scope note) — no claim here goes beyond what the
- * packages already state, so the visible copy and the structured data can't
- * drift into anything unverifiable.
  */
 export const packageFaqs: PackageFaq[] = [
   {
     question: {
-      en: 'What can realistically be delivered in 72 hours?',
-      tr: '72 saatte gerçekçi olarak ne teslim edilebilir?',
+      en: 'How is project pricing determined?',
+      tr: 'Proje fiyatlandırması nasıl belirleniyor?',
     },
     answer: {
-      en: 'One tightly scoped result: either a one-page WhatsApp lead site or a testable 3–4 screen mobile MVP. The clock starts after the scope, content, and required access are confirmed.',
-      tr: 'Sınırları net tek bir sonuç: WhatsApp odaklı tek sayfalık site veya test edilebilir 3-4 ekranlı mobil MVP. Süre; kapsam, içerik ve gerekli erişimler netleştikten sonra başlar.',
+      en: 'Every project has different technical requirements: a single-language corporate site, a multi-language platform with an admin panel, and a native mobile app have very different scopes. After a short discovery call or form message, I share a transparent, written proposal with clear deliverables and timeline.',
+      tr: 'Her projenin teknik ihtiyacı farklıdır; tek dilli bir kurumsal site, yönetim panelli çok dilli bir platform veya App Store’a çıkacak bir mobil uygulama farklı kapsamlar gerektirir. İhtiyacınızı iletişim formundan ilettiğinizde kapsamı netleştirip şeffaf, yazılı bir teklif ve takvim paylaşıyorum.',
     },
   },
   {
     question: {
-      en: 'Does the mobile MVP include App Store or Play Store publishing?',
-      tr: 'Mobil MVP, App Store veya Play Store’da yayınlamayı içeriyor mu?',
+      en: 'Can you handle everything from domain purchase to going live?',
+      tr: 'Alan adı alımından canlı yayına kadar tüm süreci üstleniyor musunuz?',
     },
     answer: {
-      en: 'No. The sprint includes a testable demo and source code. Store preparation and review depend on store accounts and external approval timelines, so they are quoted separately.',
-      tr: 'Hayır. Sprint, test edilebilir demo ve kaynak kod teslimini içerir. Mağaza hazırlığı ve inceleme süreci mağaza hesaplarına ve dış onay sürelerine bağlı olduğu için ayrıca fiyatlandırılır.',
+      en: 'Yes. I handle domain registration, Cloudflare DNS, corporate email routing, design, development, SEO/AIO configuration, and production deployment so you do not have to coordinate multiple agencies or freelancers.',
+      tr: 'Evet. Alan adı tescili, Cloudflare DNS, kurumsal e-posta kurulumu, tasarım, yazılım geliştirme, SEO/AIO ayarları ve canlıya alma adımlarının tamamını tek elden yönetiyorum.',
     },
   },
   {
     question: {
-      en: 'Are these the final prices?',
-      tr: 'Bu fiyatlar kesin mi?',
+      en: 'What is AIO (AI Search Optimization) and why does it matter?',
+      tr: 'AIO (Yapay Zeka Arama Optimizasyonu) nedir ve neden önemlidir?',
     },
     answer: {
-      en: 'The figures are starting points in Turkish lira (TRY) and depend on the final scope we agree on. Tell me what you need and I’ll send an exact quote.',
-      tr: 'Rakamlar Türk lirası (TL) cinsinden başlangıç noktalarıdır ve üzerinde anlaştığımız nihai kapsama göre değişir. İhtiyacını anlat, sana net bir teklif göndereyim.',
+      en: 'Customers increasingly ask ChatGPT, Gemini, Perplexity, and Claude for service recommendations. AIO uses structured Schema.org JSON-LD graphs, llms.txt files, and clear semantic hierarchy so AI models accurately understand and recommend your business.',
+      tr: 'Kullanıcılar artık hizmet ve firma araştırmalarını yalnızca Google’da değil; ChatGPT, Gemini, Perplexity ve Claude üzerinden de yapıyor. AIO; sitenize eklenen Schema.org JSON-LD verileri, llms.txt dosyaları ve semantik içerik kurgusuyla yapay zeka modellerinin markanızı doğru tanıyıp önermesini sağlar.',
     },
   },
   {
     question: {
-      en: 'How long does a project take?',
-      tr: 'Bir proje ne kadar sürede teslim edilir?',
+      en: 'Do you build both iOS and Android mobile applications?',
+      tr: 'Hem iOS hem Android için mobil uygulama geliştiriyor musunuz?',
     },
     answer: {
-      en: 'Roughly one week for Starter, two to three weeks for Growth, and four to six weeks for Premium — the exact timeline is confirmed once the scope is set.',
-      tr: 'Başlangıç için yaklaşık bir hafta, Büyüme için iki-üç hafta, Premium için dört-altı hafta — kesin süre kapsam netleştiğinde belirlenir.',
+      en: 'Yes. For Apple-ecosystem products (iOS, iPadOS, macOS, Widgets, Live Activities, iCloud sync) I build natively with Swift and SwiftUI. For cross-platform iOS and Android apps from a single codebase, I build with Flutter and Node.js/FastAPI backends.',
+      tr: 'Evet. Apple ekosistemine özel ürünlerde (iOS, iPadOS, macOS, Widget, Live Activity, iCloud senkronizasyonu) Swift ve SwiftUI ile native geliştirme yapıyorum. Tek kod tabanıyla hem iOS hem Android hedefleyen projelerde ise Flutter ve Node.js/FastAPI altyapılarını kullanıyorum.',
     },
   },
   {
     question: {
-      en: 'Which package should I choose?',
-      tr: 'Hangi paketi seçmeliyim?',
+      en: 'Do you provide maintenance and support after launch?',
+      tr: 'Proje yayına alındıktan sonra teknik destek ve bakım sağlıyor musunuz?',
     },
     answer: {
-      en: 'Choose a 72-hour sprint to validate one idea quickly. Starter is a complete one-page brand site; Growth adds multiple pages and a full identity; Premium is an end-to-end brand and web system. If you are unsure, describe the result you need and we will choose the smallest sensible scope.',
-      tr: 'Tek bir fikri hızla doğrulamak için 72 saatlik sprinti seçin. Başlangıç, eksiksiz tek sayfalık marka sitesidir; Büyüme, çoklu sayfa ve tam marka kimliği ekler; Premium ise uçtan uca marka ve web sistemidir. Emin değilseniz ihtiyacınız olan sonucu anlatın, en küçük mantıklı kapsamı birlikte seçelim.',
-    },
-  },
-  {
-    question: {
-      en: 'Do you provide support and maintenance after launch?',
-      tr: 'Yayın sonrası destek ve bakım sağlıyor musunuz?',
-    },
-    answer: {
-      en: 'The Premium package includes priority support and three months of maintenance. For the other packages, ongoing support can be added to the quote.',
-      tr: 'Premium paketi öncelikli destek ve üç ay bakım içerir. Diğer paketler için sürekli destek teklife eklenebilir.',
+      en: 'Yes. Every project includes post-launch stabilization support, and we can set up a monthly maintenance or feature-development retainer based on your needs.',
+      tr: 'Evet. Teslim edilen her projede yayın sonrası doğrulama desteği bulunur; ayrıca talebinize göre düzenli bakım, içerik güncelleme ve yeni özellik geliştirme desteği sağlıyorum.',
     },
   },
 ];
 
 /**
- * The four-step delivery process shown on /packages. Generic-but-accurate
- * freelance workflow — each step maps to work the packages already describe
- * (SEO setup ships in Growth+, support/maintenance in Premium).
+ * The four-step engineering delivery process shown on /packages.
  */
 export const packageProcess: ProcessStep[] = [
   {
-    title: { en: 'Discovery', tr: 'Keşif' },
+    title: { en: 'Discovery & Scope', tr: 'Keşif & Kapsam' },
     description: {
-      en: 'A short call to understand your business, goals, and audience, and to agree on the scope and package.',
-      tr: 'İşini, hedeflerini ve hedef kitleni anlamak, kapsam ve paket üzerinde anlaşmak için kısa bir görüşme.',
+      en: 'We clarify your business goals, target audience, technical requirements, and timeline in a focused kickoff.',
+      tr: 'İş hedeflerinizi, hedef kitlenizi ve teknik gereksinimleri netleştirip yol haritasını ve teslim takvimini çıkarıyoruz.',
     },
   },
   {
-    title: { en: 'Design', tr: 'Tasarım' },
+    title: { en: 'Architecture & UI Design', tr: 'Mimari & Tasarım' },
     description: {
-      en: 'Brand direction and page layouts — logo, palette, and typography where the package includes them — reviewed before a line of code.',
-      tr: 'Marka yönü ve sayfa tasarımları — paket kapsıyorsa logo, renk paleti ve tipografi — kod yazılmadan önce onayına sunulur.',
+      en: 'Information architecture, brand visual direction, database/API schema, and interface layouts are aligned before implementation.',
+      tr: 'Bilgi mimarisi, kurumsal görsel dil, veritabanı/API şeması ve ekran tasarımları geliştirme öncesinde netleştirilir.',
     },
   },
   {
-    title: { en: 'Build', tr: 'Geliştirme' },
+    title: { en: 'Engineering & SEO/AIO', tr: 'Geliştirme & SEO/AIO' },
     description: {
-      en: 'The site is developed to be fast, mobile-friendly, and SEO-ready, with revision rounds along the way.',
-      tr: 'Site hızlı, mobil uyumlu ve SEO’ya hazır şekilde geliştirilir; süreç boyunca revizyon turları yapılır.',
+      en: 'Clean, tested mobile or web implementation with technical SEO, Schema.org JSON-LD, llms.txt, and security hardening.',
+      tr: 'Mobil veya web uygulaması; teknik SEO, Schema.org JSON-LD, llms.txt ve güvenlik katmanlarıyla birlikte geliştirilir ve test edilir.',
     },
   },
   {
-    title: { en: 'Launch', tr: 'Yayın' },
+    title: { en: 'Launch & Handover', tr: 'Canlıya Alma & Teslim' },
     description: {
-      en: 'Deployment, Google visibility setup, and handover — with priority support and maintenance on the Premium package.',
-      tr: 'Yayına alma, Google görünürlük kurulumu ve teslim — Premium pakette öncelikli destek ve bakım ile birlikte.',
+      en: 'Production deployment, DNS/SSL, Search Console & analytics verification, full source-code ownership, and post-launch support.',
+      tr: 'Canlı sunucu/mağaza yayını, DNS/SSL, Search Console ve analitik kurulumları tamamlanarak tüm hesap ve kaynak kodlar teslim edilir.',
     },
   },
 ];

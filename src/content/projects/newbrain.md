@@ -1,8 +1,9 @@
 ---
 title: newBrain
-tagline_en: A Turkish LLM built from scratch.
-tagline_tr: Sıfırdan geliştirilmiş bir Türkçe LLM.
+tagline_en: A Turkish causal LLM built from scratch in PyTorch.
+tagline_tr: PyTorch ile sıfırdan geliştirilmiş Türkçe nedensel dil modeli (LLM).
 category: Applied-AI
+group: product
 stack:
   - Python
   - PyTorch
@@ -22,10 +23,10 @@ highlights_tr:
   - PyTorch ile yazılmış özel BPE tokenizer ve nedensel GPT transformer (RoPE, SwiGLU, SDPA).
   - Apple MLX üzerinde LoRA ince ayarı.
   - RAG (ChromaDB) ve çok ajanlı sohbet içeren FastAPI + Three.js çalışma alanı.
-problem_en: Understanding modern language models deeply means building one end to end — tokenizer, architecture, training and fine-tuning — rather than only calling an API.
-problem_tr: Modern dil modellerini derinlemesine anlamak, yalnızca bir API çağırmak yerine tokenizer, mimari, eğitim ve ince ayar dâhil baştan sona bir model kurmayı gerektirir.
+problem_en: Understanding modern language models deeply means building one end to end (tokenizer, architecture, training and fine-tuning) rather than only calling an API.
+problem_tr: Modern dil modellerini derinlemesine anlamak, yalnızca bir API çağırmak yerine tokenizer, mimari, eğitim ve ince ayar dahil baştan sona bir model kurmayı gerektirir.
 what_i_did_en: Implemented a causal GPT transformer and its BPE tokenizer from scratch in PyTorch, added MLX LoRA fine-tuning, and wrapped it in a FastAPI/Three.js workspace with RAG and multi-agent chat.
 what_i_did_tr: PyTorch ile sıfırdan nedensel bir GPT transformer ve BPE tokenizer’ını yazdım, MLX LoRA ince ayarı ekledim ve bunu RAG ile çok ajanlı sohbet içeren bir FastAPI/Three.js çalışma alanına sardım.
-featured: true
-order: 3
+featured: false
+order: 7
 ---

@@ -1,16 +1,19 @@
 ---
 title: UniSum
-tagline_en: GPA & grade tracker, live on the App Store.
-tagline_tr: App Store’da yayında olan not ortalaması takip uygulaması.
+tagline_en: AI-powered university lecture summarization & GPA platform live on the App Store.
+tagline_tr: App Store’da yayında olan yapay zeka destekli ders özetleme ve akademik takip platformu.
 category: Mobile
+group: product
+image: unisum.jpg
 stack:
-  - Swift 6
+  - Flutter
   - SwiftUI
+  - Python
+  - FastAPI
   - Node.js
-  - Express
   - MySQL
-  - JWT & bcrypt
-  - REST
+  - Whisper & Gemini
+  - Docker
 status_en: Live on the App Store
 status_tr: App Store’da yayında
 links:
@@ -18,17 +21,17 @@ links:
   repo: https://github.com/OmerYasirOnal/UniSum
   other: https://github.com/OmerYasirOnal/UniSum-Backend
 highlights_en:
-  - Native SwiftUI iOS client built with MVVM, shipped and live on the App Store.
-  - Self-built Node/Express/MySQL REST API with JWT/bcrypt auth and Nodemailer.
-  - Hardened backend with helmet, CORS and rate limiting.
+  - Mobile client paired with asynchronous Python/FastAPI and Node/Express REST APIs backed by MySQL.
+  - Automated audio transcription (Faster-Whisper) and structured LLM lecture summaries (key concepts, definitions, exam questions).
+  - Hardened backend with JWT/bcrypt authentication, rate-limiting, and Dockerized deployment.
 highlights_tr:
-  - MVVM ile geliştirilmiş, App Store’da yayında olan native SwiftUI iOS istemcisi.
-  - JWT/bcrypt kimlik doğrulama ve Nodemailer içeren, sıfırdan yazılmış Node/Express/MySQL REST API.
-  - helmet, CORS ve rate limiting ile sertleştirilmiş backend.
-problem_en: Students juggling multiple courses need a fast, private way to track grades and project their GPA — without handing their academic data to an opaque third party.
-problem_tr: Birden fazla ders arasında gidip gelen öğrenciler, akademik verilerini belirsiz bir üçüncü tarafa vermeden notlarını takip edip ortalamalarını hesaplayacak hızlı ve gizli bir yola ihtiyaç duyar.
-what_i_did_en: Built and shipped a native SwiftUI iOS app backed by my own Node/Express/MySQL REST API — authentication, data model, email flows and hardening all self-built.
-what_i_did_tr: Kendi Node/Express/MySQL REST API’m tarafından desteklenen native bir SwiftUI iOS uygulaması geliştirip yayınladım — kimlik doğrulama, veri modeli, e-posta akışları ve sertleştirme tamamen kendi elimden çıktı.
+  - MySQL destekli asenkron Python/FastAPI ve Node/Express REST API’leri ile çalışan mobil uygulama mimarisi.
+  - Ders ses kayıtlarını otomatik metne dönüştüren (Faster-Whisper) ve yapılandırılmış LLM ders özetleri ile sınav soruları üreten yapay zeka hattı.
+  - JWT/bcrypt kimlik doğrulama, hız sınırlama (rate-limiting) ve Docker ile güçlendirilmiş sunucu altyapısı.
+problem_en: University students managing heavy course loads need both reliable GPA/grade tracking and structured study summaries from long lecture recordings and PDF slides.
+problem_tr: Yoğun ders temposundaki üniversite öğrencileri, hem güvenilir bir not/ortalama takibine hem de uzun ders kayıtları ile PDF slaytlarından çıkarılmış yapılandırılmış çalışma özetlerine ihtiyaç duyar.
+what_i_did_en: Built and shipped the mobile application to the App Store alongside its backend APIs, database schema, authentication flows, and AI transcription/summarization pipeline.
+what_i_did_tr: Mobil uygulamayı, arka plandaki REST API servislerini, MySQL veritabanı şemasını, kimlik doğrulama katmanını ve yapay zeka tabanlı transkript/özetleme hattını uçtan uca geliştirip App Store’da yayınladım.
 featured: true
 order: 2
 ---

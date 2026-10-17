@@ -1,8 +1,10 @@
 ---
 title: AKIS
-tagline_en: Verifiable AI software-development platform.
-tagline_tr: Doğrulanabilir yapay zeka yazılım geliştirme platformu.
+tagline_en: Multi-agent AI software development platform with human-approval gates and build provenance.
+tagline_tr: İnsan onay kapıları ve kriptografik derleme kanıtına sahip çok ajanlı yapay zeka yazılım platformu.
 category: AI-Agents
+group: product
+image: akis.jpg
 stack:
   - TypeScript
   - Node.js
@@ -12,23 +14,23 @@ stack:
   - Multi-LLM
   - Ed25519
   - MCP
-status_en: Open source (Apache-2.0), self-hostable
-status_tr: Açık kaynak (Apache-2.0), self-hostable
+status_en: Open source (Apache-2.0), live at akisflow.com
+status_tr: Açık kaynak (Apache-2.0), akisflow.com’da yayında
 links:
   repo: https://github.com/OmerYasirOnal/akis
   live: https://akisflow.com
 highlights_en:
-  - Multi-agent engine — Scribe, Proto, Critic and Trace — orchestrated behind 4 structural human-approval gates.
-  - Nothing ships until a human approves and a real boot-smoke test proves the build actually runs.
-  - Ed25519 build provenance and MCP-based approval gates for every external write.
+  - Multi-agent engine (Scribe, Proto, Critic, Trace) orchestrated behind 4 structural human-approval gates.
+  - Tasks are marked complete only after human approval and a real boot-smoke verification test pass.
+  - Ed25519-signed build provenance and Model Context Protocol (MCP) capability-token gates for external writes.
 highlights_tr:
-  - Scribe, Proto, Critic ve Trace ajanları, 4 yapısal insan-onay kapısı ardında orkestre edilir.
-  - Bir insan onaylamadan ve gerçek bir boot-smoke testi derlemenin çalıştığını kanıtlamadan hiçbir şey yayınlanmaz.
-  - Her dış yazma işlemi için Ed25519 kaynak kanıtı ve MCP tabanlı onay kapıları.
-problem_en: AI coding agents routinely report success without proof — "false green" — and can push unreviewed changes straight into real systems.
-problem_tr: Yapay zeka kodlama ajanları çoğu zaman kanıt olmadan başarı bildirir — "sahte yeşil" — ve gözden geçirilmemiş değişiklikleri doğrudan gerçek sistemlere gönderebilir.
-what_i_did_en: Built a multi-agent platform where every build passes four structural gates (spec approval, verify, push confirm, external write) and can only be marked done once a real boot-smoke test passes.
-what_i_did_tr: Her derlemenin dört yapısal kapıdan (spec onayı, doğrulama, push onayı, dış yazma) geçtiği ve yalnızca gerçek bir boot-smoke testi geçtiğinde tamamlanmış sayılabildiği çok ajanlı bir platform geliştirdim.
+  - Scribe, Proto, Critic ve Trace ajanlarını 4 yapısal insan onay kapısı ardında koordine eden orkestrasyon motoru.
+  - Hiçbir görev, insan onayı ve gerçek bir boot-smoke doğrulama testi geçmeden tamamlanmış sayılmaz.
+  - Her dış yazma işlemi için Ed25519 imzalı derleme kanıtı (build provenance) ve MCP tabanlı yetki kapıları.
+problem_en: AI coding agents routinely report success without proof ("false green") and can push unreviewed changes straight into production systems.
+problem_tr: Yapay zeka kodlama ajanları çoğu zaman gerçek bir doğrulama kanıtı olmadan başarı bildirir ve denetlenmemiş değişiklikleri doğrudan üretim sistemlerine gönderebilir.
+what_i_did_en: Designed and built a full-stack multi-agent platform where every workflow passes four structural approval gates, verifies builds with automated smoke tests, and signs build provenance with Ed25519.
+what_i_did_tr: Her iş akışının dört yapısal onay kapısından geçtiği, derlemelerin gerçek smoke testlerle doğrulandığı ve çıktıların Ed25519 ile imzalandığı açık kaynaklı çok ajanlı bir platform geliştirdim.
 featured: true
-order: 1
+order: 3
 ---

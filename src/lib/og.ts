@@ -1,5 +1,5 @@
 /**
- * OpenGraph image route helpers — the single source of truth for the mapping
+ * OpenGraph image route helpers - the single source of truth for the mapping
  * between a page and its generated OG PNG. Both the generator endpoint
  * (`src/pages/og/[...route].ts`) and the pages that reference `og:image` import
  * from here, so the produced files and the `<meta>` URLs can never drift.

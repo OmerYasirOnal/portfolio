@@ -1,19 +1,7 @@
 /**
  * CV-only data layer.
  *
- * These are the facts and framing that live ONLY on the résumé and are
- * deliberately not published on the site: the contact phone, the long-form
- * professional summary, the CV's own section labels, the curated project set
- * with its résumé-specific impact lines, the CV-specific skill ordering, and
- * the education degree line's medium-of-instruction detail.
- *
- * Everything else the PDF needs — name, role, location, email, links, the raw
- * skill-group items, school/graduation, certifications and languages — is
- * REUSED from `profile.ts` and the content collections; it is never duplicated
- * here.
- *
- * Consumed by `src/pages/cv-print/[lang].astro`, the render source for the two
- * generated PDFs (`public/cv/omer-yasir-onal-{en,tr}.pdf`).
+ * Synced with the user's latest 2-page CV (Oct 2026) and zero em dashes.
  */
 import type { Locale } from './i18n';
 
@@ -22,11 +10,6 @@ export interface CvSummary {
   tr: string;
 }
 
-/**
- * A curated résumé project. `slug` is a content-collection entry id (the
- * project markdown filename, e.g. `akis`); the CV reuses that entry for the
- * tech line + primary link and shows `en`/`tr` as a one-line impact note.
- */
 export interface CvProject {
   slug: string;
   en: string;
@@ -34,86 +17,68 @@ export interface CvProject {
 }
 
 export const cv = {
-  /** Not published on the public site — résumé contact line only. */
+  /** Not published on the public site; résumé contact line only. */
   phone: '+90 532 309 0261',
 
-  /** Extra contact endpoints shown on the CV contact line (spec note). */
+  /** Extra contact endpoints shown on the CV contact line. */
   website: 'https://omeryasironal.com',
 
-  /**
-   * English-only lines shown ONLY on the international `en` / EU `eu` PDF
-   * variants (never on the Turkish résumé):
-   *  - `availabilityRemote` — a one-line remote/international availability note.
-   *  - `gdprConsent` — the recruitment-data consent footer required on the `eu`
-   *    variant for GDPR-compliant applications.
-   */
-  availabilityRemote: 'Open to remote / international roles (UTC+3)',
+  availabilityRemote: 'Open to remote / international and freelance roles (UTC+3)',
   gdprConsent:
     'I consent to the processing of my personal data for recruitment purposes (GDPR).',
 
-  /** Long-form professional summary (résumé opener) — proof-led, security-leaning. */
+  /** Long-form professional summary matching the latest CV. */
   summary: {
-    en: "Computer Engineering new-grad and back-end & applied-AI engineer — AI Fellow (1,500 of 31,700, ~top 5%) and IEEE SIU 2025 author. I build verifiable, security-minded systems: at AKIS — a live multi-agent AI platform (akisflow.com) — I designed four structural human-approval gates, Ed25519-signed build provenance, and OWASP-LLM safety guardrails, and I shipped UniSum to the App Store on my own Node/MySQL API. Hands-on with Node.js/Python back-ends, PostgreSQL, Docker and CI/CD, and LLM/agent orchestration. Open to junior / entry-level full-time (and freelance) roles.",
-    tr: "Yeni Bilgisayar Mühendisliği mezunu, back-end & uygulamalı yapay zeka mühendisi — AI Fellow (31.700 başvuru içinden 1.500 kişi, ~ilk %5) ve IEEE SIU 2025 bildirisi yazarı. Doğrulanabilir, güvenlik odaklı sistemler kuruyorum: canlı çok-ajanlı yapay zeka platformu AKIS'te (akisflow.com) dört yapısal insan-onay kapısı, Ed25519 imzalı build provenance ve OWASP-LLM güvenlik korumaları tasarladım; UniSum'u kendi Node/MySQL API'imle App Store'a çıkardım. Node.js/Python back-end, PostgreSQL, Docker ve CI/CD ile LLM/agent orkestrasyonunda uygulamalı deneyim. Junior / entry-level tam zamanlı (ve freelance) fırsatlara açığım.",
+    en: 'Final-year Computer Engineering background (graduated June 2026) with a focus on backend services and applied AI systems. I built AKIS, an agent-assisted software workflow platform with human approval gates and cryptographic build provenance, and shipped Odak (native SwiftUI iOS/iPadOS/macOS) and UniSum (Flutter/SwiftUI + FastAPI/Node + MySQL) to the App Store. I also deliver end-to-end corporate web, brand infrastructure, and SEO/AIO solutions (Parla Deniz, Öz & Saye, A2 Reklam). Author of an IEEE SIU 2025 paper produced from a TÜBİTAK 2209-A research project.',
+    tr: 'Backend servisleri, mobil uygulama geliştirme, kurumsal web altyapıları ve uygulamalı yapay zeka sistemleri odağında çalışan Bilgisayar Mühendisi. İnsan onay kapıları ve kriptografik build provenance içeren çok ajanlı yazılım platformu AKIS’i geliştirdim; native SwiftUI ile geliştirdiğim Odak (iOS, iPadOS, macOS) ve UniSum uygulamalarını App Store’da yayınladım. Kurumsal markalar için uçtan uca web sitesi, yönetim paneli ve SEO/AIO altyapıları (Parla Deniz, Öz & Saye, A2 Reklam) kuruyorum. TÜBİTAK 2209-A araştırma projesinden üretilen IEEE SIU 2025 bildirisinin ilk yazarıyım.',
   } satisfies CvSummary,
 
   /**
-   * Curated, ordered résumé projects (a subset of the site's featured set),
-   * each with a CV-only impact line. `cv-print/[lang].astro` renders these in
-   * order and reuses the matching content-collection entry for tech + link.
+   * Curated, ordered résumé projects matching the CV + client highlights.
    */
   projects: [
     {
-      slug: 'akis',
-      en: "Live, open-source (Apache-2.0) multi-agent AI build platform: an orchestrator dispatching 5 role-separated agents behind 4 structural human-approval gates and an adversarial gate-keeper/reviewer loop; a task is 'done' only after a real boot-smoke test passes. ~1,800 backend + ~700 frontend automated tests green; Ed25519-signed build provenance; OWASP-LLM06 (Excessive Agency) guardrails; Docker image −198MB. Self-hosted at akisflow.com.",
-      tr: "Canlı, açık kaynak (Apache-2.0) çok-ajanlı yapay zeka derleme platformu: 5 rol-ayrık ajanı, 4 yapısal insan-onay kapısı ve rakip bir gate-keeper/reviewer döngüsü ardında yöneten bir orkestratör; bir görev ancak gerçek bir boot-smoke testi geçtikten sonra 'tamamlandı' sayılır. ~1.800 backend + ~700 frontend otomatik test yeşil; Ed25519 imzalı build provenance; OWASP-LLM06 (Aşırı Yetki) korumaları; Docker imajı −198MB. akisflow.com'da self-hosted.",
+      slug: 'odak',
+      en: 'Native SwiftUI task, planning, and Pomodoro focus app live on the App Store across iOS, iPadOS, and macOS. Shared SwiftPM core (OdakKit), SwiftData + CloudKit iCloud sync, ActivityKit Live Activity & Dynamic Island, WidgetKit, and native macOS menu bar timer.',
+      tr: 'iOS, iPadOS ve macOS için App Store’da yayında olan native SwiftUI görev, planlama ve Pomodoro odak uygulaması. Ortak SwiftPM çekirdeği (OdakKit), SwiftData ve CloudKit ile iCloud senkronizasyonu, ActivityKit Canlı Etkinlik / Dynamic Island, WidgetKit ve macOS menü çubuğu sayacı.',
     },
     {
       slug: 'unisum',
-      en: 'Shipped to the App Store — native SwiftUI client on a self-built Node/Express/MySQL REST API with JWT/bcrypt auth, hardened with helmet, CORS and rate-limiting.',
-      tr: "App Store'da yayında — kendi geliştirdiğim Node/Express/MySQL REST API üzerinde JWT/bcrypt kimlik doğrulamalı native SwiftUI istemci; helmet, CORS ve rate-limiting ile sertleştirildi.",
+      en: 'AI-powered university course summarization and academic tracking platform live on the App Store. Combines mobile client, asynchronous Python/FastAPI and Node/Express REST APIs, MySQL persistence, and LLM-based structured lecture summarization.',
+      tr: 'App Store’da yayında olan yapay zeka destekli üniversite ders özetleme ve akademik takip platformu. Mobil istemci, Python/FastAPI ve Node/Express tabanlı REST API, MySQL veri katmanı ve LLM tabanlı yapılandırılmış ders özetleme akışı.',
     },
     {
-      slug: 'newbrain',
-      en: 'A ~42M-parameter causal GPT built from scratch in PyTorch (own BPE tokenizer, RoPE/SwiGLU) with MLX LoRA fine-tuning — the fundamentals beneath the frameworks.',
-      tr: "PyTorch ile sıfırdan geliştirilmiş ~42M parametreli nedensel bir GPT (kendi BPE tokenizer'ı, RoPE/SwiGLU) ve MLX LoRA ince ayarı — framework'lerin altındaki temeller.",
+      slug: 'akis',
+      en: 'Open-source (Apache-2.0) multi-agent AI software platform: an orchestrator dispatching 5 role-separated agents behind 4 structural human-approval gates and a verification loop; Ed25519-signed build provenance and OWASP-LLM guardrails.',
+      tr: 'Açık kaynak (Apache-2.0) çok ajanlı yapay zeka yazılım platformu: 5 rol ayrık ajanı 4 yapısal insan onay kapısı ve doğrulama döngüsü ardında yöneten orkestratör; Ed25519 imzalı build provenance ve OWASP-LLM güvenlik katmanları.',
+    },
+    {
+      slug: 'parladeniz',
+      en: 'End-to-end corporate web and brand infrastructure for Parla Deniz Aesthetic in Nişantaşı (parladeniz.com): bilingual TR/EN Astro + Tailwind site, BeautySalon Schema.org JSON-LD, llms.txt AIO corpus, Cloudflare DNS/Email Routing, and Google Business Profile.',
+      tr: 'Nişantaşı Parla Deniz Güzellik Merkezi (parladeniz.com) için uçtan uca kurumsal web ve marka kurulumu: iki dilli (TR/EN) Astro + Tailwind sitesi, BeautySalon Schema.org JSON-LD, llms.txt AIO mimarisi, Cloudflare DNS/E-posta ve Google İşletme Profili.',
+    },
+    {
+      slug: 'ozsaye',
+      en: 'Full-stack psychotherapy clinic platform live at ozsaye.com: Next.js 16 + React 19 + PostgreSQL/Prisma with a custom RBAC admin CMS, dynamic clinical test scoring engine, appointment leads, and automated sitemap/SEO.',
+      tr: 'ozsaye.com adresinde yayında olan full-stack psikoterapi kliniği platformu: Next.js 16, React 19 ve PostgreSQL/Prisma üzerinde rol bazlı özel yönetim paneli, dinamik klinik ölçek puanlama motoru, randevu yönetimi ve teknik SEO.',
     },
     {
       slug: 'a2reklam',
-      en: 'Freelance corporate site live in production — 341-page trilingual (TR/EN/AR) Astro build with Schema.org local-SEO and a hardened PHP endpoint (honeypot, rate-limit).',
-      tr: 'Yayında olan freelance kurumsal site — Schema.org yerel-SEO ve sertleştirilmiş PHP uç noktası (honeypot, rate-limit) içeren 341 sayfalık üç dilli (TR/EN/AR) Astro sitesi.',
-    },
-    {
-      slug: 'studio',
-      en: 'Multi-agent game-development framework (16 specialist agents coordinating via the filesystem); Three.js + Capacitor, zero paid APIs.',
-      tr: 'Çok-ajanlı oyun geliştirme çatısı (dosya sistemi üzerinden koordine olan 16 uzman ajan); Three.js + Capacitor, ücretli API yok.',
+      en: 'Corporate web and local SEO infrastructure live at a2reklam.com: 341-page trilingual (TR/EN/AR) Astro static platform covering 39 Istanbul districts, Schema.org JSON-LD, GTM/GA4 conversion tracking, and hardened contact endpoint.',
+      tr: 'a2reklam.com adresinde yayında olan kurumsal web ve yerel SEO platformu: İstanbul’un 39 ilçesini kapsayan 341 sayfalık üç dilli (TR/EN/AR) Astro mimarisi, Schema.org JSON-LD, GTM/GA4 dönüşüm takibi ve güvenli teklif uç noktası.',
     },
   ] satisfies CvProject[],
 
-  /**
-   * CV-specific skill presentation. A reviewer for a security / back-end role
-   * scans top-down, so the résumé leads with Security & Trust and Backend, then
-   * AI and DevOps — a different order from the site's `profile.skillGroups`.
-   * `order` references those groups by their English title (each rendered as
-   * its own line); Frontend + Mobile are folded into one condensed, version-free
-   * line to save space.
-   */
   skills: {
-    order: ['Security & Trust', 'Backend & APIs', 'AI & LLM Engineering', 'DevOps & Infra'],
+    order: ['Backend & APIs', 'AI & LLM Engineering', 'Brand, SEO & AIO', 'DevOps & Infra'],
     frontendMobile: {
-      title_en: 'Frontend & Mobile',
-      title_tr: 'Frontend & Mobil',
-      en: 'React, Next.js, Astro, Tailwind, Three.js / R3F, Vite · Swift 6 / SwiftUI, Flutter / Dart, Capacitor, Firebase, App Store delivery',
-      tr: 'React, Next.js, Astro, Tailwind, Three.js / R3F, Vite · Swift 6 / SwiftUI, Flutter / Dart, Capacitor, Firebase, App Store teslimi',
+      title_en: 'Mobile & Web',
+      title_tr: 'Mobil & Web',
+      en: 'Swift 6 / SwiftUI (iOS, iPadOS, macOS), Flutter / Dart, SwiftData, CloudKit · Astro, Next.js, React, TypeScript, Tailwind CSS',
+      tr: 'Swift 6 / SwiftUI (iOS, iPadOS, macOS), Flutter / Dart, SwiftData, CloudKit · Astro, Next.js, React, TypeScript, Tailwind CSS',
     },
   },
 
-  /**
-   * CV-only education framing: the degree line carries the medium-of-instruction
-   * detail (which also evidences the English level). No GPA is displayed
-   * (best practice for a sub-3.0 GPA). School + graduation are reused from
-   * `profile.education`.
-   */
   education: {
     degree: {
       en: 'B.Sc. Computer Engineering (50% English-medium)',
@@ -121,13 +86,11 @@ export const cv = {
     },
   },
 
-  /** Writing collapses to a single line; `{n}` is filled from the writing collection. */
   writing: {
-    en: 'Author of {n} Medium articles on AI agents',
-    tr: 'AI ajanları üzerine {n} Medium yazısının yazarı',
+    en: 'Author of {n} Medium articles on software architecture and AI agents',
+    tr: 'Yazılım mimarisi ve yapay zeka ajanları üzerine {n} Medium yazısının yazarı',
   },
 
-  /** CV section headings (print-only strings; the public pages use i18n.ts). */
   sections: {
     summary: { en: 'Summary', tr: 'Özet' },
     skills: { en: 'Skills', tr: 'Yetenekler' },

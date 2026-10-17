@@ -1,10 +1,8 @@
 /**
  * Single source of truth for the person behind the site.
  *
- * All copy here is verified against the 2026-06-30 code scan + design spec §6/§7.
- * Components read this module + `i18n.ts` + the content collections — no copy is
- * ever hard-coded inside a component. This same data feeds the PDF CV and the
- * GitHub profile README in later phases, so it must stay accurate.
+ * Components read this module + `i18n.ts` + the content collections.
+ * This same data feeds the PDF CV and the structured data.
  */
 
 export interface Bilingual {
@@ -56,8 +54,8 @@ export interface Education {
 export const profile = {
   name: 'Ömer Yasir Önal',
   role: {
-    en: 'Back-End & Applied AI Engineer',
-    tr: 'Back-End & Uygulamalı Yapay Zeka Mühendisi',
+    en: 'Computer Engineer | Mobile, Web, AI & Digital Infrastructure',
+    tr: 'Bilgisayar Mühendisi | Mobil, Web, Yapay Zeka ve Dijital Altyapı',
   },
   location: {
     en: 'Istanbul, Türkiye',
@@ -65,8 +63,7 @@ export const profile = {
   },
   email: 'engomeryasironal@gmail.com',
   /**
-   * WhatsApp number in E.164 digits (no `+`/spaces) for wa.me links. Used by
-   * the freelance packages CTA; intentionally not a public social profile.
+   * WhatsApp number in E.164 digits (no `+`/spaces) for wa.me links.
    */
   whatsapp: '905323090261',
 
@@ -99,118 +96,113 @@ export const profile = {
   } satisfies Record<string, SocialLink>,
 
   /**
-   * Hero one-liners from spec §7. Index 0 is the approved default (option A).
-   * TR entries are translations of the same approved copy.
+   * Hero one-liners. Index 0 is the default.
    */
   taglines: {
     en: [
-      'Back-end & applied-AI engineer who ships verifiable systems — from a multi-agent AI platform with human-gated, provable build steps to apps live on the App Store.',
-      'I build AI you can trust: multi-agent backends, real verification instead of false green, and products shipped end-to-end.',
-      'Back-End & Applied AI Engineer in Istanbul — agentic systems, full-stack products, and an engineering bias toward provenance and trust.',
+      'A full-spectrum Computer Engineer building native mobile apps, high-conversion corporate websites, brand digital infrastructure, SEO / AIO systems, and verifiable AI backends end to end.',
+      'From App Store products like Odak and UniSum to full corporate web and brand systems like Parla Deniz, Öz & Saye, and A2 Reklam.',
+      'Computer Engineer in Istanbul delivering mobile applications, modern web platforms, SEO / AIO optimization, and applied AI engineering.',
     ],
     tr: [
-      'Doğrulanabilir sistemler geliştiren bir back-end ve uygulamalı yapay zeka mühendisi — insan onaylı, kanıtlanabilir derleme adımlarına sahip çok ajanlı bir yapay zeka platformundan App Store’da yayında olan uygulamalara kadar.',
-      'Güvenebileceğiniz yapay zeka geliştiriyorum: çok ajanlı backend’ler, sahte “yeşil” yerine gerçek doğrulama ve uçtan uca yayınlanan ürünler.',
-      'İstanbul’da Back-End & Uygulamalı Yapay Zeka Mühendisi — ajanlı sistemler, full-stack ürünler ve provenans ile güvene yönelik bir mühendislik yaklaşımı.',
+      'Mobil uygulama geliştirmeden kurumsal web sitelerine, dijital marka kurulumundan SEO / AIO optimizasyonu ve yapay zeka sistemlerine kadar yazılım süreçlerinizi uçtan uca üstlenen bilgisayar mühendisi.',
+      'App Store’da yayında olan Odak ve UniSum gibi kendi ürünlerimden; Parla Deniz, Öz & Saye ve A2 Reklam gibi kurumsal marka ve web sistemlerine kadar uçtan uca mühendislik.',
+      'İstanbul merkezli Bilgisayar Mühendisi: mobil uygulama, modern web teknolojileri, dijital marka altyapısı, SEO / AIO ve doğrulanabilir yapay zeka sistemleri.',
     ],
   },
 
-  /** Verbatim from spec §7. Do not paraphrase. */
   about: {
-    en: 'Ömer Yasir Önal is a back-end and applied-AI engineer based in Istanbul who builds verifiable, multi-agent AI systems and ships full-stack products end to end — from AKIS, an open-source platform where AI agents can’t ship code past a human and a real passing test, to UniSum, a GPA tracker live on the App Store with its own Node/MySQL API. He works across TypeScript/Node and Python backends, LLM and agent orchestration (RAG, MCP, multi-model), and native mobile (SwiftUI, Flutter). A selected AI Fellow (1,500 of 31,700), TÜBİTAK 2209-A researcher with an IEEE SIU 2025 paper, and freelancer, a recent Computer Engineering graduate from FSM (2026).',
-    tr: 'Ömer Yasir Önal, İstanbul merkezli bir back-end ve uygulamalı yapay zeka mühendisidir; doğrulanabilir çok ajanlı yapay zeka sistemleri kurar ve ürünleri uçtan uca yayına alır — yapay zeka ajanlarının insan onayı ve gerçek bir test geçmeden kod yayınlayamadığı açık kaynak platform AKIS’ten, kendi Node/MySQL API’siyle App Store’da yayında olan not ortalaması uygulaması UniSum’a kadar. TypeScript/Node ve Python backend’leri, LLM ve ajan orkestrasyonu (RAG, MCP, çok modelli) ile native mobil (SwiftUI, Flutter) arasında rahatça çalışır. Seçilmiş bir AI Fellow (31.700 içinden 1.500), IEEE SIU 2025 bildirili TÜBİTAK 2209-A araştırmacısı ve freelancer’dır; Haziran 2026’da FSM Bilgisayar Mühendisliği’nden mezun oldu.',
+    en: 'Ömer Yasir Önal is a Computer Engineer based in Istanbul who delivers software projects end to end: from native iOS/macOS and cross-platform mobile apps (Odak and UniSum on the App Store) and multi-agent AI platforms (AKIS) to corporate websites, brand digital infrastructure, and SEO / AIO optimization for businesses (Parla Deniz, Öz & Saye, A2 Reklam). He works across SwiftUI and Flutter for mobile, Astro and Next.js for high-performance web, Node.js and Python/FastAPI for backend APIs, and technical SEO / AI Search Optimization (Schema.org JSON-LD, llms.txt, Google Business Profile, GTM/GA4). A TÜBİTAK 2209-A researcher with an IEEE SIU 2025 paper and a Computer Engineering graduate from Fatih Sultan Mehmet Vakıf University (2026).',
+    tr: 'Ömer Yasir Önal, İstanbul merkezli bir bilgisayar mühendisidir; yazılım projelerini fikir aşamasından canlı yayına kadar uçtan uca hayata geçirir. App Store’da yayında olan Odak (iOS, iPadOS, macOS) ve UniSum gibi mobil ürünlerin yanı sıra çok ajanlı yapay zeka platformu AKIS’i geliştirmiş; Parla Deniz, Öz & Saye Psikoloji ve A2 Reklam gibi işletmeler için kurumsal web sitesi, dijital marka kurulumu, özel yönetim paneli ve SEO / AIO (Yapay Zeka Arama Optimizasyonu) altyapılarını kurmuştur. Mobil tarafta SwiftUI ve Flutter, web tarafında Astro ve Next.js, backend tarafında Node.js, Python/FastAPI ve PostgreSQL/MySQL, dijital büyüme tarafında ise teknik SEO, Schema.org JSON-LD, llms.txt, Cloudflare ve Google ekosistemleriyle çalışır. IEEE SIU 2025 bildirisi yazarı, TÜBİTAK 2209-A araştırmacısı ve Fatih Sultan Mehmet Vakıf Üniversitesi Bilgisayar Mühendisliği (2026) mezunudur.',
   },
 
-  /** Signal badges for the About section (spec §5). */
+  /** Signal badges for the About section. */
   badges: [
-    { en: 'AI Fellow — 1,500 of 31,700', tr: 'AI Fellow — 31.700 içinden 1.500' },
-    { en: 'IEEE SIU 2025 paper', tr: 'IEEE SIU 2025 bildirisi' },
-    { en: 'Live on the App Store', tr: 'App Store’da yayında' },
-    { en: 'Open-source author', tr: 'Açık kaynak geliştiricisi' },
+    { en: 'Apps Live on the App Store', tr: 'App Store’da Yayında Uygulamalar' },
+    { en: 'Corporate Web, Brand & SEO / AIO', tr: 'Kurumsal Web, Marka & SEO / AIO' },
+    { en: 'IEEE SIU 2025 Paper Author', tr: 'IEEE SIU 2025 Bildirisi Yazarı' },
+    { en: 'End-to-End Software Engineering', tr: 'Uçtan Uca Yazılım Mühendisliği' },
   ] satisfies Badge[],
 
-  /** Six skill groups, verbatim from spec §6. */
+  /** Six skill groups covering the full engineering spectrum. */
   skillGroups: [
     {
-      title_en: 'Backend & APIs',
-      title_tr: 'Backend & API’ler',
+      title_en: 'Mobile & Native',
+      title_tr: 'Mobil Uygulama Geliştirme',
       items: [
-        'Node.js',
-        'Express',
-        'TypeScript',
-        'FastAPI (Python)',
-        'PostgreSQL',
-        'MySQL/Sequelize',
-        'SQLite',
-        'REST',
-        'JWT & bcrypt',
-        'WebSocket',
-      ],
-    },
-    {
-      title_en: 'AI & LLM Engineering',
-      title_tr: 'Yapay Zeka & LLM Mühendisliği',
-      items: [
-        'multi-agent orchestration',
-        'RAG (pgvector, ChromaDB)',
-        'Model Context Protocol (MCP)',
-        'Anthropic/OpenAI/Gemini/OpenRouter APIs',
-        'PyTorch (GPT/transformer from scratch)',
-        'MLX LoRA fine-tuning',
-        'transfer learning (TensorFlow/Keras)',
+        'Swift 6 / SwiftUI (iOS, iPadOS, macOS)',
+        'Flutter / Dart',
+        'SwiftData & CloudKit (iCloud Sync)',
+        'ActivityKit (Live Activity & Dynamic Island)',
+        'WidgetKit & StoreKit 2',
+        'App Store & TestFlight Delivery',
       ],
     },
     {
       title_en: 'Frontend & Web',
-      title_tr: 'Frontend & Web',
+      title_tr: 'Web Teknolojileri & Kurumsal Site',
       items: [
-        'React 19',
-        'Next.js 16 (App Router)',
         'Astro 5',
+        'Next.js 16 (App Router)',
+        'React 19',
+        'TypeScript',
         'Tailwind CSS v4',
-        'Three.js / R3F',
-        'Vite',
+        'Custom Admin & CMS Panels',
       ],
     },
     {
-      title_en: 'Mobile & Native',
-      title_tr: 'Mobil & Native',
+      title_en: 'Brand, SEO & AIO',
+      title_tr: 'Marka Kurulumu, SEO & AIO',
       items: [
-        'Swift 6 / SwiftUI',
-        'Flutter / Dart',
-        'Capacitor',
-        'Firebase',
-        'App Store delivery',
+        'Technical SEO & Schema.org JSON-LD',
+        'AIO (llms.txt, AI Search Optimization)',
+        'Domain, DNS & Cloudflare Infrastructure',
+        'Corporate Email Routing (SPF/DKIM/DMARC)',
+        'Google Business Profile & Search Console',
+        'GTM / GA4 & Conversion Tracking',
+      ],
+    },
+    {
+      title_en: 'Backend & APIs',
+      title_tr: 'Backend, API & Veritabanı',
+      items: [
+        'Node.js & Express',
+        'Python & FastAPI',
+        'PostgreSQL (Prisma, pgvector)',
+        'MySQL & Oracle PL/SQL',
+        'REST APIs & WebSocket',
+        'JWT, OAuth 2.1 & RBAC',
+      ],
+    },
+    {
+      title_en: 'AI & LLM Engineering',
+      title_tr: 'Yapay Zeka & Ajan Sistemleri',
+      items: [
+        'Multi-Agent Orchestration',
+        'Model Context Protocol (MCP)',
+        'RAG (pgvector, ChromaDB)',
+        'OpenAI / Anthropic / Gemini APIs',
+        'PyTorch & Transfer Learning',
+        'Prompt & Context Engineering',
       ],
     },
     {
       title_en: 'DevOps & Infra',
-      title_tr: 'DevOps & Altyapı',
+      title_tr: 'DevOps, Güvenlik & Altyapı',
       items: [
-        'Docker',
+        'Docker & Linux',
         'GitHub Actions CI/CD',
-        'Vercel',
-        'OCI self-hosting',
-        'pnpm monorepo',
-        'SwiftPM',
-      ],
-    },
-    {
-      title_en: 'Security & Trust',
-      title_tr: 'Güvenlik & Güven',
-      items: [
-        'Ed25519 signing & build provenance',
-        'capability-token approval gates',
-        'OAuth 2.1 + Dynamic Client Registration',
-        'KVKK/consent compliance',
-        'honeypot & rate-limit hardening',
+        'Vercel & Cloudflare Pages',
+        'Ed25519 Build Provenance',
+        'Rate-Limit, Honeypot & KVKK Compliance',
+        'pnpm Monorepo & SwiftPM',
       ],
     },
   ] satisfies SkillGroup[],
 
   availability: {
-    en: 'Open to junior / entry-level full-time and freelance roles.',
-    tr: 'Junior / entry-level tam zamanlı ve freelance fırsatlara açığım.',
+    en: 'Available for software development projects, mobile/web builds, and technical consulting.',
+    tr: 'Mobil uygulama, kurumsal web, marka altyapısı ve özel yazılım projeleri için iletişime geçebilirsiniz.',
   },
 
   education: {
@@ -236,8 +228,9 @@ export const profile = {
       date: 'Nov 2025',
     },
     {
-      issuer: 'Coursera',
+      issuer: 'IBM',
       title: 'Exploratory Data Analysis for Machine Learning',
+      platform: 'Coursera',
       date: 'Aug 2023',
     },
   ] satisfies Certification[],
