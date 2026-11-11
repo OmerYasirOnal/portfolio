@@ -41,12 +41,14 @@ const data = {
       lessons: [{ slug: '01-a', title: 'L1' }],
     },
   ],
-  packages: [
+  services: [
     {
-      name: 'Corporate Web & Custom Software',
-      tagline: 'High-speed, multi-language corporate websites.',
-      timeline: '2 - 4 weeks',
-      features: ['Modern Astro or Next.js architecture'],
+      group: 'Ads & Digital Growth',
+      path: '/en/services/ads-growth/#google-ads',
+      name: 'Google Ads management',
+      summary: 'Search campaigns.',
+      items: ['Keyword research'],
+      note: 'Ad spend is separate.',
     },
   ],
 };
@@ -58,7 +60,7 @@ describe('llmsTxt', () => {
     expect(out).toMatch(/\n> /);
   });
   it('lists projects with absolute URLs and taglines', () => {
-    expect(out).toContain('- [AKIS](https://omeryasironal.com/projects/akis/): Multi-agent platform.');
+    expect(out).toContain('- [AKIS](https://omeryasironal.com/en/projects/akis/): Multi-agent platform.');
   });
   it('links writing to its external URL', () => {
     expect(out).toContain('[RxDart](https://medium.com/x)');
@@ -82,19 +84,22 @@ describe('llmsFullTxt', () => {
   });
 });
 
-describe('llmsTxt packages section', () => {
+describe('llmsTxt services section', () => {
   const out = llmsTxt(data);
-  it('links to the packages page and lists each service pillar with its timeline', () => {
-    expect(out).toContain('https://omeryasironal.com/packages/');
-    expect(out).toContain('- Corporate Web & Custom Software (2 - 4 weeks): High-speed, multi-language corporate websites.');
+  it('links to the services hub and lists each service with its group', () => {
+    expect(out).toContain('https://omeryasironal.com/en/services/');
+    expect(out).toContain(
+      '- [Google Ads management](https://omeryasironal.com/en/services/ads-growth/#google-ads) (Ads & Digital Growth): Search campaigns.',
+    );
+    expect(out).not.toMatch(/TRY|\/packages\//);
   });
 });
 
-describe('llmsFullTxt packages section', () => {
+describe('llmsFullTxt services section', () => {
   const out = llmsFullTxt(data);
-  it('inlines package features', () => {
-    expect(out).toContain('### Corporate Web & Custom Software | 2 - 4 weeks');
-    expect(out).toContain('Includes: Modern Astro or Next.js architecture');
+  it('inlines service scope and honest notes', () => {
+    expect(out).toContain('Includes: Keyword research');
+    expect(out).toContain('Note: Ad spend is separate.');
   });
 });
 

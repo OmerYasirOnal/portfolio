@@ -1,0 +1,30 @@
+---
+/**
+ * ConceptCard - a concept design with its sector, the invented brand and the
+ * structural focus. Always labelled "Concept" (not client work).
+ */
+import ConceptMock from './ConceptMock.astro';
+import type { Concept } from '../data/concepts';
+import { pick, type Locale } from '../data/i18n';
+
+interface Props {
+  concept: Concept;
+  locale: Locale;
+}
+
+const { concept, locale } = Astro.props;
+---
+
+<article class="flex h-full flex-col rounded-2xl border border-border bg-card p-4 sm:p-5">
+  <div class="rounded-xl bg-bg p-4 sm:p-5">
+    <ConceptMock concept={concept} locale={locale} />
+  </div>
+  <div class="flex flex-1 flex-col px-1 pt-4">
+    <p class="label flex items-center gap-2">
+      <span class="rounded border border-border px-1.5 py-0.5 normal-case tracking-normal">{locale === 'tr' ? 'Konsept' : 'Concept'}</span>
+      {pick(locale, concept.sector)}
+    </p>
+    <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{concept.brand}</h3>
+    <p class="mt-1.5 text-sm leading-relaxed text-muted">{pick(locale, concept.focus)}</p>
+  </div>
+</article>

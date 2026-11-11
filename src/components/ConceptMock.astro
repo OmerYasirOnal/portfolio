@@ -1,0 +1,133 @@
+---
+/**
+ * ConceptMock - a miniature website (browser frame) or Instagram profile
+ * (phone frame) drawn in pure HTML/CSS from `concepts.ts`. No images, so it
+ * stays sharp at any size and costs no network requests. Decorative: the
+ * surrounding card carries the accessible text.
+ */
+import type { Concept } from '../data/concepts';
+import { pick, type Locale } from '../data/i18n';
+
+interface Props {
+  concept: Concept;
+  locale: Locale;
+}
+
+const { concept: c, locale } = Astro.props;
+const p = c.palette;
+const style = `--c-bg:${p.bg};--c-fg:${p.fg};--c-accent:${p.accent};--c-soft:${p.soft};--c-muted:${p.muted};`;
+const headFont = c.serif ? 'font-serif' : 'font-sans';
+---
+
+<div aria-hidden="true" class="concept-mock select-none" style={style}>
+  {
+    c.kind === 'site' ? (
+      <div class="overflow-hidden rounded-xl border border-black/10 shadow-sm" style="background:var(--c-bg);color:var(--c-fg)">
+        <div class="flex items-center gap-1.5 border-b border-black/10 bg-black/[0.04] px-3 py-2">
+          <span class="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span class="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span class="h-2 w-2 rounded-full bg-[#28c840]" />
+          <span class="ml-2 h-3.5 flex-1 rounded-full" style="background:var(--c-soft)" />
+        </div>
+        <div class="px-4 pb-4 pt-3">
+          <div class="flex items-center justify-between text-[0.6rem]">
+            <span class:list={['text-[0.72rem] font-bold tracking-tight', headFont]}>{c.brand}</span>
+            <span class="flex gap-2.5" style="color:var(--c-muted)">
+              {c.nav.map((n) => <span>{pick(locale, n)}</span>)}
+            </span>
+          </div>
+          <div class="mt-4 grid grid-cols-[1.15fr_1fr] items-center gap-3">
+            <div>
+              <p class="text-[0.5rem] font-semibold uppercase tracking-wider" style="color:var(--c-accent)">{pick(locale, c.sub)}</p>
+              <p class:list={['mt-1.5 text-[1.02rem] font-semibold leading-[1.12]', headFont]}>{pick(locale, c.headline)}</p>
+              <span class="mt-3 inline-block rounded-full px-2.5 py-1 text-[0.55rem] font-semibold" style="background:var(--c-accent);color:var(--c-bg)">
+                {pick(locale, c.cta)}
+              </span>
+            </div>
+            <div class="art relative aspect-[4/3.4] overflow-hidden rounded-lg" data-art={c.id} style="background:var(--c-soft)">
+              <span class="a1" />
+              <span class="a2" />
+              <span class="a3" />
+            </div>
+          </div>
+          <div class="mt-4 grid grid-cols-3 gap-2">
+            {c.cards.map((card, i) => (
+              <div class="rounded-md p-1.5" style="background:var(--c-soft)">
+                <div class="h-8 rounded" style={`background:var(--c-accent);opacity:${0.18 + i * 0.14}`} />
+                <p class="mt-1.5 truncate text-[0.52rem] font-semibold">{pick(locale, card)}</p>
+                <span class="mt-1 block h-1 w-2/3 rounded-full" style="background:var(--c-muted);opacity:.4" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class="mx-auto w-[68%] overflow-hidden rounded-[1.4rem] border-[5px] border-[#1b1b1b] shadow-sm" style="background:var(--c-bg);color:var(--c-fg)">
+        <div class="mx-auto mt-1.5 h-1.5 w-12 rounded-full bg-[#1b1b1b]" />
+        <div class="px-3 pt-2.5">
+          <div class="flex items-center gap-2.5">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[0.55rem] font-bold" style="background:var(--c-accent);color:var(--c-bg)">ELA</span>
+            <div class="flex flex-1 justify-around text-center text-[0.5rem]" style="color:var(--c-muted)">
+              <span><b class="block text-[0.62rem]" style="color:var(--c-fg)">48</b>{locale === 'tr' ? 'gönderi' : 'posts'}</span>
+              <span><b class="block text-[0.62rem]" style="color:var(--c-fg)">30</b>Reels</span>
+              <span><b class="block text-[0.62rem]" style="color:var(--c-fg)">4</b>{locale === 'tr' ? 'seri' : 'series'}</span>
+            </div>
+          </div>
+          <p class="mt-1.5 text-[0.6rem] font-bold">{c.brand}</p>
+          <p class="text-[0.5rem]" style="color:var(--c-muted)">{pick(locale, c.headline)}</p>
+          <div class="mt-2 flex gap-1.5">
+            {['Reels', locale === 'tr' ? 'SSS' : 'FAQ', locale === 'tr' ? 'Önce/Sonra' : 'Before/After'].map((h) => (
+              <span class="rounded-full border px-1.5 py-0.5 text-[0.45rem]" style="border-color:var(--c-accent);color:var(--c-accent)">{h}</span>
+            ))}
+          </div>
+        </div>
+        <div class="mt-2.5 grid grid-cols-3 gap-[2px]">
+          {c.cards.map((card, i) => (
+            <div class="relative aspect-[4/5] p-1.5" style={`background:${i % 2 ? 'var(--c-soft)' : 'var(--c-accent)'};color:${i % 2 ? 'var(--c-fg)' : 'var(--c-bg)'}`}>
+              <span class="block text-[0.46rem] font-bold leading-tight">{pick(locale, card)}</span>
+              {i % 3 === 0 && <span class="absolute bottom-1 right-1 text-[0.45rem]">▶</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .art span {
+    position: absolute;
+    display: block;
+  }
+  .art .a1 { inset: auto -10% -30% -10%; height: 60%; border-radius: 50% 50% 0 0; background: var(--c-accent); opacity: 0.85; }
+  .art .a2 { width: 34%; aspect-ratio: 1; border-radius: 9999px; top: 14%; right: 14%; background: var(--c-fg); opacity: 0.85; }
+  .art .a3 { left: 12%; top: 22%; width: 30%; height: 8%; border-radius: 9999px; background: var(--c-bg); opacity: 0.7; }
+
+  /* Restaurant: plates on a table */
+  .art[data-art='restaurant'] .a1 { inset: auto 0 0 0; height: 42%; border-radius: 0; background: var(--c-accent); opacity: 0.55; }
+  .art[data-art='restaurant'] .a2 { width: 38%; top: 24%; left: 14%; right: auto; background: var(--c-fg); opacity: 0.92; box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-fg) 35%, transparent); }
+  .art[data-art='restaurant'] .a3 { width: 26%; height: auto; aspect-ratio: 1; top: 40%; left: 60%; border-radius: 9999px; background: var(--c-accent); opacity: 1; }
+
+  /* Dental: clean tiles and a smile arc */
+  .art[data-art='dental'] .a1 { inset: 18% 18% auto 18%; height: 48%; border-radius: 0 0 9999px 9999px; background: var(--c-accent); opacity: 0.9; }
+  .art[data-art='dental'] .a2 { width: 64%; height: 14%; aspect-ratio: auto; top: 18%; left: 18%; right: auto; border-radius: 6px; background: #fff; opacity: 1; }
+  .art[data-art='dental'] .a3 { left: 18%; top: 76%; width: 64%; height: 6%; background: var(--c-accent); opacity: 0.35; }
+
+  /* Boutique: vase silhouettes */
+  .art[data-art='boutique'] .a1 { left: 16%; right: auto; bottom: 0; top: 30%; width: 30%; height: auto; border-radius: 45% 45% 18% 18%; background: var(--c-accent); opacity: 0.9; }
+  .art[data-art='boutique'] .a2 { width: 26%; top: auto; bottom: 0; right: 16%; aspect-ratio: 0.8; border-radius: 40% 40% 12% 12%; background: var(--c-fg); opacity: 0.8; }
+  .art[data-art='boutique'] .a3 { left: 0; right: 0; top: auto; bottom: 0; width: 100%; height: 10%; border-radius: 0; background: var(--c-muted); opacity: 0.35; }
+
+  /* Law: columns */
+  .art[data-art='law'] .a1 { inset: auto 10% 10% 10%; height: 8%; border-radius: 2px; background: var(--c-accent); opacity: 0.9; }
+  .art[data-art='law'] .a2 { width: 80%; aspect-ratio: auto; height: 10%; top: 14%; left: 10%; right: auto; border-radius: 2px; clip-path: polygon(50% 0, 100% 100%, 0 100%); background: var(--c-accent); opacity: 0.9; }
+  .art[data-art='law'] .a3 {
+    left: 18%; top: 28%; width: 64%; height: 52%; border-radius: 0; opacity: 0.85;
+    background: repeating-linear-gradient(90deg, var(--c-fg) 0 10%, transparent 10% 22%);
+  }
+
+  /* Architecture: light through a window */
+  .art[data-art='architecture'] .a1 { inset: 0 auto 0 0; width: 45%; height: auto; border-radius: 0; background: var(--c-fg); opacity: 0.85; }
+  .art[data-art='architecture'] .a2 { width: 28%; top: 16%; right: 12%; background: var(--c-accent); opacity: 0.9; }
+  .art[data-art='architecture'] .a3 { left: 45%; top: 0; width: 55%; height: 100%; border-radius: 0; background: linear-gradient(115deg, transparent 40%, color-mix(in srgb, #fff 55%, transparent) 40% 60%, transparent 60%); opacity: 1; }
+</style>

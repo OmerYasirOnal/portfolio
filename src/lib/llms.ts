@@ -48,12 +48,14 @@ export interface LlmsCourse {
   lang: string;
   lessons: { slug: string; title: string }[];
 }
-export interface LlmsPackage {
+export interface LlmsService {
+  group: string;
+  /** Root-relative English page path, e.g. /en/services/ads-growth/#seo */
+  path: string;
   name: string;
-  tagline: string;
-  priceFrom?: number;
-  timeline: string;
-  features: string[];
+  summary: string;
+  items: string[];
+  note?: string;
 }
 export interface LlmsData {
   site: string;
@@ -62,7 +64,7 @@ export interface LlmsData {
   publications: LlmsPublication[];
   posts: LlmsPost[];
   courses: LlmsCourse[];
-  packages: LlmsPackage[];
+  services: LlmsService[];
 }
 
 const abs = (site: string, path: string) => new URL(path, site).toString();
@@ -76,19 +78,17 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push(profile.about.en);
   lines.push('');
-  lines.push('## Services & Packages');
-  lines.push(`Software engineering, mobile apps, corporate web, brand setup & SEO/AIO: ${abs(site, '/packages/')}`);
-  for (const pkg of data.packages) {
-    const meta =
-      typeof pkg.priceFrom === 'number'
-        ? `from ${pkg.priceFrom.toLocaleString('en-US')} TRY, ${pkg.timeline}`
-        : pkg.timeline;
-    lines.push(`- ${pkg.name} (${meta}): ${pkg.tagline}`);
+  lines.push('## Services');
+  lines.push(
+    `Websites & software, ads & digital growth, Reels, video & content. Quoted per project; ad spend is separate from fees: ${abs(site, '/en/services/')}`,
+  );
+  for (const sv of data.services) {
+    lines.push(`- [${sv.name}](${abs(site, sv.path)}) (${sv.group}): ${sv.summary}`);
   }
   lines.push('');
   lines.push('## Projects');
   for (const p of data.projects) {
-    lines.push(`- [${p.title}](${abs(site, `/projects/${p.slug}/`)}): ${p.tagline}`);
+    lines.push(`- [${p.title}](${abs(site, `/en/projects/${p.slug}/`)}): ${p.tagline}`);
   }
   lines.push('');
   lines.push('## Writing');
@@ -158,20 +158,17 @@ export function llmsFullTxt(data: LlmsData): string {
     `${profile.education.degree_en}, ${profile.education.school_en} (${profile.education.graduation_en})`,
   );
   s.push('');
-  s.push(`## Services & Packages | ${abs(site, '/packages/')}`);
-  for (const pkg of data.packages) {
-    const meta =
-      typeof pkg.priceFrom === 'number'
-        ? `from ${pkg.priceFrom.toLocaleString('en-US')} TRY (${pkg.timeline})`
-        : pkg.timeline;
-    s.push(`### ${pkg.name} | ${meta}`);
-    s.push(pkg.tagline);
-    if (pkg.features.length) s.push(`Includes: ${pkg.features.join('; ')}`);
+  s.push(`## Services | ${abs(site, '/en/services/')}`);
+  for (const sv of data.services) {
+    s.push(`### ${sv.name} | ${sv.group} | ${abs(site, sv.path)}`);
+    s.push(sv.summary);
+    if (sv.items.length) s.push(`Includes: ${sv.items.join('; ')}`);
+    if (sv.note) s.push(`Note: ${sv.note}`);
     s.push('');
   }
   s.push('## Projects');
   for (const p of data.projects) {
-    s.push(`### ${p.title} | ${abs(site, `/projects/${p.slug}/`)}`);
+    s.push(`### ${p.title} | ${abs(site, `/en/projects/${p.slug}/`)}`);
     s.push(`${p.tagline}`);
     s.push(`Status: ${p.status}. Stack: ${p.stack.join(', ')}.`);
     if (p.problem) s.push(`Problem: ${p.problem}`);

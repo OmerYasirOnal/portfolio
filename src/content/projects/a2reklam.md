@@ -28,5 +28,5 @@ problem_tr: Kurumsal tabela ve reklam firmasının; çok dilli ve hızlı bir we
 what_i_did_en: Built and launched a2reklam.com with Astro and Cloudflare, set up SEO and GTM/GA4 tracking, and continue to manage Google Ads campaigns and technical maintenance.
 what_i_did_tr: Astro ve Cloudflare ile çok dilli kurumsal web sitesini geliştirdim, SEO ve GTM/GA4 ölçüm altyapısını kurdum ve Google Ads kampanya yönetimini üstlendim.
 featured: true
-order: 4
+order: 1
 ---

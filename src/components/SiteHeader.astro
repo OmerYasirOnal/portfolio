@@ -1,65 +1,69 @@
 ---
 /**
- * SiteHeader - sticky executive navigation bar shared across the home page and sub-pages.
+ * SiteHeader - sticky top bar. Name + title on the left, five primary links,
+ * language/theme switches and an always-visible WhatsApp CTA on desktop.
+ * On mobile the CTA lives in the sticky bottom bar instead.
  */
 import { profile } from '../data/profile';
 import { t, localizePath, type Locale } from '../data/i18n';
 import LangToggle from './LangToggle.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import Icon from './Icon.astro';
+import type { ContactTopic } from '../lib/contact';
 
 interface Props {
   locale: Locale;
   /** Current page path in the current locale (for the LangToggle twin route). */
   path: string;
+  contactTopic?: ContactTopic;
 }
 
-const { locale, path } = Astro.props;
+const { locale, path, contactTopic = 'general' } = Astro.props;
 
 const home = localizePath(locale, '/');
-
 const navLinks = [
-  { key: 'nav.services', href: `${home}#services` },
-  { key: 'nav.work', href: `${home}#work` },
-  { key: 'nav.about', href: `${home}#about` },
+  { key: 'nav.services', href: localizePath(locale, '/services') },
+  { key: 'nav.work', href: localizePath(locale, '/projects') },
+  { key: 'nav.about', href: localizePath(locale, '/about') },
   { key: 'nav.writing', href: localizePath(locale, '/writing') },
-  { key: 'nav.cv', href: localizePath(locale, '/cv') },
+  { key: 'nav.contact', href: localizePath(locale, '/contact') },
 ];
+
+const norm = (p: string) => (p.endsWith('/') ? p : `${p}/`);
+const current = norm(path);
+const isActive = (href: string) => current.startsWith(norm(href));
 ---
 
-<header id="top" class="sticky top-3 z-40 px-4 sm:top-4 sm:px-6">
-  <nav
-    class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-accent/25 bg-card/85 px-4 py-2.5 shadow-lg shadow-accent/5 backdrop-blur-xl sm:px-6 sm:py-3"
-    aria-label="Primary"
-  >
-    <a
-      href={home}
-      class="group flex items-center gap-3 text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-    >
+<header id="top" class="sticky top-0 z-40 border-b border-border/80 bg-bg/90 backdrop-blur-md">
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6" aria-label="Primary">
+    <a href={home} class="group flex min-w-0 items-center gap-3">
       <span
-        class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-xs font-bold tracking-tight text-white shadow-sm shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-105"
-        aria-hidden="true"
+        class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-ink font-mono text-[0.7rem] font-semibold text-on-ink"
+        aria-hidden="true">ÖY</span
       >
-        ÖY
-      </span>
-      <span class="flex flex-col">
-        <span class="text-sm font-bold tracking-tight text-fg sm:text-base">
+      <span class="flex min-w-0 flex-col leading-tight">
+        <span class="truncate text-[0.95rem] font-semibold tracking-tight text-fg group-hover:text-accent">
           {profile.name}
         </span>
-        <span class="hidden text-[0.7rem] font-medium text-accent lg:inline">
+        <span class="truncate font-mono text-[0.6rem] uppercase text-muted sm:text-[0.68rem] sm:tracking-wider">
           {locale === 'tr' ? 'Bilgisayar Mühendisi' : 'Computer Engineer'}
         </span>
       </span>
     </a>
 
-    <div class="flex items-center gap-1.5 sm:gap-2">
-      {/* Desktop navigation */}
-      <ul class="mr-1 hidden items-center gap-0.5 md:flex" role="list">
+    <div class="flex items-center gap-1.5">
+      <ul class="mr-2 hidden items-center lg:flex" role="list">
         {
           navLinks.map((item) => (
             <li>
               <a
                 href={item.href}
-                class="rounded-full px-3.5 py-1.5 text-sm font-medium text-muted transition-all hover:bg-accent/10 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-accent',
+                  isActive(item.href) ? 'text-fg underline decoration-accent decoration-2 underline-offset-[6px]' : 'text-muted',
+                ]}
               >
                 {t(locale, item.key)}
               </a>
@@ -71,129 +75,69 @@ const navLinks = [
       <LangToggle locale={locale} path={path} />
       <ThemeToggle locale={locale} />
 
-      <a
-        href={`${home}#contact`}
-        class="hidden sm:inline-flex ml-1 items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-emerald-600/25 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-emerald-500/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:px-4.5 sm:text-sm"
-      >
-        <span class="h-1.5 w-1.5 rounded-full bg-emerald-200" aria-hidden="true"></span>
-        {t(locale, 'nav.cta')}
-      </a>
+      <span class="ml-1 hidden md:block">
+        <WhatsAppButton locale={locale} topic={contactTopic} location="header" label={t(locale, 'cta.whatsappShort')} class="!px-4 !py-2" />
+      </span>
 
-      {/* Mobile hamburger menu toggle button */}
       <button
         type="button"
-        data-mobile-menu-btn
+        data-menu-btn
         aria-expanded="false"
         aria-controls="mobile-nav"
-        aria-label={locale === 'tr' ? 'Menüyü Aç' : 'Open Menu'}
-        class="grid h-9 w-9 place-items-center rounded-full border border-accent/25 bg-card/60 text-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:hidden"
+        aria-label={t(locale, 'nav.openMenu')}
+        data-label-open={t(locale, 'nav.openMenu')}
+        data-label-close={t(locale, 'nav.closeMenu')}
+        class="grid h-10 w-10 place-items-center rounded-lg border border-border text-fg lg:hidden"
       >
-        <svg
-          data-menu-icon-open
-          class="h-5 w-5"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <line x1="4" x2="20" y1="12" y2="12"></line>
-          <line x1="4" x2="20" y1="6" y2="6"></line>
-          <line x1="4" x2="20" y1="18" y2="18"></line>
-        </svg>
-        <svg
-          data-menu-icon-close
-          class="hidden h-5 w-5"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <line x1="18" x2="6" y1="6" y2="18"></line>
-          <line x1="6" x2="18" y1="6" y2="18"></line>
-        </svg>
+        <span data-icon-open><Icon name="menu" size={20} /></span>
+        <span data-icon-close class="hidden"><Icon name="close" size={20} /></span>
       </button>
     </div>
-
-    {/* Mobile Navigation Dropdown */}
-    <div
-      id="mobile-nav"
-      data-mobile-menu
-      class="hidden absolute left-0 right-0 top-full mt-2 overflow-hidden rounded-3xl border border-accent/25 bg-card/95 p-4 shadow-xl shadow-accent/10 backdrop-blur-2xl md:hidden"
-    >
-      <ul class="flex flex-col gap-1" role="list">
-        {
-          navLinks.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                data-mobile-nav-link
-                class="flex items-center justify-between rounded-2xl px-4 py-2.5 text-sm font-semibold text-fg transition-colors hover:bg-accent/10 hover:text-accent"
-              >
-                <span>{t(locale, item.key)}</span>
-                <span class="text-xs text-accent">→</span>
-              </a>
-            </li>
-          ))
-        }
-        <li class="mt-2 border-t border-accent/15 pt-2">
-          <a
-            href={`${home}#contact`}
-            data-mobile-nav-link
-            class="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-200" aria-hidden="true"></span>
-            {t(locale, 'nav.cta')}
-          </a>
-        </li>
-      </ul>
-    </div>
   </nav>
+
+  <div id="mobile-nav" data-menu hidden class="border-t border-border bg-bg lg:hidden">
+    <ul class="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6" role="list">
+      {
+        navLinks.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="flex items-center justify-between border-b border-border/70 py-3.5 text-base font-medium text-fg"
+            >
+              {t(locale, item.key)}
+              <Icon name="arrow" size={16} class="text-muted" />
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={localizePath(locale, '/cv')} class="flex items-center justify-between py-3.5 text-base font-medium text-fg">
+          {t(locale, 'nav.cv')}
+          <Icon name="arrow" size={16} class="text-muted" />
+        </a>
+      </li>
+    </ul>
+  </div>
 </header>
 
 <script>
-  const header = document.getElementById('top');
-  if (header) {
-    const btn = header.querySelector<HTMLButtonElement>('[data-mobile-menu-btn]');
-    const menu = header.querySelector<HTMLElement>('[data-mobile-menu]');
-    const openIcon = header.querySelector<SVGElement>('[data-menu-icon-open]');
-    const closeIcon = header.querySelector<SVGElement>('[data-menu-icon-close]');
-    const links = header.querySelectorAll<HTMLAnchorElement>('[data-mobile-nav-link]');
-
-    if (btn && menu && openIcon && closeIcon) {
-      const toggleMenu = (open?: boolean) => {
-        const isOpen = open ?? menu.classList.contains('hidden');
-        menu.classList.toggle('hidden', !isOpen);
-        btn.setAttribute('aria-expanded', String(isOpen));
-        openIcon.classList.toggle('hidden', isOpen);
-        closeIcon.classList.toggle('hidden', !isOpen);
-      };
-
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
-      });
-
-      links.forEach((l) => {
-        l.addEventListener('click', () => toggleMenu(false));
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!header.contains(e.target as Node)) {
-          toggleMenu(false);
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          toggleMenu(false);
-        }
-      });
-    }
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-btn]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (btn && menu) {
+    const set = (open: boolean) => {
+      menu.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', (open ? btn.dataset.labelClose : btn.dataset.labelOpen) ?? '');
+      btn.querySelector('[data-icon-open]')?.classList.toggle('hidden', open);
+      btn.querySelector('[data-icon-close]')?.classList.toggle('hidden', !open);
+    };
+    btn.addEventListener('click', () => set(Boolean(menu.hidden)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        set(false);
+        btn.focus();
+      }
+    });
   }
 </script>

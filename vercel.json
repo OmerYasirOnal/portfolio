@@ -1,23 +1,95 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/packages",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/packages/",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/packages",
+      "destination": "/en/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/packages/",
+      "destination": "/en/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tr/packages/:rest*",
+      "destination": "/services/",
+      "statusCode": 301
+    },
+    {
+      "source": "/writing/writing-comes-home/:rest*",
+      "destination": "/writing/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tr/writing/writing-comes-home/:rest*",
+      "destination": "/writing/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tr",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tr/:path*",
+      "destination": "/:path*",
+      "statusCode": 301
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Content-Security-Policy", "value": "frame-ancestors 'none'" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'none'"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
     {
       "source": "/og/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
     },
     {
       "source": "/cv/(.*\\.pdf)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
     }
   ]
 }

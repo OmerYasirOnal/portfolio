@@ -18,5 +18,5 @@ highlights_tr:
   - Swing arayüzlü Java istemci-sunucu çok oyunculu satranç.
   - Kalp atışı (heartbeat) içeren soket protokolü, DMG olarak paketlenmiş.
 featured: false
-order: 11
+order: 16
 ---

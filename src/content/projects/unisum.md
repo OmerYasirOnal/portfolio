@@ -30,5 +30,5 @@ problem_tr: Üniversite öğrencilerinin akademik performanslarını, ders notla
 what_i_did_en: Built and published UniSum on the App Store together with its Node.js/Express/MySQL REST API, JWT/bcrypt authentication, and rate-limited backend architecture.
 what_i_did_tr: SwiftUI mobil uygulamasını ve Node.js/Express/MySQL REST API sunucusunu JWT/bcrypt kimlik doğrulama ve istek sınırlama katmanlarıyla geliştirip App Store’da yayımladım.
 featured: true
-order: 2
+order: 7
 ---

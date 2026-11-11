@@ -25,5 +25,5 @@ problem_tr: Geliştiriciler, bir takip aracına ücret ödemeden veya etkinlikle
 what_i_did_en: Built a native SwiftUI menu-bar app that reads usage from multiple sources behind protocols, keeps everything on-device with no telemetry, and shows it in a charts-and-heatmap dashboard.
 what_i_did_tr: Kullanımı protokoller ardındaki birden fazla kaynaktan okuyan, her şeyi telemetri olmadan cihaz üzerinde tutan ve bunu grafik ile ısı haritası panelinde gösteren native bir SwiftUI menü çubuğu uygulaması geliştirdim.
 featured: false
-order: 8
+order: 10
 ---

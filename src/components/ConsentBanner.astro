@@ -1,0 +1,92 @@
+---
+/**
+ * ConsentBanner - KVKK-friendly gate for Google Tag Manager.
+ *
+ * Rendered only when PUBLIC_GTM_ID is set. GTM is injected *after* the
+ * visitor accepts; a rejection is remembered and nothing is loaded. Consent
+ * Mode v2 signals are sent so Google tags inside the container respect it.
+ */
+import { t, localizePath, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+  gtmId: string;
+}
+
+const { locale, gtmId } = Astro.props;
+---
+
+<div
+  data-consent
+  data-gtm-id={gtmId}
+  hidden
+  role="dialog"
+  aria-live="polite"
+  aria-label={t(locale, 'consent.title')}
+  class="fixed inset-x-3 bottom-24 z-50 mx-auto max-w-lg rounded-2xl border border-border bg-card p-5 shadow-xl md:bottom-5"
+>
+  <p class="text-sm leading-relaxed text-fg">
+    {t(locale, 'consent.text')}
+    <a href={localizePath(locale, '/privacy')} class="font-semibold text-accent underline underline-offset-2">
+      {t(locale, 'consent.more')}
+    </a>
+  </p>
+  <div class="mt-4 flex gap-2">
+    <button type="button" data-consent-accept class="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-on-accent">
+      {t(locale, 'consent.accept')}
+    </button>
+    <button type="button" data-consent-reject class="rounded-full border border-fg/20 px-4 py-2 text-sm font-semibold text-fg">
+      {t(locale, 'consent.reject')}
+    </button>
+  </div>
+</div>
+
+<script>
+  const KEY = 'consent.v1';
+  const box = document.querySelector<HTMLElement>('[data-consent]');
+
+  function gtag(..._args: unknown[]) {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments as unknown as Record<string, unknown>);
+  }
+
+  function loadGtm(id: string) {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'denied',
+    });
+    window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(id)}`;
+    document.head.appendChild(s);
+  }
+
+  if (box) {
+    const id = box.dataset.gtmId!;
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+    let choice: string | null = null;
+    try {
+      choice = localStorage.getItem(KEY);
+    } catch {}
+    if (choice === 'granted') loadGtm(id);
+    else if (choice !== 'denied') box.hidden = false;
+
+    const save = (v: 'granted' | 'denied') => {
+      try {
+        localStorage.setItem(KEY, v);
+      } catch {}
+      box.hidden = true;
+      if (v === 'granted') loadGtm(id);
+    };
+    box.querySelector('[data-consent-accept]')?.addEventListener('click', () => save('granted'));
+    box.querySelector('[data-consent-reject]')?.addEventListener('click', () => save('denied'));
+  }
+</script>

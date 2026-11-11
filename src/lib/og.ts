@@ -94,3 +94,12 @@ export function ogPackagesKey(locale: Locale): string {
 export function ogPackagesPath(locale: Locale): string {
   return `/og/${ogPackagesKey(locale)}.png`;
 }
+
+/** Route key + path for a static page card (services, about, contact, ...). */
+export function ogPageKey(name: string, locale: Locale): string {
+  return `page-${name}${suffix(locale)}`;
+}
+
+export function ogPagePath(name: string, locale: Locale): string {
+  return `/og/${ogPageKey(name, locale)}.png`;
+}

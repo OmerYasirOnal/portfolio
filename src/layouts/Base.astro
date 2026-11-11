@@ -3,6 +3,9 @@ import '../styles/global.css';
 import { t } from '../data/i18n';
 import { canonicalHref, hreflangLinks } from '../lib/seo';
 import { RSS_TITLE } from '../lib/feed';
+import MobileContactBar from '../components/MobileContactBar.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import type { ContactTopic } from '../lib/contact';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
@@ -15,6 +18,12 @@ interface Props {
   robots?: string;
   /** External canonical URL override (republished content). Default: self. */
   canonicalUrl?: string;
+  /** WhatsApp prefill topic for the mobile contact bar. */
+  contactTopic?: ContactTopic;
+  /** Hide the sticky mobile contact bar (e.g. on the contact page itself). */
+  hideContactBar?: boolean;
+  /** Optional analytics event fired once on page view (e.g. service_view). */
+  pageEvent?: { name: string; params?: Record<string, string> };
 }
 
 const {
@@ -26,11 +35,21 @@ const {
   ogType = 'website',
   robots = 'index, follow',
   canonicalUrl,
+  contactTopic = 'general',
+  hideContactBar = false,
+  pageEvent,
 } = Astro.props;
 const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
 const alternates = canonicalUrl ? [] : hreflangLinks(lang, path, Astro.site!);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
 const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
+
+/**
+ * Google Tag Manager is opt-in twice: it only exists when PUBLIC_GTM_ID is set
+ * at build time, and it only loads after the visitor accepts the consent
+ * banner (KVKK). Without the env var no banner and no third-party script ship.
+ */
+const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
 ---
 
 <!doctype html>
@@ -42,8 +61,8 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     <meta name="description" content={description} />
     <meta name="author" content="Ömer Yasir Önal" />
     <meta name="robots" content={robots} />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f7f4" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#040d09" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f6f2" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c1210" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -76,58 +95,41 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <script is:inline>
-      // No-flash theme: luminous sage-emerald light is default; honor stored dark choice.
+      // No-flash theme: light is default; honor a stored dark choice.
       try {
-        const stored = localStorage.getItem('theme');
         const root = document.documentElement;
-        if (stored === 'dark') {
+        if (localStorage.getItem('theme') === 'dark') {
           root.classList.add('dark');
           root.style.colorScheme = 'dark';
-        } else {
-          root.classList.remove('dark');
-          root.style.colorScheme = 'light';
         }
-      } catch (_) {
-        document.documentElement.classList.remove('dark');
-      }
+      } catch (_) {}
+      // Analytics queue. Events are pushed even when no tag manager is loaded;
+      // they simply stay local until (and unless) GTM is consented and loaded.
+      window.dataLayer = window.dataLayer || [];
     </script>
 
     <slot name="head" />
   </head>
-  <body class="relative min-h-screen overflow-x-hidden font-sans bg-bg text-fg antialiased selection:bg-accent/20 selection:text-accent">
-    {/* Global Futuristic Emerald & Sage Aurora Backdrop */}
-    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div class="bg-futuristic-mesh absolute inset-0 opacity-75 dark:opacity-50"></div>
-      <div
-        class="animate-aurora-1 absolute -left-32 -top-36 h-[34rem] w-[38rem] rounded-full bg-emerald-500/12 blur-[130px] dark:bg-emerald-500/16"
-      ></div>
-      <div
-        class="animate-aurora-2 absolute -right-32 top-[22%] h-[30rem] w-[36rem] rounded-full bg-teal-500/10 blur-[140px] dark:bg-teal-400/12"
-      ></div>
-      <div
-        class="animate-aurora-1 absolute bottom-[-10rem] left-1/3 h-[28rem] w-[42rem] rounded-full bg-emerald-600/8 blur-[150px] dark:bg-emerald-500/10"
-      ></div>
-    </div>
-
+  <body
+    class="min-h-screen overflow-x-hidden bg-bg font-sans text-fg antialiased selection:bg-accent/20"
+    data-page-event={pageEvent ? JSON.stringify(pageEvent) : undefined}
+  >
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg focus:outline focus:outline-2 focus:outline-accent"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-fg"
     >
       {t(lang, 'a11y.skip')}
     </a>
     <slot />
 
-    <script>
-      // Cursor-tracking spotlight for [data-spotlight] surfaces
-      document.querySelectorAll<HTMLElement>('[data-spotlight]').forEach((card) => {
-        card.addEventListener('pointermove', (e) => {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-        });
-      });
+    {!hideContactBar && <MobileContactBar locale={lang} topic={contactTopic} />}
+    {gtmId && <ConsentBanner locale={lang} gtmId={gtmId} />}
 
-      // Scroll-triggered reveal animation for [data-reveal] elements
+    <script>
+      import { initTracking } from '../lib/track';
+      initTracking();
+
+      // Scroll reveal for [data-reveal] elements.
       const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
       if (revealEls.length > 0 && 'IntersectionObserver' in window) {
         document.documentElement.classList.add('reveal-ready');
@@ -140,7 +142,7 @@ const ogIsGeneratedCard = ogImage?.startsWith('/og/') ?? false;
               }
             });
           },
-          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' },
+          { threshold: 0.06, rootMargin: '0px 0px -30px 0px' },
         );
         revealEls.forEach((el) => io.observe(el));
       }

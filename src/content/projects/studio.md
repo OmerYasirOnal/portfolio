@@ -25,5 +25,5 @@ problem_tr: Bir oyun geliştirmek aynı anda birçok disipline dokunur (tasarım
 what_i_did_en: Built a framework that splits game development across 16 specialist agents coordinating via the filesystem, with a Three.js/R3F runtime, a FastAPI observer dashboard and a CC0 asset pipeline.
 what_i_did_tr: Oyun geliştirmeyi, dosya sistemi üzerinden koordine olan 16 uzman ajana bölen; Three.js/R3F çalışma zamanı, FastAPI gözlemci paneli ve CC0 varlık hattı içeren bir çatı geliştirdim.
 featured: false
-order: 9
+order: 11
 ---

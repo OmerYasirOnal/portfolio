@@ -1,0 +1,12 @@
+---
+import ServiceGroupView from '../../views/ServiceGroupView.astro';
+import { serviceGroups, type ServiceGroup } from '../../data/services';
+
+export function getStaticPaths() {
+  return serviceGroups.map((group) => ({ params: { group: group.id }, props: { group } }));
+}
+
+const { group } = Astro.props as { group: ServiceGroup };
+---
+
+<ServiceGroupView locale="tr" group={group} />

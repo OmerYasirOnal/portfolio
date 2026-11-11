@@ -1,0 +1,94 @@
+---
+/**
+ * PrivacyView - /privacy: plain-language privacy and KVKK notice describing
+ * exactly what this site does with personal data.
+ *
+ * TODO(Ömer): have the text reviewed before relying on it legally. It
+ * describes the current implementation only (form -> Resend -> inbox, no
+ * storage; analytics only after consent and only if GTM is configured).
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, '/privacy');
+const updated = '11.11.2026';
+
+const sections: { h: string; p: string }[] = [
+  {
+    h: L('Veri sorumlusu', 'Data controller'),
+    p: L(
+      `Bu site ${profile.name} tarafından işletilir. İletişim: ${profile.email}.`,
+      `This site is run by ${profile.name}. Contact: ${profile.email}.`,
+    ),
+  },
+  {
+    h: L('Hangi verileri topluyorum?', 'What data do I collect?'),
+    p: L(
+      'Teklif formunu doldurursanız adınızı veya şirket adınızı, e-posta adresinizi ya da telefon numaranızı, seçtiğiniz hizmeti ve mesajınızı. WhatsApp veya e-posta ile yazarsanız, gönderdiğiniz mesaj ilgili uygulamada kalır.',
+      'If you use the quote form: your name or company, email or phone number, the service you picked and your message. If you write via WhatsApp or email, your message stays in that app.',
+    ),
+  },
+  {
+    h: L('Ne amaçla kullanıyorum?', 'Why do I use it?'),
+    p: L(
+      'Yalnızca talebinize cevap vermek ve teklif hazırlamak için. Verilerinizi satmam, reklam amacıyla paylaşmam.',
+      'Only to reply to your request and prepare a quote. I don’t sell your data or share it for advertising.',
+    ),
+  },
+  {
+    h: L('Veriler nereye gidiyor?', 'Where does the data go?'),
+    p: L(
+      'Form içeriği, e-posta gönderim hizmeti Resend aracılığıyla doğrudan e-posta kutuma iletilir; sitede veya bir veri tabanında saklanmaz. Site Vercel üzerinde barındırılır. Bu hizmet sağlayıcılar yurt dışında sunucular kullanabilir.',
+      'Form content is delivered straight to my inbox through the email service Resend; it is not stored on the site or in a database. The site is hosted on Vercel. These providers may use servers outside Türkiye.',
+    ),
+  },
+  {
+    h: L('Çerezler ve analiz', 'Cookies and analytics'),
+    p: L(
+      'Site, tema ve çerez tercihinizi tarayıcınızda saklar. Analiz çerezleri (Google Tag Manager / Google Analytics) yalnızca çerez bildiriminde izin verirseniz yüklenir; reddederseniz hiçbir analiz aracı çalışmaz.',
+      'The site stores your theme and cookie choice in your browser. Analytics cookies (Google Tag Manager / Google Analytics) load only if you accept them in the cookie notice; if you decline, no analytics run.',
+    ),
+  },
+  {
+    h: L('Haklarınız', 'Your rights'),
+    p: L(
+      `KVKK’nın 11. maddesi kapsamında verilerinize erişme, düzeltilmesini veya silinmesini isteme hakkınız var. Talepleriniz için ${profile.email} adresine yazabilirsiniz.`,
+      `You can ask to access, correct or delete your data at any time by writing to ${profile.email}.`,
+    ),
+  },
+];
+---
+
+<Base
+  title={L('Gizlilik ve KVKK Aydınlatma Metni | Ömer Yasir Önal', 'Privacy Notice | Ömer Yasir Önal')}
+  description={L('omeryasironal.com’da kişisel verilerin nasıl işlendiğine dair sade aydınlatma metni.', 'How omeryasironal.com handles personal data, in plain language.')}
+  path={path}
+  lang={locale}
+>
+  <SiteHeader locale={locale} path={path} />
+  <main id="main" class="mx-auto max-w-3xl px-4 pt-14 sm:px-6">
+    <p class="label">{t(locale, 'nav.privacy')}</p>
+    <h1 class="mt-3 text-4xl font-semibold tracking-tight text-fg">{L('Gizlilik ve KVKK aydınlatma metni', 'Privacy notice')}</h1>
+    <p class="mt-3 font-mono text-xs text-muted">{L('Son güncelleme', 'Last updated')}: {updated}</p>
+    <div class="mt-10 space-y-8">
+      {
+        sections.map((s) => (
+          <section>
+            <h2 class="text-xl font-semibold tracking-tight text-fg">{s.h}</h2>
+            <p class="mt-2 leading-relaxed text-muted">{s.p}</p>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+  <SiteFooter locale={locale} />
+</Base>

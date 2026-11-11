@@ -17,5 +17,5 @@ highlights_tr:
   - Food-101 veri kümesi üzerinde MobileNetV2 transfer öğrenmesi (~%73–80 doğrulama doğruluğu).
   - TensorFlow / Keras ile geliştirildi.
 featured: false
-order: 9
+order: 13
 ---

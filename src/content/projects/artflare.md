@@ -16,5 +16,5 @@ highlights_en:
 highlights_tr:
   - Metin komutlarını OpenAI DALL·E 2 ile görsele dönüştüren Flutter uygulaması.
 featured: false
-order: 12
+order: 17
 ---

@@ -28,5 +28,5 @@ problem_tr: Modern dil modellerini derinlemesine anlamak, yalnızca bir API ça�
 what_i_did_en: Implemented a causal GPT transformer and its BPE tokenizer from scratch in PyTorch, added MLX LoRA fine-tuning, and wrapped it in a FastAPI/Three.js workspace with RAG and multi-agent chat.
 what_i_did_tr: PyTorch ile sıfırdan nedensel bir GPT transformer ve BPE tokenizer’ını yazdım, MLX LoRA ince ayarı ekledim ve bunu RAG ile çok ajanlı sohbet içeren bir FastAPI/Three.js çalışma alanına sardım.
 featured: false
-order: 7
+order: 9
 ---

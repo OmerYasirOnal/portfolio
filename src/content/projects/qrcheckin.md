@@ -16,5 +16,5 @@ highlights_en:
 highlights_tr:
   - Exedra stajı sırasında geliştirilen Express / SQLite / saf-JS yoklama takip uygulaması.
 featured: false
-order: 10
+order: 15
 ---

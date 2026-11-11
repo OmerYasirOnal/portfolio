@@ -1,0 +1,213 @@
+---
+/**
+ * ContactForm - four-field quote request (name/company, email or phone,
+ * service, short description) posted to /api/contact.
+ *
+ * Spam protection: hidden honeypot + minimum fill time, both re-checked on the
+ * server. On any delivery failure the visitor gets a prefilled mailto so the
+ * message is never lost. Emits quote_start (first focus) and generate_lead
+ * (successful send) into the analytics queue.
+ */
+import { t, localizePath, pick, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  locale: Locale;
+  /** Preselected service value. */
+  service?: string;
+  location: string;
+}
+
+const { locale, service = '', location } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+
+const services = [
+  { value: 'web', label: L('Web sitesi', 'Website') },
+  { value: 'software', label: L('Özel yazılım / mobil uygulama', 'Custom software / mobile app') },
+  { value: 'google-ads', label: L('Google Ads', 'Google Ads') },
+  { value: 'meta-ads', label: L('Instagram / Facebook reklamları', 'Instagram / Facebook ads') },
+  { value: 'seo', label: L('SEO ve yapay zekâ araması', 'SEO and AI search') },
+  { value: 'content', label: L('Reels, video ve Instagram içerik', 'Reels, video and Instagram content') },
+  { value: 'automation', label: L('Yapay zekâ ve otomasyon', 'AI and automation') },
+  { value: 'other', label: L('Diğer / emin değilim', 'Other / not sure') },
+];
+
+const field =
+  'mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-3 text-[0.95rem] text-fg placeholder:text-muted/70 focus:border-accent focus:outline-none';
+---
+
+<form
+  data-contact-form
+  data-location={location}
+  data-target-email={profile.email}
+  data-msg-sending={L('Gönderiliyor…', 'Sending…')}
+  data-msg-success={L('Teşekkürler, mesajınız ulaştı. En kısa sürede dönüş yapacağım.', 'Thanks, your message arrived. I will get back to you soon.')}
+  data-msg-fallback={L('Form şu an gönderilemedi; mesajınız e-posta uygulamanızda hazır, göndermeniz yeterli.', 'The form could not be sent; your message is ready in your email app, just press send.')}
+  data-msg-invalid={L('Lütfen işaretli alanları kontrol edin.', 'Please check the highlighted fields.')}
+  class="space-y-4"
+  novalidate
+>
+  <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+  <input type="hidden" name="started" value="" />
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <label for={`${location}-name`} class="text-sm font-medium text-fg">{L('Ad veya şirket adı', 'Name or company')}</label>
+      <input id={`${location}-name`} name="name" type="text" required minlength="2" maxlength="120" autocomplete="name" class={field} />
+    </div>
+    <div>
+      <label for={`${location}-contact`} class="text-sm font-medium text-fg">{L('E-posta veya telefon', 'Email or phone')}</label>
+      <input
+        id={`${location}-contact`}
+        name="contact"
+        type="text"
+        required
+        maxlength="160"
+        autocomplete="email"
+        inputmode="email"
+        placeholder={L('ornek@firma.com veya 05xx…', 'name@company.com or phone')}
+        class={field}
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for={`${location}-service`} class="text-sm font-medium text-fg">{L('İlgilendiğiniz hizmet', 'Service you need')}</label>
+    <select id={`${location}-service`} name="service" class={field}>
+      {services.map((s) => <option value={s.value} selected={s.value === service}>{s.label}</option>)}
+    </select>
+  </div>
+
+  <div>
+    <label for={`${location}-message`} class="text-sm font-medium text-fg">{L('Kısaca projeniz', 'About your project')}</label>
+    <textarea
+      id={`${location}-message`}
+      name="message"
+      required
+      minlength="10"
+      maxlength="3000"
+      rows="4"
+      placeholder={L('Ne yapıyorsunuz, neye ihtiyacınız var?', 'What do you do and what do you need?')}
+      class={field}></textarea>
+  </div>
+
+  <p class="text-xs leading-relaxed text-muted">
+    {L('Bilgileriniz yalnızca size dönüş yapmak için kullanılır.', 'Your details are only used to reply to you.')}
+    <a href={localizePath(locale, '/privacy')} class="underline underline-offset-2 hover:text-accent">{t(locale, 'nav.privacy')}</a>
+  </p>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <button
+      type="submit"
+      data-submit
+      class="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-on-ink transition-opacity hover:opacity-90 disabled:opacity-60 dark:bg-on-ink dark:text-ink"
+    >
+      <span data-submit-label>{L('Talebi gönder', 'Send request')}</span>
+    </button>
+    <p data-status role="status" aria-live="polite" class="text-sm font-medium"></p>
+  </div>
+</form>
+
+<script>
+  import { track } from '../lib/track';
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const PHONE_RE = /^\+?[\d\s()-]{10,20}$/;
+
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const started = form.querySelector<HTMLInputElement>('input[name="started"]')!;
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const btnLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const defaultLabel = btnLabel.textContent ?? '';
+    const location = form.dataset.location ?? 'form';
+
+    form.addEventListener(
+      'focusin',
+      () => {
+        if (!started.value) {
+          started.value = String(Date.now());
+          track('quote_start', { location });
+        }
+      },
+      { once: true },
+    );
+
+    const setStatus = (msg: string, ok: boolean) => {
+      status.textContent = msg;
+      status.className = `text-sm font-medium ${ok ? 'text-accent' : 'text-red-700 dark:text-red-400'}`;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') ?? '').trim();
+      const contact = String(fd.get('contact') ?? '').trim();
+      const message = String(fd.get('message') ?? '').trim();
+      const service = String(fd.get('service') ?? 'other');
+      const serviceLabel =
+        form.querySelector<HTMLSelectElement>('select[name="service"]')?.selectedOptions[0]?.textContent?.trim() ?? service;
+
+      const fields: [string, boolean][] = [
+        ['name', name.length >= 2],
+        ['contact', EMAIL_RE.test(contact) || PHONE_RE.test(contact)],
+        ['message', message.length >= 10],
+      ];
+      let firstInvalid: HTMLElement | null = null;
+      for (const [key, valid] of fields) {
+        const el = form.querySelector<HTMLElement>(`[name="${key}"]`)!;
+        el.setAttribute('aria-invalid', String(!valid));
+        el.classList.toggle('!border-red-600', !valid);
+        if (!valid && !firstInvalid) firstInvalid = el;
+      }
+      if (firstInvalid) {
+        setStatus(form.dataset.msgInvalid ?? '', false);
+        firstInvalid.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btnLabel.textContent = form.dataset.msgSending ?? '';
+      status.textContent = '';
+
+      const fallback = () => {
+        const subject = `[omeryasironal.com] ${serviceLabel} - ${name}`;
+        const body = `${name}\n${contact}\n${serviceLabel}\n\n${message}`;
+        window.location.href = `mailto:${form.dataset.targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setStatus(form.dataset.msgFallback ?? '', true);
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            contact,
+            service: serviceLabel,
+            message,
+            website: String(fd.get('website') ?? ''),
+            started: Number(started.value) || 0,
+            page: window.location.pathname,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          setStatus(form.dataset.msgSuccess ?? '', true);
+          track('generate_lead', { topic: service, location });
+          form.reset();
+          started.value = '';
+        } else {
+          fallback();
+        }
+      } catch {
+        fallback();
+      } finally {
+        btn.disabled = false;
+        btnLabel.textContent = defaultLabel;
+      }
+    });
+  });
+</script>

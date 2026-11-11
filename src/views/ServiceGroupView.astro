@@ -1,0 +1,222 @@
+---
+/**
+ * ServiceGroupView - /services/<group>: every service in the group with its
+ * scope and honest notes, proof from real work, concept designs where
+ * relevant, FAQ and a quote form preselected for the group.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ConceptCard from '../components/ConceptCard.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import ContactChannels from '../components/ContactChannels.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { serviceGroups, type ServiceGroup } from '../data/services';
+import { concepts } from '../data/concepts';
+import { breadcrumbJsonLd, canonicalHref, faqPageJsonLd, jsonLdScript, serviceListJsonLd } from '../lib/seo';
+import { ogPagePath } from '../lib/og';
+
+interface Props {
+  locale: Locale;
+  group: ServiceGroup;
+}
+
+const { locale, group: g } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, `/services/${g.id}`);
+const url = canonicalHref(path, Astro.site!);
+
+const projects = await getCollection('projects', (e) => !e.data.draft);
+const work = g.work.map((slug) => projects.find((p) => p.id === slug)).filter((p) => p !== undefined);
+
+const conceptIds: Record<string, string[]> = {
+  'web-software': ['restaurant', 'dental', 'boutique'],
+  'ads-growth': [],
+  'content-video': ['salon'],
+};
+const groupConcepts = concepts.filter((c) => conceptIds[g.id].includes(c.id));
+const others = serviceGroups.filter((x) => x.id !== g.id);
+
+const formService: Record<string, string> = { 'web-software': 'web', 'ads-growth': 'google-ads', 'content-video': 'content' };
+
+const serviceLd = serviceListJsonLd(
+  g.services.map((s) => ({
+    name: pick(locale, s.name),
+    description: pick(locale, s.summary),
+    url: `${url}#${s.id}`,
+    category: pick(locale, g.short),
+  })),
+  Astro.site,
+);
+const faqLd = faqPageJsonLd(g.faqs.map((f) => ({ question: pick(locale, f.question), answer: pick(locale, f.answer) })));
+const crumbs = breadcrumbJsonLd([
+  { name: t(locale, 'nav.home'), url: canonicalHref(localizePath(locale, '/'), Astro.site!) },
+  { name: t(locale, 'nav.services'), url: canonicalHref(localizePath(locale, '/services'), Astro.site!) },
+  { name: pick(locale, g.short), url },
+]);
+---
+
+<Base
+  title={`${pick(locale, g.seoTitle)} | Ömer Yasir Önal`}
+  description={pick(locale, g.description)}
+  path={path}
+  lang={locale}
+  ogImage={ogPagePath(`services-${g.id}`, locale)}
+  contactTopic={g.topic}
+  pageEvent={{ name: 'service_view', params: { service_group: g.id } }}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(faqLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  <SiteHeader locale={locale} path={path} contactTopic={g.topic} />
+
+  <main id="main">
+    <section class="mx-auto max-w-6xl px-4 pb-12 pt-10 sm:px-6 md:pt-14">
+      <nav aria-label="Breadcrumb" class="mb-8 font-mono text-xs text-muted">
+        <a href={localizePath(locale, '/services')} class="hover:text-accent">{t(locale, 'nav.services')}</a>
+        <span aria-hidden="true"> / </span>
+        <span aria-current="page" class="text-fg">{pick(locale, g.short)}</span>
+      </nav>
+      <div class="grid gap-10 md:grid-cols-[1.4fr_1fr] md:items-end">
+        <div>
+          <h1 class="text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl">{pick(locale, g.title)}</h1>
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{pick(locale, g.intro)}</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <WhatsAppButton locale={locale} topic={g.topic} location="service_hero" size="lg" />
+            <a href="#teklif" class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-6 py-3.5 text-[0.95rem] font-semibold text-fg hover:border-accent hover:text-accent">
+              {L('Form ile yaz', 'Use the form')}
+            </a>
+          </div>
+        </div>
+        <aside class="rounded-2xl border border-border bg-card p-6">
+          <p class="label">{L('Neden bir mühendis?', 'Why an engineer?')}</p>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-fg">{pick(locale, g.angle)}</p>
+        </aside>
+      </div>
+
+      <ul class="mt-10 flex flex-wrap gap-2" role="list" aria-label={L('Bu sayfadaki hizmetler', 'Services on this page')}>
+        {g.services.map((s) => (
+          <li><a href={`#${s.id}`} class="inline-block rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-fg hover:border-accent hover:text-accent">{pick(locale, s.name)}</a></li>
+        ))}
+      </ul>
+    </section>
+
+    <div class="mx-auto max-w-6xl space-y-5 px-4 sm:px-6">
+      {
+        g.services.map((s, i) => (
+          <section id={s.id} class="scroll-mt-24 rounded-2xl border border-border bg-card p-6 sm:p-9" aria-labelledby={`${s.id}-h`} data-reveal>
+            <div class="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+              <div>
+                <span class="font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <h2 id={`${s.id}-h`} class="mt-3 text-2xl font-semibold tracking-tight text-fg sm:text-3xl">{pick(locale, s.name)}</h2>
+                <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.summary)}</p>
+                {s.note && (
+                  <p class="mt-5 rounded-xl bg-accent-soft p-4 text-sm leading-relaxed text-fg">{pick(locale, s.note)}</p>
+                )}
+                <div class="mt-6">
+                  <WhatsAppButton
+                    locale={locale}
+                    topic={s.topic}
+                    location={`service_${s.id}`}
+                    label={L('Bu hizmet için yaz', 'Ask about this')}
+                    variant="outline"
+                  />
+                </div>
+              </div>
+              <ul class="grid content-start gap-3 sm:grid-cols-2" role="list">
+                {s.items.map((it) => (
+                  <li class="flex gap-2.5 rounded-xl border border-border p-4 text-[0.95rem] text-fg">
+                    <Icon name="check" size={16} class="mt-0.5 shrink-0 text-accent" />
+                    {pick(locale, it)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    {
+      work.length > 0 && (
+        <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+          <SectionHead
+            label={L('Örnek işler', 'Examples')}
+            title={L('Bu alanda yaptıklarım', 'What I have done in this area')}
+            link={{ href: localizePath(locale, '/projects'), text: L('Tüm çalışmalar', 'All work') }}
+          />
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {work.map((entry) => <ProjectCard locale={locale} entry={entry} />)}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      groupConcepts.length > 0 && (
+        <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+          <SectionHead
+            label={L('Konsept tasarımlar', 'Concept designs')}
+            title={L('Farklı sektörler için kurgu örnekleri', 'Layouts for different sectors')}
+            intro={L('Sektöre göre nasıl bir yapı kurduğumu gösteren tasarım çalışmaları.', 'Design studies showing how I structure a site or account for a sector.')}
+          />
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {groupConcepts.map((c) => <ConceptCard concept={c} locale={locale} />)}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="mx-auto max-w-3xl px-4 pt-20 sm:px-6">
+      <h2 class="text-3xl font-semibold tracking-tight text-fg">{t(locale, 'packages.faqTitle')}</h2>
+      <div class="mt-6 divide-y divide-border border-y border-border">
+        {
+          g.faqs.map((f) => (
+            <details class="group py-5">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 text-lg font-medium text-fg [&::-webkit-details-marker]:hidden">
+                {pick(locale, f.question)}
+                <span class="mt-1 font-mono text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, f.answer)}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="teklif" class="mx-auto mt-20 max-w-6xl scroll-mt-24 px-4 sm:px-6">
+      <div class="grid gap-10 rounded-2xl border border-border bg-card p-6 sm:p-10 md:grid-cols-[1fr_1.1fr]">
+        <div>
+          <p class="label">{t(locale, 'nav.contact')}</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg">{L('Kısaca anlatın, size özel teklif hazırlayayım.', 'Tell me briefly and I will prepare a tailored quote.')}</h2>
+          <div class="mt-8"><ContactChannels locale={locale} topic={g.topic} location={`service_${g.id}_contact`} /></div>
+        </div>
+        <ContactForm locale={locale} service={formService[g.id]} location={`service_${g.id}`} />
+      </div>
+    </section>
+
+    <nav class="mx-auto mt-16 max-w-6xl px-4 sm:px-6" aria-label={L('Diğer hizmetler', 'Other services')}>
+      <p class="label">{L('Diğer hizmetler', 'Other services')}</p>
+      <ul class="mt-4 grid gap-4 sm:grid-cols-2" role="list">
+        {others.map((o) => (
+          <li>
+            <a href={localizePath(locale, `/services/${o.id}`)} class="group flex items-center justify-between rounded-2xl border border-border p-5 hover:border-fg/30">
+              <span>
+                <span class="block text-lg font-semibold text-fg">{pick(locale, o.short)}</span>
+                <span class="mt-1 block text-sm text-muted">{pick(locale, o.cardSummary)}</span>
+              </span>
+              <Icon name="arrow" size={18} class="shrink-0 text-accent transition-transform group-hover:translate-x-0.5" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </main>
+
+  <SiteFooter locale={locale} hideCta />
+</Base>

@@ -13,6 +13,9 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
 
+  // One small stylesheet: inline it so first paint needs no extra request.
+  build: { inlineStylesheets: 'always' },
+
   vite: { plugins: [tailwindcss()] },
   integrations: [
     sitemap({

@@ -28,5 +28,5 @@ problem_tr: Görev yönetimi ve odak sayaçları genellikle ya karmaşık ekranl
 what_i_did_en: Designed, engineered, and published Odak to the App Store as a multi-platform SwiftUI application for iPhone, iPad, and Mac using shared SwiftPM business logic, SwiftData, and iCloud synchronization.
 what_i_did_tr: iPhone, iPad ve Mac için ortak SwiftPM iş mantığı, SwiftData ve iCloud eşitlemesi kullanan çok platformlu SwiftUI görev ve Pomodoro uygulaması Odak’ı geliştirip App Store’da yayımladım.
 featured: true
-order: 1
+order: 6
 ---

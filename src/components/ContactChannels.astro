@@ -1,0 +1,70 @@
+---
+/**
+ * ContactChannels - WhatsApp (primary), email, phone and Instagram (when set)
+ * as a vertical list of large tap targets. Works on dark or light surfaces.
+ */
+import Icon from './Icon.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import { profile } from '../data/profile';
+import { mailtoHref, displayPhone, type ContactTopic } from '../lib/contact';
+import { pick, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+  location: string;
+  topic?: ContactTopic;
+  tone?: 'dark' | 'light';
+}
+
+const { locale, location, topic = 'general', tone = 'light' } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const dark = tone === 'dark';
+const row = dark
+  ? 'flex items-center gap-4 rounded-xl border border-white/15 px-4 py-3.5 hover:border-white/40'
+  : 'flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-3.5 hover:border-fg/30';
+const sub = dark ? 'text-white/60' : 'text-muted';
+---
+
+<div class="space-y-3">
+  <WhatsAppButton locale={locale} topic={topic} location={location} size="lg" variant={dark ? 'light' : 'primary'} class="w-full sm:w-auto" />
+  <ul class="space-y-2.5 pt-2" role="list">
+    <li>
+      <a href={mailtoHref(locale)} data-track="email_click" data-track-location={location} class={row}>
+        <Icon name="mail" size={20} />
+        <span class="min-w-0">
+          <span class={`block text-xs ${sub}`}>{L('E-posta', 'Email')}</span>
+          <span class="block truncate font-medium">{profile.email}</span>
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href={`tel:+${profile.whatsapp}`} data-track="phone_click" data-track-location={location} class={row}>
+        <Icon name="phone" size={20} />
+        <span>
+          <span class={`block text-xs ${sub}`}>{L('Telefon', 'Phone')}</span>
+          <span class="block font-medium">{displayPhone()}</span>
+        </span>
+      </a>
+    </li>
+    {
+      profile.instagram.url && (
+        <li>
+          <a
+            href={profile.instagram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="instagram_click"
+            data-track-location={location}
+            class={row}
+          >
+            <Icon name="instagram" size={20} />
+            <span>
+              <span class={`block text-xs ${sub}`}>Instagram</span>
+              <span class="block font-medium">@{profile.instagram.handle}</span>
+            </span>
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</div>

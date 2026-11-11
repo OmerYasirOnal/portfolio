@@ -56,8 +56,8 @@ export interface Education {
 export const profile = {
   name: 'Ömer Yasir Önal',
   role: {
-    en: 'Computer Engineer | Mobile, Web, Backend & AI Solutions',
-    tr: 'Bilgisayar Mühendisi | Mobil, Web, Backend ve AI Çözümleri',
+    en: 'Computer Engineer · Software, AI & Digital Growth',
+    tr: 'Bilgisayar Mühendisi · Yazılım, Yapay Zekâ ve Dijital Büyüme',
   },
   location: {
     en: 'Istanbul, Türkiye',
@@ -68,6 +68,14 @@ export const profile = {
    * WhatsApp number in E.164 digits (no `+`/spaces) for wa.me links.
    */
   whatsapp: '905323090261',
+  /**
+   * Instagram profile. Components render Instagram links only when `url` is
+   * non-empty, so blanking it hides them cleanly.
+   */
+  instagram: { handle: 'omeryasironal', url: 'https://www.instagram.com/omeryasironal/' } as {
+    handle: string;
+    url: string;
+  },
 
   links: {
     github: {

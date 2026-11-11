@@ -28,5 +28,5 @@ problem_tr: "Nişantaşı’ndaki güzellik merkezinin; Türkçe ve İngilizce d
 what_i_did_en: "Developed the bilingual SEO/AIO-focused website, structured the service and blog pages, configured domain and corporate email infrastructure, and managed the production launch."
 what_i_did_tr: "SEO/AIO odaklı Türkçe ve İngilizce web sitesini geliştirdim; hizmet ve blog içeriklerinin sunumu, alan adı/e-posta yapılandırması ve yayına alma süreçlerini uçtan uca tamamladım."
 featured: true
-order: 5
+order: 3
 ---

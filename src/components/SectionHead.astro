@@ -1,0 +1,42 @@
+---
+/**
+ * SectionHead - mono numbered label, headline and optional intro / link.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  intro?: string;
+  link?: { href: string; text: string };
+  /** Heading level: h2 by default, h1 for page heads. */
+  as?: 'h1' | 'h2';
+  id?: string;
+}
+
+const { label, title, intro, link, as: Tag = 'h2', id } = Astro.props;
+---
+
+<header class="mb-10 grid gap-5 md:grid-cols-[1fr_auto] md:items-end" data-reveal>
+  <div class="max-w-3xl">
+    <p class="label">{label}</p>
+    <Tag
+      id={id}
+      class:list={[
+        'mt-3 font-semibold tracking-tight text-fg',
+        Tag === 'h1' ? 'text-4xl leading-[1.08] sm:text-5xl' : 'text-3xl leading-tight sm:text-4xl',
+      ]}
+    >
+      {title}
+    </Tag>
+    {intro && <p class="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{intro}</p>}
+  </div>
+  {
+    link && (
+      <a href={link.href} class="group inline-flex items-center gap-2 text-sm font-semibold text-accent">
+        {link.text}
+        <Icon name="arrow" size={16} class="transition-transform group-hover:translate-x-0.5" />
+      </a>
+    )
+  }
+</header>

@@ -30,6 +30,7 @@ export const projectSchema = z.object({
     'Web',
     'DevTool',
     'Networking',
+    'Content',
     'Other',
   ]),
   stack: z.array(z.string()).min(1),
@@ -43,6 +44,17 @@ export const projectSchema = z.object({
   what_i_did_en: z.string().optional(),
   what_i_did_tr: z.string().optional(),
   image: z.string().optional(),
+  /** Vertical videos shown on the detail page (public/-relative paths). */
+  videos: z
+    .array(
+      z.object({
+        src: z.string().min(1),
+        poster: z.string().min(1),
+        title_en: z.string(),
+        title_tr: z.string(),
+      }),
+    )
+    .default([]),
   group: z.enum(['product', 'client']).default('product'),
   featured: z.boolean().default(false),
   order: z.number().default(99),

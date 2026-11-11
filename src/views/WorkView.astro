@@ -1,0 +1,129 @@
+---
+/**
+ * WorkView - /projects: client work first, then concept designs, own apps,
+ * and engineering / AI / research projects. Every existing project page is
+ * kept; only the grouping changed.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ConceptCard from '../components/ConceptCard.astro';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { concepts } from '../data/concepts';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../lib/seo';
+import { ogProjectsPath } from '../lib/og';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, '/projects');
+
+const all = (await getCollection('projects', (e) => !e.data.draft)).sort((a, b) => a.data.order - b.data.order);
+const client = all.filter((e) => e.data.group === 'client');
+const apps = all.filter((e) => e.data.group === 'product' && e.data.category === 'Mobile' && e.data.links?.appstore);
+const ownContent = all.filter((e) => e.data.group !== 'client' && e.data.category === 'Content');
+const engineering = all.filter((e) => e.data.group !== 'client' && !apps.includes(e) && !ownContent.includes(e));
+
+const crumbs = breadcrumbJsonLd([
+  { name: t(locale, 'nav.home'), url: canonicalHref(localizePath(locale, '/'), Astro.site!) },
+  { name: t(locale, 'nav.work'), url: canonicalHref(path, Astro.site!) },
+]);
+---
+
+<Base
+  title={L('Çalışmalar: Müşteri Projeleri, Uygulamalar ve AI | Ömer Yasir Önal', 'Work: Client Projects, Apps and AI | Ömer Yasir Önal')}
+  description={L(
+    'A2 Reklam, Öz & Saye Psikoloji ve Parla Deniz için kurulan siteler, reklam ve video işleri; App Store’daki Odak ve UniSum; AKIS ve newBrain gibi yapay zekâ projeleri.',
+    'Websites, ads and video for A2 Reklam, Öz & Saye Psikoloji and Parla Deniz; Odak and UniSum on the App Store; AI projects such as AKIS and newBrain.',
+  )}
+  path={path}
+  lang={locale}
+  ogImage={ogProjectsPath(locale)}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main" class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <SectionHead
+      as="h1"
+      label={t(locale, 'nav.work')}
+      title={L('Yaptığım işler', 'Work')}
+      intro={L(
+        'Önce müşteriler için yaptıklarım, sonra kendi ürünlerim ve mühendislik çalışmalarım. Her kartın arkasında ne problemi çözdüğünü ve neyi nasıl yaptığımı anlatan bir sayfa var.',
+        'Client work first, then my own products and engineering projects. Each card opens a page on the problem, what I did and how.',
+      )}
+    />
+
+    <section aria-labelledby="client-h">
+      <h2 id="client-h" class="label mb-5">{L('Müşteri işleri', 'Client work')} · {client.length}</h2>
+      <div class="grid gap-5 md:grid-cols-2">
+        {client.map((entry, i) => <div><ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} eager={i === 0} /></div>)}
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="concept-h">
+      <SectionHead
+        id="concept-h"
+        label={L('Konsept tasarımlar', 'Concept designs')}
+        title={L('Sektörlere göre site ve içerik kurguları', 'Site and content layouts by sector')}
+        intro={L(
+          'Restoran, klinik, butik, hukuk bürosu ve güzellik salonu gibi işletmeler için nasıl bir yapı kurduğumu gösteren tasarım çalışmaları.',
+          'Design studies showing how I would structure a site or account for restaurants, clinics, boutiques, law firms and salons.',
+        )}
+      />
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {concepts.map((c) => <div data-reveal><ConceptCard concept={c} locale={locale} /></div>)}
+      </div>
+    </section>
+
+    {
+      ownContent.length > 0 && (
+        <section class="mt-20" aria-labelledby="content-h">
+          <SectionHead
+            id="content-h"
+            label={L('Kendi içeriklerim', 'My own content')}
+            title={L('Instagram’da ürettiğim seri', 'The series I produce on Instagram')}
+            intro={L(
+              'Müşterilere sunduğum Reels kurgu ve video hattını önce kendi hesabımda kullanıyorum.',
+              'I run the same Reels and video pipeline I offer clients on my own account first.',
+            )}
+          />
+          <div class="grid gap-5 md:grid-cols-2">
+            {ownContent.map((entry) => <ProjectCard locale={locale} entry={entry} size="lg" />)}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="mt-20" aria-labelledby="apps-h">
+      <SectionHead
+        id="apps-h"
+        label={L('Kendi ürünlerim', 'My own products')}
+        title={L('App Store’da yayında', 'Live on the App Store')}
+      />
+      <div class="grid gap-5 md:grid-cols-2">
+        {apps.map((entry) => <ProjectCard locale={locale} entry={entry} />)}
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="eng-h">
+      <SectionHead
+        id="eng-h"
+        label={L('Mühendislik ve araştırma', 'Engineering and research')}
+        title={L('Yapay zekâ, açık kaynak ve akademik projeler', 'AI, open-source and academic projects')}
+        link={{ href: localizePath(locale, '/about'), text: L('Akademik geçmiş', 'Academic background') }}
+      />
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {engineering.map((entry) => <ProjectCard locale={locale} entry={entry} />)}
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

@@ -1,0 +1,139 @@
+---
+/**
+ * ServicesView - /services hub: the three groups with every service, how
+ * pricing works (no price list), and the process.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import Icon from '../components/Icon.astro';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { serviceGroups, processSteps } from '../data/services';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript, serviceListJsonLd } from '../lib/seo';
+import { ogPagePath } from '../lib/og';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, '/services');
+const url = canonicalHref(path, Astro.site!);
+
+const title = L('Hizmetler: Web Sitesi, Reklam, SEO ve Video İçerik | Ömer Yasir Önal', 'Services: Websites, Ads, SEO and Video Content | Ömer Yasir Önal');
+const description = L(
+  'Kurumsal web sitesi ve özel yazılım, Google Ads ve Meta reklam yönetimi, SEO ve GEO / AEO, Reels kurgu, video ve Instagram içerik üretimi. Projenize özel teklif.',
+  'Business websites and custom software, Google Ads and Meta ads management, SEO and GEO / AEO, Reels editing, video and Instagram content. Quoted per project.',
+);
+
+const serviceLd = serviceListJsonLd(
+  serviceGroups.flatMap((g) =>
+    g.services.map((s) => ({
+      name: pick(locale, s.name),
+      description: pick(locale, s.summary),
+      url: `${canonicalHref(localizePath(locale, `/services/${g.id}`), Astro.site!)}#${s.id}`,
+      category: pick(locale, g.short),
+    })),
+  ),
+  Astro.site,
+);
+const crumbs = breadcrumbJsonLd([
+  { name: t(locale, 'nav.home'), url: canonicalHref(localizePath(locale, '/'), Astro.site!) },
+  { name: t(locale, 'nav.services'), url },
+]);
+---
+
+<Base title={title} description={description} path={path} lang={locale} ogImage={ogPagePath('services', locale)}>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main" class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <SectionHead
+      as="h1"
+      label={t(locale, 'nav.services')}
+      title={L('Web sitesi, reklam ve içerik: ihtiyacınız olan kadarı.', 'Websites, ads and content: as much as you need.')}
+      intro={L(
+        'Hizmetleri üç başlıkta topladım. Sadece birini de seçebilirsiniz, hepsini birlikte de. Her işin kapsamı ve fiyatı ilk görüşmeden sonra yazılı olarak netleşir.',
+        'Services are grouped in three areas. Pick one or combine them. Scope and price for each job are agreed in writing after the first conversation.',
+      )}
+    />
+
+    <div class="space-y-6">
+      {
+        serviceGroups.map((g, i) => (
+          <section class="rounded-2xl border border-border bg-card p-6 sm:p-9" aria-labelledby={`g-${g.id}`} data-reveal>
+            <div class="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+              <div>
+                <span class="font-mono text-sm text-accent">0{i + 1}</span>
+                <h2 id={`g-${g.id}`} class="mt-3 text-3xl font-semibold tracking-tight text-fg">{pick(locale, g.short)}</h2>
+                <p class="mt-4 text-[0.95rem] leading-relaxed text-muted">{pick(locale, g.intro)}</p>
+                <a
+                  href={localizePath(locale, `/services/${g.id}`)}
+                  class="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-on-ink dark:bg-on-ink dark:text-ink"
+                >
+                  {L('Detaylar ve örnek işler', 'Details and examples')}
+                  <Icon name="arrow" size={15} />
+                </a>
+              </div>
+              <ul class="divide-y divide-border border-y border-border" role="list">
+                {g.services.map((s) => (
+                  <li>
+                    <a href={`${localizePath(locale, `/services/${g.id}`)}#${s.id}`} class="group grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-4">
+                      <span>
+                        <span class="block font-semibold text-fg group-hover:text-accent">{pick(locale, s.name)}</span>
+                        <span class="mt-1 block text-sm leading-relaxed text-muted">{pick(locale, s.summary)}</span>
+                      </span>
+                      <Icon name="arrow" size={15} class="mt-1 hidden text-accent sm:block" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="mt-20 grid gap-10 md:grid-cols-[1fr_1.4fr]">
+      <div>
+        <p class="label">{L('Fiyatlandırma', 'Pricing')}</p>
+        <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg">{L('Projenize özel teklif', 'Quoted per project')}</h2>
+      </div>
+      <div class="space-y-4 text-[0.95rem] leading-relaxed text-muted">
+        <p>
+          {L(
+            'Hazır paket satmıyorum. Tek sayfalık bir tanıtım sitesi ile yönetim panelli bir kurumsal site, tek seferlik bir video ile aylık içerik üretimi aynı fiyatla anlatılamaz. Kısa bir görüşmeden sonra kapsamı, takvimi ve fiyatı yazılı gönderiyorum.',
+            'I don’t sell fixed packages. A one-page site and a corporate site with an admin panel, or a single video and monthly content, can’t share one price. After a short conversation I send scope, timeline and price in writing.',
+          )}
+        </p>
+        <ul class="space-y-2 text-fg" role="list">
+          <li class="flex gap-2"><Icon name="check" size={16} class="mt-1 shrink-0 text-accent" />{L('Tek seferlik işler (site, video, SEO denetimi) ve aylık işler (reklam yönetimi, içerik) ayrı fiyatlanır.', 'One-off jobs (site, video, SEO audit) and monthly work (ads, content) are priced separately.')}</li>
+          <li class="flex gap-2"><Icon name="check" size={16} class="mt-1 shrink-0 text-accent" />{L('Reklam bütçesi Google’a veya Meta’ya doğrudan ödenir, yönetim ücretinden ayrıdır.', 'Ad spend is paid directly to Google or Meta and is separate from the management fee.')}</li>
+          <li class="flex gap-2"><Icon name="check" size={16} class="mt-1 shrink-0 text-accent" />{L('Sıralama, satış veya ciro garantisi vermiyorum; ne yaptığımı ve ne değiştiğini raporluyorum.', 'No ranking, sales or revenue guarantees; I report what I did and what changed.')}</li>
+        </ul>
+        <div class="pt-2"><WhatsAppButton locale={locale} location="services_pricing" /></div>
+      </div>
+    </section>
+
+    <section class="mt-20">
+      <SectionHead label={L('Süreç', 'Process')} title={L('Nasıl çalışıyorum?', 'How I work')} />
+      <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+        {
+          processSteps.map((s, i) => (
+            <li class="border-t-2 border-fg pt-5">
+              <span class="font-mono text-sm text-accent">0{i + 1}</span>
+              <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.description)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

@@ -33,16 +33,17 @@ import {
   ogPostKey,
   ogCoursesKey,
   ogCourseKey,
-  ogPackagesKey,
+  ogPageKey,
 } from '../../lib/og';
+import { serviceGroups } from '../../data/services';
 import { courseSlugOf } from '../../lib/courses';
 
 // Design tokens mirrored from src/styles/global.css (RGB triples).
-const BG_DARK: [number, number, number] = [4, 13, 9]; //     --color-bg     #040d09
-const BG_CARD: [number, number, number] = [9, 26, 20]; //    --color-card   #091a14
-const FG: [number, number, number] = [236, 253, 245]; //     --color-fg     #ecfdf5
-const MUTED: [number, number, number] = [143, 178, 163]; //  --color-muted  #8fb2a3
-const ACCENT: [number, number, number] = [16, 185, 129]; //  --color-accent #10b981
+const BG_DARK: [number, number, number] = [16, 26, 22]; //   ink          #101a16
+const BG_CARD: [number, number, number] = [12, 18, 16]; //   dark bg      #0c1210
+const FG: [number, number, number] = [238, 243, 240]; //     on-ink       #eef3f0
+const MUTED: [number, number, number] = [161, 177, 170]; //  dark muted   #a1b1aa
+const ACCENT: [number, number, number] = [79, 209, 161]; //   dark accent  #4fd1a1
 
 interface OgPage {
   /** Large heading line. */
@@ -83,9 +84,21 @@ for (const locale of locales) {
     sub: t(locale, 'courses.intro'),
   };
 
-  pages[ogPackagesKey(locale)] = {
-    heading: t(locale, 'packages.title'),
-    sub: t(locale, 'packages.intro'),
+  const tr = locale === 'tr';
+  pages[ogPageKey('services', locale)] = {
+    heading: tr ? 'Hizmetler' : 'Services',
+    sub: tr ? 'Web sitesi & yazılım · Reklam & dijital büyüme · Reels, video & içerik' : 'Websites & software · Ads & digital growth · AI content & automation',
+  };
+  for (const g of serviceGroups) {
+    pages[ogPageKey(`services-${g.id}`, locale)] = { heading: g.short[locale], sub: g.cardSummary[locale] };
+  }
+  pages[ogPageKey('about', locale)] = {
+    heading: profile.name,
+    sub: tr ? 'Bilgisayar Mühendisi · Eğitim, araştırma ve deneyim' : 'Computer Engineer · Education, research and experience',
+  };
+  pages[ogPageKey('contact', locale)] = {
+    heading: tr ? 'İletişim' : 'Contact',
+    sub: tr ? 'WhatsApp, e-posta veya kısa teklif formu' : 'WhatsApp, email or a short quote form',
   };
 
   // Per-project: title + localized tagline.

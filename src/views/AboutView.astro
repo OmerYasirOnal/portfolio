@@ -1,0 +1,153 @@
+---
+/**
+ * AboutView - /about: the professional side for employers, engineers and
+ * researchers. Bio, education, research and publication, experience,
+ * skills, certifications and CV downloads.
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Timeline from '../components/Timeline.astro';
+import SkillGroups from '../components/SkillGroups.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import Icon from '../components/Icon.astro';
+import portrait from '../assets/omer-yasir-onal.jpg';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript, personJsonLd, scholarlyArticleJsonLd } from '../lib/seo';
+import { ogPagePath } from '../lib/og';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, '/about');
+const publications = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year);
+
+const pubLd = publications.map((p) =>
+  scholarlyArticleJsonLd({ title: p.data.title_en, venue: p.data.venue, year: p.data.year, url: p.data.url }, Astro.site),
+);
+const crumbs = breadcrumbJsonLd([
+  { name: t(locale, 'nav.home'), url: canonicalHref(localizePath(locale, '/'), Astro.site!) },
+  { name: t(locale, 'nav.about'), url: canonicalHref(path, Astro.site!) },
+]);
+---
+
+<Base
+  title={L('Hakkımda: Bilgisayar Mühendisi Ömer Yasir Önal', 'About: Computer Engineer Ömer Yasir Önal')}
+  description={L(
+    'Ömer Yasir Önal: FSMVÜ Bilgisayar Mühendisliği mezunu, TÜBİTAK 2209-A proje yürütücüsü, IEEE SIU 2025 ortak yazarı, App Store’da iki uygulamanın geliştiricisi. Eğitim, deneyim ve yetkinlikler.',
+    'Ömer Yasir Önal: Computer Engineering graduate (FSMVU), TÜBİTAK 2209-A project lead, IEEE SIU 2025 co-author and developer of two App Store apps. Education, experience and skills.',
+  )}
+  path={path}
+  lang={locale}
+  ogImage={ogPagePath('about', locale)}
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(personJsonLd(Astro.site, locale))} />
+  {pubLd.map((ld) => <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(ld)} />)}
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main" class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <section class="grid gap-10 md:grid-cols-[1.4fr_1fr] md:gap-16">
+      <div>
+        <p class="label">{t(locale, 'nav.about')}</p>
+        <h1 class="mt-3 text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl">{profile.name}</h1>
+        <p class="mt-2 font-mono text-sm uppercase tracking-wider text-accent">{L('Bilgisayar Mühendisi', 'Computer Engineer')}</p>
+        <p class="mt-6 text-lg leading-relaxed text-fg">{profile.about[locale]}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={localizePath(locale, '/cv')} class="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-on-ink dark:bg-on-ink dark:text-ink">
+            <Icon name="download" size={16} />
+            {L('Özgeçmiş (CV)', 'CV / Résumé')}
+          </a>
+          <a href={profile.links.linkedin.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-5 py-3 text-sm font-semibold text-fg hover:border-accent hover:text-accent">
+            LinkedIn <Icon name="arrow-up-right" size={14} />
+          </a>
+          <a href={profile.links.github.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-5 py-3 text-sm font-semibold text-fg hover:border-accent hover:text-accent">
+            GitHub <Icon name="arrow-up-right" size={14} />
+          </a>
+        </div>
+      </div>
+      <figure class="overflow-hidden rounded-2xl border border-border bg-card self-start">
+        <Image src={portrait} alt={L('Ömer Yasir Önal portresi', 'Portrait of Ömer Yasir Önal')} widths={[360, 540, 819]} sizes="(min-width: 768px) 36vw, 90vw" class="aspect-[4/5] w-full object-cover" />
+      </figure>
+    </section>
+
+    <section class="mt-20 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+      {
+        [
+          [L('Eğitim', 'Education'), `${profile.education[locale === 'tr' ? 'degree_tr' : 'degree_en']}`, `${profile.education[locale === 'tr' ? 'school_tr' : 'school_en']} · ${profile.education[locale === 'tr' ? 'graduation_tr' : 'graduation_en']}`],
+          [L('Araştırma', 'Research'), 'TÜBİTAK 2209-A', L('Proje yürütücüsü ve araştırmacı, 2023-2024', 'Project lead and researcher, 2023-2024')],
+          [L('Yayın', 'Publication'), 'IEEE SIU 2025', L('Makine öğrenmesi ile beton performansı, ortak yazar', 'Machine learning for concrete performance, co-author')],
+          [L('Diller', 'Languages'), L('Türkçe · İngilizce', 'Turkish · English'), L('Ana dil · B2', 'Native · B2')],
+        ].map(([k, v, s]) => (
+          <div class="bg-card p-6">
+            <p class="label">{k}</p>
+            <p class="mt-2 text-lg font-semibold text-fg">{v}</p>
+            <p class="mt-1 text-sm text-muted">{s}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="mt-20">
+      <SectionHead label={L('Deneyim', 'Experience')} title={L('Deneyim ve araştırma', 'Experience and research')} />
+      <Timeline locale={locale} />
+    </section>
+
+    {
+      publications.length > 0 && (
+        <section class="mt-20">
+          <SectionHead label={L('Yayınlar', 'Publications')} title={L('Hakemli yayın', 'Peer-reviewed publication')} />
+          <ul class="space-y-4" role="list">
+            {publications.map((p) => (
+              <li class="rounded-2xl border border-border bg-card p-6">
+                <p class="font-mono text-xs text-muted">{p.data.year} · {p.data.venue}</p>
+                <p class="mt-2 text-lg font-semibold leading-snug text-fg">{locale === 'tr' ? p.data.title_tr : p.data.title_en}</p>
+                {p.data.url && (
+                  <a href={p.data.url} target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+                    {L('Yayını görüntüle', 'View publication')} <Icon name="arrow-up-right" size={14} />
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="mt-20">
+      <SectionHead label={L('Yetkinlikler', 'Skills')} title={L('Teknik yetkinlikler', 'Technical skills')} />
+      <SkillGroups locale={locale} />
+    </section>
+
+    <section class="mt-20 grid gap-10 md:grid-cols-2">
+      <div>
+        <p class="label">{L('Sertifikalar', 'Certifications')}</p>
+        <ul class="mt-4 divide-y divide-border border-y border-border" role="list">
+          {profile.certifications.map((c) => (
+            <li class="py-4">
+              <p class="font-semibold text-fg">{c.title}</p>
+              <p class="mt-0.5 text-sm text-muted">{c.issuer} · {c.date}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="label">{L('Profiller', 'Profiles')}</p>
+        <p class="mt-4 text-[0.95rem] leading-relaxed text-muted">
+          {L('İşverenler ve teknik ekipler için kod, yazılar ve proje geçmişi:', 'Code, writing and project history for employers and technical teams:')}
+        </p>
+        <SocialLinks locale={locale} platforms={['github', 'linkedin', 'medium', 'youtube', 'hackerrank']} class="-ml-2 mt-3" />
+        <p class="mt-4 text-sm text-muted">{profile.availability[locale]}</p>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>

@@ -50,6 +50,9 @@ export function hreflangLinks(
 export interface PersonJsonLd {
   '@context': 'https://schema.org';
   '@type': 'Person';
+  '@id': string;
+  image: string;
+  description: string;
   name: string;
   jobTitle: string;
   url: string;
@@ -60,6 +63,7 @@ export interface PersonJsonLd {
     addressCountry: string;
   };
   sameAs: string[];
+  knowsAbout: string[];
   alumniOf: {
     '@type': 'CollegeOrUniversity';
     name: string;
@@ -73,13 +77,19 @@ export function personJsonLd(site?: URL | string, locale: Locale = 'tr'): Person
   const origin = site ? new URL(site).origin : 'https://omeryasironal.com';
 
   // Every public profile/social link from the single source of truth.
-  const sameAs = Object.values(profile.links).map((link) => link.url);
+  const sameAs = [
+    ...Object.values(profile.links).map((link) => link.url),
+    ...(profile.instagram.url ? [profile.instagram.url] : []),
+  ];
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `${origin}/#person`,
     name: profile.name,
-    jobTitle: profile.role[locale],
+    jobTitle: locale === 'tr' ? 'Bilgisayar Mühendisi' : 'Computer Engineer',
+    description: profile.role[locale],
+    image: `${origin}/og/home${locale === 'tr' ? '-tr' : ''}.png`,
     url: origin,
     email: `mailto:${profile.email}`,
     address: {
@@ -88,6 +98,10 @@ export function personJsonLd(site?: URL | string, locale: Locale = 'tr'): Person
       addressCountry: 'TR',
     },
     sameAs,
+    knowsAbout:
+      locale === 'tr'
+        ? ['Yazılım geliştirme', 'Web geliştirme', 'Mobil uygulama geliştirme', 'Yapay zekâ', 'Google Ads', 'Meta reklamları', 'SEO', 'Yapay zekâ destekli içerik üretimi']
+        : ['Software development', 'Web development', 'Mobile app development', 'Artificial intelligence', 'Google Ads', 'Meta ads', 'SEO', 'AI-assisted content production'],
     alumniOf: {
       '@type': 'CollegeOrUniversity',
       name: profile.education.school_en,
@@ -100,6 +114,7 @@ const origin = (site?: URL | string) =>
 
 const authorNode = (site?: URL | string) => ({
   '@type': 'Person' as const,
+  '@id': `${origin(site)}/#person`,
   name: profile.name,
   url: origin(site),
 });
@@ -185,35 +200,27 @@ export function scholarlyArticleJsonLd(
   };
 }
 
-/** A Service with an OfferCatalog of service tiers (/packages). */
-export function serviceOfferCatalogJsonLd(
-  input: {
-    name: string;
-    description: string;
-    url: string;
-    tiers: { name: string; description: string; priceFrom?: number }[];
-  },
+/**
+ * A list of Service nodes provided by the Person. No prices (every job is
+ * quoted) and no business address: the provider is an individual, so only
+ * areaServed is stated.
+ */
+export function serviceListJsonLd(
+  services: { name: string; description: string; url: string; category: string }[],
   site?: URL | string,
 ) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: input.name,
-    description: input.description,
-    url: input.url,
-    provider: authorNode(site),
-    areaServed: 'TR',
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: input.name,
-      itemListElement: input.tiers.map((tier) => ({
-        '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: tier.name, description: tier.description },
-        ...(typeof tier.priceFrom === 'number'
-          ? { priceCurrency: 'TRY', price: tier.priceFrom }
-          : {}),
-      })),
-    },
+    '@graph': services.map((s) => ({
+      '@type': 'Service',
+      name: s.name,
+      description: s.description,
+      url: s.url,
+      category: s.category,
+      serviceType: s.name,
+      provider: authorNode(site),
+      areaServed: { '@type': 'Country', name: 'Türkiye' },
+    })),
   };
 }
 

@@ -28,5 +28,5 @@ problem_tr: "Psikoterapi kliniğinin; hem Google ve yapay zeka aramalarında (AI
 what_i_did_en: "Analyzed requirements, planned the architecture, and developed ozsaye.com with Next.js and PostgreSQL, delivering the corporate website, custom admin panel, and SEO/AIO setup end to end."
 what_i_did_tr: "İhtiyaç analizinden yayına almaya kadar tüm süreci üstlenerek; Next.js ve PostgreSQL tabanlı kurumsal web sitesini, içerik/başvuru yönetim panelini ve SEO/AIO altyapısını geliştirip yayına aldım."
 featured: true
-order: 3
+order: 2
 ---

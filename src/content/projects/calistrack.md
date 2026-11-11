@@ -21,5 +21,5 @@ highlights_tr:
   - OpenAI Cloud Function ile yapay zeka üretimli antrenman programları.
   - Hive ve Firestore senkronizasyonuyla çevrimdışı öncelikli.
 featured: false
-order: 7
+order: 12
 ---

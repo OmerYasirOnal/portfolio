@@ -3,8 +3,8 @@ import { t, localizePath, altLocalePath } from '../src/data/i18n';
 
 describe('i18n', () => {
   it('returns localized strings', () => {
-    expect(t('en', 'nav.work')).toBe('Projects');
-    expect(t('tr', 'nav.work')).toBe('Projeler');
+    expect(t('en', 'nav.work')).toBe('Work');
+    expect(t('tr', 'nav.work')).toBe('Çalışmalar');
   });
   it('localizes paths (tr unprefixed at root, en prefixed under /en)', () => {
     expect(localizePath('tr', '/projects')).toBe('/projects');

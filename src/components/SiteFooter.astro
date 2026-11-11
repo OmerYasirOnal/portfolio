@@ -1,53 +1,126 @@
 ---
 /**
- * SiteFooter - shared executive footer for the home page and every sub-page.
+ * SiteFooter - dark ink footer: a short closing CTA, sitemap columns, contact
+ * channels and social profiles.
  */
 import { profile } from '../data/profile';
-import { t, localizePath, type Locale } from '../data/i18n';
+import { t, localizePath, pick, type Locale } from '../data/i18n';
+import { serviceGroups } from '../data/services';
+import { mailtoHref, displayPhone } from '../lib/contact';
 import SocialLinks from './SocialLinks.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
+  /** Hide the closing CTA block (contact page already is one). */
+  hideCta?: boolean;
 }
 
-const { locale } = Astro.props;
-const home = localizePath(locale, '/');
+const { locale, hideCta = false } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const year = new Date().getFullYear();
 ---
 
-<footer class="mt-10 border-t border-accent/20 bg-card/60 backdrop-blur-xl">
-  <div
-    class="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between"
-  >
-    <div class="space-y-1.5">
-      <a
-        href={home}
-        class="text-base font-bold tracking-tight text-fg transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        {profile.name}
-      </a>
-      <p class="text-sm text-muted">{profile.role[locale]} · {profile.location[locale]}</p>
+<footer class="mt-24 bg-ink text-on-ink">
+  {
+    !hideCta && (
+      <div class="mx-auto max-w-6xl border-b border-white/10 px-4 py-16 sm:px-6">
+        <p class="label !text-white/60">{L('Bir sonraki adım', 'Next step')}</p>
+        <div class="mt-4 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <h2 class="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+            {L('Projenizi kısaca anlatın, size net bir yol haritasıyla döneyim.', 'Tell me about your project and I will come back with a clear plan.')}
+          </h2>
+          <div class="flex flex-wrap gap-3">
+            <WhatsAppButton locale={locale} location="footer" variant="light" size="lg" />
+            <a
+              href={mailtoHref(locale)}
+              data-track="email_click"
+              data-track-location="footer"
+              class="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[0.95rem] font-semibold hover:border-white"
+            >
+              <Icon name="mail" size={18} />
+              {t(locale, 'cta.email')}
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+    <div>
+      <a href={localizePath(locale, '/')} class="text-lg font-semibold tracking-tight">{profile.name}</a>
+      <p class="mt-2 text-sm leading-relaxed text-white/70">
+        {L('Bilgisayar Mühendisi. Yazılım, yapay zekâ ve dijital büyüme.', 'Computer Engineer. Software, AI and digital growth.')}
+        <br />{profile.location[locale]}
+      </p>
     </div>
 
-    <div class="flex flex-col items-start gap-3 sm:items-end">
-      <SocialLinks
-        locale={locale}
-        platforms={['github', 'linkedin', 'medium', 'youtube', 'hackerrank']}
-      />
-      <a
-        href="#top"
-        class="rounded-full border border-accent/25 bg-accent/8 px-3.5 py-1 text-xs font-semibold text-accent transition-all hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        {t(locale, 'footer.backToTop')} ↑
-      </a>
+    <div>
+      <p class="label !text-white/60">{t(locale, 'nav.services')}</p>
+      <ul class="mt-4 space-y-2.5 text-sm" role="list">
+        {
+          serviceGroups.map((g) => (
+            <li>
+              <a href={localizePath(locale, `/services/${g.id}`)} class="text-white/80 hover:text-white">
+                {pick(locale, g.short)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="label !text-white/60">{L('Site', 'Site')}</p>
+      <ul class="mt-4 space-y-2.5 text-sm" role="list">
+        <li><a href={localizePath(locale, '/projects')} class="text-white/80 hover:text-white">{t(locale, 'nav.work')}</a></li>
+        <li><a href={localizePath(locale, '/about')} class="text-white/80 hover:text-white">{t(locale, 'nav.about')}</a></li>
+        <li><a href={localizePath(locale, '/writing')} class="text-white/80 hover:text-white">{t(locale, 'nav.writing')}</a></li>
+        <li><a href={localizePath(locale, '/cv')} class="text-white/80 hover:text-white">{t(locale, 'nav.cv')}</a></li>
+        <li><a href={localizePath(locale, '/privacy')} class="text-white/80 hover:text-white">{t(locale, 'nav.privacy')}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="label !text-white/60">{t(locale, 'nav.contact')}</p>
+      <ul class="mt-4 space-y-2.5 text-sm" role="list">
+        <li>
+          <a href={mailtoHref(locale)} data-track="email_click" data-track-location="footer_list" class="break-all text-white/80 hover:text-white">
+            {profile.email}
+          </a>
+        </li>
+        <li>
+          <a href={`tel:+${profile.whatsapp}`} data-track="phone_click" data-track-location="footer_list" class="text-white/80 hover:text-white">
+            {displayPhone()}
+          </a>
+        </li>
+        {
+          profile.instagram.url && (
+            <li>
+              <a
+                href={profile.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="instagram_click"
+                data-track-location="footer_list"
+                class="text-white/80 hover:text-white"
+              >
+                Instagram @{profile.instagram.handle}
+              </a>
+            </li>
+          )
+        }
+      </ul>
+      <SocialLinks locale={locale} platforms={['linkedin', 'github', 'medium', 'youtube']} class="-ml-2 mt-4 [&_a]:text-white/70 [&_a:hover]:text-white" />
     </div>
   </div>
 
-  <div class="border-t border-accent/15">
-    <p
-      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-6 py-5 text-xs text-muted"
-    >
-      <span>© {new Date().getFullYear()} {profile.name}. {t(locale, 'footer.rights')}</span>
-      <span>{t(locale, 'footer.builtWith')}</span>
+  <div class="border-t border-white/10">
+    <p class="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 py-6 text-xs text-white/55 sm:px-6">
+      <span>© {year} {profile.name}</span>
+      <a href="#top" class="hover:text-white">{t(locale, 'footer.backToTop')} ↑</a>
     </p>
   </div>
 </footer>

@@ -3,7 +3,29 @@ export type Locale = (typeof locales)[number];
 
 const dict: Record<string, Record<Locale, string>> = {
   'a11y.skip': { en: 'Skip to content', tr: 'İçeriğe geç' },
-  'nav.work': { en: 'Projects', tr: 'Projeler' },
+  'nav.work': { en: 'Work', tr: 'Çalışmalar' },
+  'nav.home': { en: 'Home', tr: 'Ana Sayfa' },
+  'nav.menu': { en: 'Menu', tr: 'Menü' },
+  'nav.openMenu': { en: 'Open menu', tr: 'Menüyü aç' },
+  'nav.closeMenu': { en: 'Close menu', tr: 'Menüyü kapat' },
+  'nav.privacy': { en: 'Privacy', tr: 'Gizlilik ve KVKK' },
+
+  'cta.whatsapp': { en: 'Get a quote on WhatsApp', tr: 'WhatsApp’tan Teklif Al' },
+  'cta.whatsappShort': { en: 'WhatsApp', tr: 'WhatsApp' },
+  'cta.emailShort': { en: 'Email', tr: 'E-posta' },
+  'cta.email': { en: 'Send an email', tr: 'E-posta gönder' },
+  'cta.quickContact': { en: 'Quick contact', tr: 'Hızlı iletişim' },
+  'cta.viewWork': { en: 'See my work', tr: 'Çalışmalarımı İncele' },
+  'cta.instagram': { en: 'Instagram', tr: 'Instagram' },
+
+  'consent.title': { en: 'Cookie preferences', tr: 'Çerez tercihleri' },
+  'consent.text': {
+    en: 'With your permission I use analytics cookies to see which pages help visitors. Nothing is loaded if you decline.',
+    tr: 'İzin verirseniz, hangi sayfaların işe yaradığını görmek için analiz çerezleri kullanırım. Reddederseniz hiçbiri yüklenmez.',
+  },
+  'consent.more': { en: 'Details', tr: 'Ayrıntılar' },
+  'consent.accept': { en: 'Accept', tr: 'Kabul et' },
+  'consent.reject': { en: 'Decline', tr: 'Reddet' },
   'nav.services': { en: 'Services', tr: 'Hizmetler' },
   'nav.packages': { en: 'Services', tr: 'Hizmetler' },
   'nav.about': { en: 'About', tr: 'Hakkımda' },
@@ -307,8 +329,14 @@ const dict: Record<string, Record<Locale, string>> = {
   'category.Web': { en: 'Corporate Web & Brand', tr: 'Kurumsal Web ve Marka' },
   'category.DevTool': { en: 'Software Tool', tr: 'Yazılım Aracı' },
   'category.Networking': { en: 'System Software', tr: 'Sistem Yazılımı' },
+  'category.Content': { en: 'Video & Content', tr: 'Video ve İçerik' },
   'category.Other': { en: 'Software Project', tr: 'Yazılım Projesi' },
 };
+
+/** Pick the locale's string from an inline bilingual pair. */
+export function pick(locale: Locale, pair: { en: string; tr: string }): string {
+  return pair[locale];
+}
 
 export function t(locale: Locale, key: string): string {
   return dict[key]?.[locale] ?? key;

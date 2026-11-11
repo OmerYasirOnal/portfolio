@@ -7,9 +7,19 @@ type HeaderRule = { source: string; headers: { key: string; value: string }[] };
 const rules: HeaderRule[] = config.headers;
 
 describe('vercel.json', () => {
-  it('contains only a headers config (no functions/rewrites/redirects)', () => {
+  it('contains only redirects and headers (no functions/rewrites)', () => {
     const keys = Object.keys(config).filter((k) => k !== '$schema');
-    expect(keys).toEqual(['headers']);
+    expect(keys).toEqual(['redirects', 'headers']);
+  });
+
+  it('301-redirects retired URLs (old /packages and the former /tr/ prefix)', () => {
+    type Redirect = { source: string; destination: string; statusCode: number };
+    const redirects: Redirect[] = config.redirects;
+    const to = (src: string) => redirects.find((r) => r.source === src);
+    expect(to('/packages/')?.destination).toBe('/services/');
+    expect(to('/en/packages/')?.destination).toBe('/en/services/');
+    expect(to('/tr/:path*')?.destination).toBe('/:path*');
+    for (const r of redirects) expect(r.statusCode).toBe(301);
   });
 
   it('applies the full security header set to every route', () => {

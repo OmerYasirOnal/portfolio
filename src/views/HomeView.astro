@@ -1,0 +1,336 @@
+---
+/**
+ * HomeView - client-first home page shared by / (tr) and /en/ (en).
+ *
+ * Flow: who I am + what I do + how to reach me (hero) -> three service groups
+ * -> visitor problems -> selected real work -> short about -> process ->
+ * contact. Long academic and technical detail lives on /about and /projects.
+ */
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import ContactChannels from '../components/ContactChannels.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import portrait from '../assets/omer-yasir-onal.jpg';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import { profile } from '../data/profile';
+import { serviceGroups, problemPrompts, processSteps, serviceGroup } from '../data/services';
+import { personJsonLd, webSiteJsonLd, jsonLdScript } from '../lib/seo';
+import { ogHomePath } from '../lib/og';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const path = localizePath(locale, '/');
+
+const all = await getCollection('projects', (e) => !e.data.draft);
+const bySlug = (slug: string) => all.find((e) => e.id === slug)!;
+const selected = ['a2reklam', 'ozsaye', 'parladeniz', 'a2reklam-video'].map(bySlug);
+const engineering = ['odak', 'unisum', 'akis'].map(bySlug);
+
+// Desktop-only hero portrait: preloaded via a media-scoped hint so phones
+// (where it is hidden) never download it.
+const heroWidths = [360, 540, 720, 819];
+const heroSizes = '(min-width: 768px) 40vw, 90vw';
+const heroImg = await getImage({ src: portrait, widths: heroWidths, sizes: heroSizes });
+
+const title = L(
+  'Ömer Yasir Önal | Bilgisayar Mühendisi · Web Sitesi, Reklam ve Video İçerik',
+  'Ömer Yasir Önal | Computer Engineer · Websites, Ads and Video Content',
+);
+const description = L(
+  'Bilgisayar Mühendisi Ömer Yasir Önal: işletmeler için kurumsal web sitesi, özel yazılım, Google ve Instagram reklam yönetimi, SEO, yapay zekâ araması (GEO), Reels kurgu ve video içerik üretimi. İstanbul.',
+  'Computer Engineer Ömer Yasir Önal builds business websites and custom software, runs Google and Instagram ads, SEO and AI search visibility, and produces Reels and video content. Istanbul.',
+);
+---
+
+<Base title={title} description={description} path={path} lang={locale} ogImage={ogHomePath(locale)}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    imagesrcset={heroImg.srcSet.attribute}
+    imagesizes={heroSizes}
+    media="(min-width: 768px)"
+    fetchpriority="high"
+  />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(personJsonLd(Astro.site, locale))} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(webSiteJsonLd(Astro.site))} />
+
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    {/* ---------- Hero ---------- */}
+    <section class="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-10 sm:px-6 md:grid-cols-[1.25fr_1fr] md:items-center md:gap-14 md:pb-24 md:pt-16">
+      <div>
+        <p class="label flex flex-wrap items-center gap-x-2">
+          <Image
+            src={portrait}
+            alt=""
+            width={88}
+            height={88}
+            loading="eager"
+            class="mr-1 h-11 w-11 rounded-full border border-border object-cover object-top md:hidden"
+          />
+          <span class="text-fg">{profile.name}</span>
+          <span aria-hidden="true">/</span>
+          <span>{L('Bilgisayar Mühendisi · İstanbul', 'Computer Engineer · Istanbul')}</span>
+        </p>
+        <h1 class="mt-5 text-[2.35rem] font-semibold leading-[1.06] tracking-tight text-fg sm:text-5xl lg:text-[3.6rem]">
+          {L('İşletmenizi internette büyüten yazılımı ve içeriği geliştiriyorum.', 'I build the software and content that grow your business online.')}
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+          {
+            L(
+              'Kurumsal web siteleri, Google ve Instagram reklamları, SEO, Reels ve video içerik. Tasarımdan ölçüme kadar tek muhatap: ajans katmanı yok, işi yapan kişiyle konuşuyorsunuz.',
+              'Business websites, Google and Instagram ads, SEO, Reels and video content. One accountable engineer from design to measurement: no agency layers, you talk to the person doing the work.',
+            )
+          }
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <WhatsAppButton locale={locale} location="hero" size="lg" />
+          <a
+            href={localizePath(locale, '/projects')}
+            class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-6 py-3.5 text-[0.95rem] font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            {t(locale, 'cta.viewWork')}
+            <Icon name="arrow" size={17} />
+          </a>
+        </div>
+        <ul class="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-border pt-6" role="list">
+          <li>
+            <p class="text-2xl font-semibold tracking-tight text-fg">3</p>
+            <p class="mt-1 text-xs leading-snug text-muted">{L('canlı müşteri sitesi', 'live client websites')}</p>
+          </li>
+          <li>
+            <p class="text-2xl font-semibold tracking-tight text-fg">2</p>
+            <p class="mt-1 text-xs leading-snug text-muted">{L('App Store’da uygulama', 'apps on the App Store')}</p>
+          </li>
+          <li>
+            <p class="text-2xl font-semibold tracking-tight text-fg">IEEE</p>
+            <p class="mt-1 text-xs leading-snug text-muted">{L('SIU 2025 bildirisi', 'SIU 2025 paper')}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative mx-auto hidden w-full md:block">
+        <div class="grid-paper absolute -inset-4 rounded-3xl md:-inset-6" aria-hidden="true"></div>
+        <figure class="relative overflow-hidden rounded-2xl border border-border bg-card">
+          <Image
+            src={portrait}
+            alt={L('Ömer Yasir Önal portresi', 'Portrait of Ömer Yasir Önal')}
+            widths={heroWidths}
+            sizes={heroSizes}
+            loading="lazy"
+            class="aspect-[4/5] w-full object-cover"
+          />
+          <figcaption class="flex items-center justify-between gap-3 border-t border-border px-4 py-3 text-xs">
+            <span class="font-mono uppercase tracking-wider text-muted">{L('FSMVÜ Bilgisayar Müh.', 'B.Sc. Computer Eng.')}</span>
+            <span class="inline-flex items-center gap-1.5 font-medium text-fg">
+              <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+              {L('Yeni projelere açık', 'Open to new projects')}
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    {/* ---------- Services ---------- */}
+    <section id="services" class="scroll-mt-20 border-t border-border bg-card/60">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <SectionHead
+          label={L('01 · Hizmetler', '01 · Services')}
+          title={L('Üç alanda, tek elden', 'Three areas, one person')}
+          intro={L(
+            'Siteyi kuran, reklamı yöneten ve içeriği üreten aynı kişi olunca her parça birbirini tutuyor.',
+            'When the same person builds the site, runs the ads and makes the content, every piece fits together.',
+          )}
+          link={{ href: localizePath(locale, '/services'), text: L('Tüm hizmetler', 'All services') }}
+        />
+        <ul class="grid gap-5 md:grid-cols-3" role="list">
+          {
+            serviceGroups.map((g, i) => (
+              <li data-reveal>
+                <a
+                  href={localizePath(locale, `/services/${g.id}`)}
+                  class="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-fg/30 sm:p-7"
+                >
+                  <span class="font-mono text-sm text-accent">0{i + 1}</span>
+                  <h3 class="mt-4 text-2xl font-semibold tracking-tight text-fg">{pick(locale, g.short)}</h3>
+                  <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, g.cardSummary)}</p>
+                  <ul class="mt-5 space-y-2 border-t border-border pt-5 text-sm text-fg" role="list">
+                    {g.services.map((s) => (
+                      <li class="flex items-start gap-2">
+                        <Icon name="check" size={15} class="mt-0.5 shrink-0 text-accent" />
+                        {pick(locale, s.name)}
+                      </li>
+                    ))}
+                  </ul>
+                  <span class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-accent">
+                    {L('Detaylar', 'Details')}
+                    <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    {/* ---------- Problems ---------- */}
+    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <SectionHead label={L('02 · Neler yapabilirim?', '02 · How I can help')} title={L('Hangisi size benziyor?', 'Which one sounds like you?')} />
+      <ul class="divide-y divide-border border-y border-border" role="list">
+        {
+          problemPrompts.map((p) => {
+            const g = serviceGroup(p.group);
+            const s = g.services.find((x) => x.id === p.anchor)!;
+            return (
+              <li>
+                <a
+                  href={`${localizePath(locale, `/services/${g.id}`)}#${p.anchor}`}
+                  class="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6"
+                >
+                  <span class="text-lg font-medium text-fg sm:text-xl">“{pick(locale, p.text)}”</span>
+                  <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                    {pick(locale, s.name)}
+                    <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    {/* ---------- Selected work ---------- */}
+    <section id="work" class="scroll-mt-20 mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <SectionHead
+        label={L('03 · Seçili çalışmalar', '03 · Selected work')}
+        title={L('Yayında olan gerçek işler', 'Real work, live today')}
+        intro={L(
+          'Müşteriler için kurduğum siteler, yönettiğim reklamlar ve ürettiğim içerikler.',
+          'Sites I built, ads I manage and content I produced for clients.',
+        )}
+        link={{ href: localizePath(locale, '/projects'), text: L('Tüm çalışmalar', 'All work') }}
+      />
+      <div class="grid gap-5 md:grid-cols-2">
+        {selected.map((entry, i) => <div data-reveal><ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} /></div>)}
+      </div>
+
+      <div class="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-8" data-reveal>
+        <div class="grid gap-6 md:grid-cols-[16rem_1fr]">
+          <div>
+            <p class="label">{L('Mühendislik tarafı', 'The engineering side')}</p>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">
+              {L('Müşteri işlerinin arkasındaki teknik birikim: kendi ürünlerim ve yapay zekâ çalışmalarım.', 'The technical depth behind the client work: my own products and AI research.')}
+            </p>
+          </div>
+          <ul class="-my-4 divide-y divide-border" role="list">
+            {
+              engineering.map((e) => (
+                <li>
+                  <a href={localizePath(locale, `/projects/${e.id}`)} class="group grid gap-1 py-4 sm:grid-cols-[9rem_1fr_auto] sm:items-baseline sm:gap-5">
+                    <span class="font-semibold text-fg group-hover:text-accent">{e.data.title}</span>
+                    <span class="text-sm text-muted">{locale === 'tr' ? e.data.status_tr : e.data.status_en}</span>
+                    <Icon name="arrow" size={15} class="hidden text-accent sm:block" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- About ---------- */}
+    <section id="about" class="scroll-mt-20 border-y border-border bg-card/60">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1fr] md:gap-16">
+        <div data-reveal>
+          <p class="label">{L('04 · Hakkımda', '04 · About')}</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+            {L('Önce mühendisim, sonra pazarlamacı.', 'An engineer first, a marketer second.')}
+          </h2>
+          <p class="mt-5 text-lg leading-relaxed text-muted">
+            {
+              L(
+                'Fatih Sultan Mehmet Vakıf Üniversitesi Bilgisayar Mühendisliği mezunuyum. App Store’da yayında iki uygulamam, TÜBİTAK destekli bir yapay zekâ araştırmam ve IEEE’de yayımlanmış bir bildirim var. Müşteri işlerine de aynı disiplinle yaklaşıyorum: ölçmeden karar vermiyorum, söz veremeyeceğim sonucu vaat etmiyorum.',
+                'I studied Computer Engineering at Fatih Sultan Mehmet Vakıf University. I have two apps on the App Store, a TÜBİTAK-funded AI research project and a paper published by IEEE. I bring the same discipline to client work: I don’t decide without measuring, and I don’t promise results I can’t control.',
+              )
+            }
+          </p>
+          <div class="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold">
+            <a href={localizePath(locale, '/about')} class="inline-flex items-center gap-1.5 text-accent">{L('Daha fazlası', 'More about me')} <Icon name="arrow" size={15} /></a>
+            <a href={localizePath(locale, '/cv')} class="inline-flex items-center gap-1.5 text-fg hover:text-accent">{L('Özgeçmiş (CV)', 'CV')} <Icon name="arrow" size={15} /></a>
+          </div>
+        </div>
+        <dl class="grid grid-cols-1 gap-px self-start overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2" data-reveal>
+          {
+            [
+              [L('Eğitim', 'Education'), L('Bilgisayar Mühendisliği, FSMVÜ (2026)', 'B.Sc. Computer Engineering, FSMVU (2026)')],
+              [L('Araştırma', 'Research'), L('TÜBİTAK 2209-A proje yürütücüsü', 'TÜBİTAK 2209-A project lead')],
+              [L('Yayın', 'Publication'), L('IEEE SIU 2025, ortak yazar', 'IEEE SIU 2025, co-author')],
+              [L('Ürünler', 'Products'), L('Odak ve UniSum, App Store', 'Odak and UniSum, App Store')],
+            ].map(([k, v]) => (
+              <div class="bg-card p-5">
+                <dt class="label">{k}</dt>
+                <dd class="mt-2 text-[0.95rem] font-medium text-fg">{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    {/* ---------- Process ---------- */}
+    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <SectionHead label={L('05 · Nasıl çalışıyorum?', '05 · How I work')} title={L('Dört adımda, sürprizsiz', 'Four steps, no surprises')} />
+      <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+        {
+          processSteps.map((s, i) => (
+            <li class="border-t-2 border-fg pt-5" data-reveal>
+              <span class="font-mono text-sm text-accent">0{i + 1}</span>
+              <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.description)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    {/* ---------- Contact ---------- */}
+    <section id="contact" class="scroll-mt-20 bg-ink text-on-ink">
+      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1.1fr] md:gap-16">
+        <div>
+          <p class="label !text-white/60">{L('06 · İletişim', '06 · Contact')}</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            {L('Projenizi konuşalım.', 'Let’s talk about your project.')}
+          </h2>
+          <p class="mt-4 max-w-md text-lg leading-relaxed text-white/75">
+            {L('En hızlı yol WhatsApp. Yazmayı tercih ederseniz e-posta ya da yandaki kısa form da olur.', 'WhatsApp is the fastest way. If you prefer writing, email or the short form work too.')}
+          </p>
+          <div class="mt-8">
+            <ContactChannels locale={locale} location="home_contact" tone="dark" />
+          </div>
+        </div>
+        <div class="rounded-2xl bg-card p-6 text-fg sm:p-8">
+          <h3 class="text-lg font-semibold tracking-tight">{L('Kısa teklif formu', 'Short quote form')}</h3>
+          <div class="mt-5"><ContactForm locale={locale} location="home" /></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} hideCta />
+</Base>

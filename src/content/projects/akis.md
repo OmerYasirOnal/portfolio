@@ -28,5 +28,5 @@ problem_tr: Otonom yapay zeka ajanları çoğu zaman izlenebilir görev kayıtla
 what_i_did_en: Built AKIS as my university capstone project using TypeScript/Node.js, PostgreSQL, Docker, MCP, and LLM APIs to orchestrate AI agents behind human approval flows and automated boot verification.
 what_i_did_tr: Üniversite bitirme projem olarak; TypeScript/Node.js, PostgreSQL, Docker, MCP ve LLM API entegrasyonlarıyla insan onaylı ve doğrulanabilir AI ajan orkestrasyon platformu AKIS’i geliştirdim.
 featured: true
-order: 6
+order: 8
 ---

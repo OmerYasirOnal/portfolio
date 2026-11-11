@@ -1,0 +1,58 @@
+---
+/**
+ * WhatsAppButton - the primary conversion control. Opens wa.me with a
+ * topic-specific prefilled message and emits a `whatsapp_click` event.
+ */
+import Icon from './Icon.astro';
+import { whatsappHref, type ContactTopic } from '../lib/contact';
+import { t, type Locale } from '../data/i18n';
+
+interface Props {
+  locale: Locale;
+  topic?: ContactTopic;
+  /** Where on the page the button sits (analytics dimension). */
+  location: string;
+  label?: string;
+  variant?: 'primary' | 'outline' | 'light';
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  locale,
+  topic = 'general',
+  location,
+  label = t(locale, 'cta.whatsapp'),
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+} = Astro.props;
+
+const variants = {
+  primary: 'bg-accent text-on-accent hover:brightness-110',
+  outline: 'border border-fg/20 bg-card text-fg hover:border-accent hover:text-accent',
+  light: 'bg-on-ink text-ink hover:bg-white',
+};
+const sizes = {
+  md: 'px-5 py-3 text-sm',
+  lg: 'px-6 py-3.5 text-[0.95rem]',
+};
+---
+
+<a
+  href={whatsappHref(locale, topic)}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-track="whatsapp_click"
+  data-track-location={location}
+  data-track-topic={topic}
+  class:list={[
+    'inline-flex items-center justify-center gap-2.5 rounded-full font-semibold transition-all duration-200',
+    variants[variant],
+    sizes[size],
+    className,
+  ]}
+>
+  <Icon name="whatsapp" size={size === 'lg' ? 20 : 18} />
+  <span>{label}</span>
+</a>

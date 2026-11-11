@@ -11,7 +11,7 @@ import {
   scholarlyArticleJsonLd,
   blogPostingJsonLd,
   courseJsonLd,
-  serviceOfferCatalogJsonLd,
+  serviceListJsonLd,
   faqPageJsonLd,
   jsonLdScript,
 } from '../src/lib/seo';
@@ -166,27 +166,21 @@ describe('blogPostingJsonLd', () => {
   });
 });
 
-describe('serviceOfferCatalogJsonLd', () => {
-  it('emits a Service with an OfferCatalog supporting both priced and custom-quoted tiers', () => {
-    const s = serviceOfferCatalogJsonLd(
-      {
-        name: 'Services',
-        description: 'Software & digital infrastructure services.',
-        url: SITE + '/packages/',
-        tiers: [
-          { name: 'Mobile App Development', description: 'Native & cross-platform apps.' },
-          { name: 'Corporate Web', description: 'Multi-page site.', priceFrom: 35000 },
-        ],
-      },
+describe('serviceListJsonLd', () => {
+  it('emits price-free Service nodes provided by the person, serving Türkiye', () => {
+    const s = serviceListJsonLd(
+      [
+        { name: 'Kurumsal web sitesi', description: 'Hızlı siteler.', url: SITE + '/services/web-software/#website', category: 'Web' },
+        { name: 'Google Ads yönetimi', description: 'Arama kampanyaları.', url: SITE + '/services/ads-growth/#google-ads', category: 'Ads' },
+      ],
       SITE,
     );
-    expect(s['@type']).toBe('Service');
-    expect(s.provider.name).toBe('Ömer Yasir Önal');
-    expect(s.hasOfferCatalog['@type']).toBe('OfferCatalog');
-    expect(s.hasOfferCatalog.itemListElement).toHaveLength(2);
-    expect('price' in s.hasOfferCatalog.itemListElement[0]).toBe(false);
-    expect(s.hasOfferCatalog.itemListElement[1].price).toBe(35000);
-    expect(s.hasOfferCatalog.itemListElement[1].priceCurrency).toBe('TRY');
+    expect(s['@graph']).toHaveLength(2);
+    expect(s['@graph'][0]['@type']).toBe('Service');
+    expect(s['@graph'][0].provider.name).toBe('Ömer Yasir Önal');
+    expect(s['@graph'][0].provider['@id']).toBe(SITE + '/#person');
+    expect(s['@graph'][1].areaServed.name).toBe('Türkiye');
+    expect(JSON.stringify(s)).not.toContain('price');
   });
 });
 
