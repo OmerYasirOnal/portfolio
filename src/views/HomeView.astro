@@ -397,7 +397,7 @@ const serviceLd = {
     </section>
 
     {/* ---------- Services ---------- */}
-    <section id="services" class="relative scroll-mt-20 overflow-clip">
+    <section id="services" class="relative scroll-mt-20 overflow-hidden">
       <span class="float-icon light-float right-[6%] top-[14%] hidden lg:grid" data-float="1" aria-hidden="true"><Icon name="code" size={22} /></span>
       <span class="float-icon light-float left-[3%] bottom-[18%] hidden lg:grid" data-float="-1" aria-hidden="true"><Icon name="chart" size={22} /></span>
       <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
@@ -473,7 +473,7 @@ const serviceLd = {
         <ol class="relative space-y-4 before:absolute before:bottom-6 before:left-[1.6rem] before:top-6 before:w-px before:bg-border" role="list">
           {
             a2Steps.map((s, i) => (
-              <li data-reveal="right" style={`--d:${i * 0.08}s`} class="relative">
+              <li data-reveal="up" style={`--d:${i * 0.08}s`} class="relative">
                 <div data-spotlight class="lift relative flex gap-5 rounded-3xl border border-border bg-card p-5 sm:p-6">
                   <span class="relative z-10 grid h-[3.2rem] w-[3.2rem] shrink-0 place-items-center rounded-2xl bg-ink text-[#5eead4] dark:bg-accent-soft">
                     <Icon name={s.icon} size={22} />
@@ -505,7 +505,7 @@ const serviceLd = {
             const g = serviceGroup(p.group);
             const s = g.services.find((x) => x.id === p.anchor)!;
             return (
-              <li class="border-b border-border" data-reveal="left" style={`--d:${i * 0.05}s`}>
+              <li class="border-b border-border" data-reveal="up" style={`--d:${i * 0.05}s`}>
                 <a href={`${localizePath(locale, `/services/${g.id}`)}#${p.anchor}`} class="group relative grid gap-1 overflow-hidden py-6 sm:grid-cols-[3rem_1fr_auto] sm:items-center sm:gap-6">
                   <span class="absolute inset-0 -z-10 origin-left scale-x-0 bg-accent-soft transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
                   <span class="hidden font-mono text-sm text-muted sm:block sm:pl-3">0{i + 1}</span>

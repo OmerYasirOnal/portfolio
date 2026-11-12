@@ -49,6 +49,12 @@
 :root { color-scheme: light; }
 .dark { color-scheme: dark; }
 
+/* No sideways scroll on phones, even if a decorative element pokes out.
+ * `hidden` first for older iOS WebViews (Instagram in-app browser), `clip`
+ * where supported because it does not create a scroll container. */
+html { overflow-x: hidden; }
+@supports (overflow: clip) { html, body { overflow-x: clip; } }
+
 html {
   background: var(--color-bg);
   color: var(--color-fg);
@@ -183,13 +189,13 @@ h1, h2, h3 {
 }
 .reveal-ready [data-reveal=""], .reveal-ready [data-reveal="up"] { transform: translateY(36px); }
 .reveal-ready [data-reveal="scale"] { transform: scale(0.92); }
-.reveal-ready [data-reveal="left"] { transform: translateX(-48px); }
-.reveal-ready [data-reveal="right"] { transform: translateX(48px); }
+.reveal-ready [data-reveal="left"] { transform: translateX(-24px); }
+.reveal-ready [data-reveal="right"] { transform: translateX(24px); }
 .reveal-ready [data-reveal="blur"] { transform: translateY(20px); filter: blur(12px); }
 .reveal-ready [data-reveal].is-visible { opacity: 1; transform: none; filter: none; }
 
 /* Word-by-word heading reveal (words are split at build time). */
-.split .w { display: inline-block; overflow: clip; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.split .w { display: inline-block; overflow: hidden; overflow: clip; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .split .w > span { display: inline-block; transform: translateY(105%); animation: word-up 1s var(--ease-out) forwards; animation-delay: calc(var(--base, 0.15s) + var(--i) * 0.06s); }
 .reveal-ready .split[data-reveal] .w > span { animation: none; transition: transform 1s var(--ease-out); transition-delay: calc(var(--i) * 0.05s); }
 .reveal-ready .split[data-reveal].is-visible .w > span { transform: none; }
@@ -218,7 +224,7 @@ h1, h2, h3 {
 .intro .logo-draw .lm-dot-1 { animation-delay: 0.85s; }
 .intro .logo-draw .lm-dot-2 { animation-delay: 0.95s; }
 .intro .logo-draw .lm-node { animation-delay: 1s; }
-.intro-name { overflow: clip; }
+.intro-name { overflow: hidden; overflow: clip; }
 .intro-name > span { display: inline-block; transform: translateY(110%); animation: word-up 0.8s var(--ease-out) 0.6s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
@@ -227,7 +233,7 @@ h1, h2, h3 {
 .stage {
   --color-fg: #eef3f0; --color-muted: #a7b8b0; --color-border: rgb(255 255 255 / 0.12);
   --color-card: rgb(255 255 255 / 0.04); --color-accent: #4fd1a1; --color-bg: var(--stage);
-  background: var(--stage); color: var(--color-fg); isolation: isolate; position: relative; overflow: clip;
+  background: var(--stage); color: var(--color-fg); isolation: isolate; position: relative; overflow: hidden;
 }
 /* Soft radial gradients only: no blur filter or blend mode (both are costly to repaint). */
 .aurora { position: absolute; inset: -20%; z-index: -1; pointer-events: none; opacity: 0.8; contain: strict; }
@@ -281,8 +287,12 @@ html:not(.reveal-ready) .float-icon { opacity: 0.85; }
 /* Infinite animations pause while their section is off screen (motion.ts toggles .is-off). */
 .is-off .aurora i, .is-off .orbit, .is-off .orbit > span, .is-off .marquee__track, .is-off .text-gradient { animation-play-state: paused; }
 
+/* `clip` keeps the sticky Reels stage working where supported. */
+@supports (overflow: clip) { .stage, .marquee { overflow: clip; } }
+.stage, .marquee { max-width: 100vw; }
+
 /* ---- Marquee ---- */
-.marquee { display: flex; overflow: clip; user-select: none; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee { display: flex; overflow: hidden; user-select: none; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .marquee__track { display: flex; flex-shrink: 0; gap: 3rem; padding-right: 3rem; min-width: 100%; animation: marquee var(--dur, 38s) linear infinite; }
 .marquee--rev .marquee__track { animation-direction: reverse; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
