@@ -27,6 +27,9 @@ const L = (tr: string, en: string) => pick(locale, { tr, en });
 const path = localizePath(locale, `/projects/${entry.id}`);
 const tagline = locale === 'en' ? data.tagline_en : data.tagline_tr;
 const status = locale === 'en' ? data.status_en : data.status_tr;
+// Short taglines make thin meta descriptions: add status and stack.
+const metaDescription =
+  tagline.length >= 90 ? tagline : `${tagline} ${data.title}: ${status}. ${L('Teknolojiler', 'Built with')}: ${data.stack.slice(0, 4).join(', ')}.`;
 
 type LinkKey = 'appstore' | 'live' | 'repo' | 'other';
 const LINK_ORDER: LinkKey[] = ['live', 'appstore', 'repo', 'other'];
@@ -64,7 +67,7 @@ const crumbs = breadcrumbJsonLd([
 
 <Base
   title={`${data.title} | ${L('Çalışmalar', 'Work')} | Ömer Yasir Önal`}
-  description={tagline}
+  description={metaDescription}
   path={path}
   lang={locale}
   ogImage={ogProjectPath(locale, entry.id)}
