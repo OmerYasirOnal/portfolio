@@ -124,10 +124,13 @@ export function webSiteJsonLd(site?: URL | string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${origin(site)}/#website`,
     name: profile.name,
+    alternateName: ['omeryasironal', 'ÖY'],
     url: origin(site),
     inLanguage: ['tr', 'en'],
     author: authorNode(site),
+    publisher: { '@id': `${origin(site)}/#person` },
   };
 }
 

@@ -4,6 +4,7 @@
  * collections and hand plain objects in, guaranteeing the output never drifts
  * from the visible site.
  */
+import { reels } from '../data/social';
 import { profile } from '../data/profile';
 
 export interface LlmsProject {
@@ -80,7 +81,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Services');
   lines.push(
-    `Websites & software, ads & digital growth, Reels, video & content. Quoted per project; ad spend is separate from fees: ${abs(site, '/en/services/')}`,
+    `Websites & software, Google / Meta ads & SEO / GEO, social media management & AI-assisted Reels and video. Quoted per project; ad spend is separate from fees: ${abs(site, '/en/services/')}`,
   );
   for (const sv of data.services) {
     lines.push(`- [${sv.name}](${abs(site, sv.path)}) (${sv.group}): ${sv.summary}`);
@@ -129,9 +130,15 @@ export function llmsTxt(data: LlmsData): string {
   lines.push(`- [Résumé (EU / GDPR)](${abs(site, '/cv/omer-yasir-onal-eu.pdf')})`);
   lines.push(`- [Résumé (Türkçe)](${abs(site, '/cv/omer-yasir-onal-tr.pdf')})`);
   lines.push('');
+  lines.push('## Social media & AI video (recent Reels)');
+  for (const r of reels) {
+    lines.push(`- [${r.title.en}](${r.ready ? abs(site, `/en/projects/${r.project}/`) : r.url}): ${r.kind.en}, @${r.account}${r.date ? `, ${r.date}` : ''}${r.ready ? ' (produced, not yet posted)' : ''}`);
+  }
+  lines.push('');
   lines.push('## Contact');
   lines.push(`- Email: ${profile.email}`);
   lines.push(`- WhatsApp: https://wa.me/${profile.whatsapp}`);
+  if (profile.instagram.url) lines.push(`- Instagram: ${profile.instagram.url}`);
   for (const [, link] of Object.entries(profile.links)) {
     lines.push(`- ${link.label}: ${link.url}`);
   }

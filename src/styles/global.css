@@ -178,17 +178,15 @@ h1, h2, h3 {
 /* ---- Reveals ---- */
 .reveal-ready [data-reveal] {
   opacity: 0;
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out), clip-path 1s var(--ease-out);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out), filter 0.8s var(--ease-out);
   transition-delay: var(--d, 0s);
-  will-change: opacity, transform;
 }
 .reveal-ready [data-reveal=""], .reveal-ready [data-reveal="up"] { transform: translateY(36px); }
 .reveal-ready [data-reveal="scale"] { transform: scale(0.92); }
 .reveal-ready [data-reveal="left"] { transform: translateX(-48px); }
 .reveal-ready [data-reveal="right"] { transform: translateX(48px); }
 .reveal-ready [data-reveal="blur"] { transform: translateY(20px); filter: blur(12px); }
-.reveal-ready [data-reveal="clip"] { opacity: 1; clip-path: inset(0 0 100% 0 round 24px); transform: translateY(24px); }
-.reveal-ready [data-reveal].is-visible { opacity: 1; transform: none; filter: none; clip-path: inset(0 0 0 0 round 24px); }
+.reveal-ready [data-reveal].is-visible { opacity: 1; transform: none; filter: none; }
 
 /* Word-by-word heading reveal (words are split at build time). */
 .split .w { display: inline-block; overflow: clip; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
@@ -231,11 +229,12 @@ h1, h2, h3 {
   --color-card: rgb(255 255 255 / 0.04); --color-accent: #4fd1a1; --color-bg: var(--stage);
   background: var(--stage); color: var(--color-fg); isolation: isolate; position: relative; overflow: clip;
 }
-.aurora { position: absolute; inset: -20%; z-index: -1; pointer-events: none; filter: blur(70px); opacity: 0.75; }
-.aurora i { position: absolute; border-radius: 50%; mix-blend-mode: screen; animation: drift 18s ease-in-out infinite alternate; }
-.aurora i:nth-child(1) { width: 46vmax; height: 46vmax; left: 8%; top: 4%; background: radial-gradient(circle, #10b98166, transparent 65%); }
-.aurora i:nth-child(2) { width: 38vmax; height: 38vmax; right: 2%; top: 22%; background: radial-gradient(circle, #5eead455, transparent 65%); animation-duration: 22s; animation-delay: -6s; }
-.aurora i:nth-child(3) { width: 34vmax; height: 34vmax; left: 34%; bottom: -6%; background: radial-gradient(circle, #0ea5e933, transparent 65%); animation-duration: 26s; animation-delay: -12s; }
+/* Soft radial gradients only: no blur filter or blend mode (both are costly to repaint). */
+.aurora { position: absolute; inset: -20%; z-index: -1; pointer-events: none; opacity: 0.8; contain: strict; }
+.aurora i { position: absolute; border-radius: 50%; animation: drift 18s ease-in-out infinite alternate; will-change: transform; }
+.aurora i:nth-child(1) { width: 46vmax; height: 46vmax; left: 8%; top: 4%; background: radial-gradient(circle, #10b98155, transparent 62%); }
+.aurora i:nth-child(2) { width: 38vmax; height: 38vmax; right: 2%; top: 22%; background: radial-gradient(circle, #5eead440, transparent 62%); animation-duration: 22s; animation-delay: -6s; }
+.aurora i:nth-child(3) { width: 34vmax; height: 34vmax; left: 34%; bottom: -6%; background: radial-gradient(circle, #0ea5e926, transparent 62%); animation-duration: 26s; animation-delay: -12s; }
 @keyframes drift { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(6%, -4%, 0) scale(1.12); } 100% { transform: translate3d(-5%, 5%, 0) scale(0.95); } }
 .stage-grid {
   position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -278,6 +277,9 @@ html:not(.reveal-ready) .float-icon { opacity: 0.85; }
 .scroll-cue { width: 26px; height: 42px; border: 2px solid rgb(255 255 255 / 0.35); border-radius: 14px; position: relative; }
 .scroll-cue::after { content: ""; position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: var(--emerald-2); animation: cue 1.8s var(--ease-out) infinite; }
 @keyframes cue { 0% { transform: translateY(0); opacity: 1; } 80% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
+
+/* Infinite animations pause while their section is off screen (motion.ts toggles .is-off). */
+.is-off .aurora i, .is-off .orbit, .is-off .orbit > span, .is-off .marquee__track, .is-off .text-gradient { animation-play-state: paused; }
 
 /* ---- Marquee ---- */
 .marquee { display: flex; overflow: clip; user-select: none; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
@@ -332,7 +334,8 @@ html:not(.reveal-ready) .float-icon { opacity: 0.85; }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal-ready [data-reveal], .split .w > span, .hero-in { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; }
+  .reveal-ready [data-reveal], .split .w > span, .hero-in { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .aurora i, .orbit, .orbit > span, .marquee__track, .text-gradient { animation: none !important; }
   .float-icon { opacity: 0.7 !important; }
   .intro { display: none !important; }
 }

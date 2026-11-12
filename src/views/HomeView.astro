@@ -291,7 +291,7 @@ const serviceLd = {
           <ul class="marquee__track" aria-hidden={k === 1 ? 'true' : undefined} role="list">
             {marqueeA.map((m) => (
               <li class="flex items-center gap-12 whitespace-nowrap text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-                {m}<Logo size={22} class="text-fg opacity-40" />
+                {m}<span class="h-2.5 w-2.5 rotate-45 rounded-[3px] bg-accent/60" aria-hidden="true"></span>
               </li>
             ))}
           </ul>
@@ -534,8 +534,10 @@ const serviceLd = {
       />
       <div class="grid gap-6 md:grid-cols-2">
         {selected.map((entry, i) => (
-          <div data-reveal="clip" style={`--d:${(i % 2) * 0.12}s`} class="lift rounded-2xl">
-            <ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} />
+          <div data-reveal="up" style={`--d:${(i % 2) * 0.12}s`}>
+            <div class="lift h-full rounded-2xl">
+              <ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} eager={false} />
+            </div>
           </div>
         ))}
       </div>
@@ -609,7 +611,7 @@ const serviceLd = {
       <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
         {
           processSteps.map((s, i) => (
-            <li class="group relative rounded-3xl border border-border bg-card p-6" data-reveal="up" style={`--d:${i * 0.1}s`} data-spotlight>
+            <li class="group relative rounded-3xl border border-border bg-card p-6 transition-colors hover:border-accent/40" data-reveal="up" style={`--d:${i * 0.1}s`} data-spotlight>
               <span class="outline-num text-5xl font-bold leading-none">0{i + 1}</span>
               <h3 class="mt-4 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
               <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.description)}</p>

@@ -1,10 +1,12 @@
 ---
 import '../styles/global.css';
 import { t } from '../data/i18n';
+import { profile } from '../data/profile';
 import { canonicalHref, hreflangLinks } from '../lib/seo';
 import { RSS_TITLE } from '../lib/feed';
 import MobileContactBar from '../components/MobileContactBar.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import IconSprite from '../components/IconSprite.astro';
 import type { ContactTopic } from '../lib/contact';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
@@ -71,6 +73,9 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
+    {profile.instagram.url && <link rel="me" href={profile.instagram.url} />}
+    <link rel="me" href={profile.links.linkedin.url} />
+    <link rel="me" href={profile.links.github.url} />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -137,6 +142,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
     >
       {t(lang, 'a11y.skip')}
     </a>
+    <IconSprite />
     <div class="scroll-progress" data-progress aria-hidden="true"></div>
     <slot />
 

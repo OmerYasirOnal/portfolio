@@ -1,0 +1,15 @@
+---
+/** One hidden SVG holding every icon as a <symbol>; Icon.astro <use>s them. */
+import { FILLED, STROKED } from '../lib/icons';
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+  {Object.entries(FILLED).map(([n, d]) => <symbol id={`i-${n}`} viewBox="0 0 24 24" fill="currentColor"><path d={d} /></symbol>)}
+  {
+    Object.entries(STROKED).map(([n, d]) => (
+      <symbol id={`i-${n}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d={d} />
+      </symbol>
+    ))
+  }
+</svg>

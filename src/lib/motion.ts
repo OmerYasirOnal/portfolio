@@ -21,20 +21,24 @@ const finePointer = window.matchMedia('(pointer: fine)').matches;
 const root = document.documentElement;
 
 /* ---------- One-shot reveals ---------- */
+const pendingReveal = new Set<HTMLElement>();
+
 function initReveal() {
   const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
   if (!els.length || !('IntersectionObserver' in window)) return;
   root.classList.add('reveal-ready');
+  els.forEach((el) => pendingReveal.add(el));
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
         if (e.isIntersecting) {
           e.target.classList.add('is-visible');
+          pendingReveal.delete(e.target as HTMLElement);
           io.unobserve(e.target);
         }
       }
     },
-    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    { threshold: 0, rootMargin: '0px 0px -8% 0px' },
   );
   els.forEach((el) => io.observe(el));
 }
@@ -99,18 +103,30 @@ type Item = { el: HTMLElement; kind: 'parallax' | 'float' | 'hscroll'; f: number
 
 function initScrollFx() {
   const progress = document.querySelector<HTMLElement>('[data-progress]');
+  // Parallax and floating icons are desktop-only: phones get the content, not the CPU cost.
+  const heavyFx = window.innerWidth >= 768 && finePointer;
   const header = document.querySelector<HTMLElement>('#top');
   const items: Item[] = [];
-  if (!reduce) {
+  if (!reduce && heavyFx) {
     document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) =>
       items.push({ el, kind: 'parallax', f: Number(el.dataset.parallax) || 0.15 }),
     );
     document.querySelectorAll<HTMLElement>('[data-float]').forEach((el) =>
       items.push({ el, kind: 'float', f: Number(el.dataset.float) || 1, host: el.closest('section') ?? el }),
     );
+  }
+  if (!reduce) {
     document.querySelectorAll<HTMLElement>('[data-hscroll]').forEach((el) =>
       items.push({ el, kind: 'hscroll', f: 0 }),
     );
+  }
+
+  // Pause infinite CSS animations in sections that are off screen.
+  if ('IntersectionObserver' in window) {
+    const offIo = new IntersectionObserver((entries) => {
+      for (const e of entries) e.target.classList.toggle('is-off', !e.isIntersecting);
+    });
+    document.querySelectorAll('.stage, .marquee').forEach((el) => offIo.observe(el));
   }
 
   let ticking = false;
@@ -123,6 +139,17 @@ function initScrollFx() {
       progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
     }
     header?.classList.toggle('is-scrolled', y > 24);
+
+    // Safety net: anything already scrolled past is revealed even if the
+    // observer missed it (fast flings, anchor jumps, restored scroll).
+    if (pendingReveal.size) {
+      for (const el of pendingReveal) {
+        if (el.getBoundingClientRect().top < vh) {
+          el.classList.add('is-visible');
+          pendingReveal.delete(el);
+        }
+      }
+    }
 
     for (const it of items) {
       if (it.kind === 'parallax') {
