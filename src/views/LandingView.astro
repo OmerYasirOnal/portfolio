@@ -31,6 +31,7 @@ const url = `${site}${d.slug}/`;
 const home = locale === 'tr' ? '/' : '/en/';
 const shown = d.reelIds.map((id) => reels.find((r) => r.id === id)!).filter(Boolean);
 
+const offers = (d.packages ?? []).map((p) => ({ '@type': 'Offer', name: p.name, description: p.text, price: p.amount, priceCurrency: p.currency, url: `${url}#paketler` }));
 const serviceLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -40,6 +41,7 @@ const serviceLd = {
   areaServed: locale === 'tr' ? { '@type': 'City', name: 'Istanbul' } : 'Worldwide',
   availableLanguage: locale === 'tr' ? ['tr', 'en'] : ['en', 'tr'],
   provider: { '@id': `${site}/#person` },
+  ...(offers.length ? { offers } : {}),
 };
 ---
 
@@ -115,6 +117,29 @@ const serviceLd = {
         }
       </ul>
     </section>
+
+    {d.packages && d.packages.length > 0 && (
+      <section id="paketler" class="scroll-mt-20 border-t border-border">
+        <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <p class="label" data-reveal>{L('Paketler', 'Packages')}</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl" data-reveal>{L('Net fiyat, sürpriz yok', 'Clear prices, no surprises')}</h2>
+          <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+            {d.packages.map((p, i) => (
+              <li data-reveal="up" style={`--d:${i * 0.07}s`}>
+                <div class:list={['flex h-full flex-col rounded-3xl border p-6', p.featured ? 'border-accent bg-accent-soft' : 'border-border bg-card']}>
+                  {p.featured && <span class="mb-3 self-start rounded-full bg-accent px-3 py-1 font-mono text-[0.65rem] uppercase tracking-wider text-on-accent">{L('En çok tercih edilen', 'Most popular')}</span>}
+                  <h3 class="text-lg font-semibold tracking-tight text-fg">{p.name}</h3>
+                  <p class="mt-3 text-3xl font-bold tracking-tight text-fg">{p.price}<span class="ml-1.5 align-middle font-mono text-xs font-normal uppercase tracking-wider text-muted">{p.unit}</span></p>
+                  <p class="mt-3 flex-1 text-[0.92rem] leading-relaxed text-muted">{p.text}</p>
+                  <div class="mt-5"><WhatsAppButton locale={locale} topic={d.topic} location={`package-${i + 1}`} label={L('Bu paketi sor', 'Ask about this')} variant={p.featured ? 'primary' : 'outline'} /></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {d.packagesNote && <p class="mt-6 max-w-3xl text-sm leading-relaxed text-muted">{d.packagesNote}</p>}
+        </div>
+      </section>
+    )}
 
     <section class="border-y border-border bg-card/60">
       <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">

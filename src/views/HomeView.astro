@@ -28,6 +28,7 @@ import { localizePath, pick, t, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
 import { serviceGroups, problemPrompts, processSteps, serviceGroup } from '../data/services';
 import { reels, instagramAccounts } from '../data/social';
+import { landings } from '../data/landings';
 import { personJsonLd, webSiteJsonLd, faqPageJsonLd, jsonLdScript } from '../lib/seo';
 import { ogHomePath } from '../lib/og';
 
@@ -49,6 +50,9 @@ const heroWidths = [360, 540, 720, 819];
 const heroSizes = '(min-width: 1024px) 34vw, (min-width: 768px) 40vw, 80vw';
 const heroImg = await getImage({ src: portrait, widths: heroWidths, sizes: heroSizes });
 
+const coversLanding = landings.find((l) => l.locale === locale && l.covers && l.covers.length > 0)!;
+const covers = coversLanding.covers!;
+const coversHref = `${coversLanding.slug}/#paketler`;
 const groupIcon = { 'web-software': 'code', 'ads-growth': 'megaphone', 'content-video': 'film' } as const;
 
 const title = L(
@@ -399,6 +403,35 @@ const serviceLd = {
           <div class="hbar flex-1"><span></span></div>
           <span class="font-mono text-xs text-white/50">{String(reels.length).padStart(2, '0')}</span>
         </div>
+      </div>
+    </section>
+
+    {/* ---------- Sample covers (different styles) ---------- */}
+    <section class="border-b border-border" aria-labelledby="covers-title">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <div class="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <p class="label" data-reveal>{L('Örnek içerik tasarımları', 'Sample content designs')}</p>
+            <h2 id="covers-title" class="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-fg sm:text-4xl" data-reveal>
+              {L('Her konuya kendi tarzı: aynı şablon değil.', 'Every topic gets its own style, not one template.')}
+            </h2>
+          </div>
+          <a href={coversHref} class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent" data-reveal>
+            {L('Paketler ve fiyatlar', 'Packages and prices')} <Icon name="arrow" size={15} />
+          </a>
+        </div>
+        <ul class:list={['mt-10 grid grid-cols-2 gap-4 sm:gap-6', covers.length > 4 ? 'md:grid-cols-4' : 'md:grid-cols-4']} role="list">
+          {covers.map((c, i) => (
+            <li data-reveal="up" style={`--d:${(i % 4) * 0.06}s`}>
+              <a href={coversHref} class="phone phone--plain reel-card block" aria-label={c.alt}>
+                <span class="phone__screen block"><img src={c.src} alt={c.alt} width="540" height="960" loading={i < 4 ? "eager" : "lazy"} fetchpriority="low" decoding="async" /></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 max-w-2xl text-sm leading-relaxed text-muted">
+          {L('Psikolog ve danışmanlık merkezleri için örnek kapaklar; görseller yapay zekâ ile üretildi. Konu, renk ve dil markanıza göre belirlenir.', 'Sample covers for therapists and counselling practices; the photos are AI-generated. Topics, colours and tone are set for your brand.')}
+        </p>
       </div>
     </section>
 

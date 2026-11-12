@@ -83,17 +83,28 @@ function initCounters() {
 function initAutoplay() {
   const vids = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
   if (!vids.length || reduce) return;
+  // No flash while a clip loads: the poster sits behind as a background, the
+  // video stays transparent until its first frame is actually playing.
+  vids.forEach((v) => {
+    const box = v.parentElement;
+    if (box && v.poster) {
+      box.style.backgroundImage = `url("${v.poster}")`;
+      box.classList.add('has-poster');
+    }
+    v.classList.add('v-wait');
+    v.addEventListener('playing', () => v.classList.remove('v-wait'), { once: true });
+  });
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
         const v = e.target as HTMLVideoElement;
         if (e.isIntersecting) {
           if (v.preload === 'none') v.preload = 'auto';
-          v.play().catch(() => {});
+          v.play().catch(() => v.classList.remove('v-wait'));
         } else v.pause();
       }
     },
-    { threshold: 0.25 },
+    { threshold: 0.25, rootMargin: '200px 0px' },
   );
   vids.forEach((v) => io.observe(v));
 }

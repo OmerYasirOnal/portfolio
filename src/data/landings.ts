@@ -16,6 +16,9 @@ export interface Landing {
   /** Sample covers (no client names) shown instead of / before Reels. */
   covers?: { src: string; alt: string }[];
   coversNote?: string;
+  /** Price cards. price is display text; amount/currency feed the Offer JSON-LD. */
+  packages?: { name: string; text: string; price: string; unit: string; amount: number; currency: 'TRY' | 'USD'; featured?: boolean }[];
+  packagesNote?: string;
   deliverables: { title: string; text: string }[];
   proof: { title: string; text: string; href: string }[];
   faqs: { q: string; a: string }[];
@@ -75,6 +78,13 @@ export const landings: Landing[] = [
       { src: '/work/ornek-kapak/en-burnout.jpg', alt: 'Sample Reels cover: Burnout is not a weakness, it is a signal' },
     ],
     coversNote: 'Sample cover designs; the photos are AI-generated. Topics, colours and tone are set together with you, to fit your specialty and voice.',
+    packages: [
+      { name: 'Trial Reel', text: 'One 30-45 second video: topic, script, visuals, voice-over, captions, cover and caption text. One revision.', price: '$150', unit: 'one video', amount: 150, currency: 'USD' },
+      { name: 'Monthly Content', text: '4 Reels a month with covers, captions and a monthly topic plan. Two revisions per video.', price: '$480', unit: 'per month', amount: 480, currency: 'USD', featured: true },
+      { name: 'Growth', text: '8 Reels and 4 posts a month, a content calendar, profile and highlights setup, and a short monthly report.', price: '$850', unit: 'per month', amount: 850, currency: 'USD' },
+      { name: 'Visibility Check', text: 'Where your site stands on Google and in AI search: a list of gaps and the fixes applied (structured data, titles and descriptions, FAQ data), with a short report.', price: '$250', unit: 'one-off', amount: 250, currency: 'USD' },
+    ],
+    packagesNote: 'Half up front, half on delivery. Ad spend is separate. No guarantees on rankings, followers or client numbers.',
     deliverables: [
       { title: 'Visibility on Google (SEO)', text: 'Titles and descriptions, structured data (schema.org), page speed, Google Business Profile and local search. A short audit first, then the fixes.' },
       { title: 'Visibility in AI answers', text: 'Clear facts, FAQ content and consistent business data so ChatGPT, Gemini and Google’s AI summaries describe your practice correctly. No secret tricks: solid foundations and plain content.' },
@@ -118,6 +128,13 @@ export const landings: Landing[] = [
       { src: '/work/ornek-kapak/gece-uyanma.jpg', alt: 'Örnek Reels kapağı: Gece uyanınca düşünceler mi başlıyor?' },
     ],
     coversNote: 'Sekiz farklı konu, sekiz farklı tarz. Örnek kapak tasarımlarıdır; görseller yapay zekâ ile üretildi. Konu, renk ve dil sizin uzmanlık alanınıza ve marka tonunuza göre birlikte belirlenir.',
+    packages: [
+      { name: 'Deneme Reels', text: '30-45 saniyelik 1 video: konu, senaryo, görseller, seslendirme, altyazı, kapak ve açıklama metni. 1 revizyon.', price: '₺2.000', unit: 'tek video', amount: 2000, currency: 'TRY' },
+      { name: 'Aylık İçerik', text: 'Ayda 4 Reels, kapakları ve açıklamaları, aylık konu planı. Video başına 2 revizyon.', price: '₺6.500', unit: 'aylık', amount: 6500, currency: 'TRY', featured: true },
+      { name: 'Büyüme', text: 'Ayda 8 Reels ve 4 gönderi, içerik takvimi, profil ve öne çıkanlar düzeni, aylık kısa rapor.', price: '₺11.500', unit: 'aylık', amount: 11500, currency: 'TRY' },
+      { name: 'Görünürlük Kontrolü', text: 'Sitenizin Google ve yapay zekâ aramalarındaki durumu: eksiklerin listesi ve düzeltilmesi (yapılandırılmış veri, başlık ve açıklamalar, SSS verisi), kısa rapor.', price: '₺3.500', unit: 'tek sefer', amount: 3500, currency: 'TRY' },
+    ],
+    packagesNote: 'Ödemenin yarısı başlangıçta, yarısı teslimde. Reklam bütçesi ayrıdır. Sıralama, takipçi ya da danışan sayısı garantisi verilmez.',
     deliverables: [
       { title: 'Google’da görünürlük (SEO)', text: 'Başlık ve açıklamalar, yapılandırılmış veri (schema.org), sayfa hızı, Google İşletme Profili ve yerel arama düzeni. Önce kısa bir kontrol raporu, sonra düzeltmeler.' },
       { title: 'Yapay zekâ cevaplarında görünürlük (AIO)', text: 'ChatGPT, Gemini ve Google’ın yapay zekâ özetleri sitenizi doğru anlasın diye net bilgi, sık sorulan sorular ve her yerde tutarlı işletme verisi. Gizli bir yöntem değil; sağlam temel ve açık içerik.' },
