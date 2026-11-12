@@ -13,6 +13,9 @@ export interface Landing {
   h1: string; // *word* = gradient accent
   intro: string;
   reelIds: string[];
+  /** Sample covers (no client names) shown instead of / before Reels. */
+  covers?: { src: string; alt: string }[];
+  coversNote?: string;
   deliverables: { title: string; text: string }[];
   proof: { title: string; text: string; href: string }[];
   faqs: { q: string; a: string }[];
@@ -32,7 +35,7 @@ export const landings: Landing[] = [
     h1: 'Short videos that *stop the scroll,* made with AI and edited by a human.',
     intro:
       'I script, generate, animate and edit vertical videos for brands: hooks in the first second, motion text, voice-over and a clear call to action. AI produces scenes; I write the message and review every frame. Delivered in 9:16, plus 1:1 and 16:9 on request.',
-    reelIds: ['a2-aksaray', 'sacide-kaygi', 'kalem-1-16', 'a2-3hata', 'a2-logo', 'a2-sunucu'],
+    reelIds: ['a2-aksaray', 'kalem-1-16', 'a2-3hata', 'a2-logo', 'a2-sunucu'],
     deliverables: [
       { title: 'Script & hooks', text: 'Two or three opening hooks per video so you can test which one holds attention.' },
       { title: 'AI scenes + real footage', text: 'Generated scenes, your photos or footage, product shots and virtual presenters, labelled as AI where platforms require.' },
@@ -64,7 +67,14 @@ export const landings: Landing[] = [
     h1: 'Danışanlarınızın sizi *güvenle* bulduğu Reels ve web sitesi.',
     intro:
       'Bilgilendirici, sakin ve etik sınırlara uygun kısa videolar; randevuya kolay ulaştıran bir site. Senaryoyu birlikte belirliyoruz, her içerik yayından önce onayınıza geliyor. Tanı ya da tedavi vaadi, danışan yorumu ve abartılı ifade kullanmıyorum.',
-    reelIds: ['sacide-kaygi', 'alak-6-19', 'kalem-1-16'],
+    reelIds: [],
+    covers: [
+      { src: '/work/ornek-kapak/cocuklar-kaygi.jpg', alt: 'Örnek Reels kapağı: Çocuklar kaygılıyım demez' },
+      { src: '/work/ornek-kapak/kaygi-stres.jpg', alt: 'Örnek Reels kapağı: Kaygı mı, stres mi?' },
+      { src: '/work/ornek-kapak/ergen-konusma.jpg', alt: 'Örnek Reels kapağı: Ergeninizle konuşurken yapılan 3 hata' },
+      { src: '/work/ornek-kapak/uyku-dongusu.jpg', alt: 'Örnek Reels kapağı: Gece 3’te uyanıyorsanız okuyun' },
+    ],
+    coversNote: 'Örnek kapak tasarımları; görseller yapay zekâ ile üretildi. Konu, renk ve dil sizin uzmanlık alanınıza ve marka tonunuza göre birlikte belirlenir.',
     deliverables: [
       { title: 'Bilgilendirici Reels', text: 'Tek bir soruya cevap veren 20-40 saniyelik videolar: senaryo, yapay zekâ görselleri, seslendirme, kelime kelime altyazı ve "bilgilendirme amaçlıdır" notu.' },
       { title: 'Güven veren web sitesi', text: 'Uzmanlık alanları, eğitim ve yaklaşım, sık sorulanlar ve WhatsApp / randevu formu. Hızlı, mobil öncelikli, Google’a uygun.' },
@@ -73,7 +83,7 @@ export const landings: Landing[] = [
     ],
     proof: [
       { title: 'Öz & Saye Psikoloji', text: 'Next.js ve PostgreSQL ile kurumsal site, yazı / SSS / ölçek / başvuru yönetim paneli.', href: '/projects/ozsaye/' },
-      { title: 'Klinik Psikolog Sacide Şahin', text: '“Çocuklar kaygılıyım demez” Reels’i: senaryo, AI görseller, seslendirme, altyazı, tıbbi uyarı notu.', href: '/projects/ozsaye/' },
+      { title: 'Bir klinik psikolog için Reels', text: 'Çocuklarda kaygıyı anlatan bilgilendirici video: senaryo, yapay zekâ görselleri, seslendirme, altyazı ve tıbbi uyarı notu.', href: '/projects/ozsaye/' },
     ],
     faqs: [
       { q: 'Videolarda kendim görünmek zorunda mıyım?', a: 'Hayır. Görseller ve seslendirme yapay zekâ ile hazırlanabilir; isterseniz kendi sesiniz ya da çekiminiz de kullanılır. Yapay zekâ içerikleri platform kurallarına göre etiketlenir.' },
@@ -94,7 +104,7 @@ export const landings: Landing[] = [
     h1: 'Yorumlarınız çok, *vitrininiz* nerede?',
     intro:
       'Google’da yüzlerce yorumu olan pek çok salonun hâlâ bir web sitesi yok, Instagram’ı da haftalarca sessiz kalıyor. Hizmetlerinizi, fiyat aralığınızı ve randevu yolunu tek sayfada toplayan bir site ve düzenli Reels ile bunu değiştirebiliriz.',
-    reelIds: ['a2-aksaray', 'a2-3hata', 'a2-logo', 'sacide-kaygi'],
+    reelIds: ['a2-aksaray', 'a2-3hata', 'a2-logo', 'a2-sunucu'],
     deliverables: [
       { title: 'Tek sayfa ya da kurumsal site', text: 'Hizmetler, önce / sonra galeri (izinli), ekip, WhatsApp ve randevu. Türkçe / İngilizce / Arapça seçenekli.' },
       { title: 'Instagram Reels', text: 'Mekân ve hizmet videoları, kampanya duyuruları, yapay zekâ ile hareketlendirilmiş sahneler; aylık plan.' },
