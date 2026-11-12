@@ -58,15 +58,54 @@ export const landings: Landing[] = [
     serviceName: 'AI video ads and Reels production',
   },
   {
+    slug: '/en/reels-for-therapists',
+    locale: 'en',
+    seoTitle: 'Search & AI Visibility and Instagram Reels for Therapists | Ömer Yasir Önal',
+    description:
+      'For therapists and counselling practices: visibility on Google and in AI answers, calm educational Instagram Reels and a trustworthy website. Sample covers and real client work.',
+    eyebrow: 'Therapists · counsellors · group practices',
+    h1: 'New clients look for you on *Google, in AI answers and on Instagram.*',
+    intro:
+      'I set up what your site needs to be understood correctly by Google and by assistants like ChatGPT and Gemini, and I produce calm, educational Reels for your practice. No diagnosis or treatment claims, no client testimonials; you approve every piece before it goes out.',
+    reelIds: [],
+    covers: [
+      { src: '/work/ornek-kapak/en-exam-anxiety.jpg', alt: 'Sample Reels cover: Exam anxiety, or not prepared?' },
+      { src: '/work/ornek-kapak/en-couples-myth.jpg', alt: 'Sample Reels cover: Happy couples never argue (myth)' },
+      { src: '/work/ornek-kapak/en-screen-time.jpg', alt: 'Sample Reels cover: Screen time, a fight every evening?' },
+      { src: '/work/ornek-kapak/en-burnout.jpg', alt: 'Sample Reels cover: Burnout is not a weakness, it is a signal' },
+    ],
+    coversNote: 'Sample cover designs; the photos are AI-generated. Topics, colours and tone are set together with you, to fit your specialty and voice.',
+    deliverables: [
+      { title: 'Visibility on Google (SEO)', text: 'Titles and descriptions, structured data (schema.org), page speed, Google Business Profile and local search. A short audit first, then the fixes.' },
+      { title: 'Visibility in AI answers', text: 'Clear facts, FAQ content and consistent business data so ChatGPT, Gemini and Google’s AI summaries describe your practice correctly. No secret tricks: solid foundations and plain content.' },
+      { title: 'Educational Reels', text: '30-45 second videos that answer one question: script, AI visuals, voice-over, word-by-word captions, cover and a “for information only” note.' },
+      { title: 'A website people trust', text: 'Specialties, training and approach, FAQs and a simple booking or contact path. Fast, mobile-first and search-friendly.' },
+    ],
+    proof: [
+      { title: 'Öz & Saye Psikoloji', text: 'A Next.js + PostgreSQL site for a psychotherapy clinic, with an admin panel for articles, FAQs, scales and applications.', href: '/en/projects/ozsaye/' },
+      { title: 'A2 Reklam', text: 'A 3-language website, Google Ads management and AI-assisted Instagram Reels for a signage company.', href: '/en/projects/a2reklam-video/' },
+      { title: 'My own Instagram series', text: 'Code-animated Reels; one episode reached 7,238 views and 115 saves in its first 20 hours.', href: '/en/projects/kuran-reels/' },
+    ],
+    faqs: [
+      { q: 'Can you guarantee rankings or AI recommendations?', a: 'No. Nobody can guarantee a Google position or that an AI assistant will recommend you. I build the technical and content foundation your site needs to be understood correctly, and show what changed with Search Console data.' },
+      { q: 'Do I have to appear in the videos?', a: 'No. Visuals and voice-over can be AI-generated, or we can use your own voice or footage. AI content is labelled according to platform rules.' },
+      { q: 'How do you handle ethics?', a: 'No diagnosis, treatment or outcome claims; no client details or testimonials; a note pointing people to appropriate care where relevant. You approve the script before anything is published.' },
+      { q: 'How do we work across time zones?', a: 'I’m in Istanbul (GMT+3), work in English, reply within the same working day and share drafts asynchronously, so a call is optional.' },
+    ],
+    topic: 'video',
+    ctaLabel: 'Message me on WhatsApp',
+    serviceName: 'Search and AI visibility, and Reels for therapists',
+  },
+  {
     slug: '/psikologlar-icin-instagram-reels',
     locale: 'tr',
-    seoTitle: 'Psikolog ve Terapistler için Instagram Reels ve Web Sitesi | Ömer Yasir Önal',
+    seoTitle: 'Psikologlar için Google ve Yapay Zekâ Görünürlüğü, Instagram Reels | Ömer Yasir Önal',
     description:
-      'Psikolog, terapist ve danışmanlık merkezleri için bilgilendirici Instagram Reels, güven veren web sitesi ve randevu akışı. Öz & Saye Psikoloji için yapılan gerçek işler.',
+      'Psikolog, terapist ve danışmanlık merkezleri için Google’da (SEO) ve yapay zekâ cevaplarında (AIO) görünürlük, bilgilendirici Instagram Reels ve güven veren web sitesi. Örnek kapaklar ve gerçek işler.',
     eyebrow: 'Psikolog · terapist · danışmanlık merkezi',
-    h1: 'Danışanlarınızın sizi *güvenle* bulduğu Reels ve web sitesi.',
+    h1: 'Danışan adaylarınız sizi *Google’da, yapay zekâda ve Instagram’da* arıyor.',
     intro:
-      'Bilgilendirici, sakin ve etik sınırlara uygun kısa videolar; randevuya kolay ulaştıran bir site. Senaryoyu birlikte belirliyoruz, her içerik yayından önce onayınıza geliyor. Tanı ya da tedavi vaadi, danışan yorumu ve abartılı ifade kullanmıyorum.',
+      'Sitenizin Google’da ve ChatGPT, Gemini gibi yapay zekâ asistanlarında doğru tanınması için gereken düzeni kuruyor, sosyal medyanız için sakin ve bilgilendirici Reels üretiyorum. Tanı ya da tedavi vaadi, danışan yorumu ve abartılı ifade yok; her içerik yayından önce onayınıza geliyor.',
     reelIds: [],
     covers: [
       { src: '/work/ornek-kapak/sinav-kaygisi.jpg', alt: 'Örnek Reels kapağı: Sınav kaygısı mı, hazırlıksızlık mı?' },
@@ -80,16 +119,17 @@ export const landings: Landing[] = [
     ],
     coversNote: 'Sekiz farklı konu, sekiz farklı tarz. Örnek kapak tasarımlarıdır; görseller yapay zekâ ile üretildi. Konu, renk ve dil sizin uzmanlık alanınıza ve marka tonunuza göre birlikte belirlenir.',
     deliverables: [
-      { title: 'Bilgilendirici Reels', text: 'Tek bir soruya cevap veren 20-40 saniyelik videolar: senaryo, yapay zekâ görselleri, seslendirme, kelime kelime altyazı ve "bilgilendirme amaçlıdır" notu.' },
+      { title: 'Google’da görünürlük (SEO)', text: 'Başlık ve açıklamalar, yapılandırılmış veri (schema.org), sayfa hızı, Google İşletme Profili ve yerel arama düzeni. Önce kısa bir kontrol raporu, sonra düzeltmeler.' },
+      { title: 'Yapay zekâ cevaplarında görünürlük (AIO)', text: 'ChatGPT, Gemini ve Google’ın yapay zekâ özetleri sitenizi doğru anlasın diye net bilgi, sık sorulan sorular ve her yerde tutarlı işletme verisi. Gizli bir yöntem değil; sağlam temel ve açık içerik.' },
+      { title: 'Bilgilendirici Reels', text: 'Tek bir soruya cevap veren 30-45 saniyelik videolar: senaryo, yapay zekâ görselleri, seslendirme, kelime kelime altyazı, kapak ve “bilgilendirme amaçlıdır” notu.' },
       { title: 'Güven veren web sitesi', text: 'Uzmanlık alanları, eğitim ve yaklaşım, sık sorulanlar ve WhatsApp / randevu formu. Hızlı, mobil öncelikli, Google’a uygun.' },
-      { title: 'Google Haritalar ve arama', text: 'Google İşletme Profili düzeni, yerel SEO ve yapay zekâ aramalarında doğru görünmek için yapılandırılmış veri.' },
-      { title: 'İçerik takvimi', text: 'Ayda 2-8 içerik; konu havuzu, açıklama metinleri ve paylaşım planı.' },
     ],
     proof: [
       { title: 'Öz & Saye Psikoloji', text: 'Next.js ve PostgreSQL ile kurumsal site, yazı / SSS / ölçek / başvuru yönetim paneli.', href: '/projects/ozsaye/' },
       { title: 'Bir klinik psikolog için Reels', text: 'Çocuklarda kaygıyı anlatan bilgilendirici video: senaryo, yapay zekâ görselleri, seslendirme, altyazı ve tıbbi uyarı notu.', href: '/projects/ozsaye/' },
     ],
     faqs: [
+      { q: 'Yapay zekâ aramalarında görünürlük (AIO) garanti edilebilir mi?', a: 'Hayır. Kimse Google’da belirli bir sırayı ya da bir yapay zekâ asistanının sizi önereceğini garanti edemez. Yaptığım şey, sitenizin doğru anlaşılması için gereken teknik ve içerik temelini kurmak ve değişimi Search Console verisiyle göstermek.' },
       { q: 'Videolarda kendim görünmek zorunda mıyım?', a: 'Hayır. Görseller ve seslendirme yapay zekâ ile hazırlanabilir; isterseniz kendi sesiniz ya da çekiminiz de kullanılır. Yapay zekâ içerikleri platform kurallarına göre etiketlenir.' },
       { q: 'Etik kurallara nasıl dikkat ediyorsunuz?', a: 'Tanı, tedavi ya da sonuç vaadi yok; danışan bilgisi ve yorumu kullanılmaz; bedensel şikâyetlerde hekime yönlendiren not eklenir. Metni yayından önce siz onaylarsınız.' },
       { q: 'Fiyatlar nasıl?', a: 'İçerik sayısı ve sitenin kapsamına göre özel teklif hazırlıyorum. WhatsApp’tan kısaca yazmanız yeterli.' },
