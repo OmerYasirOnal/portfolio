@@ -132,7 +132,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Social media & AI video (recent Reels)');
   for (const r of reels) {
-    lines.push(`- [${r.title.en}](${r.ready ? abs(site, `/en/projects/${r.project}/`) : r.url}): ${r.kind.en}, @${r.account}${r.date ? `, ${r.date}` : ''}${r.ready ? ' (produced, not yet posted)' : ''}`);
+    lines.push(`- [${r.title.en}](${r.ready && r.project ? abs(site, `/en/projects/${r.project}/`) : r.url}): ${r.kind.en}, @${r.account}${r.date ? `, ${r.date}` : ''}${r.ready ? ' (produced, not yet posted)' : ''}`);
   }
   lines.push('');
   lines.push('## Contact');

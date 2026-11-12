@@ -17,8 +17,8 @@ export interface Reel {
   kind: Bilingual;
   preview: string;
   poster: string;
-  /** Project page slug with the full video and case notes. */
-  project: string;
+  /** Project page slug with the full video and case notes (optional). */
+  project?: string;
 }
 
 export const reels: Reel[] = [
@@ -55,6 +55,16 @@ export const reels: Reel[] = [
     preview: '/work/previews/kalem.mp4',
     poster: '/work/previews/kalem.jpg',
     project: 'kuran-reels',
+  },
+  {
+    id: 'dogu-turkistan',
+    account: 'omeryasironal',
+    url: 'https://www.instagram.com/omeryasironal/reel/Dfp7E4Iz5RC/',
+    date: '2026-11-12',
+    title: { tr: '12 Kasım: Doğu Türkistan ve Gazze, “Dünya susuyor”', en: 'November 12: East Turkestan and Gaza, “The world is silent”' },
+    kind: { tr: 'Kendi hesabım · Kaynaklı belgesel Reels', en: 'My account · Sourced documentary Reel' },
+    preview: '/work/previews/dogu-turkistan.mp4',
+    poster: '/work/previews/dogu-turkistan.jpg',
   },
   {
     id: 'a2-3hata',

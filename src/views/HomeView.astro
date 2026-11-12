@@ -349,7 +349,7 @@ const serviceLd = {
               reels.map((r, i) => (
                 <li class="reel-card w-[15rem] shrink-0 snap-center sm:w-[16rem] lg:w-[min(15.5rem,calc((100svh-21rem)*0.46))]" data-reveal="up" style={`--d:${i * 0.08}s`}>
                   <a
-                    href={r.ready ? localizePath(locale, `/projects/${r.project}`) : r.url}
+                    href={r.ready && r.project ? localizePath(locale, `/projects/${r.project}`) : r.url}
                     target={r.ready ? undefined : '_blank'}
                     rel={r.ready ? undefined : 'noopener noreferrer'}
                     data-track={r.ready ? undefined : 'instagram_click'}
@@ -374,9 +374,15 @@ const serviceLd = {
                     </span>
                   </a>
                   <p class="mt-4 font-mono text-[0.7rem] uppercase tracking-wider text-white/55">{pick(locale, r.kind)}</p>
-                  <a href={localizePath(locale, `/projects/${r.project}`)} class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-[--color-accent] hover:underline">
-                    {L('Tam video ve detaylar', 'Full video and details')} <Icon name="arrow" size={14} />
-                  </a>
+                  {r.project ? (
+                    <a href={localizePath(locale, `/projects/${r.project}`)} class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-[--color-accent] hover:underline">
+                      {L('Tam video ve detaylar', 'Full video and details')} <Icon name="arrow" size={14} />
+                    </a>
+                  ) : (
+                    <a href={r.url} target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-[--color-accent] hover:underline">
+                      {L('Instagram’da izle', 'Watch on Instagram')} <Icon name="arrow-up-right" size={14} />
+                    </a>
+                  )}
                 </li>
               ))
             }
