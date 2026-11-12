@@ -232,7 +232,7 @@ const serviceLd = {
 
         <div class="hero-in relative mx-auto w-full max-w-[22rem] md:max-w-none" style="--d:.6s">
           <div data-parallax="0.06">
-            <div class="relative mx-auto aspect-square w-[88%]">
+            <div class="relative mx-auto aspect-square w-[74%] md:w-[88%]">
               <div class="orbit" aria-hidden="true">
                 <span style="left:50%;top:-22px;margin-left:-22px"><Icon name="instagram" size={18} /></span>
                 <span style="right:-22px;top:50%;margin-top:-22px"><Icon name="google" size={18} /></span>
@@ -347,7 +347,7 @@ const serviceLd = {
           <ul class="hscroll__track flex w-max snap-x snap-mandatory gap-6 px-4 sm:px-6 lg:w-auto lg:snap-none lg:px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]" data-hscroll-track role="list">
             {
               reels.map((r, i) => (
-                <li class="reel-card w-[15rem] shrink-0 snap-center sm:w-[16rem] lg:w-[min(15.5rem,calc((100svh-21rem)*0.46))]" data-reveal="up" style={`--d:${i * 0.08}s`}>
+                <li class="reel-card w-[15rem] shrink-0 snap-center sm:w-[16rem] lg:w-[min(16rem,calc((100svh-26rem)*0.57))]" data-reveal="up" style={`--d:${i * 0.08}s`}>
                   <a
                     href={r.ready && r.project ? localizePath(locale, `/projects/${r.project}`) : r.url}
                     target={r.ready ? undefined : '_blank'}
@@ -669,5 +669,5 @@ const serviceLd = {
     </section>
   </main>
 
-  <SiteFooter locale={locale} hideCta />
+  <SiteFooter locale={locale} hideCta flush />
 </Base>

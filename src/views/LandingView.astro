@@ -76,7 +76,7 @@ const serviceLd = {
             <ul class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4" role="list">
               {d.covers.map((c, i) => (
                 <li data-reveal="up" style={`--d:${i * 0.07}s`}>
-                  <div class="phone reel-card"><span class="phone__screen block"><img src={c.src} alt={c.alt} width="540" height="960" loading="lazy" decoding="async" /></span></div>
+                  <div class="phone phone--plain reel-card"><span class="phone__screen block"><img src={c.src} alt={c.alt} width="540" height="960" loading="lazy" decoding="async" /></span></div>
                 </li>
               ))}
             </ul>
@@ -179,5 +179,5 @@ const serviceLd = {
     </section>
   </main>
 
-  <SiteFooter locale={locale} hideCta />
+  <SiteFooter locale={locale} hideCta flush />
 </Base>

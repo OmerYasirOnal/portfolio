@@ -17,14 +17,16 @@ interface Props {
   locale: Locale;
   /** Hide the closing CTA block (contact page already is one). */
   hideCta?: boolean;
+  /** Page ends on a dark stage: no gap above the footer, just a hairline. */
+  flush?: boolean;
 }
 
-const { locale, hideCta = false } = Astro.props;
+const { locale, hideCta = false, flush = false } = Astro.props;
 const L = (tr: string, en: string) => pick(locale, { tr, en });
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-24 bg-ink text-on-ink">
+<footer class:list={['bg-ink text-on-ink', flush ? 'border-t border-white/10' : 'mt-24']}>
   {
     !hideCta && (
       <div class="mx-auto max-w-6xl border-b border-white/10 px-4 py-16 sm:px-6">

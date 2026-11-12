@@ -311,12 +311,13 @@ html:not(.reveal-ready) .float-icon { opacity: 0.85; }
 
 /* ---- Phones (reels) ---- */
 .phone {
-  position: relative; aspect-ratio: 9 / 19.5; border-radius: 2.2rem; padding: 0.55rem;
+  position: relative; aspect-ratio: 9 / 15.6; border-radius: 2.2rem; padding: 0.55rem;
   background: linear-gradient(145deg, #1d2a25, #0a120f); border: 1px solid rgb(255 255 255 / 0.12);
   box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.12);
 }
 .phone::before { content: ""; position: absolute; top: 1.05rem; left: 50%; z-index: 2; width: 28%; height: 1.15rem; margin-left: -14%; border-radius: 1rem; background: #000; }
 .phone__screen { position: relative; height: 100%; overflow: hidden; border-radius: 1.75rem; background: #000; }
+.phone--plain::before { display: none; }
 .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
 .phone__ui { position: absolute; inset: auto 0 0 0; padding: 3.5rem 1rem 1rem; background: linear-gradient(to top, rgb(0 0 0 / 0.85), transparent); color: #fff; }
 .reel-card { transition: transform 0.6s var(--ease-out); }
