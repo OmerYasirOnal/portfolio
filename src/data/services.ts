@@ -312,22 +312,22 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     id: 'content-video',
-    short: { tr: 'Reels, Video & İçerik', en: 'Reels, Video & Content' },
+    short: { tr: 'Sosyal Medya & AI İçerik', en: 'Social Media & AI Content' },
     title: {
-      tr: 'Reels kurgusu, tanıtım videosu ve Instagram içerikleri',
-      en: 'Reels editing, promo videos and Instagram content',
+      tr: 'Sosyal medya yönetimi, Reels ve profesyonel AI içerik üretimi',
+      en: 'Social media management, Reels and professional AI content',
     },
     seoTitle: {
-      tr: 'Reels Kurgu, Video Edit, Instagram İçerik Üretimi ve Dijital Persona',
-      en: 'Reels Editing, Video Production, Instagram Content and Digital Personas',
+      tr: 'Sosyal Medya Yönetimi, AI Video ve Reels İçerik Üretimi, Dijital Persona',
+      en: 'Social Media Management, AI Video and Reels Production, Digital Personas',
     },
     description: {
-      tr: 'Instagram Reels kurgusu ve video edit, tanıtım filmi ve logo animasyonu, markaya özel dijital persona (sanal sunucu), içerik takvimi ve iş süreçlerinde otomasyon.',
-      en: 'Instagram Reels editing and video production, promo films and logo animations, brand digital personas (virtual presenters), content calendars and workflow automation.',
+      tr: 'Instagram ve Facebook hesap yönetimi, yapay zekâ destekli profesyonel video ve Reels üretimi, tanıtım filmi ve logo animasyonu, markaya özel sanal sunucu, içerik takvimi ve Meta reklamlarıyla birlikte planlama.',
+      en: 'Instagram and Facebook account management, professional AI-assisted video and Reels production, promo films and logo animations, brand virtual presenters, content calendars planned together with Meta ads.',
     },
     cardSummary: {
-      tr: 'Reels kurgusu, tanıtım videoları, markaya özel sanal sunucu ve düzenli Instagram içeriği.',
-      en: 'Reels editing, promo videos, brand virtual presenters and regular Instagram content.',
+      tr: 'Hesap yönetimi, yapay zekâ destekli Reels ve video, sanal sunucu ve düzenli içerik takvimi.',
+      en: 'Account management, AI-assisted Reels and video, virtual presenters and a steady content calendar.',
     },
     intro: {
       tr: 'Sizi anlatan kısa videolar ve düzenli içerik üretiyorum: Reels kurgusu, tanıtım filmi, logo animasyonu ve gerekirse markanıza özel bir sanal sunucu. Konu, mesaj ve marka dili sizinle belirleniyor; her içerik yayından önce onayınıza geliyor.',
@@ -397,6 +397,27 @@ export const serviceGroups: ServiceGroup[] = [
         },
       },
       {
+        id: 'social-management',
+        name: { tr: 'Sosyal medya hesap yönetimi', en: 'Social media account management' },
+        summary: {
+          tr: 'Instagram ve Facebook hesabınızın planlı, düzenli ve markaya uygun yürümesi: içerik takvimi, üretim, paylaşım ve Meta reklamlarıyla uyum.',
+          en: 'Running your Instagram and Facebook on a plan: content calendar, production, posting and alignment with Meta ads.',
+        },
+        items: [
+          { tr: 'Aylık içerik takvimi ve seri kurgusu', en: 'Monthly content calendar and series planning' },
+          { tr: 'Reels, gönderi ve hikâye üretimi', en: 'Reels, post and Story production' },
+          { tr: 'Açıklama, sabit yorum ve harekete geçirici mesaj', en: 'Captions, pinned comments and calls to action' },
+          { tr: 'Profil, öne çıkanlar ve biyografi düzeni', en: 'Profile, highlights and bio setup' },
+          { tr: 'Organik içerik ile Meta reklamlarının birlikte planlanması', en: 'Organic content planned together with Meta ads' },
+          { tr: 'Aylık izlenme, kaydetme ve mesaj raporu', en: 'Monthly views, saves and messages report' },
+        ],
+        topic: 'content',
+        note: {
+          tr: 'Her içerik yayından önce onayınıza gelir. Takipçi satın alma, bot ya da etkileşim garantisi yok.',
+          en: 'Every piece comes to you for approval before it goes out. No bought followers, bots or engagement guarantees.',
+        },
+      },
+      {
         id: 'content-strategy',
         name: { tr: 'Sosyal medya içerik stratejisi', en: 'Social media content strategy' },
         summary: {
@@ -429,7 +450,7 @@ export const serviceGroups: ServiceGroup[] = [
         topic: 'automation',
       },
     ],
-    work: ['kuran-reels', 'a2reklam-video', 'akis'],
+    work: ['a2reklam-video', 'kuran-reels', 'ozsaye', 'akis'],
     faqs: [
       {
         question: { tr: 'Çekim yapmam gerekiyor mu?', en: 'Do I need to film anything?' },
@@ -475,9 +496,9 @@ export const problemPrompts: { text: Bilingual; group: ServiceGroupId; anchor: s
     anchor: 'seo',
   },
   {
-    text: { tr: 'Instagram için düzenli içerik üretmek istiyorum.', en: 'I want regular content for Instagram.' },
+    text: { tr: 'Sosyal medya hesabımı profesyonel biri yönetsin istiyorum.', en: 'I want a professional to run my social media.' },
     group: 'content-video',
-    anchor: 'instagram-content',
+    anchor: 'social-management',
   },
   {
     text: { tr: 'Reklam veriyorum ama sonuçları ölçemiyorum.', en: 'I run ads but can’t measure the results.' },

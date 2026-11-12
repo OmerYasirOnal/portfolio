@@ -16,14 +16,21 @@ status_tr: Instagram'da yayında · @omeryasironal
 links:
   other: https://www.instagram.com/omeryasironal/
 videos:
+  - src: /work/kuran-reels/kalem-1-16-deli-derlerse.mp4
+    poster: /work/kuran-reels/kalem-1-16-deli-derlerse.jpg
+    title_en: "Al-Qalam 1-16: What if everyone called you mad? (114 s)"
+    title_tr: "Kalem 1-16: Herkes sana deli derse? (114 sn)"
+    url: https://www.instagram.com/omeryasironal/reel/Dfpk6YSI45t/
   - src: /work/kuran-reels/alak-1-5-oku.mp4
     poster: /work/kuran-reels/alak-1-5-oku.jpg
     title_en: "Al-Alaq 1-5: \"Read\" (96 s)"
     title_tr: "Alak 1-5: \"Oku\" (96 sn)"
+    url: https://www.instagram.com/omeryasironal/reel/DfkiwhszqNX/
   - src: /work/kuran-reels/alak-6-19-insan-ne-zaman-azar.mp4
     poster: /work/kuran-reels/alak-6-19-insan-ne-zaman-azar.jpg
     title_en: "Al-Alaq 6-19: When does a human transgress? (79 s)"
     title_tr: "Alak 6-19: İnsan ne zaman azar? (79 sn)"
+    url: https://www.instagram.com/omeryasironal/reel/Dfm9WTIoBv4/
 highlights_en:
   - Each episode is built around a single question and a key Arabic word, so it opens and closes on its own in under two minutes.
   - Arabic text is taken from a fixed source and checked line by line; every script goes through a source inventory before production.

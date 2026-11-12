@@ -24,6 +24,8 @@ interface Props {
   hideContactBar?: boolean;
   /** Optional analytics event fired once on page view (e.g. service_view). */
   pageEvent?: { name: string; params?: Record<string, string> };
+  /** Play the one-per-session logo intro (home page). */
+  intro?: boolean;
 }
 
 const {
@@ -38,6 +40,7 @@ const {
   contactTopic = 'general',
   hideContactBar = false,
   pageEvent,
+  intro = false,
 } = Astro.props;
 const canonical = canonicalUrl ?? canonicalHref(path, Astro.site!);
 const alternates = canonicalUrl ? [] : hreflangLinks(lang, path, Astro.site!);
@@ -66,6 +69,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
     <link
       rel="alternate"
@@ -107,6 +111,19 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
       // they simply stay local until (and unless) GTM is consented and loaded.
       window.dataLayer = window.dataLayer || [];
     </script>
+    {
+      intro && (
+        <script is:inline>
+          // Intro curtain: once per session, never for reduced motion. Set before
+          // first paint so the curtain shows without a flash of the page.
+          try {
+            if (!sessionStorage.getItem('intro-seen') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              document.documentElement.classList.add('intro-on');
+            }
+          } catch (_) {}
+        </script>
+      )
+    }
 
     <slot name="head" />
   </head>
@@ -120,6 +137,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
     >
       {t(lang, 'a11y.skip')}
     </a>
+    <div class="scroll-progress" data-progress aria-hidden="true"></div>
     <slot />
 
     {!hideContactBar && <MobileContactBar locale={lang} topic={contactTopic} />}
@@ -129,23 +147,8 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
       import { initTracking } from '../lib/track';
       initTracking();
 
-      // Scroll reveal for [data-reveal] elements.
-      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      if (revealEls.length > 0 && 'IntersectionObserver' in window) {
-        document.documentElement.classList.add('reveal-ready');
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                io.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.06, rootMargin: '0px 0px -30px 0px' },
-        );
-        revealEls.forEach((el) => io.observe(el));
-      }
+      import { initMotion } from '../lib/motion';
+      initMotion();
     </script>
   </body>
 </html>

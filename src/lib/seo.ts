@@ -100,8 +100,8 @@ export function personJsonLd(site?: URL | string, locale: Locale = 'tr'): Person
     sameAs,
     knowsAbout:
       locale === 'tr'
-        ? ['Yazılım geliştirme', 'Web geliştirme', 'Mobil uygulama geliştirme', 'Yapay zekâ', 'Google Ads', 'Meta reklamları', 'SEO', 'Yapay zekâ destekli içerik üretimi']
-        : ['Software development', 'Web development', 'Mobile app development', 'Artificial intelligence', 'Google Ads', 'Meta ads', 'SEO', 'AI-assisted content production'],
+        ? ['Yazılım geliştirme', 'Web geliştirme', 'Mobil uygulama geliştirme', 'Yapay zekâ', 'Google Ads', 'Meta reklamları', 'SEO', 'Sosyal medya yönetimi', 'Yapay zekâ destekli video ve Reels üretimi', 'Yapay zekâ destekli içerik üretimi']
+        : ['Software development', 'Web development', 'Mobile app development', 'Artificial intelligence', 'Google Ads', 'Meta ads', 'SEO', 'Social media management', 'AI video and Reels production', 'AI-assisted content production'],
     alumniOf: {
       '@type': 'CollegeOrUniversity',
       name: profile.education.school_en,

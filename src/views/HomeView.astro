@@ -1,10 +1,14 @@
 ---
 /**
- * HomeView - client-first home page shared by / (tr) and /en/ (en).
+ * HomeView - animated, client-first home page shared by / (tr) and /en/ (en).
  *
- * Flow: who I am + what I do + how to reach me (hero) -> three service groups
- * -> visitor problems -> selected real work -> short about -> process ->
- * contact. Long academic and technical detail lives on /about and /projects.
+ * Flow: logo intro (once per session) -> dark hero stage with kinetic headline,
+ * live counters and an orbiting portrait -> service marquee -> social & AI
+ * content stage (sticky horizontal Reels) -> services -> A2 Reklam full-system
+ * case -> visitor problems -> selected work -> about -> process -> FAQ -> contact.
+ *
+ * Motion is progressive enhancement (src/lib/motion.ts + global.css): all copy
+ * is server-rendered and readable with JS off or reduced motion on.
  */
 import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -17,11 +21,14 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
 import ContactChannels from '../components/ContactChannels.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import SplitText from '../components/SplitText.astro';
 import portrait from '../assets/omer-yasir-onal.jpg';
 import { localizePath, pick, t, type Locale } from '../data/i18n';
 import { profile } from '../data/profile';
 import { serviceGroups, problemPrompts, processSteps, serviceGroup } from '../data/services';
-import { personJsonLd, webSiteJsonLd, jsonLdScript } from '../lib/seo';
+import { reels, instagramAccounts } from '../data/social';
+import { personJsonLd, webSiteJsonLd, faqPageJsonLd, jsonLdScript } from '../lib/seo';
 import { ogHomePath } from '../lib/og';
 
 interface Props {
@@ -31,124 +38,371 @@ interface Props {
 const { locale } = Astro.props;
 const L = (tr: string, en: string) => pick(locale, { tr, en });
 const path = localizePath(locale, '/');
+const origin = new URL(Astro.site!).origin;
 
 const all = await getCollection('projects', (e) => !e.data.draft);
 const bySlug = (slug: string) => all.find((e) => e.id === slug)!;
-const selected = ['a2reklam', 'ozsaye', 'parladeniz', 'a2reklam-video'].map(bySlug);
+const selected = ['a2reklam-video', 'a2reklam', 'ozsaye', 'parladeniz'].map(bySlug);
 const engineering = ['odak', 'unisum', 'akis'].map(bySlug);
 
-// Desktop-only hero portrait: preloaded via a media-scoped hint so phones
-// (where it is hidden) never download it.
 const heroWidths = [360, 540, 720, 819];
-const heroSizes = '(min-width: 768px) 40vw, 90vw';
+const heroSizes = '(min-width: 1024px) 34vw, (min-width: 768px) 40vw, 80vw';
 const heroImg = await getImage({ src: portrait, widths: heroWidths, sizes: heroSizes });
 
+const groupIcon = { 'web-software': 'code', 'ads-growth': 'megaphone', 'content-video': 'film' } as const;
+
 const title = L(
-  'Ömer Yasir Önal | Bilgisayar Mühendisi · Web Sitesi, Reklam ve Video İçerik',
-  'Ömer Yasir Önal | Computer Engineer · Websites, Ads and Video Content',
+  'Ömer Yasir Önal | Web Sitesi, Reklam, Sosyal Medya Yönetimi ve AI İçerik · Bilgisayar Mühendisi',
+  'Ömer Yasir Önal | Websites, Ads, Social Media Management and AI Content · Computer Engineer',
 );
 const description = L(
-  'Bilgisayar Mühendisi Ömer Yasir Önal: işletmeler için kurumsal web sitesi, özel yazılım, Google ve Instagram reklam yönetimi, SEO, yapay zekâ araması (GEO), Reels kurgu ve video içerik üretimi. İstanbul.',
-  'Computer Engineer Ömer Yasir Önal builds business websites and custom software, runs Google and Instagram ads, SEO and AI search visibility, and produces Reels and video content. Istanbul.',
+  'Bilgisayar Mühendisi Ömer Yasir Önal: kurumsal web sitesi ve yazılım, Google Ads ve Meta (Instagram/Facebook) reklamları, sosyal medya hesap yönetimi, yapay zekâ destekli profesyonel Reels ve video üretimi, SEO ve AI arama görünürlüğü. İstanbul.',
+  'Computer Engineer Ömer Yasir Önal: business websites and software, Google Ads and Meta (Instagram/Facebook) ads, social media management, professional AI-assisted Reels and video, SEO and AI search visibility. Istanbul.',
 );
+
+const marqueeA = L(
+  'Kurumsal Web Sitesi · Google Ads · Meta Ads · Sosyal Medya Yönetimi · AI Video · Reels Kurgu · SEO · GEO / AEO · Mobil Uygulama',
+  'Business Websites · Google Ads · Meta Ads · Social Media Management · AI Video · Reels Editing · SEO · GEO / AEO · Mobile Apps',
+).split(' · ');
+const marqueeB = L(
+  'Sanal Sunucu · Logo Animasyonu · Yönetim Paneli · Dönüşüm Ölçümü · İçerik Takvimi · Yapay Zekâ Otomasyonu · Yerel SEO',
+  'Virtual Presenter · Logo Animation · Admin Panels · Conversion Tracking · Content Calendar · AI Automation · Local SEO',
+).split(' · ');
+
+const a2Steps = [
+  { icon: 'code', title: L('Web sitesi', 'Website'), text: L('Astro + Cloudflare, 3 dil, İstanbul ilçe sayfaları ve teknik SEO.', 'Astro + Cloudflare, 3 languages, Istanbul district pages and technical SEO.'), state: L('Yayında', 'Live') },
+  { icon: 'chart', title: L('Ölçüm', 'Measurement'), text: L('GTM / GA4 ile arama, WhatsApp ve form dönüşümleri.', 'Call, WhatsApp and form conversions via GTM / GA4.'), state: L('Çalışıyor', 'Running') },
+  { icon: 'google', title: 'Google Ads', text: L('Arama kampanyaları, bütçe ve arama terimi yönetimi.', 'Search campaigns, budget and search-term management.'), state: L('Yönetiliyor', 'Managed') },
+  { icon: 'film', title: L('Reels & AI video', 'Reels & AI video'), text: L('Gerçek proje hikâyeleri, AI sahneler, sanal sunucu, logo animasyonu.', 'Real project stories, AI scenes, a virtual presenter, logo animation.'), state: L('Bugün yeni Reels', 'New Reel today') },
+  { icon: 'meta', title: 'Meta Ads', text: L('Reels’leri dükkân ve çok şubeli işletme sahiplerine ulaştıracak kampanya.', 'A campaign to put the Reels in front of shop and chain-store owners.'), state: L('Kuruluyor', 'Setting up') },
+] as const;
+
+const faqs = [
+  {
+    q: L('Ömer Yasir Önal hangi hizmetleri veriyor?', 'What services does Ömer Yasir Önal offer?'),
+    a: L(
+      'Kurumsal web sitesi, yönetim paneli ve mobil uygulama geliştirme; Google Ads ve Meta (Instagram / Facebook) reklam yönetimi; SEO ve yapay zekâ aramalarında görünürlük; sosyal medya hesap yönetimi ve yapay zekâ destekli Reels, video ve sanal sunucu üretimi. İstanbul merkezli, Türkiye geneline uzaktan.',
+      'Business websites, admin panels and mobile apps; Google Ads and Meta (Instagram / Facebook) ads management; SEO and AI search visibility; social media management and AI-assisted Reels, video and virtual presenter production. Based in Istanbul, working remotely across Türkiye.',
+    ),
+  },
+  {
+    q: L('Sosyal medya hesabımı yönetebilir misiniz?', 'Can you run my social media account?'),
+    a: L(
+      'Evet. Aylık içerik takvimi, Reels ve gönderi üretimi, açıklama ve harekete geçirici mesajlar, profil düzeni ve Meta reklamlarıyla birlikte planlama yapıyorum. Her içerik yayından önce onayınıza gelir; takipçi satın alma ya da etkileşim garantisi yoktur.',
+      'Yes. I run a monthly content calendar, produce Reels and posts, write captions and calls to action, tidy the profile and plan it together with Meta ads. Every piece is approved by you first; no bought followers or engagement guarantees.',
+    ),
+  },
+  {
+    q: L('AI ile üretilen videolar profesyonel görünür mü?', 'Do AI-made videos look professional?'),
+    a: L(
+      'Senaryo, kurgu, seslendirme ve son kontrol insan elinde; yapay zekâ görüntü ve sahne üretiminde araç olarak kullanılıyor. A2 Reklam için ürettiğim Reels ve kendi Instagram serim bu üretim hattının yayındaki örnekleri. Platform kurallarına göre AI etiketi kullanılır.',
+      'Script, edit, voice and final review are human; AI is a tool for visuals and scenes. The Reels I make for A2 Reklam and my own Instagram series are live examples of this pipeline. AI labels are applied per platform rules.',
+    ),
+  },
+  {
+    q: L('Fiyatlar nasıl belirleniyor?', 'How is pricing set?'),
+    a: L(
+      'Sabit paket yerine kapsamınıza özel teklif hazırlıyorum. WhatsApp’tan işinizi kısaca anlatmanız yeterli; reklam bütçesi her zaman yönetim ücretinden ayrıdır ve doğrudan Google’a veya Meta’ya ödenir.',
+      'Each project is quoted per scope rather than fixed packages. A short WhatsApp message is enough to start; ad spend is always separate from the management fee and paid directly to Google or Meta.',
+    ),
+  },
+];
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${origin}/#service`,
+  name: L('Ömer Yasir Önal · Web, Reklam ve AI İçerik', 'Ömer Yasir Önal · Web, Ads and AI Content'),
+  url: `${origin}${path}`,
+  logo: `${origin}/brand/logo-512.png`,
+  image: `${origin}/brand/logo-512.png`,
+  founder: { '@id': `${origin}/#person` },
+  areaServed: [{ '@type': 'City', name: 'Istanbul' }, { '@type': 'Country', name: 'Türkiye' }],
+  address: { '@type': 'PostalAddress', addressLocality: 'Istanbul', addressCountry: 'TR' },
+  telephone: `+${profile.whatsapp}`,
+  email: profile.email,
+  sameAs: [profile.instagram.url, profile.links.linkedin.url, profile.links.github.url].filter(Boolean),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: L('Hizmetler', 'Services'),
+    itemListElement: serviceGroups.flatMap((g) =>
+      g.services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: pick(locale, s.name), description: pick(locale, s.summary) },
+      })),
+    ),
+  },
+};
 ---
 
-<Base title={title} description={description} path={path} lang={locale} ogImage={ogHomePath(locale)}>
-  <link
-    slot="head"
-    rel="preload"
-    as="image"
-    imagesrcset={heroImg.srcSet.attribute}
-    imagesizes={heroSizes}
-    media="(min-width: 768px)"
-    fetchpriority="high"
-  />
+<Base title={title} description={description} path={path} lang={locale} ogImage={ogHomePath(locale)} intro>
+  <link slot="head" rel="preload" as="image" imagesrcset={heroImg.srcSet.attribute} imagesizes={heroSizes} media="(min-width: 768px)" fetchpriority="high" />
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(personJsonLd(Astro.site, locale))} />
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(webSiteJsonLd(Astro.site))} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(faqPageJsonLd(faqs.map((f) => ({ question: f.q, answer: f.a }))))} />
 
-  <SiteHeader locale={locale} path={path} />
+  {/* ---------- Intro curtain (once per session) ---------- */}
+  <div class="intro" data-intro aria-hidden="true">
+    <div class="flex flex-col items-center gap-6">
+      <Logo size={112} draw class="text-[#eef3f0]" />
+      <p class="intro-name font-mono text-sm uppercase tracking-[0.4em] text-white/70"><span>ömer yasir önal</span></p>
+    </div>
+  </div>
+
+  <SiteHeader locale={locale} path={path} overStage />
 
   <main id="main">
-    {/* ---------- Hero ---------- */}
-    <section class="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-10 sm:px-6 md:grid-cols-[1.25fr_1fr] md:items-center md:gap-14 md:pb-24 md:pt-16">
-      <div>
-        <p class="label flex flex-wrap items-center gap-x-2">
-          <Image
-            src={portrait}
-            alt=""
-            width={88}
-            height={88}
-            loading="eager"
-            class="mr-1 h-11 w-11 rounded-full border border-border object-cover object-top md:hidden"
-          />
-          <span class="text-fg">{profile.name}</span>
-          <span aria-hidden="true">/</span>
-          <span>{L('Bilgisayar Mühendisi · İstanbul', 'Computer Engineer · Istanbul')}</span>
-        </p>
-        <h1 class="mt-5 text-[2.35rem] font-semibold leading-[1.06] tracking-tight text-fg sm:text-5xl lg:text-[3.6rem]">
-          {L('İşletmenizi internette büyüten yazılımı ve içeriği geliştiriyorum.', 'I build the software and content that grow your business online.')}
-        </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-          {
-            L(
-              'Kurumsal web siteleri, Google ve Instagram reklamları, SEO, Reels ve video içerik. Tasarımdan ölçüme kadar tek muhatap: ajans katmanı yok, işi yapan kişiyle konuşuyorsunuz.',
-              'Business websites, Google and Instagram ads, SEO, Reels and video content. One accountable engineer from design to measurement: no agency layers, you talk to the person doing the work.',
-            )
-          }
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <WhatsAppButton locale={locale} location="hero" size="lg" />
+    {/* ---------- Hero stage ---------- */}
+    <section class="stage -mt-16 pt-16" aria-labelledby="hero-title">
+      <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="stage-grid" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      {/* scroll-linked floating icons */}
+      <span class="float-icon left-[4%] top-[22%] hidden md:grid" style="--s:58px" data-float="1" aria-hidden="true"><Icon name="instagram" size={26} /></span>
+      <span class="float-icon left-[44%] top-[12%] hidden lg:grid" style="--s:46px" data-float="-0.8" aria-hidden="true"><Icon name="sparkle" size={20} /></span>
+      <span class="float-icon left-[7%] bottom-[16%] hidden md:grid" style="--s:50px" data-float="-1.2" aria-hidden="true"><Icon name="google" size={22} /></span>
+      <span class="float-icon right-[4%] bottom-[10%] hidden md:grid" style="--s:54px" data-float="0.9" aria-hidden="true"><Icon name="meta" size={26} /></span>
+
+      <div class="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-12 px-4 pb-16 pt-12 md:pt-16 sm:px-6 md:grid-cols-[1.35fr_1fr] md:gap-10 md:pb-24">
+        <div>
           <a
-            href={localizePath(locale, '/projects')}
-            class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-6 py-3.5 text-[0.95rem] font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+            href={profile.instagram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="instagram_click"
+            data-track-location="hero_chip"
+            class="hero-in group inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 py-1.5 pl-1.5 pr-4 text-sm text-white/85 backdrop-blur hover:border-white/40"
+            style="--d:.2s"
           >
-            {t(locale, 'cta.viewWork')}
-            <Icon name="arrow" size={17} />
+            <span class="grid h-7 w-7 place-items-center rounded-full bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fd5949_45%,#d6249f_60%,#285aeb_90%)] text-white"><Icon name="instagram" size={14} /></span>
+            <span>{L('Bugün yeni Reels yayında', 'New Reels out today')}</span>
+            <span class="font-mono text-xs text-[--color-accent]">@{profile.instagram.handle}</span>
+            <Icon name="arrow-up-right" size={14} class="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
+
+          <SplitText
+            as="h1"
+            id="hero-title"
+            base={0.35}
+            class="mt-7 text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-6xl lg:text-[4rem] xl:text-[4.25rem]"
+            text={L(
+              'Markanızı internette *büyüten* site, reklam ve *AI* içerik.',
+              'Websites, ads and *AI* content that *grow* your brand online.',
+            )}
+          />
+
+          <p class="hero-in mt-6 max-w-xl text-lg leading-relaxed text-white/70" style="--d:.95s">
+            {
+              L(
+                'Bilgisayar Mühendisiyim. Web sitenizi kuruyor, Google ve Meta reklamlarınızı yönetiyor, sosyal medyanız için yapay zekâ destekli profesyonel Reels üretiyorum. Ajans katmanı yok: işi yapan kişiyle konuşuyorsunuz.',
+                'I’m a Computer Engineer. I build your website, run your Google and Meta ads and produce professional AI-assisted Reels for your social media. No agency layers: you talk to the person doing the work.',
+              )
+            }
+          </p>
+
+          <div class="hero-in mt-9 flex flex-wrap items-center gap-3" style="--d:1.1s">
+            <span data-magnetic class="inline-block"><WhatsAppButton locale={locale} location="hero" size="lg" class="shadow-[0_18px_40px_-14px_rgba(52,211,153,0.6)]" /></span>
+            <a href="#reels" data-magnetic class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[0.95rem] font-semibold text-white hover:border-white/60">
+              <Icon name="play" size={16} />
+              {L('Reels’leri izle', 'Watch the Reels')}
+            </a>
+          </div>
+
+          <ul class="hero-in mt-12 grid max-w-xl grid-cols-2 gap-x-6 gap-y-5 border-t border-white/10 pt-7 sm:grid-cols-4" role="list" style="--d:1.25s">
+            <li>
+              <p class="text-3xl font-semibold tracking-tight text-white"><span data-count="3">3</span></p>
+              <p class="mt-1 text-xs leading-snug text-white/60">{L('canlı müşteri sitesi', 'live client sites')}</p>
+            </li>
+            <li>
+              <p class="text-3xl font-semibold tracking-tight text-white"><span data-count="2">2</span></p>
+              <p class="mt-1 text-xs leading-snug text-white/60">{L('App Store uygulaması', 'App Store apps')}</p>
+            </li>
+            <li>
+              <p class="text-3xl font-semibold tracking-tight text-white"><span data-count="7238">7.238</span></p>
+              <p class="mt-1 text-xs leading-snug text-white/60">{L('tek Reels, ilk 20 saat', 'one Reel, first 20 hours')}</p>
+            </li>
+            <li>
+              <p class="text-3xl font-semibold tracking-tight text-white">IEEE</p>
+              <p class="mt-1 text-xs leading-snug text-white/60">{L('SIU 2025 bildirisi', 'SIU 2025 paper')}</p>
+            </li>
+          </ul>
         </div>
-        <ul class="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-border pt-6" role="list">
-          <li>
-            <p class="text-2xl font-semibold tracking-tight text-fg">3</p>
-            <p class="mt-1 text-xs leading-snug text-muted">{L('canlı müşteri sitesi', 'live client websites')}</p>
-          </li>
-          <li>
-            <p class="text-2xl font-semibold tracking-tight text-fg">2</p>
-            <p class="mt-1 text-xs leading-snug text-muted">{L('App Store’da uygulama', 'apps on the App Store')}</p>
-          </li>
-          <li>
-            <p class="text-2xl font-semibold tracking-tight text-fg">IEEE</p>
-            <p class="mt-1 text-xs leading-snug text-muted">{L('SIU 2025 bildirisi', 'SIU 2025 paper')}</p>
-          </li>
-        </ul>
+
+        <div class="hero-in relative mx-auto w-full max-w-[22rem] md:max-w-none" style="--d:.6s">
+          <div data-parallax="0.06">
+            <div class="relative mx-auto aspect-square w-[88%]">
+              <div class="orbit" aria-hidden="true">
+                <span style="left:50%;top:-22px;margin-left:-22px"><Icon name="instagram" size={18} /></span>
+                <span style="right:-22px;top:50%;margin-top:-22px"><Icon name="google" size={18} /></span>
+                <span style="left:50%;bottom:-22px;margin-left:-22px"><Icon name="code" size={18} /></span>
+                <span style="left:-22px;top:50%;margin-top:-22px"><Icon name="meta" size={20} /></span>
+              </div>
+              <figure data-tilt class="relative h-full w-full overflow-hidden rounded-full border border-white/15 shadow-[0_0_0_10px_rgba(255,255,255,0.03),0_40px_120px_-30px_rgba(16,185,129,0.55)]">
+                <Image
+                  src={portrait}
+                  alt={L('Ömer Yasir Önal, Bilgisayar Mühendisi', 'Ömer Yasir Önal, Computer Engineer')}
+                  widths={heroWidths}
+                  sizes={heroSizes}
+                  loading="eager"
+                  class="h-full w-full object-cover object-top"
+                />
+              </figure>
+            </div>
+          </div>
+
+          {/* mini phone with today's client Reel */}
+          <a
+            href={reels[0].url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="instagram_click"
+            data-track-location="hero_phone"
+            data-parallax="-0.12"
+            class="phone absolute -bottom-8 right-0 w-[32%] min-w-[7rem] max-w-[10rem]"
+            aria-label={`${pick(locale, reels[0].title)} - Instagram (${t(locale, 'social.opensNewTab')})`}
+          >
+            <span class="phone__screen block">
+              <video data-autoplay muted loop playsinline preload="none" poster={reels[0].poster} src={reels[0].preview}></video>
+            </span>
+            <span class="absolute -left-10 top-6 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.7rem] font-semibold text-[#06100c] shadow-xl">
+              <span class="pulse h-2 w-2 rounded-full bg-[#ef4444]"></span>
+              {L('Bugün', 'Today')}
+            </span>
+          </a>
+
+          <div class="absolute -left-2 top-[8%] hidden rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white backdrop-blur-md sm:block" data-parallax="0.14">
+            <p class="font-mono text-[0.65rem] uppercase tracking-wider text-white/60">{L('Durum', 'Status')}</p>
+            <p class="mt-1 inline-flex items-center gap-2 text-sm font-semibold"><span class="pulse h-2 w-2 rounded-full bg-[#34d399]"></span>{L('Yeni projelere açık', 'Open to new projects')}</p>
+          </div>
+        </div>
       </div>
 
-      <div class="relative mx-auto hidden w-full md:block">
-        <div class="grid-paper absolute -inset-4 rounded-3xl md:-inset-6" aria-hidden="true"></div>
-        <figure class="relative overflow-hidden rounded-2xl border border-border bg-card">
-          <Image
-            src={portrait}
-            alt={L('Ömer Yasir Önal portresi', 'Portrait of Ömer Yasir Önal')}
-            widths={heroWidths}
-            sizes={heroSizes}
-            loading="lazy"
-            class="aspect-[4/5] w-full object-cover"
-          />
-          <figcaption class="flex items-center justify-between gap-3 border-t border-border px-4 py-3 text-xs">
-            <span class="font-mono uppercase tracking-wider text-muted">{L('FSMVÜ Bilgisayar Müh.', 'B.Sc. Computer Eng.')}</span>
-            <span class="inline-flex items-center gap-1.5 font-medium text-fg">
-              <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
-              {L('Yeni projelere açık', 'Open to new projects')}
-            </span>
-          </figcaption>
-        </figure>
+      <a href="#reels" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 md:block" aria-label={L('Aşağı kaydır', 'Scroll down')}>
+        <span class="scroll-cue block"></span>
+      </a>
+    </section>
+
+    {/* ---------- Marquee ---------- */}
+    <section class="border-b border-border bg-bg py-7" aria-label={L('Uzmanlık alanları', 'Areas of expertise')}>
+      <div class="marquee" style="--dur:42s">
+        {[0, 1].map((k) => (
+          <ul class="marquee__track" aria-hidden={k === 1 ? 'true' : undefined} role="list">
+            {marqueeA.map((m) => (
+              <li class="flex items-center gap-12 whitespace-nowrap text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
+                {m}<Logo size={22} class="text-fg opacity-40" />
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+      <div class="marquee marquee--rev mt-4" style="--dur:50s" aria-hidden="true">
+        {[0, 1].map(() => (
+          <ul class="marquee__track" role="list">
+            {marqueeB.map((m) => (
+              <li class="whitespace-nowrap font-mono text-sm uppercase tracking-[0.2em] text-muted">✦ {m}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </section>
+
+    {/* ---------- Social & AI content stage ---------- */}
+    <section id="reels" class="stage hscroll scroll-mt-16" data-hscroll aria-labelledby="reels-title">
+      <div class="aurora opacity-50" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="hscroll__sticky py-20 lg:py-0">
+        <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <div class="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+            <div>
+              <p class="label !text-[--color-accent]" data-reveal>{L('01 · Sosyal medya & AI içerik', '01 · Social media & AI content')}</p>
+              <SplitText
+                onScroll
+                id="reels-title"
+                class="mt-3 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl"
+                text={L('Kaydırmayı *durduran* Reels, yapay zekâ ile.', 'Reels that *stop* the scroll, made with AI.')}
+              />
+            </div>
+            <div data-reveal style="--d:.15s">
+              <p class="text-[1.02rem] leading-relaxed text-white/70">
+                {L(
+                  'Sosyal medya hesap yönetimi, senaryo, seslendirme, AI sahne üretimi ve kurgu tek elde. Aşağıda müşterilerim A2 Reklam ve Öz & Saye Psikoloji için ürettiklerim ile kendi Instagram serim var.',
+                  'Account management, script, voice-over, AI scene generation and editing in one place. Below: work for my clients A2 Reklam and Öz & Saye Psikoloji, plus my own Instagram series.',
+                )}
+              </p>
+              <div class="mt-5 flex flex-wrap gap-2.5">
+                <a href={instagramAccounts.omeryasironal} target="_blank" rel="noopener noreferrer" data-track="instagram_click" data-track-location="reels_follow" class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-[#06100c] hover:bg-[#d1fae5]">
+                  <Icon name="instagram" size={16} /> {L('Takip et', 'Follow')} @omeryasironal
+                </a>
+                <a href={instagramAccounts.a2_reklam} target="_blank" rel="noopener noreferrer" data-track="instagram_click" data-track-location="reels_client" class="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2.5 text-sm font-semibold text-white hover:border-white">
+                  @a2_reklam <Icon name="arrow-up-right" size={14} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 overflow-x-auto pb-4 [scrollbar-width:none] lg:overflow-visible lg:pb-0">
+          <ul class="hscroll__track flex w-max snap-x snap-mandatory gap-6 px-4 sm:px-6 lg:w-auto lg:snap-none lg:px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]" data-hscroll-track role="list">
+            {
+              reels.map((r, i) => (
+                <li class="reel-card w-[15rem] shrink-0 snap-center sm:w-[16rem] lg:w-[min(15.5rem,calc((100svh-21rem)*0.46))]" data-reveal="up" style={`--d:${i * 0.08}s`}>
+                  <a
+                    href={r.ready ? localizePath(locale, `/projects/${r.project}`) : r.url}
+                    target={r.ready ? undefined : '_blank'}
+                    rel={r.ready ? undefined : 'noopener noreferrer'}
+                    data-track={r.ready ? undefined : 'instagram_click'}
+                    data-track-location={`reel_${r.id}`}
+                    class="phone block"
+                    aria-label={r.ready ? pick(locale, r.title) : `${pick(locale, r.title)} - Instagram @${r.account} (${t(locale, 'social.opensNewTab')})`}
+                  >
+                    <span class="phone__screen block">
+                      <video data-autoplay muted loop playsinline preload="none" poster={r.poster} src={r.preview}></video>
+                      <span class="phone__ui block">
+                        <span class="flex items-center gap-2 text-xs font-semibold">
+                          <span class="grid h-6 w-6 place-items-center rounded-full bg-white/15"><Icon name="instagram" size={12} /></span>@{r.account}
+                        </span>
+                        <span class="mt-2 block text-[0.95rem] font-semibold leading-snug">{pick(locale, r.title)}</span>
+                      </span>
+                      <span class="absolute right-3 top-10 grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white backdrop-blur"><Icon name="play" size={14} /></span>
+                      {r.ready && (
+                        <span class="absolute left-3 top-10 rounded-full bg-[#fef3c7] px-2.5 py-1 font-mono text-[0.62rem] font-semibold uppercase tracking-wider text-[#92400e]">
+                          {L('Yayına hazır', 'Ready to post')}
+                        </span>
+                      )}
+                    </span>
+                  </a>
+                  <p class="mt-4 font-mono text-[0.7rem] uppercase tracking-wider text-white/55">{pick(locale, r.kind)}</p>
+                  <a href={localizePath(locale, `/projects/${r.project}`)} class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-[--color-accent] hover:underline">
+                    {L('Tam video ve detaylar', 'Full video and details')} <Icon name="arrow" size={14} />
+                  </a>
+                </li>
+              ))
+            }
+            <li class="flex w-[15rem] shrink-0 snap-center flex-col justify-center rounded-[2.2rem] border border-dashed border-white/20 p-7 sm:w-[16rem]">
+              <Icon name="sparkle" size={28} class="text-[--color-accent]" />
+              <p class="mt-4 text-xl font-semibold leading-snug text-white">{L('Sıradaki Reels sizin markanız için olsun.', 'Let the next Reel be for your brand.')}</p>
+              <div class="mt-6"><WhatsAppButton locale={locale} topic="video" location="reels_stage" label={L('İçerik teklifi al', 'Get a content quote')} /></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mx-auto mt-8 hidden w-full max-w-6xl items-center gap-4 px-6 lg:flex" aria-hidden="true">
+          <span class="font-mono text-xs text-white/50">{L('Kaydır', 'Scroll')}</span>
+          <div class="hbar flex-1"><span></span></div>
+          <span class="font-mono text-xs text-white/50">{String(reels.length).padStart(2, '0')}</span>
+        </div>
       </div>
     </section>
 
     {/* ---------- Services ---------- */}
-    <section id="services" class="scroll-mt-20 border-t border-border bg-card/60">
-      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <section id="services" class="relative scroll-mt-20 overflow-clip">
+      <span class="float-icon light-float right-[6%] top-[14%] hidden lg:grid" data-float="1" aria-hidden="true"><Icon name="code" size={22} /></span>
+      <span class="float-icon light-float left-[3%] bottom-[18%] hidden lg:grid" data-float="-1" aria-hidden="true"><Icon name="chart" size={22} /></span>
+      <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
         <SectionHead
-          label={L('01 · Hizmetler', '01 · Services')}
+          label={L('02 · Hizmetler', '02 · Services')}
           title={L('Üç alanda, tek elden', 'Three areas, one person')}
           intro={L(
             'Siteyi kuran, reklamı yöneten ve içeriği üreten aynı kişi olunca her parça birbirini tutuyor.',
@@ -159,13 +413,15 @@ const description = L(
         <ul class="grid gap-5 md:grid-cols-3" role="list">
           {
             serviceGroups.map((g, i) => (
-              <li data-reveal>
-                <a
-                  href={localizePath(locale, `/services/${g.id}`)}
-                  class="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-fg/30 sm:p-7"
-                >
-                  <span class="font-mono text-sm text-accent">0{i + 1}</span>
-                  <h3 class="mt-4 text-2xl font-semibold tracking-tight text-fg">{pick(locale, g.short)}</h3>
+              <li data-reveal="up" style={`--d:${i * 0.12}s`}>
+                <a href={localizePath(locale, `/services/${g.id}`)} data-spotlight class="lift group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card p-7 hover:border-accent/50">
+                  <div class="flex items-start justify-between">
+                    <span class="grid h-12 w-12 place-items-center rounded-2xl bg-accent-soft text-accent transition-transform duration-500 group-hover:rotate-[-10deg] group-hover:scale-110">
+                      <Icon name={groupIcon[g.id]} size={22} />
+                    </span>
+                    <span class="outline-num text-6xl font-bold leading-none">0{i + 1}</span>
+                  </div>
+                  <h3 class="mt-6 text-2xl font-semibold tracking-tight text-fg">{pick(locale, g.short)}</h3>
                   <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, g.cardSummary)}</p>
                   <ul class="mt-5 space-y-2 border-t border-border pt-5 text-sm text-fg" role="list">
                     {g.services.map((s) => (
@@ -177,7 +433,7 @@ const description = L(
                   </ul>
                   <span class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-accent">
                     {L('Detaylar', 'Details')}
-                    <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-0.5" />
+                    <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-1" />
                   </span>
                 </a>
               </li>
@@ -187,24 +443,78 @@ const description = L(
       </div>
     </section>
 
+    {/* ---------- A2 Reklam: one client, full system ---------- */}
+    <section class="relative border-y border-border bg-card/60" aria-labelledby="a2-title">
+      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <p class="label" data-reveal>{L('03 · Vaka: A2 Reklam', '03 · Case: A2 Reklam')}</p>
+          <SplitText
+            onScroll
+            id="a2-title"
+            class="mt-3 text-4xl font-semibold leading-[1.06] tracking-tight text-fg sm:text-5xl"
+            text={L('Bir müşteri, *uçtan uca* dijital sistem.', 'One client, an *end-to-end* digital system.')}
+          />
+          <p class="mt-5 text-lg leading-relaxed text-muted" data-reveal style="--d:.1s">
+            {L(
+              'İstanbul’da tabela firması A2 Reklam için siteyi kurdum, dönüşüm ölçümünü bağladım, Google Ads’i yönetiyorum ve Instagram için yapay zekâ destekli Reels üretiyorum. Sırada Meta reklamları var: aynı videolar doğru kişilerin karşısına çıkacak.',
+              'For Istanbul signage company A2 Reklam I built the website, wired up conversion tracking, run Google Ads and produce AI-assisted Reels for Instagram. Meta ads are next: the same videos in front of the right people.',
+            )}
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3" data-reveal style="--d:.2s">
+            <a href={localizePath(locale, '/projects/a2reklam-video')} class="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-on-ink dark:bg-on-ink dark:text-ink">
+              {L('Vakayı incele', 'View the case')} <Icon name="arrow" size={15} />
+            </a>
+            <a href="https://a2reklam.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-fg/20 px-5 py-3 text-sm font-semibold text-fg hover:border-accent hover:text-accent">
+              a2reklam.com <Icon name="arrow-up-right" size={14} />
+            </a>
+          </div>
+        </div>
+
+        <ol class="relative space-y-4 before:absolute before:bottom-6 before:left-[1.6rem] before:top-6 before:w-px before:bg-border" role="list">
+          {
+            a2Steps.map((s, i) => (
+              <li data-reveal="right" style={`--d:${i * 0.08}s`} class="relative">
+                <div data-spotlight class="lift relative flex gap-5 rounded-3xl border border-border bg-card p-5 sm:p-6">
+                  <span class="relative z-10 grid h-[3.2rem] w-[3.2rem] shrink-0 place-items-center rounded-2xl bg-ink text-[#5eead4] dark:bg-accent-soft">
+                    <Icon name={s.icon} size={22} />
+                  </span>
+                  <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <h3 class="text-lg font-semibold tracking-tight text-fg">{s.title}</h3>
+                      <span class:list={['inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-mono text-[0.68rem] uppercase tracking-wider', i === 4 ? 'bg-[#fef3c7] text-[#92400e]' : 'bg-accent-soft text-accent']}>
+                        <span class:list={['h-1.5 w-1.5 rounded-full', i === 4 ? 'bg-[#d97706]' : 'pulse bg-accent']}></span>
+                        {s.state}
+                      </span>
+                    </div>
+                    <p class="mt-1.5 text-[0.95rem] leading-relaxed text-muted">{s.text}</p>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
     {/* ---------- Problems ---------- */}
-    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <SectionHead label={L('02 · Neler yapabilirim?', '02 · How I can help')} title={L('Hangisi size benziyor?', 'Which one sounds like you?')} />
-      <ul class="divide-y divide-border border-y border-border" role="list">
+    <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHead label={L('04 · Neler yapabilirim?', '04 · How I can help')} title={L('Hangisi size benziyor?', 'Which one sounds like you?')} />
+      <ul class="border-t border-border" role="list">
         {
-          problemPrompts.map((p) => {
+          problemPrompts.map((p, i) => {
             const g = serviceGroup(p.group);
             const s = g.services.find((x) => x.id === p.anchor)!;
             return (
-              <li>
-                <a
-                  href={`${localizePath(locale, `/services/${g.id}`)}#${p.anchor}`}
-                  class="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6"
-                >
-                  <span class="text-lg font-medium text-fg sm:text-xl">“{pick(locale, p.text)}”</span>
-                  <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent">
+              <li class="border-b border-border" data-reveal="left" style={`--d:${i * 0.05}s`}>
+                <a href={`${localizePath(locale, `/services/${g.id}`)}#${p.anchor}`} class="group relative grid gap-1 overflow-hidden py-6 sm:grid-cols-[3rem_1fr_auto] sm:items-center sm:gap-6">
+                  <span class="absolute inset-0 -z-10 origin-left scale-x-0 bg-accent-soft transition-transform duration-500 ease-out group-hover:scale-x-100"></span>
+                  <span class="hidden font-mono text-sm text-muted sm:block sm:pl-3">0{i + 1}</span>
+                  <span class="text-lg font-medium text-fg transition-transform duration-500 group-hover:translate-x-2 sm:text-2xl">“{pick(locale, p.text)}”</span>
+                  <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent sm:pr-3">
                     {pick(locale, s.name)}
-                    <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-0.5" />
+                    <span class="grid h-8 w-8 place-items-center rounded-full border border-accent/30 transition-all duration-300 group-hover:bg-accent group-hover:text-on-accent">
+                      <Icon name="arrow" size={14} />
+                    </span>
                   </span>
                 </a>
               </li>
@@ -215,21 +525,22 @@ const description = L(
     </section>
 
     {/* ---------- Selected work ---------- */}
-    <section id="work" class="scroll-mt-20 mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <section id="work" class="scroll-mt-20 mx-auto max-w-6xl px-4 pb-24 sm:px-6">
       <SectionHead
-        label={L('03 · Seçili çalışmalar', '03 · Selected work')}
+        label={L('05 · Seçili çalışmalar', '05 · Selected work')}
         title={L('Yayında olan gerçek işler', 'Real work, live today')}
-        intro={L(
-          'Müşteriler için kurduğum siteler, yönettiğim reklamlar ve ürettiğim içerikler.',
-          'Sites I built, ads I manage and content I produced for clients.',
-        )}
+        intro={L('Müşteriler için kurduğum siteler, yönettiğim reklamlar ve ürettiğim içerikler.', 'Sites I built, ads I manage and content I produced for clients.')}
         link={{ href: localizePath(locale, '/projects'), text: L('Tüm çalışmalar', 'All work') }}
       />
-      <div class="grid gap-5 md:grid-cols-2">
-        {selected.map((entry, i) => <div data-reveal><ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} /></div>)}
+      <div class="grid gap-6 md:grid-cols-2">
+        {selected.map((entry, i) => (
+          <div data-reveal="clip" style={`--d:${(i % 2) * 0.12}s`} class="lift rounded-2xl">
+            <ProjectCard locale={locale} entry={entry} size={i === 0 ? 'lg' : 'md'} />
+          </div>
+        ))}
       </div>
 
-      <div class="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-8" data-reveal>
+      <div class="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8" data-reveal>
         <div class="grid gap-6 md:grid-cols-[16rem_1fr]">
           <div>
             <p class="label">{L('Mühendislik tarafı', 'The engineering side')}</p>
@@ -244,7 +555,7 @@ const description = L(
                   <a href={localizePath(locale, `/projects/${e.id}`)} class="group grid gap-1 py-4 sm:grid-cols-[9rem_1fr_auto] sm:items-baseline sm:gap-5">
                     <span class="font-semibold text-fg group-hover:text-accent">{e.data.title}</span>
                     <span class="text-sm text-muted">{locale === 'tr' ? e.data.status_tr : e.data.status_en}</span>
-                    <Icon name="arrow" size={15} class="hidden text-accent sm:block" />
+                    <Icon name="arrow" size={15} class="hidden text-accent transition-transform group-hover:translate-x-1 sm:block" />
                   </a>
                 </li>
               ))
@@ -256,13 +567,11 @@ const description = L(
 
     {/* ---------- About ---------- */}
     <section id="about" class="scroll-mt-20 border-y border-border bg-card/60">
-      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1fr] md:gap-16">
-        <div data-reveal>
-          <p class="label">{L('04 · Hakkımda', '04 · About')}</p>
-          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-            {L('Önce mühendisim, sonra pazarlamacı.', 'An engineer first, a marketer second.')}
-          </h2>
-          <p class="mt-5 text-lg leading-relaxed text-muted">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-24 sm:px-6 md:grid-cols-[1fr_1fr] md:gap-16">
+        <div>
+          <p class="label" data-reveal>{L('06 · Hakkımda', '06 · About')}</p>
+          <SplitText onScroll class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl" text={L('Önce *mühendisim,* sonra pazarlamacı.', 'An *engineer* first, a marketer second.')} />
+          <p class="mt-5 text-lg leading-relaxed text-muted" data-reveal style="--d:.1s">
             {
               L(
                 'Fatih Sultan Mehmet Vakıf Üniversitesi Bilgisayar Mühendisliği mezunuyum. App Store’da yayında iki uygulamam, TÜBİTAK destekli bir yapay zekâ araştırmam ve IEEE’de yayımlanmış bir bildirim var. Müşteri işlerine de aynı disiplinle yaklaşıyorum: ölçmeden karar vermiyorum, söz veremeyeceğim sonucu vaat etmiyorum.',
@@ -270,20 +579,21 @@ const description = L(
               )
             }
           </p>
-          <div class="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold">
+          <div class="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold" data-reveal style="--d:.2s">
             <a href={localizePath(locale, '/about')} class="inline-flex items-center gap-1.5 text-accent">{L('Daha fazlası', 'More about me')} <Icon name="arrow" size={15} /></a>
             <a href={localizePath(locale, '/cv')} class="inline-flex items-center gap-1.5 text-fg hover:text-accent">{L('Özgeçmiş (CV)', 'CV')} <Icon name="arrow" size={15} /></a>
+            {profile.instagram.url && <a href={profile.instagram.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-fg hover:text-accent"><Icon name="instagram" size={15} /> @{profile.instagram.handle}</a>}
           </div>
         </div>
-        <dl class="grid grid-cols-1 gap-px self-start overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2" data-reveal>
+        <dl class="grid grid-cols-1 gap-px self-start overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2">
           {
             [
               [L('Eğitim', 'Education'), L('Bilgisayar Mühendisliği, FSMVÜ (2026)', 'B.Sc. Computer Engineering, FSMVU (2026)')],
               [L('Araştırma', 'Research'), L('TÜBİTAK 2209-A proje yürütücüsü', 'TÜBİTAK 2209-A project lead')],
               [L('Yayın', 'Publication'), L('IEEE SIU 2025, ortak yazar', 'IEEE SIU 2025, co-author')],
               [L('Ürünler', 'Products'), L('Odak ve UniSum, App Store', 'Odak and UniSum, App Store')],
-            ].map(([k, v]) => (
-              <div class="bg-card p-5">
+            ].map(([k, v], i) => (
+              <div class="bg-card p-6" data-reveal="scale" style={`--d:${i * 0.08}s`}>
                 <dt class="label">{k}</dt>
                 <dd class="mt-2 text-[0.95rem] font-medium text-fg">{v}</dd>
               </div>
@@ -294,14 +604,14 @@ const description = L(
     </section>
 
     {/* ---------- Process ---------- */}
-    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <SectionHead label={L('05 · Nasıl çalışıyorum?', '05 · How I work')} title={L('Dört adımda, sürprizsiz', 'Four steps, no surprises')} />
+    <section class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHead label={L('07 · Nasıl çalışıyorum?', '07 · How I work')} title={L('Dört adımda, sürprizsiz', 'Four steps, no surprises')} />
       <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
         {
           processSteps.map((s, i) => (
-            <li class="border-t-2 border-fg pt-5" data-reveal>
-              <span class="font-mono text-sm text-accent">0{i + 1}</span>
-              <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
+            <li class="group relative rounded-3xl border border-border bg-card p-6" data-reveal="up" style={`--d:${i * 0.1}s`} data-spotlight>
+              <span class="outline-num text-5xl font-bold leading-none">0{i + 1}</span>
+              <h3 class="mt-4 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
               <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.description)}</p>
             </li>
           ))
@@ -309,22 +619,41 @@ const description = L(
       </ol>
     </section>
 
+    {/* ---------- FAQ (also FAQPage JSON-LD for search / answer engines) ---------- */}
+    <section class="mx-auto max-w-4xl px-4 pb-24 sm:px-6" aria-labelledby="faq-title">
+      <p class="label" data-reveal>{L('08 · Sık sorulanlar', '08 · FAQ')}</p>
+      <h2 id="faq-title" class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl" data-reveal>{L('Kısa cevaplar', 'Short answers')}</h2>
+      <div class="mt-8 divide-y divide-border border-y border-border">
+        {
+          faqs.map((f, i) => (
+            <details class="group py-5" data-reveal style={`--d:${i * 0.05}s`} open={i === 0}>
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-fg">
+                {f.q}
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border text-accent transition-transform duration-300 group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-3 text-[0.98rem] leading-relaxed text-muted">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
     {/* ---------- Contact ---------- */}
-    <section id="contact" class="scroll-mt-20 bg-ink text-on-ink">
-      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1.1fr] md:gap-16">
+    <section id="contact" class="stage scroll-mt-20">
+      <div class="aurora opacity-60" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 md:grid-cols-[1fr_1.1fr] md:gap-16">
         <div>
-          <p class="label !text-white/60">{L('06 · İletişim', '06 · Contact')}</p>
-          <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            {L('Projenizi konuşalım.', 'Let’s talk about your project.')}
-          </h2>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-white/75">
+          <p class="label !text-white/60" data-reveal>{L('09 · İletişim', '09 · Contact')}</p>
+          <SplitText onScroll class="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl" text={L('Projenizi *konuşalım.*', 'Let’s talk about *your project.*')} />
+          <p class="mt-4 max-w-md text-lg leading-relaxed text-white/70" data-reveal style="--d:.1s">
             {L('En hızlı yol WhatsApp. Yazmayı tercih ederseniz e-posta ya da yandaki kısa form da olur.', 'WhatsApp is the fastest way. If you prefer writing, email or the short form work too.')}
           </p>
-          <div class="mt-8">
+          <div class="mt-8" data-reveal style="--d:.2s">
             <ContactChannels locale={locale} location="home_contact" tone="dark" />
           </div>
         </div>
-        <div class="rounded-2xl bg-card p-6 text-fg sm:p-8">
+        <div class="unstage rounded-3xl p-6 shadow-2xl sm:p-8" data-reveal="scale">
           <h3 class="text-lg font-semibold tracking-tight">{L('Kısa teklif formu', 'Short quote form')}</h3>
           <div class="mt-5"><ContactForm locale={locale} location="home" /></div>
         </div>

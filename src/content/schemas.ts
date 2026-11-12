@@ -52,6 +52,8 @@ export const projectSchema = z.object({
         poster: z.string().min(1),
         title_en: z.string(),
         title_tr: z.string(),
+        /** Optional public post (e.g. the Instagram Reel) for this video. */
+        url: z.string().url().optional(),
       }),
     )
     .default([]),

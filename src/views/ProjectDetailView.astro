@@ -45,6 +45,17 @@ const workLd = creativeWorkJsonLd(
   { title: data.title, description: tagline, category: data.category, url, stack: data.stack },
   Astro.site!,
 );
+const videoLd = data.videos.map((v) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: locale === 'tr' ? v.title_tr : v.title_en,
+  description: tagline,
+  thumbnailUrl: new URL(v.poster, Astro.site).toString(),
+  contentUrl: new URL(v.src, Astro.site).toString(),
+  uploadDate: '2026-11-12',
+  creator: { '@id': `${new URL(Astro.site!).origin}/#person` },
+  ...(v.url ? { url: v.url } : {}),
+}));
 const crumbs = breadcrumbJsonLd([
   { name: t(locale, 'nav.work'), url: canonicalHref(localizePath(locale, '/projects'), Astro.site!) },
   { name: data.title, url },
@@ -62,6 +73,7 @@ const crumbs = breadcrumbJsonLd([
 >
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(workLd)} />
   <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  {videoLd.length > 0 && <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(videoLd)} />}
   <SiteHeader locale={locale} path={path} contactTopic={topic} />
 
   <main id="main">
@@ -115,14 +127,21 @@ const crumbs = breadcrumbJsonLd([
                   class="aspect-[9/16] w-full object-cover"
                   aria-label={locale === 'tr' ? v.title_tr : v.title_en}
                 />
-                <figcaption class="bg-card px-4 py-3 text-sm font-medium text-fg">{locale === 'tr' ? v.title_tr : v.title_en}</figcaption>
+                <figcaption class="flex items-center justify-between gap-3 bg-card px-4 py-3 text-sm font-medium text-fg">
+                  <span>{locale === 'tr' ? v.title_tr : v.title_en}</span>
+                  {v.url && (
+                    <a href={v.url} target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-1.5 font-semibold text-accent hover:underline" aria-label={`${L('Instagram’da izle', 'Watch on Instagram')} (${hint})`}>
+                      <Icon name="instagram" size={15} /> {L('Instagram', 'Instagram')}
+                    </a>
+                  )}
+                </figcaption>
               </figure>
             ))}
           </div>
         )
       }
 
-      <ProjectCaseStudy entry={entry} locale={locale} showImage={data.videos.length === 0} />
+      <ProjectCaseStudy entry={entry} locale={locale} showImage={data.videos.length === 0 || data.category !== 'Content'} />
 
       <section class="mt-12 border-t border-border pt-8">
         <h2 class="label">{t(locale, 'project.stack')}</h2>

@@ -1,0 +1,41 @@
+---
+/**
+ * SplitText - renders a heading split into words for the word-up animation.
+ * Words wrapped in *asterisks* get the animated gradient. The full sentence
+ * stays a single text node sequence, so screen readers and crawlers read it
+ * normally. `onScroll` defers the animation until the heading enters view.
+ */
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'h3' | 'p';
+  class?: string;
+  /** Base delay in seconds before the first word (hero only). */
+  base?: number;
+  onScroll?: boolean;
+  id?: string;
+}
+const { text, as: Tag = 'h2', class: className = '', base = 0.15, onScroll = false, id } = Astro.props;
+// *phrase* spans may cover several words.
+let open = false;
+const words: { accent: boolean; clean: string }[] = text.split(/\s+/).filter(Boolean).map((w: string) => {
+  const starts = w.startsWith('*');
+  const accent = open || starts;
+  if (starts) open = true;
+  if (w.replace(/^\*/, '').includes('*')) open = false;
+  return { accent, clean: w.replace(/\*/g, '') };
+});
+---
+
+<Tag id={id} class:list={['split', className]} data-reveal={onScroll ? 'up' : undefined} style={`--base:${base}s`}>
+  {
+    words.map((w: { accent: boolean; clean: string }, i: number) => (
+      <>
+        <span class="w">
+          <span style={`--i:${i}`} class={w.accent ? 'text-gradient' : undefined}>
+            {w.clean}
+          </span>
+        </span>{' '}
+      </>
+    ))
+  }
+</Tag>
