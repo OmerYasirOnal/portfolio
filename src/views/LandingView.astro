@@ -1,0 +1,169 @@
+---
+/**
+ * LandingView - single-language offer page (src/data/landings.ts): dark hero,
+ * live Reel proof, deliverables, real client proof, process, FAQ, contact.
+ * No mirror route, so canonical is the page itself and the language toggle
+ * points at the other locale's home page.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import ContactChannels from '../components/ContactChannels.astro';
+import SplitText from '../components/SplitText.astro';
+import Icon from '../components/Icon.astro';
+import { pick } from '../data/i18n';
+import { processSteps } from '../data/services';
+import { reels } from '../data/social';
+import { profile } from '../data/profile';
+import type { Landing } from '../data/landings';
+import { faqPageJsonLd, jsonLdScript, breadcrumbJsonLd } from '../lib/seo';
+
+interface Props {
+  landing: Landing;
+}
+
+const { landing: d } = Astro.props;
+const locale = d.locale;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const site = new URL(Astro.site!).origin;
+const url = `${site}${d.slug}/`;
+const home = locale === 'tr' ? '/' : '/en/';
+const shown = d.reelIds.map((id) => reels.find((r) => r.id === id)!).filter(Boolean);
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: d.serviceName,
+  description: d.description,
+  url,
+  areaServed: locale === 'tr' ? { '@type': 'City', name: 'Istanbul' } : 'Worldwide',
+  availableLanguage: locale === 'tr' ? ['tr', 'en'] : ['en', 'tr'],
+  provider: { '@id': `${site}/#person` },
+};
+---
+
+<Base title={d.seoTitle} description={d.description} path={d.slug} lang={locale} canonicalUrl={url} contactTopic={d.topic}>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(serviceLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(faqPageJsonLd(d.faqs.map((f) => ({ question: f.q, answer: f.a }))))} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(breadcrumbJsonLd([{ name: profile.name, url: `${site}${home}` }, { name: d.serviceName, url }]))} />
+
+  <SiteHeader locale={locale} path={home} contactTopic={d.topic} overStage />
+
+  <main id="main">
+    <section class="stage -mt-16 pt-16">
+      <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="stage-grid" aria-hidden="true"></div>
+      <div class="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 md:pb-28 md:pt-20">
+        <p class="hero-in label !text-[--color-accent]" style="--d:.15s">{d.eyebrow}</p>
+        <SplitText as="h1" base={0.25} class="mt-5 max-w-4xl text-[2.4rem] font-semibold leading-[1.04] tracking-[-0.03em] text-white sm:text-6xl" text={d.h1} />
+        <p class="hero-in mt-6 max-w-2xl text-lg leading-relaxed text-white/70" style="--d:.8s">{d.intro}</p>
+        <div class="hero-in mt-9 flex flex-wrap gap-3" style="--d:.95s">
+          <span data-magnetic class="inline-block"><WhatsAppButton locale={locale} topic={d.topic} location={`landing${d.slug}`} label={d.ctaLabel} size="lg" /></span>
+          <a href="#examples" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[0.95rem] font-semibold text-white hover:border-white/60">
+            <Icon name="play" size={16} />{L('Örnekleri izle', 'See examples')}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="examples" class="scroll-mt-20 border-b border-border">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <p class="label" data-reveal>{L('Yayındaki işler', 'Live work')}</p>
+        <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl" data-reveal>{L('Gerçek müşteriler için ürettiklerim', 'Made for real clients')}</h2>
+        <ul class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-6" role="list">
+          {
+            shown.map((r, i) => (
+              <li data-reveal="up" style={`--d:${i * 0.06}s`}>
+                <a href={r.ready && r.project ? `${locale === 'en' ? '/en' : ''}/projects/${r.project}/` : r.url} target={r.ready ? undefined : '_blank'} rel={r.ready ? undefined : 'noopener noreferrer'} class="phone block" aria-label={pick(locale, r.title)}>
+                  <span class="phone__screen block"><video data-autoplay muted loop playsinline preload="none" poster={r.poster} src={r.preview}></video></span>
+                </a>
+                <p class="mt-3 text-sm font-semibold leading-snug text-fg">{pick(locale, r.title)}</p>
+                <p class="mt-1 font-mono text-[0.68rem] uppercase tracking-wider text-muted">{pick(locale, r.kind)}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="label" data-reveal>{L('Ne alıyorsunuz?', 'What you get')}</p>
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2" role="list">
+        {
+          d.deliverables.map((x, i) => (
+            <li class="rounded-3xl border border-border bg-card p-6" data-reveal="up" style={`--d:${i * 0.08}s`} data-spotlight>
+              <span class="outline-num text-4xl font-bold leading-none">0{i + 1}</span>
+              <h3 class="mt-3 text-lg font-semibold tracking-tight text-fg">{x.title}</h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{x.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="border-y border-border bg-card/60">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <p class="label" data-reveal>{L('Kanıt', 'Proof')}</p>
+        <ul class="mt-8 grid gap-5 md:grid-cols-3" role="list">
+          {
+            d.proof.map((p, i) => (
+              <li data-reveal="up" style={`--d:${i * 0.08}s`}>
+                <a href={p.href} class="lift group flex h-full flex-col rounded-3xl border border-border bg-card p-6">
+                  <h3 class="text-lg font-semibold tracking-tight text-fg group-hover:text-accent">{p.title}</h3>
+                  <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{p.text}</p>
+                  <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-accent">{L('İncele', 'View')} <Icon name="arrow" size={14} /></span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="label" data-reveal>{L('Süreç', 'Process')}</p>
+      <ol class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
+        {
+          processSteps.map((s, i) => (
+            <li class="border-t-2 border-fg pt-5" data-reveal="up" style={`--d:${i * 0.08}s`}>
+              <span class="font-mono text-sm text-accent">0{i + 1}</span>
+              <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{pick(locale, s.title)}</h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.description)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-4 pb-20 sm:px-6">
+      <h2 class="text-3xl font-semibold tracking-tight text-fg" data-reveal>{L('Sık sorulanlar', 'FAQ')}</h2>
+      <div class="mt-6 divide-y divide-border border-y border-border">
+        {
+          d.faqs.map((f, i) => (
+            <details class="group py-5" open={i === 0}>
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-fg">
+                {f.q}
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border text-accent transition-transform duration-300 group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-3 text-[0.98rem] leading-relaxed text-muted">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="stage">
+      <div class="aurora opacity-60" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-2 md:items-center">
+        <div>
+          <SplitText onScroll class="text-4xl font-semibold tracking-tight text-white sm:text-5xl" text={L('Kısaca anlatın, *yol haritasıyla* döneyim.', 'Tell me briefly, I’ll reply *with a plan.*')} />
+          <p class="mt-4 max-w-md text-lg leading-relaxed text-white/70">{L('En hızlı yol WhatsApp. E-posta da olur.', 'WhatsApp is fastest; email works too. I reply within the same working day (Istanbul, GMT+3).')}</p>
+        </div>
+        <ContactChannels locale={locale} location={`landing${d.slug}`} topic={d.topic} tone="dark" />
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter locale={locale} hideCta />
+</Base>

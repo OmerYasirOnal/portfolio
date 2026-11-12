@@ -1,0 +1,8 @@
+---
+import LandingView from '../views/LandingView.astro';
+import { landings } from '../data/landings';
+
+const landing = landings.find((l) => l.slug === '/guzellik-merkezleri-icin-web-sitesi-ve-reels')!;
+---
+
+<LandingView landing={landing} />

@@ -6,6 +6,7 @@
 import { profile } from '../data/profile';
 import { t, localizePath, pick, type Locale } from '../data/i18n';
 import { serviceGroups } from '../data/services';
+import { landings } from '../data/landings';
 import { mailtoHref, displayPhone } from '../lib/contact';
 import SocialLinks from './SocialLinks.astro';
 import WhatsAppButton from './WhatsAppButton.astro';
@@ -94,6 +95,9 @@ const year = new Date().getFullYear();
       <p class="label !text-white/60">{L('Site', 'Site')}</p>
       <ul class="mt-4 space-y-2.5 text-sm" role="list">
         <li><a href={localizePath(locale, '/projects')} class="text-white/80 hover:text-white">{t(locale, 'nav.work')}</a></li>
+        {landings.filter((l) => l.locale === locale).map((l) => (
+          <li><a href={`${l.slug}/`} class="text-white/80 hover:text-white">{l.serviceName.charAt(0).toUpperCase() + l.serviceName.slice(1)}</a></li>
+        ))}
         <li><a href={localizePath(locale, '/about')} class="text-white/80 hover:text-white">{t(locale, 'nav.about')}</a></li>
         <li><a href={localizePath(locale, '/writing')} class="text-white/80 hover:text-white">{t(locale, 'nav.writing')}</a></li>
         <li><a href={localizePath(locale, '/cv')} class="text-white/80 hover:text-white">{t(locale, 'nav.cv')}</a></li>
