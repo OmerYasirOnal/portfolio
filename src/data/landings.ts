@@ -149,7 +149,7 @@ export const landings: Landing[] = [
       { q: 'Yapay zekâ aramalarında görünürlük (AIO) garanti edilebilir mi?', a: 'Hayır. Kimse Google’da belirli bir sırayı ya da bir yapay zekâ asistanının sizi önereceğini garanti edemez. Yaptığım şey, sitenizin doğru anlaşılması için gereken teknik ve içerik temelini kurmak ve değişimi Search Console verisiyle göstermek.' },
       { q: 'Videolarda kendim görünmek zorunda mıyım?', a: 'Hayır. Görseller ve seslendirme yapay zekâ ile hazırlanabilir; isterseniz kendi sesiniz ya da çekiminiz de kullanılır. Yapay zekâ içerikleri platform kurallarına göre etiketlenir.' },
       { q: 'Etik kurallara nasıl dikkat ediyorsunuz?', a: 'Tanı, tedavi ya da sonuç vaadi yok; danışan bilgisi ve yorumu kullanılmaz; bedensel şikâyetlerde hekime yönlendiren not eklenir. Metni yayından önce siz onaylarsınız.' },
-      { q: 'Fiyatlar nasıl?', a: 'İçerik sayısı ve sitenin kapsamına göre özel teklif hazırlıyorum. WhatsApp’tan kısaca yazmanız yeterli.' },
+      { q: 'Fiyatlar nasıl?', a: 'Paketler bu sayfada: tek bir Deneme Reels ₺2.000, ayda 4 Reels ₺6.500. Site ya da farklı bir kapsam isterseniz WhatsApp’tan yazın, özel teklif hazırlayayım.' },
     ],
     topic: 'video',
     ctaLabel: 'WhatsApp’tan yazın',
@@ -184,5 +184,43 @@ export const landings: Landing[] = [
     topic: 'web',
     ctaLabel: 'WhatsApp’tan teklif alın',
     serviceName: 'Güzellik merkezleri için web sitesi, Reels ve reklam',
+  },
+  {
+    slug: '/kafe-ve-restoranlar-icin-reels-ve-google-gorunurluk',
+    locale: 'tr',
+    seoTitle: 'Kafe ve Restoranlar için Instagram Reels, Google Haritalar ve Yapay Zekâ Görünürlüğü | Ömer Yasir Önal',
+    description:
+      'Kafe, restoran, pastane ve kahveciler için Instagram Reels, Google Haritalar (İşletme Profili) düzeni, menü ve yapay zekâ aramalarında görünürlük. Paketler ve fiyatlar, gerçek bir kahveci Reels örneği.',
+    eyebrow: 'Kafe · restoran · pastane · kahveci',
+    h1: '“Yakınımda iyi bir kafe” aramasında *siz* çıkıyor musunuz?',
+    intro:
+      'Müşteriler artık Google Haritalar’a, Instagram’a ve ChatGPT gibi asistanlara “yakınımda nerede oturulur” diye soruyor. İşletme Profilinizi, menünüzü ve sitenizi bu aramalarda doğru görünecek şekilde düzenliyor, mekânınızın hikâyesini anlatan Reels üretiyorum. Elinizdeki fotoğraf ve videolar yeterli; gerekirse yapay zekâ ile hareketlendiriyorum.',
+    reelIds: ['a2-aksaray', 'a2-3hata', 'a2-logo', 'a2-sunucu'],
+    packages: [
+      { name: 'Deneme Reels', text: '30-45 saniyelik 1 video: mekân ya da ürün hikâyesi, senaryo, kurgu, hareketli yazı, müzik, kapak ve açıklama metni. 1 revizyon.', price: '₺2.000', unit: 'tek video', amount: 2000, currency: 'TRY' },
+      { name: 'Aylık İçerik', text: 'Ayda 4 Reels (yeni ürün, menü, mekân, kampanya), kapakları ve açıklamaları, aylık içerik planı.', price: '₺6.500', unit: 'aylık', amount: 6500, currency: 'TRY', featured: true },
+      { name: 'Büyüme', text: 'Ayda 8 Reels ve 4 gönderi, içerik takvimi, profil ve öne çıkanlar düzeni, aylık kısa rapor.', price: '₺11.500', unit: 'aylık', amount: 11500, currency: 'TRY' },
+      { name: 'Görünürlük Kontrolü', text: 'Google Haritalar ve yapay zekâ aramalarındaki durumunuz: İşletme Profili kategorileri, çalışma saatleri, menü ve fotoğraf düzeni, sitede yapılandırılmış veri; eksik listesi, düzeltmeler ve kısa rapor.', price: '₺3.500', unit: 'tek sefer', amount: 3500, currency: 'TRY' },
+    ],
+    packagesNote: 'Ödemenin yarısı başlangıçta, yarısı teslimde. Reklam bütçesi ayrıdır. Sıralama, takipçi ya da müşteri sayısı garantisi verilmez.',
+    deliverables: [
+      { title: 'Google Haritalar ve İşletme Profili', text: 'Doğru kategori, çalışma saatleri, menü, fotoğraflar ve yorum yanıtları için rehber. “Yakınımda” aramalarında işletmenizin eksiksiz görünmesi için temel düzen.' },
+      { title: 'Yapay zekâ aramalarında görünürlük', text: 'ChatGPT, Gemini ve Google’ın yapay zekâ özetleri mekânınızı doğru anlatsın diye sitede net bilgi, menü, adres ve saatler, yapılandırılmış veri ve her yerde tutarlı işletme bilgisi.' },
+      { title: 'Instagram Reels', text: 'Mekânın hikâyesi, yeni ürün, menü ve kampanya videoları: senaryo, kurgu, hareketli yazı, müzik ve kapak. Elinizdeki görüntüler yeterli.' },
+      { title: 'Menü ve tek sayfa site', text: 'Telefonda hızlı açılan menü sayfası ya da tek sayfa site: adres, yol tarifi, saatler, WhatsApp ve rezervasyon bağlantısı.' },
+    ],
+    proof: [
+      { title: 'Bir kahveci için hikâye Reels', text: '1972’den bu yana süren bir kuru kahvecinin hikâyesini anlatan Reels; A2 Reklam için üretildi ve yayında.', href: '/projects/a2reklam-video/' },
+      { title: 'A2 Reklam', text: '3 dilli site, 341 yerel SEO sayfası, Google Ads yönetimi ve düzenli Instagram Reels üretimi.', href: '/projects/a2reklam-video/' },
+    ],
+    faqs: [
+      { q: 'Mekâna gelip çekim yapıyor musunuz?', a: 'Videoları sizin telefonla çektiğiniz kısa görüntüler ve fotoğraflarla hazırlıyorum; nasıl çekmeniz gerektiğini kısa bir listeyle anlatıyorum. Gerekirse sahneler yapay zekâ ile hareketlendirilir ve etiketlenir.' },
+      { q: 'Google’da ilk sırada çıkmayı garanti ediyor musunuz?', a: 'Hayır. Kimse belirli bir sırayı ya da müşteri sayısını garanti edemez. Yaptığım şey, işletmenizin Google Haritalar’da ve yapay zekâ aramalarında doğru ve eksiksiz görünmesi için gereken temeli kurmak ve değişimi raporlamak.' },
+      { q: 'Fiyatlar nasıl?', a: 'Paketler bu sayfada: tek bir Deneme Reels ₺2.000, ayda 4 Reels ₺6.500. Menü sitesi ya da reklam yönetimi isterseniz WhatsApp’tan yazın, özel teklif hazırlayayım.' },
+      { q: 'Instagram hesabımızı siz mi paylaşacaksınız?', a: 'İsterseniz yalnız içerik üretiyorum ve paylaşımı siz yapıyorsunuz; isterseniz paylaşımı da üstleniyorum. Her içerik yayından önce onayınıza gelir.' },
+    ],
+    topic: 'video',
+    ctaLabel: 'WhatsApp’tan yazın',
+    serviceName: 'Kafe ve restoranlar için Instagram Reels ve Google görünürlüğü',
   },
 ];
