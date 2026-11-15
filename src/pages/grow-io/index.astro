@@ -1,0 +1,165 @@
+---
+// Official page for the iOS game "Snake Grow.io: Battle Arena" (App Store id 6762146110).
+// Standalone page (own neon look, not the portfolio layout). Bilingual: TR / EN.
+const site = Astro.site ?? new URL('https://omeryasironal.com');
+const url = new URL('/grow-io/', site).toString();
+const appStore = 'https://apps.apple.com/app/id6762146110';
+const shots = ['1_cover', '2_heroes', '3_king', '4_events', '5_zones', '6_boss', '7_modes'];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'Snake Grow.io: Battle Arena',
+  operatingSystem: 'iOS',
+  applicationCategory: 'GameApplication',
+  genre: ['Action', 'Casual', 'Arcade'],
+  inLanguage: ['en', 'tr'],
+  url,
+  installUrl: appStore,
+  image: new URL('/grow-io/cover-en.jpg', site).toString(),
+  screenshot: shots.map((s) => new URL(`/grow-io/shot-en-${s}.webp`, site).toString()),
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'AKIS Games', email: 'contact@akisgames.com' },
+  author: { '@type': 'Person', name: 'Ömer Yasir Önal', url: site.toString() },
+  description:
+    'Snake Grow.io is a neon snake arena game for iPhone and iPad. Eat glowing food, grow longer, cut off AI rivals, take down the King and the Boss, and collect hero skins with small powers. Plays offline.',
+};
+---
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Snake Grow.io: Battle Arena · Neon yılan arenası (iPhone ve iPad)</title>
+  <meta name="description" content="Snake Grow.io: Battle Arena, iPhone ve iPad için neon yılan arenası oyunu. Ye, büyü, rakiplerin önünü kes, Kral'ı ve Boss'u devir, güçleri olan kahraman görünümleri topla. İnternetsiz oynanır." />
+  <link rel="canonical" href={url} />
+  <meta name="theme-color" content="#070714" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Snake Grow.io: Battle Arena" />
+  <meta property="og:description" content="Neon snake arena for iPhone and iPad. Eat, grow, outsmart rivals, beat the King and the Boss." />
+  <meta property="og:url" content={url} />
+  <meta property="og:image" content={new URL('/grow-io/cover-en.jpg', site).toString()} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="apple-itunes-app" content="app-id=6762146110" />
+  <link rel="icon" href="/grow-io/icon.png" />
+  <link rel="apple-touch-icon" href="/grow-io/icon.png" />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <style is:global>
+    :root{--bg:#070714;--card:#10102a;--cyan:#18e0ff;--lime:#76ff03;--pink:#ff4081;--gold:#ffd600;--text:#e8ecff;--mute:#9aa3c7}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{background:#070714}
+    html{scroll-behavior:smooth}
+    body{background:radial-gradient(ellipse 80% 50% at 50% 0%,#1a1446 0%,var(--bg) 60%) fixed;color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:var(--cyan)}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+    header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--text);text-decoration:none;font-weight:800;letter-spacing:.3px}
+    .brand img{width:40px;height:40px;border-radius:10px}
+    .lang{display:flex;gap:6px}
+    .lang button{background:transparent;border:1.5px solid #2c2f5a;color:var(--mute);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}
+    .lang button[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan)}
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:28px 0 40px}
+    h1{font-size:clamp(34px,5.4vw,58px);line-height:1.05;font-weight:900;letter-spacing:-.5px}
+    h1 .g{background:linear-gradient(90deg,var(--cyan),#fff 50%,var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tag{display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#ff408122;border:1px solid var(--pink);color:#ffd1e3;font-weight:700;font-size:13px}
+    .lead{margin-top:16px;color:var(--mute);font-size:18px;max-width:34em}
+    .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:800;text-decoration:none}
+    .btn.primary{background:var(--cyan);color:#041018;box-shadow:0 0 28px #18e0ff66}
+    .btn.ghost{border:1.5px solid #2c2f5a;color:var(--text)}
+    .heroimg{border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px #2a2d58,0 30px 80px #000a,0 0 60px #18e0ff33}
+    .heroimg img{display:block;width:100%;height:auto}
+    section{padding:44px 0}
+    h2{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-bottom:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:var(--card);border:1px solid #23264d;border-radius:18px;padding:20px}
+    .card h3{font-size:18px;margin-bottom:6px}
+    .card p{color:var(--mute);font-size:15px}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:currentColor;box-shadow:0 0 12px currentColor}
+    .shots{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}
+    .shots img{flex:0 0 auto;width:220px;height:auto;border-radius:18px;scroll-snap-align:start;box-shadow:0 0 0 1px #2a2d58}
+    .faq details{background:var(--card);border:1px solid #23264d;border-radius:14px;padding:14px 18px;margin-bottom:10px}
+    .faq summary{cursor:pointer;font-weight:700}
+    .faq p{color:var(--mute);margin-top:8px}
+    footer{border-top:1px solid #1d2044;margin-top:30px;padding:26px 0 40px;color:var(--mute);font-size:14px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+    html[lang="tr"] [data-l="en"],html[lang="en"] [data-l="tr"]{display:none!important}
+    @media (max-width:820px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}.shots img{width:180px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/grow-io/"><img src="/grow-io/icon.png" alt="Snake Grow.io icon" width="40" height="40" />Snake Grow.io</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="tr" aria-pressed="true">TR</button>
+        <button type="button" data-set="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="hero">
+        <div>
+          <span class="tag"><span data-l="tr">YENİ 1.4: Kahraman görünümler</span><span data-l="en">NEW 1.4: Hero skins</span></span>
+          <h1><span data-l="tr">Neon arenada <span class="g">dev bir yılana dönüş</span></span><span data-l="en">Grow into <span class="g">a giant</span> in the neon arena</span></h1>
+          <p class="lead">
+            <span data-l="tr">Snake Grow.io: Battle Arena, iPhone ve iPad için bir yılan arenası oyunu. Parlayan yemleri ye, uza, rakiplerinin önünü kes, Kral'ı ve Boss'u devir. İnternet olmadan da oynanır.</span>
+            <span data-l="en">Snake Grow.io: Battle Arena is a snake arena game for iPhone and iPad. Eat glowing food, grow longer, cut off your rivals and take down the King and the Boss. Plays offline too.</span>
+          </p>
+          <div class="cta">
+            <a class="btn primary" href={appStore} rel="noopener"><span data-l="tr">App Store'da indir</span><span data-l="en">Download on the App Store</span></a>
+            <a class="btn ghost" href="#features"><span data-l="tr">Neler var?</span><span data-l="en">What's inside</span></a>
+          </div>
+        </div>
+        <div class="heroimg">
+          <img data-l="tr" src="/grow-io/cover-tr.jpg" width="1200" height="675" alt="Snake Grow.io kahraman güncellemesi" />
+          <img data-l="en" src="/grow-io/cover-en.jpg" width="1200" height="675" alt="Snake Grow.io hero update" />
+        </div>
+      </div>
+
+      <section id="features">
+        <h2><span data-l="tr">Oyunda neler var</span><span data-l="en">What's inside</span></h2>
+        <div class="grid">
+          <div class="card"><h3><span class="dot" style="color:var(--cyan)"></span><span data-l="tr">3 mod</span><span data-l="en">3 modes</span></h3><p><span data-l="tr">Klasik (sonsuz), Rush (90 saniye) ve Boss Rush.</span><span data-l="en">Classic (endless), Rush (90 seconds) and Boss Rush.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--gold)"></span><span data-l="tr">Kral ve Boss</span><span data-l="en">King and Boss</span></h3><p><span data-l="tr">Kral +500 skor ve 75 altın, Boss +1000 skor ve 100 altın verir.</span><span data-l="en">The King pays +500 score and 75 coins, the Boss +1000 score and 100 coins.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--pink)"></span><span data-l="tr">Kahraman görünümler</span><span data-l="en">Hero skins</span></h3><p><span data-l="tr">Samuray, Yörünge, Kraken ve Jet; her birinin küçük bir gücü var.</span><span data-l="en">Samurai, Orbit, Kraken and Jet, each with a small power.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--lime)"></span><span data-l="tr">Akıllı rakipler</span><span data-l="en">Smart rivals</span></h3><p><span data-l="tr">Önünü kesen, seni kuşatan ve güçler için yarışan 12 yapay zekâ rakip.</span><span data-l="en">12 AI rivals that cut you off, surround you and race you for power-ups.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:#40c4ff"></span><span data-l="tr">Harita olayları</span><span data-l="en">Map events</span></h3><p><span data-l="tr">Hazine, yem yağmuru, oklu hız pistleri ve x2.5'e kadar bonus bölgeler.</span><span data-l="en">Treasure, food rain, arrow speed pads and bonus zones up to x2.5.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:#b388ff"></span><span data-l="tr">İnternetsiz</span><span data-l="en">Offline</span></h3><p><span data-l="tr">Uçakta, metroda, her yerde. Türkçe ve İngilizce.</span><span data-l="en">On a plane, on the subway, anywhere. Turkish and English.</span></p></div>
+        </div>
+      </section>
+
+      <section id="screenshots">
+        <h2><span data-l="tr">Ekran görüntüleri</span><span data-l="en">Screenshots</span></h2>
+        <div class="shots" data-l="tr">{shots.map((s) => <img src={`/grow-io/shot-tr-${s}.webp`} width="540" height="1170" loading="lazy" alt={`Snake Grow.io ekran görüntüsü ${s}`} />)}</div>
+        <div class="shots" data-l="en">{shots.map((s) => <img src={`/grow-io/shot-en-${s}.webp`} width="540" height="1170" loading="lazy" alt={`Snake Grow.io screenshot ${s}`} />)}</div>
+      </section>
+
+      <section class="faq" id="faq">
+        <h2><span data-l="tr">Sık sorulanlar</span><span data-l="en">FAQ</span></h2>
+        <details><summary><span data-l="tr">Oyun ücretsiz mi?</span><span data-l="en">Is the game free?</span></summary><p><span data-l="tr">Evet, ücretsiz indirilir. Oyunda reklamlar bulunur; ödüllü videolar isteğe bağlıdır.</span><span data-l="en">Yes, it is free to download. The game shows ads; rewarded videos are optional.</span></p></details>
+        <details><summary><span data-l="tr">İnternet gerekiyor mu?</span><span data-l="en">Do I need the internet?</span></summary><p><span data-l="tr">Hayır, oyun internetsiz oynanır. Reklamlar için bağlantı gerekir.</span><span data-l="en">No, the game plays offline. Ads need a connection.</span></p></details>
+        <details><summary><span data-l="tr">Hangi cihazlarda çalışır?</span><span data-l="en">Which devices?</span></summary><p><span data-l="tr">iPhone ve iPad.</span><span data-l="en">iPhone and iPad.</span></p></details>
+        <details><summary><span data-l="tr">Verilerim nasıl kullanılıyor?</span><span data-l="en">How is my data used?</span></summary><p><span data-l="tr">Ayrıntılar <a href="/grow-io/privacy/">gizlilik politikasında</a>.</span><span data-l="en">See the <a href="/grow-io/privacy/">privacy policy</a>.</span></p></details>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 AKIS Games · Ömer Yasir Önal</span>
+      <span><a href="/grow-io/privacy/"><span data-l="tr">Gizlilik</span><span data-l="en">Privacy</span></a> · <a href="mailto:contact@akisgames.com"><span data-l="tr">Destek</span><span data-l="en">Support</span></a> · <a href="/">omeryasironal.com</a></span>
+    </footer>
+  </div>
+  <script is:inline>
+    (function () {
+      var saved = null; try { saved = localStorage.getItem('growio-lang'); } catch (e) {}
+      var lang = saved || ((navigator.language || 'tr').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en');
+      function set(l) {
+        document.documentElement.lang = l;
+        document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+        try { localStorage.setItem('growio-lang', l); } catch (e) {}
+      }
+      set(lang);
+      document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    })();
+  </script>
+</body>
+</html>
