@@ -1,0 +1,137 @@
+---
+// Privacy policy for "Sky Quarry" (iOS). Bilingual: TR / EN.
+// Keep in sync with SkyQuarry/PrivacyInfo.xcprivacy and the App Store privacy label ("Data Not Collected").
+const site = Astro.site ?? new URL('https://omeryasironal.com');
+const url = new URL('/sky-quarry/privacy/', site).toString();
+const effective = '15 November 2026';
+const effectiveTR = '15 Kasım 2026';
+const email = 'contact@akisgames.com';
+---
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gizlilik Politikası · Sky Quarry</title>
+  <meta name="description" content="Sky Quarry gizlilik politikası: uygulama hiçbir kişisel veri toplamaz, ilerleme yalnızca cihazda saklanır." />
+  <link rel="canonical" href={url} />
+  <meta name="theme-color" content="#ffd9c2" />
+  <link rel="icon" href="/sky-quarry/icon.png" />
+  <style is:global>
+    :root{--peach:#ffd9c2;--rose:#ffc6d3;--sky:#bfe3ff;--blue:#8cc8ff;--card:#ffffff;--ink:#23305a;--mute:#5d6a92}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{background:#bfe3ff}
+    body{min-height:100vh;background:linear-gradient(180deg,var(--peach) 0%,var(--rose) 20%,var(--sky) 60%,var(--blue) 100%) fixed;color:var(--ink);font:16px/1.7 ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Nunito","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#2b6fd6}
+    .wrap{max-width:780px;margin:0 auto;padding:0 20px 60px}
+    header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0 8px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:800}
+    .brand img{width:36px;height:36px;border-radius:10px;box-shadow:0 4px 12px #23305a22}
+    .lang{display:flex;gap:6px}
+    .lang button{background:#ffffffaa;border:1.5px solid #fff;color:var(--mute);border-radius:999px;padding:6px 12px;font:inherit;font-weight:800;cursor:pointer}
+    .lang button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 4px 12px #23305a1f}
+    article{background:var(--card);border-radius:28px;padding:28px clamp(18px,4vw,36px) 32px;margin-top:14px;box-shadow:0 12px 32px #23305a1a}
+    h1{font-size:clamp(28px,4.4vw,38px);font-weight:900;margin-bottom:4px}
+    .upd{color:var(--mute);font-size:14px;margin-bottom:20px}
+    h2{font-size:19px;margin:26px 0 6px}
+    p,li{color:#36426b}
+    ul{padding-left:22px;margin:8px 0}
+    li{margin:4px 0}
+    .box{background:#eef6ff;border-radius:18px;padding:14px 18px;margin:12px 0;font-weight:600}
+    footer{margin-top:26px;color:#34406b;font-size:14px}
+    html[lang="tr"] [data-l="en"],html[lang="en"] [data-l="tr"]{display:none!important}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/sky-quarry/"><img src="/sky-quarry/icon.png" alt="Sky Quarry icon" width="36" height="36" />Sky Quarry</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="tr" aria-pressed="true">TR</button>
+        <button type="button" data-set="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <!-- TURKCE -->
+    <article data-l="tr">
+      <h1>Gizlilik Politikası</h1>
+      <p class="upd">Yürürlük tarihi: {effectiveTR} · Sky Quarry (iOS)</p>
+      <div class="box">Kısaca: Sky Quarry hiçbir kişisel veri toplamaz. Hesap, analitik, reklam ve takip yoktur. Oyun ilerlemesi yalnızca cihazınızda saklanır.</div>
+
+      <h2>1. Toplanan veriler</h2>
+      <p>Hiçbiri. Uygulama ad, e-posta, konum, cihaz kimliği, reklam kimliği ya da kullanım verisi gibi hiçbir kişisel veri toplamaz ve bize göndermez.</p>
+
+      <h2>2. Cihazda saklanan veriler</h2>
+      <p>Oyun ilerlemesi (cevher, yapılar, adalar, geliştirmeler) ve ayarlar (ör. ses) yalnızca cihazınızda, iOS'un yerel depolamasında (UserDefaults) tutulur. Bu veriler hiçbir sunucuya gönderilmez ve uygulamayı sildiğinizde cihazdan kaldırılır.</p>
+
+      <h2>3. Ağ bağlantısı, analitik ve reklam</h2>
+      <ul>
+        <li>Uygulama hiçbir ağ isteği yapmaz; internetsiz oynanır.</li>
+        <li>Analitik, reklam, takip ya da üçüncü taraf SDK'sı yoktur.</li>
+        <li>Hesap ya da giriş yoktur.</li>
+        <li>Tek dış bağlantı: uygulamadaki gizlilik ya da destek bağlantısına dokunduğunuzda bu web sitesi tarayıcınızda açılır. Bu, uygulamanın değil tarayıcınızın yaptığı bir ziyarettir.</li>
+      </ul>
+
+      <h2>4. Üçüncü taraflarla paylaşım</h2>
+      <p>Veri toplamadığımız için hiçbir veri üçüncü taraflarla paylaşılmaz ya da satılmaz.</p>
+
+      <h2>5. Çocuklar</h2>
+      <p>Oyun her yaşa uygundur. Çocuklar dahil hiç kimseden veri toplanmaz.</p>
+
+      <h2>6. Değişiklikler</h2>
+      <p>Bu politikayı güncellersek yeni yürürlük tarihi bu sayfanın başında yer alır.</p>
+
+      <h2>7. İletişim</h2>
+      <p>Geliştirici: Ömer Yasir Önal<br />E-posta: <a href={`mailto:${email}`}>{email}</a></p>
+    </article>
+
+    <!-- ENGLISH -->
+    <article data-l="en">
+      <h1>Privacy Policy</h1>
+      <p class="upd">Effective date: {effective} · Sky Quarry (iOS)</p>
+      <div class="box">In short: Sky Quarry collects no personal data. There are no accounts, no analytics, no ads and no tracking. Game progress is stored only on your device.</div>
+
+      <h2>1. Data we collect</h2>
+      <p>None. The app does not collect or send us any personal data, such as your name, email, location, device identifiers, advertising identifier or usage data.</p>
+
+      <h2>2. Data stored on your device</h2>
+      <p>Game progress (ore, buildings, islands, upgrades) and settings (for example sound) are kept only on your device, in iOS local storage (UserDefaults). This data is never sent to a server and is removed from the device when you delete the app.</p>
+
+      <h2>3. Network, analytics and ads</h2>
+      <ul>
+        <li>The app makes no network requests; it plays offline.</li>
+        <li>There are no analytics, no ads, no tracking and no third-party SDKs.</li>
+        <li>There are no accounts and no sign-in.</li>
+        <li>The only outbound action: when you tap the privacy or support link in the app, this website opens in your browser. That visit is made by your browser, not by the app.</li>
+      </ul>
+
+      <h2>4. Sharing with third parties</h2>
+      <p>Because we collect no data, no data is shared with or sold to third parties.</p>
+
+      <h2>5. Children</h2>
+      <p>The game is suitable for all ages. No data is collected from anyone, including children.</p>
+
+      <h2>6. Changes</h2>
+      <p>If we update this policy, the new effective date will appear at the top of this page.</p>
+
+      <h2>7. Contact</h2>
+      <p>Developer: Ömer Yasir Önal<br />Email: <a href={`mailto:${email}`}>{email}</a></p>
+    </article>
+
+    <footer><a href="/sky-quarry/">← Sky Quarry</a> · <a href="/sky-quarry/#support">Destek / Support</a> · © 2026 Ömer Yasir Önal</footer>
+  </div>
+  <script is:inline>
+    (function () {
+      var saved = null; try { saved = localStorage.getItem('skyquarry-lang'); } catch (e) {}
+      var lang = saved || ((navigator.language || 'tr').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en');
+      function set(l) {
+        document.documentElement.lang = l;
+        document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+        try { localStorage.setItem('skyquarry-lang', l); } catch (e) {}
+      }
+      set(lang);
+      document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    })();
+  </script>
+</body>
+</html>

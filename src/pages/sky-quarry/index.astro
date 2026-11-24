@@ -1,0 +1,191 @@
+---
+// Official page for the iOS game "Sky Quarry".
+// Standalone page (own pastel sky look, not the portfolio layout). Bilingual: TR / EN.
+// App Store: set `appStore` to the real App Store URL once the app is live; until then the button stays hidden.
+// Screenshots: add file names to `shots` (public/sky-quarry/shot-tr-<name>.webp and shot-en-<name>.webp) to show the gallery.
+const site = Astro.site ?? new URL('https://omeryasironal.com');
+const url = new URL('/sky-quarry/', site).toString();
+const appStore: string = '';
+const shots: string[] = [];
+const email = 'contact@akisgames.com';
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'Sky Quarry',
+  operatingSystem: 'iOS',
+  applicationCategory: 'GameApplication',
+  genre: ['Casual', 'Idle'],
+  url,
+  image: new URL('/sky-quarry/icon.png', site).toString(),
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  author: { '@type': 'Person', name: 'Ömer Yasir Önal', url: site.toString() },
+  description:
+    'Sky Quarry is a cozy idle mining game for iPhone. Tap the crystal on a floating island, build machines that mine for you, unlock new islands and go on short expeditions. No ads, no in-app purchases, no account.',
+};
+if (appStore) jsonLd.installUrl = appStore;
+if (shots.length) jsonLd.screenshot = shots.map((s) => new URL(`/sky-quarry/shot-en-${s}.webp`, site).toString());
+---
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sky Quarry · Gökyüzü adasında kristal madeni (iPhone)</title>
+  <meta name="description" content="Sky Quarry, iPhone için sakin bir boşta madencilik oyunu. Uçan adadaki kristale dokun, senin yerine kazan makineler kur, yeni adalar aç. Reklam yok, uygulama içi satın alma yok, hesap yok." />
+  <link rel="canonical" href={url} />
+  <meta name="theme-color" content="#ffd9c2" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sky Quarry" />
+  <meta property="og:description" content="A cozy idle mining game on a floating sky island. No ads, no in-app purchases, no account." />
+  <meta property="og:url" content={url} />
+  <meta property="og:image" content={new URL('/sky-quarry/icon.png', site).toString()} />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="/sky-quarry/icon.png" />
+  <link rel="apple-touch-icon" href="/sky-quarry/icon.png" />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <style is:global>
+    :root{--peach:#ffd9c2;--rose:#ffc6d3;--sky:#bfe3ff;--blue:#8cc8ff;--card:#ffffff;--ink:#23305a;--mute:#5d6a92;--crystal:#5cdcff;--gold:#ffd159;--essence:#c78fff;--good:#61e08c;--line:#e6ecfa}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{background:#bfe3ff;scroll-behavior:smooth}
+    body{min-height:100vh;background:linear-gradient(180deg,var(--peach) 0%,var(--rose) 22%,var(--sky) 58%,var(--blue) 100%) fixed;color:var(--ink);font:16px/1.6 ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Nunito","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#2b6fd6}
+    .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+    header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:.2px}
+    .brand img{width:40px;height:40px;border-radius:11px;box-shadow:0 4px 12px #23305a22}
+    .lang{display:flex;gap:6px}
+    .lang button{background:#ffffffaa;border:1.5px solid #ffffff;color:var(--mute);border-radius:999px;padding:6px 12px;font:inherit;font-weight:800;cursor:pointer}
+    .lang button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 4px 12px #23305a1f}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:30px 0 40px}
+    h1{font-size:clamp(34px,5.4vw,56px);line-height:1.08;font-weight:900;letter-spacing:-.4px}
+    h1 .g{background:linear-gradient(90deg,#3aa6ff,#9a6bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tag{display:inline-block;margin-bottom:14px;padding:6px 14px;border-radius:999px;background:#fff;color:var(--ink);font-weight:800;font-size:13px;box-shadow:0 4px 12px #23305a14}
+    .lead{margin-top:16px;color:var(--mute);font-size:18px;max-width:34em}
+    .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:18px;font-weight:800;text-decoration:none}
+    .btn.primary{background:var(--ink);color:#fff;box-shadow:0 10px 24px #23305a33}
+    .btn.ghost{background:#ffffffcc;color:var(--ink)}
+    .soon{display:inline-flex;align-items:center;padding:14px 20px;border-radius:18px;background:#ffffff99;color:var(--mute);font-weight:700}
+    .heroart{display:grid;place-items:center}
+    .heroart .island{position:relative;width:min(320px,80%);aspect-ratio:1;border-radius:28%;background:#fff;padding:18px;box-shadow:0 30px 60px #23305a2e;animation:float 6s ease-in-out infinite}
+    .heroart .island img{width:100%;height:100%;border-radius:22%;display:block}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @media (prefers-reduced-motion:reduce){.heroart .island{animation:none}}
+    section{padding:40px 0}
+    h2{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-bottom:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:var(--card);border-radius:24px;padding:20px 22px;box-shadow:0 8px 24px #23305a14}
+    .card h3{font-size:18px;margin-bottom:6px;display:flex;align-items:center}
+    .card p{color:var(--mute);font-size:15px}
+    .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:10px;background:currentColor;flex:0 0 auto}
+    .shots{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}
+    .shots img{flex:0 0 auto;width:220px;height:auto;border-radius:24px;scroll-snap-align:start;box-shadow:0 8px 24px #23305a1f}
+    .support{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:stretch}
+    .support .card p{font-size:16px}
+    .mail{display:inline-block;margin-top:12px;font-weight:800;font-size:18px;word-break:break-all}
+    .faq details{background:var(--card);border-radius:18px;padding:14px 20px;margin-bottom:10px;box-shadow:0 6px 18px #23305a10}
+    .faq summary{cursor:pointer;font-weight:800}
+    .faq p{color:var(--mute);margin-top:8px}
+    footer{border-top:1px solid #ffffff99;margin-top:30px;padding:26px 0 40px;color:#34406b;font-size:14px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+    html[lang="tr"] [data-l="en"],html[lang="en"] [data-l="tr"]{display:none!important}
+    @media (max-width:820px){.hero{grid-template-columns:1fr}.heroart{order:-1}.grid{grid-template-columns:1fr 1fr}.support{grid-template-columns:1fr}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}.shots img{width:180px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/sky-quarry/"><img src="/sky-quarry/icon.png" alt="Sky Quarry icon" width="40" height="40" />Sky Quarry</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="tr" aria-pressed="true">TR</button>
+        <button type="button" data-set="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="hero">
+        <div>
+          <span class="tag"><span data-l="tr">iPhone için · Reklamsız</span><span data-l="en">For iPhone · No ads</span></span>
+          <h1><span data-l="tr">Gökyüzündeki adada <span class="g">kristal madeni</span></span><span data-l="en">A <span class="g">crystal quarry</span> on a sky island</span></h1>
+          <p class="lead">
+            <span data-l="tr">Sky Quarry, iPhone için sakin bir boşta madencilik oyunu. Uçan adadaki kristale dokun, cevher topla, senin yerine kazan makineler kur ve yeni adalar aç. Sen yokken de üretim sürer.</span>
+            <span data-l="en">Sky Quarry is a cozy idle mining game for iPhone. Tap the crystal on a floating island, collect ore, build machines that mine for you and unlock new islands. Production keeps going while you are away.</span>
+          </p>
+          <div class="cta">
+            {appStore ? (
+              <a class="btn primary" href={appStore} rel="noopener"><span data-l="tr">App Store'da indir</span><span data-l="en">Download on the App Store</span></a>
+            ) : (
+              <span class="soon" id="appstore-soon"><span data-l="tr">App Store'a yakında</span><span data-l="en">Coming soon to the App Store</span></span>
+            )}
+            <a class="btn ghost" href="#support"><span data-l="tr">Destek</span><span data-l="en">Support</span></a>
+          </div>
+        </div>
+        <div class="heroart">
+          <div class="island"><img src="/sky-quarry/icon.png" width="512" height="512" alt="Sky Quarry" /></div>
+        </div>
+      </div>
+
+      <section id="features">
+        <h2><span data-l="tr">Oyunda neler var</span><span data-l="en">What's inside</span></h2>
+        <div class="grid">
+          <div class="card"><h3><span class="dot" style="color:var(--crystal)"></span><span data-l="tr">Dokun ve kaz</span><span data-l="en">Tap and mine</span></h3><p><span data-l="tr">Kristale her dokunuş cevher getirir. Geliştirmelerle dokunuşun güçlenir.</span><span data-l="en">Every tap on the crystal brings ore. Upgrades make your taps stronger.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--gold)"></span><span data-l="tr">Makineler kur</span><span data-l="en">Build machines</span></h3><p><span data-l="tr">Kazıcı robottan portala kadar yedi yapı senin yerine cevher üretir.</span><span data-l="en">Seven buildings, from the mining robot to the portal, produce ore for you.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--essence)"></span><span data-l="tr">Yeni adalar</span><span data-l="en">New islands</span></h3><p><span data-l="tr">Bakır Ada ve Bulut Ada yeni yapılar açar ve tüm üretimi katlar.</span><span data-l="en">Copper Island and Cloud Island unlock new buildings and multiply all production.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:var(--good)"></span><span data-l="tr">Keşifler</span><span data-l="en">Expeditions</span></h3><p><span data-l="tr">Kısa keşiflere çık, ödülle adana dön.</span><span data-l="en">Head out on short expeditions and return to your island with rewards.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:#7fb2ff"></span><span data-l="tr">Sen yokken de</span><span data-l="en">While you are away</span></h3><p><span data-l="tr">Uygulamayı kapatsan da makineler çalışır; döndüğünde kazancını topla.</span><span data-l="en">Machines keep working when the app is closed; collect your earnings when you are back.</span></p></div>
+          <div class="card"><h3><span class="dot" style="color:#ff9fb6"></span><span data-l="tr">Huzurlu oyun</span><span data-l="en">Calm play</span></h3><p><span data-l="tr">Reklam yok, uygulama içi satın alma yok, hesap yok. İnternetsiz oynanır.</span><span data-l="en">No ads, no in-app purchases, no account. Plays offline.</span></p></div>
+        </div>
+      </section>
+
+      {shots.length > 0 && (
+        <section id="screenshots">
+          <h2><span data-l="tr">Ekran görüntüleri</span><span data-l="en">Screenshots</span></h2>
+          <div class="shots" data-l="tr">{shots.map((s) => <img src={`/sky-quarry/shot-tr-${s}.webp`} width="540" height="1170" loading="lazy" alt={`Sky Quarry ekran görüntüsü ${s}`} />)}</div>
+          <div class="shots" data-l="en">{shots.map((s) => <img src={`/sky-quarry/shot-en-${s}.webp`} width="540" height="1170" loading="lazy" alt={`Sky Quarry screenshot ${s}`} />)}</div>
+        </section>
+      )}
+
+      <section id="support">
+        <h2><span data-l="tr">Destek</span><span data-l="en">Support</span></h2>
+        <div class="support">
+          <div class="card">
+            <p><span data-l="tr">Bir sorun mu yaşadın, bir öneri mi var? Bize e-posta ile yaz. Mesajına iPhone modelini ve iOS sürümünü eklemen sorunu daha hızlı anlamamıza yardımcı olur.</span><span data-l="en">Found a problem or have an idea? Email us. Including your iPhone model and iOS version helps us understand the issue faster.</span></p>
+            <a class="mail" href={`mailto:${email}?subject=Sky%20Quarry`}>{email}</a>
+          </div>
+          <div class="card">
+            <h3><span data-l="tr">Gizlilik</span><span data-l="en">Privacy</span></h3>
+            <p><span data-l="tr">Sky Quarry hiçbir kişisel veri toplamaz. Ayrıntılar için <a href="/sky-quarry/privacy/">gizlilik politikası</a>.</span><span data-l="en">Sky Quarry collects no personal data. Details in the <a href="/sky-quarry/privacy/">privacy policy</a>.</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq" id="faq">
+        <h2><span data-l="tr">Sık sorulanlar</span><span data-l="en">FAQ</span></h2>
+        <details><summary><span data-l="tr">İlerlemem nerede saklanıyor?</span><span data-l="en">Where is my progress stored?</span></summary><p><span data-l="tr">Yalnızca cihazında. Hiçbir sunucuya gönderilmez.</span><span data-l="en">Only on your device. It is never sent to a server.</span></p></details>
+        <details><summary><span data-l="tr">Uygulamayı silersem ne olur?</span><span data-l="en">What happens if I delete the app?</span></summary><p><span data-l="tr">İlerleme yalnızca cihazda tutulduğu için uygulamayı silmek ilerlemeni de siler ve geri getirilemez.</span><span data-l="en">Because progress is kept only on the device, deleting the app also deletes your progress and it cannot be restored.</span></p></details>
+        <details><summary><span data-l="tr">Hesap gerekiyor mu?</span><span data-l="en">Do I need an account?</span></summary><p><span data-l="tr">Hayır. Oyunda hesap ya da giriş yoktur.</span><span data-l="en">No. The game has no accounts and no sign-in.</span></p></details>
+        <details><summary><span data-l="tr">Reklam var mı?</span><span data-l="en">Are there ads?</span></summary><p><span data-l="tr">Hayır, oyunda hiç reklam yoktur.</span><span data-l="en">No, the game has no ads at all.</span></p></details>
+        <details><summary><span data-l="tr">Uygulama içi satın alma var mı?</span><span data-l="en">Are there in-app purchases?</span></summary><p><span data-l="tr">Hayır, uygulama içi satın alma yoktur.</span><span data-l="en">No, there are no in-app purchases.</span></p></details>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 Ömer Yasir Önal</span>
+      <span><a href="/sky-quarry/privacy/"><span data-l="tr">Gizlilik</span><span data-l="en">Privacy</span></a> · <a href="#support"><span data-l="tr">Destek</span><span data-l="en">Support</span></a> · <a href="/">omeryasironal.com</a></span>
+    </footer>
+  </div>
+  <script is:inline>
+    (function () {
+      var saved = null; try { saved = localStorage.getItem('skyquarry-lang'); } catch (e) {}
+      var lang = saved || ((navigator.language || 'tr').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en');
+      function set(l) {
+        document.documentElement.lang = l;
+        document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+        try { localStorage.setItem('skyquarry-lang', l); } catch (e) {}
+      }
+      set(lang);
+      document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    })();
+  </script>
+</body>
+</html>

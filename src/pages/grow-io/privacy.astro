@@ -1,0 +1,169 @@
+---
+// Privacy policy for "Snake Grow.io: Battle Arena" (iOS). Bilingual: TR / EN.
+// Keep in sync with the App Store privacy label and src/adService.ts / src/analytics.ts.
+const site = Astro.site ?? new URL('https://omeryasironal.com');
+const url = new URL('/grow-io/privacy/', site).toString();
+const updated = '15 November 2026';
+const updatedTR = '15 Kasım 2026';
+---
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gizlilik Politikası · Snake Grow.io: Battle Arena</title>
+  <meta name="description" content="Snake Grow.io: Battle Arena gizlilik politikası: hangi verilerin toplandığı (reklam ve analitik), nasıl kullanıldığı ve tercihlerinizi nasıl değiştireceğiniz." />
+  <link rel="canonical" href={url} />
+  <meta name="theme-color" content="#070714" />
+  <link rel="icon" href="/grow-io/icon.png" />
+  <style is:global>
+    :root{--bg:#070714;--card:#10102a;--cyan:#18e0ff;--text:#e8ecff;--mute:#a3abcf}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{background:#070714}
+    body{background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:var(--cyan)}
+    .wrap{max-width:780px;margin:0 auto;padding:0 20px 60px}
+    header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0 8px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--text);text-decoration:none;font-weight:800}
+    .brand img{width:36px;height:36px;border-radius:9px}
+    .lang{display:flex;gap:6px}
+    .lang button{background:transparent;border:1.5px solid #2c2f5a;color:var(--mute);border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer}
+    .lang button[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan)}
+    h1{font-size:clamp(28px,4.4vw,40px);font-weight:900;margin:22px 0 4px}
+    .upd{color:var(--mute);font-size:14px;margin-bottom:22px}
+    h2{font-size:20px;margin:28px 0 8px}
+    p,li{color:#d3d8f3}
+    ul{padding-left:22px;margin:8px 0}
+    li{margin:4px 0}
+    .box{background:var(--card);border:1px solid #23264d;border-radius:14px;padding:14px 18px;margin:12px 0}
+    footer{border-top:1px solid #1d2044;margin-top:36px;padding-top:20px;color:var(--mute);font-size:14px}
+    html[lang="tr"] [data-l="en"],html[lang="en"] [data-l="tr"]{display:none!important}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/grow-io/"><img src="/grow-io/icon.png" alt="Snake Grow.io icon" width="36" height="36" />Snake Grow.io</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set="tr" aria-pressed="true">TR</button>
+        <button type="button" data-set="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <!-- ───────────── TÜRKÇE ───────────── -->
+    <article data-l="tr">
+      <h1>Gizlilik Politikası</h1>
+      <p class="upd">Son güncelleme: {updatedTR} · Snake Grow.io: Battle Arena (iOS)</p>
+      <div class="box">Kısaca: hesap açmanızı istemiyoruz; adınızı, e-postanızı, telefon numaranızı ya da kesin konumunuzu toplamıyoruz. Reklam için Google AdMob, anonim kullanım istatistikleri için Google Analytics for Firebase kullanıyoruz. Verilerinizi satmıyoruz.</div>
+
+      <h2>1. Toplanan veriler</h2>
+      <ul>
+        <li><b>Reklam kimliği (IDFA):</b> yalnızca iOS'ta izin verirseniz (App Tracking Transparency). Google AdMob tarafından reklam göstermek ve ölçmek için kullanılır.</li>
+        <li><b>Reklam etkileşimleri:</b> gösterilen ve tıklanan reklamlar, Google AdMob tarafından işlenir.</li>
+        <li><b>Kullanım verileri (analitik):</b> Google Analytics for Firebase; uygulama örneği kimliği, oyun içi olaylar (ör. oyun başlangıcı ve bitişi, mod, skor, görünüm satın alma), cihaz modeli, işletim sistemi sürümü, dil ve IP adresinden çıkarılan yaklaşık konum (ülke ya da bölge). Bu veriler kimliğinizle ilişkilendirilmez.</li>
+        <li><b>Oyun ilerlemesi:</b> altın, görünümler, skorlar ve ayarlar yalnızca cihazınızda saklanır; sunucumuza gönderilmez.</li>
+      </ul>
+
+      <h2>2. Toplamadığımız veriler</h2>
+      <p>Ad, e-posta, telefon numarası, kesin (GPS) konum, kişiler, fotoğraflar ya da sağlık verisi toplamıyoruz. Oyunda hesap ve sohbet yoktur.</p>
+
+      <h2>3. Verileri neden kullanıyoruz</h2>
+      <ul>
+        <li>Oyunu ücretsiz tutan reklamları göstermek ve ölçmek.</li>
+        <li>Oyunu iyileştirmek: hangi modların oynandığını, oyunların ne kadar sürdüğünü ve hataları anlamak.</li>
+      </ul>
+
+      <h2>4. İzinler ve tercihleriniz</h2>
+      <ul>
+        <li><b>Takip izni:</b> iOS sizden izin ister. Daha sonra Ayarlar → Gizlilik ve Güvenlik → Takip bölümünden değiştirebilirsiniz.</li>
+        <li><b>Avrupa Ekonomik Alanı, Birleşik Krallık ve İsviçre:</b> kişiselleştirilmiş reklamlardan önce Google'ın onay formu gösterilir. Kararınızı oyunda Ayarlar → Gizlilik seçenekleri üzerinden değiştirebilirsiniz.</li>
+        <li>Uygulamayı silmek cihazdaki tüm oyun verilerini kaldırır.</li>
+      </ul>
+
+      <h2>5. Üçüncü taraflar</h2>
+      <ul>
+        <li>Google AdMob: <a href="https://policies.google.com/privacy" rel="noopener">Google Gizlilik Politikası</a></li>
+        <li>Google Analytics for Firebase: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase gizlilik ve güvenlik</a></li>
+        <li>Apple (App Store dağıtımı): <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple Gizlilik Politikası</a></li>
+      </ul>
+
+      <h2>6. Çocuklar</h2>
+      <p>Oyun 13 yaşın altındaki çocuklara yönelik değildir ve bilerek çocuklardan kişisel bilgi toplamayız.</p>
+
+      <h2>7. Haklarınız</h2>
+      <p>KVKK ve GDPR kapsamındaki haklarınızı (erişim, silme, itiraz) kullanmak için bize yazabilirsiniz. Kimliğinizi tutmadığımız için talebinize cihazınızın ve oyunun bilgisini eklemeniz işimizi kolaylaştırır.</p>
+
+      <h2>8. Değişiklikler</h2>
+      <p>Bu politikayı güncelleyebiliriz; tarih bu sayfanın başında değişir.</p>
+
+      <h2>9. İletişim</h2>
+      <p>AKIS Games · Ömer Yasir Önal, İstanbul, Türkiye<br />E-posta: <a href="mailto:contact@akisgames.com">contact@akisgames.com</a></p>
+    </article>
+
+    <!-- ───────────── ENGLISH ───────────── -->
+    <article data-l="en">
+      <h1>Privacy Policy</h1>
+      <p class="upd">Last updated: {updated} · Snake Grow.io: Battle Arena (iOS)</p>
+      <div class="box">In short: no account needed; we do not collect your name, email, phone number or precise location. We use Google AdMob for ads and Google Analytics for Firebase for anonymous usage statistics. We do not sell your data.</div>
+
+      <h2>1. Data we collect</h2>
+      <ul>
+        <li><b>Advertising identifier (IDFA):</b> only if you allow it on iOS (App Tracking Transparency). Used by Google AdMob to show and measure ads.</li>
+        <li><b>Ad interactions:</b> ads shown and tapped, processed by Google AdMob.</li>
+        <li><b>Usage data (analytics):</b> Google Analytics for Firebase; an app instance ID, in-game events (for example a run starting or ending, mode, score, a skin purchase), device model, OS version, language and approximate location (country or region derived from the IP address). This data is not linked to your identity.</li>
+        <li><b>Game progress:</b> coins, skins, scores and settings are stored on your device only and are not sent to our servers.</li>
+      </ul>
+
+      <h2>2. Data we do not collect</h2>
+      <p>We do not collect your name, email, phone number, precise (GPS) location, contacts, photos or health data. The game has no accounts and no chat.</p>
+
+      <h2>3. Why we use data</h2>
+      <ul>
+        <li>To show and measure the ads that keep the game free.</li>
+        <li>To improve the game: which modes are played, how long runs last, and what breaks.</li>
+      </ul>
+
+      <h2>4. Permissions and your choices</h2>
+      <ul>
+        <li><b>Tracking:</b> iOS asks for your permission. You can change it later in Settings → Privacy &amp; Security → Tracking.</li>
+        <li><b>EEA, UK and Switzerland:</b> Google's consent form appears before personalised ads. You can change your choice in the game under Settings → Privacy options.</li>
+        <li>Deleting the app removes all game data from your device.</li>
+      </ul>
+
+      <h2>5. Third parties</h2>
+      <ul>
+        <li>Google AdMob: <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a></li>
+        <li>Google Analytics for Firebase: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase privacy and security</a></li>
+        <li>Apple (App Store distribution): <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple Privacy Policy</a></li>
+      </ul>
+
+      <h2>6. Children</h2>
+      <p>The game is not directed at children under 13, and we do not knowingly collect personal information from children.</p>
+
+      <h2>7. Your rights</h2>
+      <p>To exercise your rights under GDPR or KVKK (access, deletion, objection), email us. As we do not hold your identity, including your device and game details helps us handle the request.</p>
+
+      <h2>8. Changes</h2>
+      <p>We may update this policy; the date at the top of this page will change.</p>
+
+      <h2>9. Contact</h2>
+      <p>AKIS Games · Ömer Yasir Önal, Istanbul, Türkiye<br />Email: <a href="mailto:contact@akisgames.com">contact@akisgames.com</a></p>
+    </article>
+
+    <footer><a href="/grow-io/">← Snake Grow.io</a> · © 2026 AKIS Games</footer>
+  </div>
+  <script is:inline>
+    (function () {
+      var saved = null; try { saved = localStorage.getItem('growio-lang'); } catch (e) {}
+      var lang = saved || ((navigator.language || 'tr').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en');
+      function set(l) {
+        document.documentElement.lang = l;
+        document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+        try { localStorage.setItem('growio-lang', l); } catch (e) {}
+      }
+      set(lang);
+      document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    })();
+  </script>
+</body>
+</html>
