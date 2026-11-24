@@ -11,6 +11,12 @@ stack:
   - AI Ajan Orkestrasyonu
   - LLM API & MCP Entegrasyonu
   - Docker & Otomatik Test Kontrolleri
+stack_en:
+  - TypeScript & Node.js
+  - PostgreSQL Database
+  - AI Agent Orchestration
+  - LLM API & MCP Integration
+  - Docker & Automated Test Checks
 status_en: Capstone Project · Open Source
 status_tr: Bitirme Projesi · Açık Kaynak
 links:
@@ -24,7 +30,7 @@ highlights_tr:
   - MCP ve LLM API entegrasyonlarını, Docker tabanlı çalıştırmayı ve test/derleme kontrollerini bir araya getirdim.
   - Üretilen uygulamaların gerçekten derlenip başlatılabildiğini otomatik kontrollerle doğrulayan bir mimari kurdum.
 problem_en: Autonomous AI coding workflows often lack traceable task lifecycles, human approval gates, and real verification that generated applications can actually boot.
-problem_tr: Otonom yapay zeka ajanları çoğu zaman izlenebilir görev kayıtları, insan onay adımları ve üretilen uygulamanın gerçekten çalıştığını doğrulayan kontroller olmadan işlem yapar.
+problem_tr: Otonom yapay zekâ ajanları çoğu zaman izlenebilir görev kayıtları, insan onay adımları ve üretilen uygulamanın gerçekten çalıştığını doğrulayan kontroller olmadan işlem yapar.
 what_i_did_en: Built AKIS as my university capstone project using TypeScript/Node.js, PostgreSQL, Docker, MCP, and LLM APIs to orchestrate AI agents behind human approval flows and automated boot verification.
 what_i_did_tr: Üniversite bitirme projem olarak; TypeScript/Node.js, PostgreSQL, Docker, MCP ve LLM API entegrasyonlarıyla insan onaylı ve doğrulanabilir AI ajan orkestrasyon platformu AKIS’i geliştirdim.
 featured: true

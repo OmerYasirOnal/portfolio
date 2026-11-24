@@ -53,11 +53,26 @@ export interface Education {
   graduation_tr: string;
 }
 
+const aboutParagraphs: { tr: string[]; en: string[] } = {
+  tr: [
+    'İstanbul’da çalışan bir bilgisayar mühendisiyim. İşletmeler için web sitesi ve yönetim paneli kuruyor, Google Ads reklamlarını yönetiyor, sosyal medya için kısa videolar hazırlıyorum. Öz & Saye Psikoloji, A2 Reklam ve Parla Deniz projelerinde işi ihtiyaç analizinden yayına kadar kendim yürütüyor, teslimden sonra bakım ve desteği sürdürüyorum.',
+    'UniSum ve Odak uygulamalarını (iPhone, iPad, Mac) sıfırdan geliştirip App Store’da yayımladım. Bitirme projem AKIS, birden fazla yapay zekâ ajanını insan onayıyla yöneten bir platform.',
+    'Fatih Sultan Mehmet Vakıf Üniversitesi Bilgisayar Mühendisliği bölümünden Haziran 2026’da mezun oldum. TÜBİTAK 2209-A kapsamında proje yürütücüsü ve araştırmacı olarak çalıştım; IEEE SIU 2025’te yayımlanan bir bildirinin ortak yazarıyım.',
+    'A2 Reklam ve Öz & Saye Psikoloji gibi müşteriler için sosyal medya yönetimi, yapay zekâ destekli Instagram Reels, tanıtım videosu ve sanal sunucu içerikleri üretiyorum.',
+  ],
+  en: [
+    'I’m a computer engineer based in Istanbul. I build websites and admin panels for businesses, manage Google Ads campaigns and make short videos for social media. For Öz & Saye Psikoloji, A2 Reklam and Parla Deniz I run the whole job myself, from working out what is needed to launch, and I keep supporting the sites after delivery.',
+    'I built UniSum and Odak (iPhone, iPad, Mac) from scratch and published them on the App Store. My graduation project, AKIS, is a platform that coordinates several AI agents with human approval built in.',
+    'I graduated in Computer Engineering from Fatih Sultan Mehmet Vakıf University in June 2026. I was project lead and researcher on a TÜBİTAK 2209-A project and co-authored a paper published at IEEE SIU 2025.',
+    'I also manage social media and produce AI-assisted Instagram Reels, promo videos and virtual-presenter content for clients such as A2 Reklam and Öz & Saye Psikoloji.',
+  ],
+};
+
 export const profile = {
   name: 'Ömer Yasir Önal',
   role: {
-    en: 'Computer Engineer · Software, AI & Digital Growth',
-    tr: 'Bilgisayar Mühendisi · Yazılım, Yapay Zekâ ve Dijital Büyüme',
+    en: 'Computer Engineer · Websites, Ads and Video Content',
+    tr: 'Bilgisayar Mühendisi · Web Sitesi, Reklam ve Video İçerik',
   },
   location: {
     en: 'Istanbul, Türkiye',
@@ -110,26 +125,30 @@ export const profile = {
    */
   taglines: {
     en: [
-      'Computer Engineer building end-to-end mobile apps (App Store), high-performance corporate web platforms, digital brand infrastructure, SEO / AIO visibility, and backend & AI systems.',
-      'From App Store products like Odak and UniSum to complete corporate web and SEO/AIO systems like Öz & Saye Psikoloji, A2 Reklam, and Parla Deniz.',
-      'Computer Engineer in Istanbul delivering mobile applications, modern web platforms, SEO / AIO optimization, and applied AI engineering.',
+      'Computer Engineer building end-to-end mobile apps (App Store), high-performance corporate web platforms, digital brand infrastructure, SEO and AI search visibility, and backend & AI systems.',
+      'From App Store products like Odak and UniSum to complete corporate websites with SEO and AI search visibility for clients like Öz & Saye Psikoloji, A2 Reklam, and Parla Deniz.',
+      'Computer Engineer in Istanbul delivering mobile applications, modern web platforms, SEO and AI search visibility, and applied AI engineering.',
     ],
     tr: [
-      'Müşteri ihtiyaçlarının analizinden teknik planlama, geliştirme ve yayına almaya kadar; mobil uygulama, kurumsal web sitesi, dijital marka kurulumu, SEO / AIO görünürlüğü ve backend & yapay zeka süreçlerini uçtan uca yöneten Bilgisayar Mühendisi.',
+      'Müşteri ihtiyaçlarının analizinden teknik planlama, geliştirme ve yayına almaya kadar; mobil uygulama, kurumsal web sitesi, dijital marka kurulumu, SEO ve yapay zekâ aramalarında görünürlük ile backend & yapay zekâ süreçlerini uçtan uca yöneten Bilgisayar Mühendisi.',
       'App Store’da yayında olan Odak ve UniSum ürünlerimden; Öz & Saye Psikoloji, A2 Reklam ve Parla Deniz gibi kurumsal web ve marka sistemlerine kadar doğrulanmış teslimat.',
-      'İstanbul merkezli Bilgisayar Mühendisi: mobil uygulama, kurumsal web, dijital marka altyapısı, SEO / AIO ve yapay zeka çözümleri.',
+      'İstanbul merkezli Bilgisayar Mühendisi: mobil uygulama, kurumsal web, dijital marka altyapısı, SEO ve yapay zekâ aramalarında görünürlük, yapay zekâ çözümleri.',
     ],
   },
 
+  /** About page paragraphs; `about` joins them for JSON-LD, OG and llms.txt. */
+  aboutParagraphs,
+  // Machine-facing summary (JSON-LD, OG, llms.txt): EN stays third person so the
+  // entity statement names the person explicitly.
   about: {
-    en: 'Ömer Yasir Önal is a Computer Engineer based in Istanbul focused on building end-to-end digital products, backend APIs, databases, and applied AI systems. He built and published UniSum and Odak (native SwiftUI for iPhone, iPad, and Mac) on the App Store, and engineered AKIS, a multi-agent AI orchestration platform with human-approved execution flows. Across client projects (Öz & Saye Psikoloji, A2 Reklam, Parla Deniz), he owns the complete lifecycle from requirements analysis and technical planning to corporate web development, custom admin panels, SEO and AI Search (AIO) visibility, Google Ads management, and post-launch support. He is a Computer Engineering graduate from Fatih Sultan Mehmet Vakıf University (June 2026), TÜBİTAK 2209-A Project Lead & Researcher, and co-author of an IEEE SIU 2025 paper. He also manages social media and produces AI-assisted Instagram Reels, promo videos and virtual-presenter content for clients such as A2 Reklam and Öz & Saye Psikoloji, and publishes his own Qur\'an Reels series on Instagram (@omeryasironal).',
-    tr: 'Node.js, Python, SwiftUI ve modern web teknolojileriyle uçtan uca dijital ürünler, API ve veri tabanı sistemleri geliştiren Bilgisayar Mühendisiyim. UniSum ve Odak (iPhone, iPad, Mac) uygulamalarını sıfırdan geliştirip App Store’da yayımladım; üniversite bitirme projem olarak insan onaylı çok ajanlı yapay zeka orkestrasyon platformu AKIS’i hayata geçirdim. Müşteri projelerinde (Öz & Saye Psikoloji, A2 Reklam, Parla Deniz) ihtiyaç analizinden teknik planlama, geliştirme, kurumsal marka kurulumu, SEO / yapay zeka araması (AIO), Google Ads yönetimi ve yayına almaya kadar tüm süreçlerin sorumluluğunu üstleniyor; teslim sonrasında bakım ve teknik desteği sürdürüyorum. Fatih Sultan Mehmet Vakıf Üniversitesi Bilgisayar Mühendisliği (Haziran 2026) mezunu, TÜBİTAK 2209-A proje yöneticisi/araştırmacısı ve IEEE SIU 2025 ortak yazarlı bildiri sahibiyim. A2 Reklam ve Öz & Saye Psikoloji gibi müşteriler için sosyal medya yönetimi, yapay zekâ destekli Instagram Reels, tanıtım videosu ve sanal sunucu içerikleri üretiyor; kendi Kur\'an Reels serimi Instagram\'da (@omeryasironal) yayınlıyorum.',
+    tr: aboutParagraphs.tr.join(' '),
+    en: 'Ömer Yasir Önal is a Computer Engineer based in Istanbul. He builds websites and admin panels for businesses, manages Google Ads campaigns and makes short videos for social media. For Öz & Saye Psikoloji, A2 Reklam and Parla Deniz he runs the whole job himself, from working out what is needed to launch, and keeps supporting the sites after delivery. He built UniSum and Odak (iPhone, iPad, Mac) from scratch and published them on the App Store; his graduation project, AKIS, is a platform that coordinates several AI agents with human approval built in. He graduated in Computer Engineering from Fatih Sultan Mehmet Vakıf University in June 2026, was project lead and researcher on a TÜBİTAK 2209-A project and co-authored a paper published at IEEE SIU 2025. He also manages social media and produces AI-assisted Instagram Reels, promo videos and virtual-presenter content for clients such as A2 Reklam and Öz & Saye Psikoloji.',
   },
 
   /** Signal badges for the About section. */
   badges: [
     { en: 'UniSum & Odak Live on the App Store', tr: 'App Store’da Yayında 2 Ürün (Odak & UniSum)' },
-    { en: 'Corporate Web, Admin CMS & SEO / AIO', tr: 'Kurumsal Web, Yönetim Paneli ve SEO / AIO' },
+    { en: 'Corporate Web, Admin CMS & SEO and AI search visibility', tr: 'Kurumsal Web, Yönetim Paneli, SEO ve yapay zekâ aramalarında görünürlük' },
     { en: 'TÜBİTAK 2209-A Lead & IEEE SIU 2025 Author', tr: 'TÜBİTAK 2209-A Yöneticisi ve IEEE SIU 2025 Yazarı' },
     { en: 'Backend, Database & AI Orchestration', tr: 'Backend API, Veri Tabanı ve AI Orkestrasyonu' },
   ] satisfies Badge[],
@@ -182,11 +201,11 @@ export const profile = {
     },
     {
       title_en: 'Brand, SEO & AIO',
-      title_tr: 'SEO, Yapay Zeka Araması (AIO) ve Dijital Marka',
+      title_tr: 'SEO, Yapay Zekâ Aramalarında Görünürlük ve Marka Kurulumu',
       summary_en: 'Visibility in Google and AI search systems, analytics measurement, Google Ads, and domain/email setup.',
-      summary_tr: 'Google ve yapay zeka destekli arama sistemlerinde görünürlük (AIO), ölçüm altyapısı ve reklam yönetimi.',
+      summary_tr: 'Google ve yapay zekâ destekli aramalarda görünürlük, ölçüm altyapısı ve reklam yönetimi.',
       items: [
-        'SEO & AI Search Visibility (AIO)',
+        'SEO & AI Search Visibility',
         'Google Tag Manager (GTM) & GA4 Analytics',
         'Google Ads Campaign Management',
         'Domain, Cloudflare DNS & Corporate Email Setup',
@@ -194,7 +213,7 @@ export const profile = {
         'Google Business Profile & Search Console',
       ],
       items_tr: [
-        'SEO ve Yapay Zeka Araması Görünürlüğü (AIO)',
+        'SEO ve Yapay Zekâ Aramalarında Görünürlük',
         'GTM / GA4 Ölçüm ve Dönüşüm Altyapısı',
         'Google Ads Kampanya Yönetimi',
         'Alan Adı, Cloudflare ve Kurumsal E-posta Yapılandırması',
@@ -226,7 +245,7 @@ export const profile = {
     },
     {
       title_en: 'AI & LLM Engineering',
-      title_tr: 'Yapay Zeka ve Ajan Orkestrasyonu',
+      title_tr: 'Yapay Zekâ ve Ajan Orkestrasyonu',
       summary_en: 'Agent task lifecycles, human-approved execution flows, MCP, RAG, and machine learning models.',
       summary_tr: 'Ajan görev yaşam döngüsü, insan onaylı yürütme akışları, LLM API, MCP, RAG ve makine öğrenmesi.',
       items: [
@@ -242,7 +261,7 @@ export const profile = {
         'İnsan Onaylı Yürütme Akışları ve İzlenebilir Kayıtlar',
         'LLM API, MCP ve RAG Entegrasyonları',
         'XGBoost ve Random Forest Makine Öğrenmesi Modelleri',
-        'Yapay Zeka Destekli İçerik ve Ders Özetleme',
+        'Yapay Zekâ Destekli İçerik ve Ders Özetleme',
         'Sensör Verisi Analizi ve Tahminleme Sistemleri',
       ],
     },
@@ -272,7 +291,7 @@ export const profile = {
 
   availability: {
     en: 'Available for corporate web, mobile app, backend/AI projects, and engineering collaborations (open to relocation).',
-    tr: 'Kurumsal web, mobil uygulama, backend/yapay zeka projeleri ve mühendislik iş birlikleri için uygun (şehir değişikliğine açık).',
+    tr: 'Kurumsal web, mobil uygulama, backend/yapay zekâ projeleri ve mühendislik iş birlikleri için uygun (şehir değişikliğine açık).',
   },
 
   education: {

@@ -15,7 +15,7 @@ interface Props {
 const { concept, locale } = Astro.props;
 ---
 
-<article class="flex h-full flex-col rounded-2xl border border-border bg-card p-4 sm:p-5">
+<article class="card flex h-full flex-col p-4 sm:p-5">
   <div class="rounded-xl bg-bg p-4 sm:p-5">
     <ConceptMock concept={concept} locale={locale} />
   </div>
@@ -24,7 +24,7 @@ const { concept, locale } = Astro.props;
       <span class="rounded border border-border px-1.5 py-0.5 normal-case tracking-normal">{locale === 'tr' ? 'Konsept' : 'Concept'}</span>
       {pick(locale, concept.sector)}
     </p>
-    <h3 class="mt-2 text-lg font-semibold tracking-tight text-fg">{concept.brand}</h3>
+    <h3 class="h-card mt-2">{concept.brand}</h3>
     <p class="mt-1.5 text-sm leading-relaxed text-muted">{pick(locale, concept.focus)}</p>
   </div>
 </article>

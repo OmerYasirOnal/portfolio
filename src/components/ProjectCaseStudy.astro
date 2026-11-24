@@ -32,7 +32,7 @@ const imageMeta = data.image
 
 {
   showImage && imageMeta && (
-    <div class="mt-8 overflow-hidden rounded-2xl border border-border bg-card">
+    <div class="card mt-8 overflow-hidden">
       <Image
         src={imageMeta}
         alt={`${data.title}: ${locale === 'en' ? data.tagline_en : data.tagline_tr}`}

@@ -20,8 +20,8 @@ const { locale, location, topic = 'general', tone = 'light' } = Astro.props;
 const L = (tr: string, en: string) => pick(locale, { tr, en });
 const dark = tone === 'dark';
 const row = dark
-  ? 'flex items-center gap-4 rounded-xl border border-white/15 px-4 py-3.5 hover:border-white/40'
-  : 'flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-3.5 hover:border-fg/30';
+  ? 'flex items-center gap-4 rounded-lg border border-white/15 px-4 py-3.5 transition-colors hover:border-white/40'
+  : 'card card-link flex items-center gap-4 rounded-lg px-4 py-3.5';
 const sub = dark ? 'text-white/60' : 'text-muted';
 ---
 
@@ -30,7 +30,7 @@ const sub = dark ? 'text-white/60' : 'text-muted';
   <ul class="space-y-2.5 pt-2" role="list">
     <li>
       <a href={mailtoHref(locale)} data-track="email_click" data-track-location={location} class={row}>
-        <Icon name="mail" size={20} />
+        <Icon name="mail" size={20} class={dark ? '' : 'text-accent'} />
         <span class="min-w-0">
           <span class={`block text-xs ${sub}`}>{L('E-posta', 'Email')}</span>
           <span class="block truncate font-medium">{profile.email}</span>
@@ -39,7 +39,7 @@ const sub = dark ? 'text-white/60' : 'text-muted';
     </li>
     <li>
       <a href={`tel:+${profile.whatsapp}`} data-track="phone_click" data-track-location={location} class={row}>
-        <Icon name="phone" size={20} />
+        <Icon name="phone" size={20} class={dark ? '' : 'text-accent'} />
         <span>
           <span class={`block text-xs ${sub}`}>{L('Telefon', 'Phone')}</span>
           <span class="block font-medium">{displayPhone()}</span>
@@ -57,7 +57,7 @@ const sub = dark ? 'text-white/60' : 'text-muted';
             data-track-location={location}
             class={row}
           >
-            <Icon name="instagram" size={20} />
+            <Icon name="instagram" size={20} class={dark ? '' : 'text-accent'} />
             <span>
               <span class={`block text-xs ${sub}`}>Instagram</span>
               <span class="block font-medium">@{profile.instagram.handle}</span>

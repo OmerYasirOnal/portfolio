@@ -3,7 +3,8 @@
  *
  * Single source of truth for the home-page cards, the /services hub, the
  * /services/<group> detail pages, the footer, llms.txt and the Service
- * JSON-LD. No prices on purpose: every engagement is quoted per scope.
+ * JSON-LD. No prices here on purpose: general work is quoted per scope; a few
+ * sector landing pages (src/data/landings.ts) carry fixed packages.
  *
  * Copy rules (see CLAUDE.md "İşletme iddiaları"): no guaranteed rankings,
  * sales or ROAS; ad spend is always separate from the management fee; AI is a
@@ -57,22 +58,22 @@ export interface ServiceGroup {
 export const serviceGroups: ServiceGroup[] = [
   {
     id: 'web-software',
-    short: { tr: 'Web Sitesi & Yazılım', en: 'Websites & Software' },
+    short: { tr: 'Web Sitesi ve Yazılım', en: 'Websites & Software' },
     title: {
       tr: 'Web sitesi, özel yazılım ve mobil uygulama',
       en: 'Websites, custom software and mobile apps',
     },
     seoTitle: {
-      tr: 'Kurumsal Web Sitesi, Özel Yazılım ve Mobil Uygulama Geliştirme',
-      en: 'Business Websites, Custom Software and Mobile App Development',
+      tr: 'Web Sitesi ve Yazılım: Kurumsal Site, Yönetim Paneli, Mobil Uygulama',
+      en: 'Websites & Software: Business Sites, Admin Panels, Mobile Apps',
     },
     description: {
       tr: 'İşletmeler için hızlı, mobil uyumlu kurumsal web siteleri, yönetim panelleri, özel yazılım ve iOS uygulamaları. Bilgisayar Mühendisi Ömer Yasir Önal, İstanbul.',
       en: 'Fast, mobile-first business websites, admin panels, custom software and iOS apps, built by Computer Engineer Ömer Yasir Önal in Istanbul.',
     },
     cardSummary: {
-      tr: 'Hızlı açılan kurumsal siteler, yönetim panelleri, özel yazılım ve mobil uygulamalar.',
-      en: 'Fast business websites, admin panels, custom software and mobile apps.',
+      tr: 'İşletmeniz için hızlı açılan web sitesi, yönetim paneli ve gerektiğinde mobil uygulama.',
+      en: 'Fast websites, admin panels and, when needed, a mobile app for your business.',
     },
     intro: {
       tr: 'Ziyaretçinin ilk birkaç saniyede ne yaptığınızı anladığı, telefonda hızlı açılan ve sizi aramaya ya da WhatsApp’a yönlendiren siteler kuruyorum. İhtiyaç bir siteden büyükse yönetim paneli, özel yazılım veya mobil uygulama da geliştiriyorum.',
@@ -96,7 +97,7 @@ export const serviceGroups: ServiceGroup[] = [
           { tr: 'Tek sayfalık açılış ve kampanya sayfaları', en: 'Single-page landing and campaign pages' },
           { tr: 'Çok dilli siteler (TR / EN / AR)', en: 'Multilingual sites (TR / EN / AR)' },
           { tr: 'WhatsApp, form, harita ve telefon entegrasyonu', en: 'WhatsApp, form, map and phone integrations' },
-          { tr: 'Teknik SEO, hız ve Core Web Vitals', en: 'Technical SEO, speed and Core Web Vitals' },
+          { tr: 'Teknik SEO ve sayfa hızı (Core Web Vitals)', en: 'Technical SEO and page speed (Core Web Vitals)' },
           { tr: 'Alan adı, hosting, SSL ve kurumsal e-posta kurulumu (kapsama göre)', en: 'Domain, hosting, SSL and business email setup (as scoped)' },
         ],
         topic: 'web',
@@ -118,7 +119,7 @@ export const serviceGroups: ServiceGroup[] = [
       },
       {
         id: 'mobile',
-        name: { tr: 'Mobil uygulama ve MVP', en: 'Mobile apps and MVPs' },
+        name: { tr: 'Mobil uygulama, ilk sürüm ve prototip', en: 'Mobile apps, first versions and prototypes' },
         summary: {
           tr: 'Fikri, gerçek kullanıcıların deneyebileceği çalışan bir uygulamaya dönüştürme. App Store’da yayında iki uygulamam var.',
           en: 'Turning an idea into a working app real users can try. I have two apps live on the App Store.',
@@ -127,12 +128,28 @@ export const serviceGroups: ServiceGroup[] = [
           { tr: 'iPhone, iPad ve Mac için SwiftUI uygulamaları', en: 'SwiftUI apps for iPhone, iPad and Mac' },
           { tr: 'Uygulamanın kendi sunucusu ve veri tabanı', en: 'The app’s own backend and database' },
           { tr: 'TestFlight ile test, App Store yayın süreci', en: 'TestFlight testing and App Store release' },
-          { tr: 'Prototip ve MVP geliştirme', en: 'Prototype and MVP development' },
+          { tr: 'İlk sürüm ve prototip geliştirme', en: 'First version and prototype development' },
         ],
         topic: 'mobile',
       },
+      {
+        id: 'automation',
+        name: { tr: 'Yapay zekâ asistanları ve otomasyon', en: 'AI assistants and automation' },
+        summary: {
+          tr: 'Tekrarlayan işleri azaltan, şirket bilgisiyle çalışan asistanlar ve iş akışları.',
+          en: 'Assistants and workflows that use your company knowledge and cut repetitive work.',
+        },
+        items: [
+          { tr: 'Şirket dokümanlarınızla çalışan soru-cevap asistanları', en: 'Q&A assistants that work from your company documents' },
+          { tr: 'Kurumsal doküman arama', en: 'Internal document search' },
+          { tr: 'Form, e-posta ve teklif süreçlerinin otomasyonu', en: 'Automating forms, email and quote workflows' },
+          { tr: 'API tabanlı yapay zekâ entegrasyonları', en: 'API-based AI integrations' },
+          { tr: 'İnsan onaylı, kayıt tutan iş akışları', en: 'Human-approved, logged workflows' },
+        ],
+        topic: 'automation',
+      },
     ],
-    work: ['ozsaye', 'parladeniz', 'a2reklam', 'odak', 'unisum'],
+    work: ['ozsaye', 'parladeniz', 'a2reklam', 'odak', 'unisum', 'akis'],
     faqs: [
       {
         question: { tr: 'Bir web sitesi ne kadar sürede hazır olur?', en: 'How long does a website take?' },
@@ -158,30 +175,30 @@ export const serviceGroups: ServiceGroup[] = [
       {
         question: { tr: 'Fiyatlar nasıl belirleniyor?', en: 'How is pricing set?' },
         answer: {
-          tr: 'Sabit paket yerine kapsamınıza özel teklif hazırlıyorum: sayfa sayısı, dil, panel ihtiyacı ve entegrasyonlar fiyatı belirliyor. WhatsApp’tan kısaca anlatmanız yeterli.',
-          en: 'Instead of fixed packages I quote each project: pages, languages, panel needs and integrations drive the price. A short WhatsApp message is enough to start.',
+          tr: 'Genel işler kapsama göre fiyatlanır: sayfa sayısı, dil, panel ihtiyacı ve entegrasyonlar fiyatı belirliyor. Bazı sektör sayfalarında hazır paketler de var. WhatsApp’tan kısaca anlatmanız yeterli.',
+          en: 'General work is priced by scope: pages, languages, panel needs and integrations drive the price. Some sector pages also offer fixed packages. A short WhatsApp message is enough to start.',
         },
       },
     ],
   },
   {
     id: 'ads-growth',
-    short: { tr: 'Reklam & Dijital Büyüme', en: 'Ads & Digital Growth' },
+    short: { tr: 'Reklam ve Arama Görünürlüğü', en: 'Ads & Search Visibility' },
     title: {
-      tr: 'Google Ads, Meta reklamları, SEO ve yapay zekâ araması',
-      en: 'Google Ads, Meta ads, SEO and AI search visibility',
+      tr: 'Google ve Instagram reklamları, SEO ve yapay zekâ aramalarında görünürlük',
+      en: 'Google and Instagram ads, SEO and visibility in AI search',
     },
     seoTitle: {
-      tr: 'Google Ads Yönetimi, Meta Reklamları, SEO ve GEO / AEO Hizmeti',
-      en: 'Google Ads Management, Meta Ads, SEO and GEO / AEO Services',
+      tr: 'Reklam ve Arama Görünürlüğü: Google Ads, Meta Reklamları ve SEO',
+      en: 'Ads & Search Visibility: Google Ads, Meta Ads and SEO',
     },
     description: {
-      tr: 'Google Ads ve Instagram / Facebook reklam yönetimi, teknik SEO, yerel SEO ve yapay zekâ aramalarında (AI Overviews, ChatGPT) görünürlük. Ölçülebilir, garanti vaadi olmayan dürüst çalışma.',
-      en: 'Google Ads and Instagram / Facebook ads management, technical and local SEO, and visibility in AI search (AI Overviews, ChatGPT). Measurable work with no fake guarantees.',
+      tr: 'Google Ads ve Instagram / Facebook reklam yönetimi, teknik SEO, yerel SEO ve yapay zekâ aramalarında (ChatGPT, Google yapay zekâ özetleri) görünürlük. Ölçülebilir iş, sıralama veya satış garantisi yok.',
+      en: 'Google Ads and Instagram / Facebook ads management, technical and local SEO, and visibility in AI search (ChatGPT, Google AI Overviews). Measurable work, no ranking or sales guarantees.',
     },
     cardSummary: {
-      tr: 'Google ve Meta reklamları, SEO, yapay zekâ aramalarında görünürlük ve doğru ölçüm.',
-      en: 'Google and Meta ads, SEO, AI search visibility and proper measurement.',
+      tr: 'Google ve Instagram reklamlarının yönetimi, aramalarda görünürlük ve sonuçların ölçümü.',
+      en: 'Managing Google and Instagram ads, improving how you appear in search, and measuring results.',
     },
     intro: {
       tr: 'Reklama para harcayıp hangi aramanın, hangi mesajın geldiğini bilmemek en sık gördüğüm sorun. Önce ölçümü kuruyorum, sonra reklamı ve arama görünürlüğünü bu verilere göre yönetiyorum.',
@@ -204,7 +221,7 @@ export const serviceGroups: ServiceGroup[] = [
           { tr: 'Anahtar kelime ve arama niyeti araştırması', en: 'Keyword and search-intent research' },
           { tr: 'Kampanya yapısı, konum ve hedef kitle ayarları', en: 'Campaign structure, location and audience settings' },
           { tr: 'Reklam metinleri ve açılış sayfası önerileri', en: 'Ad copy and landing-page recommendations' },
-          { tr: 'Arama, WhatsApp ve form dönüşüm ölçümü (GTM / GA4)', en: 'Call, WhatsApp and form conversion tracking (GTM / GA4)' },
+          { tr: 'Arama, WhatsApp ve form ölçümü (Google Tag Manager, GA4)', en: 'Call, WhatsApp and form tracking (Google Tag Manager, GA4)' },
           { tr: 'Arama terimi temizliği ve bütçe optimizasyonu', en: 'Search-term cleanup and budget optimisation' },
           { tr: 'Anlaşılır, düzenli performans raporu', en: 'Clear, regular performance reports' },
         ],
@@ -224,9 +241,9 @@ export const serviceGroups: ServiceGroup[] = [
         items: [
           { tr: 'Hedef kitle ve kampanya stratejisi', en: 'Audience and campaign strategy' },
           { tr: 'Reklam kreatifleri (görsel, Reels, carousel)', en: 'Ad creatives (images, Reels, carousels)' },
-          { tr: 'A/B test planı', en: 'A/B test planning' },
-          { tr: 'Yeniden pazarlama (retargeting) kurgusu', en: 'Retargeting setup' },
-          { tr: 'Meta Pixel / Conversions API ve WhatsApp mesaj ölçümü', en: 'Meta Pixel / Conversions API and WhatsApp message tracking' },
+          { tr: 'Farklı reklam versiyonlarını karşılaştırma (A/B test)', en: 'Comparing ad versions (A/B tests)' },
+          { tr: 'Sitenizi ziyaret edenlere yeniden ulaşma (retargeting)', en: 'Reaching past site visitors again (retargeting)' },
+          { tr: 'Meta Pixel ile dönüşüm ve WhatsApp mesaj ölçümü', en: 'Conversion and WhatsApp message tracking with Meta Pixel' },
           { tr: 'Kampanya analizi ve raporlama', en: 'Campaign analysis and reporting' },
         ],
         topic: 'meta-ads',
@@ -244,7 +261,7 @@ export const serviceGroups: ServiceGroup[] = [
         },
         items: [
           { tr: 'Teknik SEO denetimi ve indekslenebilirlik', en: 'Technical SEO audit and indexability' },
-          { tr: 'Sayfa hızı ve Core Web Vitals', en: 'Page speed and Core Web Vitals' },
+          { tr: 'Sayfa hızı (Core Web Vitals)', en: 'Page speed (Core Web Vitals)' },
           { tr: 'Anahtar kelime ve arama niyeti analizi', en: 'Keyword and search-intent analysis' },
           { tr: 'Hizmet ve bölge sayfaları, iç bağlantı mimarisi', en: 'Service and location pages, internal linking' },
           { tr: 'Google İşletme Profili ve yerel SEO', en: 'Google Business Profile and local SEO' },
@@ -258,10 +275,10 @@ export const serviceGroups: ServiceGroup[] = [
       },
       {
         id: 'geo-aeo',
-        name: { tr: 'Yapay zekâ aramalarında görünürlük (GEO / AEO)', en: 'AI search visibility (GEO / AEO)' },
+        name: { tr: 'Yapay zekâ aramalarında görünürlük', en: 'Visibility in AI search' },
         summary: {
-          tr: 'Google AI Overviews, ChatGPT ve Perplexity gibi cevap motorlarının işletmenizi doğru anlayıp kaynak gösterebileceği bir web varlığı.',
-          en: 'A web presence that answer engines like Google AI Overviews, ChatGPT and Perplexity can understand correctly and cite.',
+          tr: 'ChatGPT ve Google’ın yapay zekâ özetleri gibi araçların işletmenizi doğru anlayıp kaynak gösterebileceği bir web sitesi ve profil düzeni.',
+          en: 'A website and profiles that AI tools such as ChatGPT and Google AI Overviews can understand correctly and cite.',
         },
         items: [
           { tr: 'Taranabilirlik ve teknik SEO temeli', en: 'Crawlability and a technical SEO baseline' },
@@ -273,8 +290,8 @@ export const serviceGroups: ServiceGroup[] = [
         ],
         topic: 'geo',
         note: {
-          tr: 'GEO: Generative Engine Optimization, AEO: Answer Engine Optimization. Google, AI Overviews için ek bir teknik gereklilik olmadığını, iyi SEO uygulamalarının geçerli olduğunu belirtiyor. Bu yüzden “gizli yöntem” değil, sağlam temel ve iyi içerik sunuyorum.',
-          en: 'GEO: Generative Engine Optimization, AEO: Answer Engine Optimization. Google states there are no extra technical requirements for AI Overviews and that SEO best practices apply, so I offer solid foundations and good content, not secret tricks.',
+          tr: 'Google, yapay zekâ özetleri için ek bir teknik gereklilik olmadığını ve iyi SEO uygulamalarının geçerli olduğunu belirtiyor. Bu yüzden gizli bir yöntem değil, sağlam bir temel ve iyi içerik sunuyorum.',
+          en: 'Google states there are no extra technical requirements for AI Overviews and that SEO best practices apply, so I offer a solid foundation and good content, not secret tricks.',
         },
       },
     ],
@@ -290,12 +307,12 @@ export const serviceGroups: ServiceGroup[] = [
       {
         question: { tr: 'İlk ayda sonuç alır mıyım?', en: 'Will I see results in the first month?' },
         answer: {
-          tr: 'Reklamlarda ilk hafta trafik başlar ama kampanyanın oturması birkaç hafta veri ister. SEO ise aylar içinde birikir. Satış ya da sıralama garantisi vermiyorum; ne yaptığımı ve ne değiştiğini düzenli raporluyorum.',
-          en: 'Ads bring traffic in the first week, but campaigns need a few weeks of data to settle. SEO compounds over months. I don’t promise sales or rankings; I report what I did and what changed.',
+          tr: 'Reklamlar yayına girince ziyaretçi gelmeye başlar, ama kampanyanın oturması birkaç hafta veri ister. SEO ise aylar içinde birikir. Satış ya da sıralama garantisi vermiyorum; ne yaptığımı ve ne değiştiğini düzenli raporluyorum.',
+          en: 'Ads start bringing visitors once they are live, but campaigns need a few weeks of data to settle. SEO compounds over months. I don’t promise sales or rankings; I report what I did and what changed.',
         },
       },
       {
-        question: { tr: 'GEO / AEO, SEO’dan farklı mı?', en: 'Is GEO / AEO different from SEO?' },
+        question: { tr: 'Yapay zekâ aramalarında görünürlük, SEO’dan farklı mı?', en: 'Is visibility in AI search different from SEO?' },
         answer: {
           tr: 'Büyük ölçüde aynı temele dayanıyor. Google’ın yapay zekâ özellikleri aynı arama dizinini ve kalite sinyallerini kullanıyor. Fark, içeriği müşterinin sorduğu sorulara net cevap verecek ve bilgileri her yerde tutarlı olacak şekilde düzenlemekte.',
           en: 'It rests largely on the same foundation: Google’s AI features use the same search index and quality signals. The difference is structuring content to answer real customer questions clearly and keeping your facts consistent everywhere.',
@@ -312,36 +329,36 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     id: 'content-video',
-    short: { tr: 'Sosyal Medya & AI İçerik', en: 'Social Media & AI Content' },
+    short: { tr: 'Sosyal Medya ve Video', en: 'Social Media & Video' },
     title: {
-      tr: 'Sosyal medya yönetimi, Reels ve profesyonel AI içerik üretimi',
-      en: 'Social media management, Reels and professional AI content',
+      tr: 'Sosyal medya yönetimi, Reels ve video içerik üretimi',
+      en: 'Social media management, Reels and video content',
     },
     seoTitle: {
-      tr: 'Sosyal Medya Yönetimi, AI Video ve Reels İçerik Üretimi, Dijital Persona',
-      en: 'Social Media Management, AI Video and Reels Production, Digital Personas',
+      tr: 'Sosyal Medya ve Video: Hesap Yönetimi, Reels ve Yapay Zekâ Destekli Video',
+      en: 'Social Media & Video: Account Management, Reels and AI-Assisted Video',
     },
     description: {
-      tr: 'Instagram ve Facebook hesap yönetimi, yapay zekâ destekli profesyonel video ve Reels üretimi, tanıtım filmi ve logo animasyonu, markaya özel sanal sunucu, içerik takvimi ve Meta reklamlarıyla birlikte planlama.',
-      en: 'Instagram and Facebook account management, professional AI-assisted video and Reels production, promo films and logo animations, brand virtual presenters, content calendars planned together with Meta ads.',
+      tr: 'Instagram ve Facebook hesap yönetimi, yapay zekâ destekli video ve Reels üretimi, tanıtım filmi ve logo animasyonu, markaya özel sanal sunucu, içerik takvimi ve Meta reklamlarıyla birlikte planlama.',
+      en: 'Instagram and Facebook account management, AI-assisted video and Reels production, promo films and logo animations, brand virtual presenters, content calendars planned together with Meta ads.',
     },
     cardSummary: {
-      tr: 'Hesap yönetimi, yapay zekâ destekli Reels ve video, sanal sunucu ve düzenli içerik takvimi.',
-      en: 'Account management, AI-assisted Reels and video, virtual presenters and a steady content calendar.',
+      tr: 'Sosyal medya için kısa video, gönderi ve aylık içerik planı. Yapay zekâyı araç olarak kullanıyorum; her içeriği kendim kontrol ediyorum.',
+      en: 'Short videos, posts and a monthly content plan for social media. I use AI as a tool and check every piece myself.',
     },
     intro: {
       tr: 'Sizi anlatan kısa videolar ve düzenli içerik üretiyorum: Reels kurgusu, tanıtım filmi, logo animasyonu ve gerekirse markanıza özel bir sanal sunucu. Konu, mesaj ve marka dili sizinle belirleniyor; her içerik yayından önce onayınıza geliyor.',
-      en: 'I produce short videos and regular content about your business: Reels edits, promo films, logo animations and, if useful, a virtual presenter for your brand. Topic, message and voice are agreed with you, and every piece comes to you for approval before it goes out.',
+      en: 'I produce short videos and regular content about your business: Reels editing, promo films, logo animations and, if useful, a virtual presenter for your brand. Topic, message and voice are agreed with you, and every piece comes to you for approval before it goes out.',
     },
     angle: {
-      tr: 'Kendi Instagram serimi senaryodan kurguya, seslendirmeden kod tabanlı animasyona kadar kendim üretiyorum. Aynı üretim hattını markanız için kuruyorum.',
-      en: 'I produce my own Instagram series end to end, from script and voice-over to code-driven animation and editing. I set up the same pipeline for your brand.',
+      tr: 'A2 Reklam ve Öz & Saye Psikoloji için hazırladığım videolarda senaryo, seslendirme ve kurgu bende; görsel üretimde yapay zekâyı araç olarak kullanıyorum. Aynı düzeni markanız için kuruyorum.',
+      en: 'In the videos I made for A2 Reklam and Öz & Saye Psikoloji, I handled the script, voice-over and editing myself and used AI as a tool for the visuals. I set up the same process for your brand.',
     },
     topic: 'content',
     services: [
       {
         id: 'reels-video',
-        name: { tr: 'Reels kurgu ve video edit', en: 'Reels editing and video production' },
+        name: { tr: 'Reels ve video kurgusu', en: 'Reels and video editing' },
         summary: {
           tr: 'Dikey videolar, tanıtım filmleri ve logo animasyonları; çekiminiz varsa kurgu, yoksa sıfırdan üretim.',
           en: 'Vertical videos, promo films and logo animations: editing your footage, or producing from scratch.',
@@ -358,7 +375,7 @@ export const serviceGroups: ServiceGroup[] = [
       },
       {
         id: 'persona',
-        name: { tr: 'Dijital persona ve sanal sunucu', en: 'Digital persona and virtual presenter' },
+        name: { tr: 'Sanal sunucu', en: 'Virtual presenter' },
         summary: {
           tr: 'Kamera önüne geçmek istemeyen markalar için yüzü, sesi ve tarzı tutarlı bir sanal sunucu.',
           en: 'A virtual presenter with a consistent face, voice and style for brands that don’t want to be on camera.',
@@ -371,8 +388,8 @@ export const serviceGroups: ServiceGroup[] = [
         ],
         topic: 'video',
         note: {
-          tr: 'Sanal kişiler platform kurallarına göre etiketlenir. Gerçek bir kişiyi taklit eden persona üretmiyorum.',
-          en: 'Virtual people are labelled according to platform rules. I don’t create personas that imitate a real person.',
+          tr: 'Sanal kişiler platform kurallarına göre etiketlenir. Gerçek bir kişiyi taklit eden sanal sunucu üretmiyorum.',
+          en: 'Virtual people are labelled according to platform rules. I don’t create virtual presenters that imitate a real person.',
         },
       },
       {
@@ -433,30 +450,14 @@ export const serviceGroups: ServiceGroup[] = [
         ],
         topic: 'content',
       },
-      {
-        id: 'automation',
-        name: { tr: 'Yapay zekâ asistanları ve otomasyon', en: 'AI assistants and automation' },
-        summary: {
-          tr: 'Tekrarlayan işleri azaltan, şirket bilgisiyle çalışan asistanlar ve iş akışları.',
-          en: 'Assistants and workflows that use your company knowledge and cut repetitive work.',
-        },
-        items: [
-          { tr: 'Doküman ve bilgi bankası asistanları (RAG)', en: 'Document and knowledge-base assistants (RAG)' },
-          { tr: 'Kurumsal doküman arama', en: 'Internal document search' },
-          { tr: 'Form, e-posta ve teklif süreçlerinin otomasyonu', en: 'Automating forms, email and quote workflows' },
-          { tr: 'API tabanlı yapay zekâ entegrasyonları', en: 'API-based AI integrations' },
-          { tr: 'İnsan onaylı, kayıt tutan iş akışları', en: 'Human-approved, logged workflows' },
-        ],
-        topic: 'automation',
-      },
     ],
-    work: ['a2reklam-video', 'kuran-reels', 'ozsaye', 'akis'],
+    work: ['a2reklam-video', 'ozsaye'],
     faqs: [
       {
         question: { tr: 'Çekim yapmam gerekiyor mu?', en: 'Do I need to film anything?' },
         answer: {
-          tr: 'Şart değil. Elinizde çekim varsa kurguluyorum; yoksa görsel, animasyon, seslendirme ve gerekirse sanal sunucuyla sıfırdan üretiyorum. Modern üretim araçlarını (yapay zekâ dahil) kullanıyorum, ama mesajı ve son kontrolü insan belirliyor.',
-          en: 'Not necessarily. If you have footage I edit it; if not, I produce from scratch with visuals, animation, voice-over and, if useful, a virtual presenter. I use modern production tools (AI included), but the message and the final check are human.',
+          tr: 'Şart değil. Elinizde çekim varsa kurguluyorum; yoksa görsel, animasyon, seslendirme ve gerekirse sanal sunucuyla sıfırdan üretiyorum. Yapay zekâyı araç olarak kullanıyorum; mesajı sizinle belirliyoruz ve her içeriği yayından önce kendim kontrol ediyorum.',
+          en: 'Not necessarily. If you have footage I edit it; if not, I produce from scratch with visuals, animation, voice-over and, if useful, a virtual presenter. I use AI as a tool; we agree on the message together and I check every piece myself before it goes out.',
         },
       },
       {
@@ -486,7 +487,7 @@ export function serviceGroup(id: ServiceGroupId): ServiceGroup {
 /** "What can I do for you?" prompts on the home page, phrased as the visitor. */
 export const problemPrompts: { text: Bilingual; group: ServiceGroupId; anchor: string }[] = [
   {
-    text: { tr: 'İşletmem için profesyonel bir web sitesi istiyorum.', en: 'I need a professional website for my business.' },
+    text: { tr: 'İşletmem için bir web sitesi istiyorum.', en: 'I need a website for my business.' },
     group: 'web-software',
     anchor: 'website',
   },
@@ -496,7 +497,7 @@ export const problemPrompts: { text: Bilingual; group: ServiceGroupId; anchor: s
     anchor: 'seo',
   },
   {
-    text: { tr: 'Sosyal medya hesabımı profesyonel biri yönetsin istiyorum.', en: 'I want a professional to run my social media.' },
+    text: { tr: 'Sosyal medya hesabımın düzenli yönetilmesini istiyorum.', en: 'I want my social media run on a regular plan.' },
     group: 'content-video',
     anchor: 'social-management',
   },
@@ -515,7 +516,7 @@ export const problemPrompts: { text: Bilingual; group: ServiceGroupId; anchor: s
       tr: 'Bazı işlerimizi yapay zekâyla otomatikleştirmek istiyorum.',
       en: 'I want to automate some of our work with AI.',
     },
-    group: 'content-video',
+    group: 'web-software',
     anchor: 'automation',
   },
 ];

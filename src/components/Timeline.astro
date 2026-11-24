@@ -4,6 +4,7 @@
  */
 import { getCollection } from 'astro:content';
 import type { Locale } from '../data/i18n';
+import { localizeDate } from '../data/cv-format';
 
 interface Props {
   locale: Locale;
@@ -28,8 +29,8 @@ const isPresent = (end: string) =>
       const current = isPresent(end);
       return (
         <li class="grid gap-3 py-6 md:grid-cols-[11rem_1fr] md:gap-8">
-          <p class="font-mono text-xs text-muted md:pt-1">
-            <time>{start}</time> - {current ? <span class="text-accent">{end}</span> : <time>{end}</time>}
+          <p class="text-sm text-muted md:pt-0.5">
+            <time>{localizeDate(start, locale)}</time> - {current ? <span class="text-accent">{localizeDate(end, locale)}</span> : <time>{localizeDate(end, locale)}</time>}
           </p>
           <div>
             <h3 class="text-lg font-semibold tracking-tight text-fg">{role}</h3>

@@ -15,6 +15,7 @@ import { t, localizePath, pick, type Locale } from '../data/i18n';
 import { ogProjectPath } from '../lib/og';
 import { creativeWorkJsonLd, breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../lib/seo';
 import type { ContactTopic } from '../lib/contact';
+import { quranEpisodes, surahLabel } from '../data/quran-reels';
 
 interface Props {
   locale: Locale;
@@ -27,9 +28,12 @@ const L = (tr: string, en: string) => pick(locale, { tr, en });
 const path = localizePath(locale, `/projects/${entry.id}`);
 const tagline = locale === 'en' ? data.tagline_en : data.tagline_tr;
 const status = locale === 'en' ? data.status_en : data.status_tr;
+// stack_en is optional; the cast keeps this valid whether or not the schema declares it yet.
+const stackEn = (data as typeof data & { stack_en?: string[] }).stack_en;
+const stack = locale === 'en' && stackEn?.length ? stackEn : data.stack;
 // Short taglines make thin meta descriptions: add status and stack.
 const metaDescription =
-  tagline.length >= 90 ? tagline : `${tagline} ${data.title}: ${status}. ${L('Teknolojiler', 'Built with')}: ${data.stack.slice(0, 4).join(', ')}.`;
+  tagline.length >= 90 ? tagline : `${tagline} ${data.title}: ${status}. ${L('Teknolojiler', 'Built with')}: ${stack.slice(0, 4).join(', ')}.`;
 
 type LinkKey = 'appstore' | 'live' | 'repo' | 'other';
 const LINK_ORDER: LinkKey[] = ['live', 'appstore', 'repo', 'other'];
@@ -39,13 +43,15 @@ const links = LINK_ORDER.filter((k) => data.links?.[k]).map((k) => ({
   label: (data.links![k] as string).includes('instagram.com') ? L('Instagram’da izle', 'Watch on Instagram') : t(locale, `link.${k}`),
 }));
 const hint = t(locale, 'social.opensNewTab');
+// The Kur'an Reels project links its per-episode pages (revelation order).
+const episodes = entry.id === 'kuran-reels' ? quranEpisodes : [];
 
 const topic: ContactTopic =
   data.category === 'Content' ? 'video' : data.category === 'Web' && data.group === 'client' ? 'web' : data.category === 'Mobile' ? 'mobile' : 'general';
 
 const url = canonicalHref(path, Astro.site!);
 const workLd = creativeWorkJsonLd(
-  { title: data.title, description: tagline, category: data.category, url, stack: data.stack },
+  { title: data.title, description: tagline, category: data.category, url, stack },
   Astro.site!,
 );
 const videoLd = data.videos.map((v) => ({
@@ -80,35 +86,30 @@ const crumbs = breadcrumbJsonLd([
   <SiteHeader locale={locale} path={path} contactTopic={topic} />
 
   <main id="main">
-    <article class="mx-auto max-w-4xl px-4 pt-10 sm:px-6">
-      <nav aria-label="Breadcrumb" class="font-mono text-xs text-muted">
-        <a href={localizePath(locale, '/projects')} class="hover:text-accent">{t(locale, 'nav.work')}</a>
-        <span aria-hidden="true"> / </span>
+    <article class="container-page max-w-4xl pb-20 pt-10 md:pb-24 md:pt-14">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href={localizePath(locale, '/projects')} class="hover:text-fg hover:underline">{t(locale, 'nav.work')}</a>
+        <span aria-hidden="true" class="mx-1.5">/</span>
         <span aria-current="page" class="text-fg">{data.title}</span>
       </nav>
 
-      <header class="mt-8 border-b border-border pb-8">
+      <header class="mt-8 border-b border-border pb-10">
         <p class="label">{t(locale, `category.${data.category}`)} · {status}</p>
-        <h1 class="mt-3 text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl">{data.title}</h1>
-        <p class="mt-4 text-lg leading-relaxed text-muted sm:text-xl">{tagline}</p>
+        <h1 class="h-display mt-3">{data.title}</h1>
+        <p class="lead mt-4">{tagline}</p>
         {
           links.length > 0 && (
-            <div class="mt-7 flex flex-wrap gap-3">
+            <div class="mt-8 flex flex-wrap gap-3">
               {links.map((link, idx) => (
                 <a
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${link.label} (${hint})`}
-                  class:list={[
-                    'inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors',
-                    idx === 0
-                      ? 'bg-ink text-on-ink dark:bg-on-ink dark:text-ink'
-                      : 'border border-fg/20 bg-card text-fg hover:border-accent hover:text-accent',
-                  ]}
+                  class:list={['btn', idx === 0 ? 'btn-primary' : 'btn-secondary']}
                 >
                   {link.label}
-                  <Icon name="arrow-up-right" size={14} />
+                  <Icon name="arrow-up-right" size={15} />
                 </a>
               ))}
             </div>
@@ -118,23 +119,26 @@ const crumbs = breadcrumbJsonLd([
 
       {
         data.videos.length > 0 && (
-          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+          <div class:list={['mt-10 grid grid-cols-2 gap-4 sm:gap-6', data.videos.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3']}>
             {data.videos.map((v) => (
-              <figure class="overflow-hidden rounded-2xl border border-border bg-ink">
-                <video
-                  src={v.src}
-                  poster={v.poster}
-                  controls
-                  playsinline
-                  preload="none"
-                  class="aspect-[9/16] w-full object-cover"
-                  aria-label={locale === 'tr' ? v.title_tr : v.title_en}
-                />
-                <figcaption class="flex items-center justify-between gap-3 bg-card px-4 py-3 text-sm font-medium text-fg">
-                  <span>{locale === 'tr' ? v.title_tr : v.title_en}</span>
+              <figure>
+                <div class="phone">
+                  <div class="phone__screen">
+                    <video
+                      src={v.src}
+                      poster={v.poster}
+                      controls
+                      playsinline
+                      preload="none"
+                      aria-label={locale === 'tr' ? v.title_tr : v.title_en}
+                    />
+                  </div>
+                </div>
+                <figcaption class="mt-3 flex flex-col items-start gap-1 text-sm">
+                  <span class="font-medium text-fg">{locale === 'tr' ? v.title_tr : v.title_en}</span>
                   {v.url && (
-                    <a href={v.url} target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-1.5 font-semibold text-accent hover:underline" aria-label={`${L('Instagram’da izle', 'Watch on Instagram')} (${hint})`}>
-                      <Icon name="instagram" size={15} /> {L('Instagram', 'Instagram')}
+                    <a href={v.url} target="_blank" rel="noopener noreferrer" class="link-arrow shrink-0" aria-label={`${L('Instagram’da izle', 'Watch on Instagram')} (${hint})`}>
+                      <Icon name="instagram" size={15} /> Instagram
                     </a>
                   )}
                 </figcaption>
@@ -146,16 +150,41 @@ const crumbs = breadcrumbJsonLd([
 
       <ProjectCaseStudy entry={entry} locale={locale} showImage={data.videos.length === 0 || data.category !== 'Content'} />
 
+      {
+        episodes.length > 0 && (
+          <section class="mt-12 border-t border-border pt-8" aria-labelledby="episodes-h">
+            <h2 id="episodes-h" class="h-card">{L('Bölümler (nüzul sırasıyla)', 'Episodes (revelation order)')}</h2>
+            <ol class="mt-4 divide-y divide-border border-y border-border" role="list">
+              {episodes.map((e) => (
+                <li>
+                  <a href={localizePath(locale, `/kuran-reels/${e.slug}/`)} class="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-3 text-sm hover:text-accent">
+                    <span class="label w-36 shrink-0">{surahLabel(locale, e)} {e.range}</span>
+                    <span class="font-medium">{locale === 'en' ? e.shortEn : e.shortTr}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+            <a href={localizePath(locale, '/kuran-reels/')} class="link-arrow mt-4">
+              {L('Tüm bölümler', 'All episodes')}
+              <Icon name="arrow" size={15} />
+            </a>
+          </section>
+        )
+      }
+
       <section class="mt-12 border-t border-border pt-8">
         <h2 class="label">{t(locale, 'project.stack')}</h2>
         <ul class="mt-4 flex flex-wrap gap-2" role="list">
-          {data.stack.map((tech) => <li class="rounded-md bg-card px-2.5 py-1.5 font-mono text-xs text-muted ring-1 ring-border">{tech}</li>)}
+          {stack.map((tech) => <li class="chip">{tech}</li>)}
         </ul>
       </section>
 
-      <aside class="mt-14 flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-        <p class="text-lg font-semibold tracking-tight text-fg">{L('Benzer bir işe mi ihtiyacınız var?', 'Need something similar?')}</p>
-        <WhatsAppButton locale={locale} topic={topic} location="project_detail" />
+      <aside class="card mt-14 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div>
+          <p class="h-card">{L('Benzer bir işe mi ihtiyacınız var?', 'Need something similar?')}</p>
+          <p class="mt-1.5 text-sm text-muted">{L('Kısaca anlatın, kapsamı birlikte netleştirelim.', 'Tell me briefly and we can pin down the scope together.')}</p>
+        </div>
+        <WhatsAppButton locale={locale} topic={topic} location="project_detail" class="shrink-0" />
       </aside>
     </article>
   </main>

@@ -34,6 +34,8 @@ export const projectSchema = z.object({
     'Other',
   ]),
   stack: z.array(z.string()).min(1),
+  /** Optional English labels for the stack chips (falls back to `stack`). */
+  stack_en: z.array(z.string()).optional(),
   status_en: z.string(),
   status_tr: z.string(),
   links: linkSet,

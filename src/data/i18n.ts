@@ -12,6 +12,7 @@ const dict: Record<string, Record<Locale, string>> = {
 
   'cta.whatsapp': { en: 'Get a quote on WhatsApp', tr: 'WhatsApp’tan Teklif Al' },
   'cta.whatsappShort': { en: 'WhatsApp', tr: 'WhatsApp' },
+  'cta.quoteShort': { en: 'Get a quote', tr: 'Teklif Al' },
   'cta.emailShort': { en: 'Email', tr: 'E-posta' },
   'cta.email': { en: 'Send an email', tr: 'E-posta gönder' },
   'cta.quickContact': { en: 'Quick contact', tr: 'Hızlı iletişim' },
@@ -94,7 +95,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'section.eyebrow.skills': { en: 'Expertise', tr: 'Uzmanlık Alanları' },
   'section.skills': { en: 'Capabilities & Technology Stack', tr: 'Yetkinlikler ve Çözüm Başlıkları' },
   'section.eyebrow.writing': { en: 'Perspectives & Research', tr: 'Yazılar ve Yayınlar' },
-  'section.writing': { en: 'Articles, Essays & Publications', tr: 'Yazılar, Notlar ve Akademik Yayınlar' },
+  'section.writing': { en: 'Articles, essays and publications', tr: 'Yazılar, notlar ve akademik yayınlar' },
   'section.eyebrow.contact': { en: 'Direct Inquiry', tr: 'İletişim' },
   'section.contact': { en: 'Let’s Talk About Your Project', tr: 'Projenizi Birlikte Planlayalım' },
   'section.more': { en: 'Additional Projects & Open-Source Work', tr: 'Diğer Projeler ve Araştırma Çalışmaları' },
@@ -125,9 +126,9 @@ const dict: Record<string, Record<Locale, string>> = {
   'projects.backToAll': { en: 'Back to all projects', tr: 'Tüm projelere dön' },
   'project.overview': { en: 'Overview', tr: 'Genel Bakış' },
   'project.stack': { en: 'Capabilities & Technologies', tr: 'Kapsam ve Teknolojiler' },
-  'project.problem': { en: 'The Need & Context', tr: 'İhtiyaç ve Hedef' },
-  'project.whatIDid': { en: 'Solution & Execution', tr: 'Uygulanan Çözüm ve Yaklaşım' },
-  'project.highlights': { en: 'Key Outcomes & Deliverables', tr: 'Öne Çıkan Çıktılar ve Kazanımlar' },
+  'project.problem': { en: 'The need and context', tr: 'İhtiyaç ve hedef' },
+  'project.whatIDid': { en: 'Solution and execution', tr: 'Uygulanan çözüm ve yaklaşım' },
+  'project.highlights': { en: 'Key outcomes and deliverables', tr: 'Öne çıkan çıktılar ve kazanımlar' },
 
   'contact.intro': {
     en: 'Have a mobile app idea, need a prestigious corporate website, or want to strengthen your brand’s Google and AI search visibility? Fill out the form below and your message will come straight to my inbox.',
@@ -200,17 +201,17 @@ const dict: Record<string, Record<Locale, string>> = {
   'cv.downloadEn': { en: 'Download CV (English PDF)', tr: 'Özgeçmiş İndir (İngilizce PDF)' },
   'cv.downloadTr': { en: 'Download CV (Turkish PDF)', tr: 'Özgeçmiş İndir (Türkçe PDF)' },
   'cv.downloadEu': { en: 'Download CV (EU Format)', tr: 'Özgeçmiş İndir (Avrupa Formatı)' },
-  'cv.downloadShowcase': { en: 'Download Visual Project Portfolio (PDF)', tr: 'Görsel Proje Portfolyosunu İndir (PDF)' },
+  'cv.downloadShowcase': { en: 'Download the visual project portfolio (PDF)', tr: 'Görsel proje portfolyosunu indir (PDF)' },
   'cv.comingSoon': { en: 'Coming soon', tr: 'Yakında' },
   'cv.emailInstead': { en: 'Get in touch directly via email', tr: 'Doğrudan e-posta ile iletişime geçin' },
   'contact.elsewhere': { en: 'Professional Profiles', tr: 'Profesyonel Profiller' },
 
   'writing.articles': { en: 'Articles & Essays', tr: 'Yazılar ve Değerlendirmeler' },
-  'writing.publications': { en: 'Peer-Reviewed Academic Publications', tr: 'Hakemli Akademik Yayınlar' },
+  'writing.publications': { en: 'Peer-reviewed academic publications', tr: 'Hakemli akademik yayınlar' },
   'writing.seeAll': { en: 'Read all articles and notes', tr: 'Tüm yazıları ve notları oku' },
   'writing.intro': {
     en: 'Personal essays, digital product notes, software architecture perspectives, and peer-reviewed academic research.',
-    tr: 'Teknoloji, dijital ürün geliştirme, yapay zeka ve yazılım dünyası üzerine kişisel yazılarım, notlarım ve hakemli akademik yayınlarım.',
+    tr: 'Teknoloji, dijital ürün geliştirme, yapay zekâ ve yazılım dünyası üzerine kişisel yazılarım, notlarım ve hakemli akademik yayınlarım.',
   },
   'contact.availability': {
     en: 'Available for new client projects, product consulting, and engineering collaborations.',
@@ -243,7 +244,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'courses.title': { en: 'Guides & Notes', tr: 'Rehberler ve Notlar' },
   'courses.intro': {
     en: 'Structured guides and notes on building digital products, software architecture, and applied AI.',
-    tr: 'Dijital ürün geliştirme, yazılım mimarisi ve uygulamalı yapay zeka üzerine derlenmiş rehber ve notlar.',
+    tr: 'Dijital ürün geliştirme, yazılım mimarisi ve uygulamalı yapay zekâ üzerine derlenmiş rehber ve notlar.',
   },
   'courses.comingSoon': {
     en: 'New guides are in preparation. In the meantime, you can read the published articles below:',
@@ -263,7 +264,7 @@ const dict: Record<string, Record<Locale, string>> = {
   'writing.sourceSelf': { en: 'Personal Essay', tr: 'Kişisel Yazı' },
   'seo.courses.description': {
     en: 'Guides and notes by Ömer Yasir Önal on digital products, software architecture, and applied AI.',
-    tr: 'Ömer Yasir Önal’dan dijital ürünler, yazılım mimarisi ve uygulamalı yapay zeka üzerine rehberler.',
+    tr: 'Ömer Yasir Önal’dan dijital ürünler, yazılım mimarisi ve uygulamalı yapay zekâ üzerine rehberler.',
   },
 
   'packages.title': { en: 'Services & Digital Solutions', tr: 'Hizmetler ve Dijital Çözümler' },
@@ -284,7 +285,7 @@ const dict: Record<string, Record<Locale, string>> = {
     en: 'Every business has unique needs. Share your goals via the contact form or WhatsApp, and I will prepare a clear, tailored scope and proposal.',
     tr: 'Her işletmenin ve projenin ihtiyacı farklıdır. Hedeflerinizi iletişim formundan veya WhatsApp üzerinden paylaştığınızda, size özel net bir yol haritası ve teklif hazırlıyorum.',
   },
-  'packages.faqTitle': { en: 'Frequently Asked Questions', tr: 'Sıkça Sorulan Sorular' },
+  'packages.faqTitle': { en: 'Frequently asked questions', tr: 'Sık sorulan sorular' },
   'packages.processTitle': { en: 'How We Work Together', tr: 'Çalışma Sürecimiz' },
   'packages.compareTitle': { en: 'Solution Overview', tr: 'Hizmet Alanları Özeti' },
   'packages.compare.plan': { en: 'Service Area', tr: 'Hizmet Alanı' },
@@ -322,8 +323,8 @@ const dict: Record<string, Record<Locale, string>> = {
   'link.appstore': { en: 'View on App Store', tr: 'App Store’da İncele' },
   'link.other': { en: 'Related Link', tr: 'İlgili Bağlantı' },
 
-  'category.AI-Agents': { en: 'AI & Automation Platform', tr: 'Yapay Zeka ve Otomasyon' },
-  'category.Applied-AI': { en: 'Applied AI Solution', tr: 'Uygulamalı Yapay Zeka' },
+  'category.AI-Agents': { en: 'AI & Automation Platform', tr: 'Yapay Zekâ ve Otomasyon' },
+  'category.Applied-AI': { en: 'Applied AI Solution', tr: 'Uygulamalı Yapay Zekâ' },
   'category.ML-Research': { en: 'Scientific Research', tr: 'Bilimsel Araştırma' },
   'category.Mobile': { en: 'Mobile Application', tr: 'Mobil Uygulama' },
   'category.Web': { en: 'Corporate Web & Brand', tr: 'Kurumsal Web ve Marka' },

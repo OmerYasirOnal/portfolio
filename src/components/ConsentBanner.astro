@@ -23,7 +23,7 @@ const { locale, gtmId } = Astro.props;
   role="dialog"
   aria-live="polite"
   aria-label={t(locale, 'consent.title')}
-  class="fixed inset-x-3 bottom-24 z-50 mx-auto max-w-lg rounded-2xl border border-border bg-card p-5 shadow-xl md:bottom-5"
+  class="fixed inset-x-3 bottom-24 z-50 mx-auto max-w-lg rounded-xl border border-border bg-card p-5 shadow-lg md:bottom-5"
 >
   <p class="text-sm leading-relaxed text-fg">
     {t(locale, 'consent.text')}
@@ -32,10 +32,10 @@ const { locale, gtmId } = Astro.props;
     </a>
   </p>
   <div class="mt-4 flex gap-2">
-    <button type="button" data-consent-accept class="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-on-accent">
+    <button type="button" data-consent-accept class="btn btn-primary btn-sm">
       {t(locale, 'consent.accept')}
     </button>
-    <button type="button" data-consent-reject class="rounded-full border border-fg/20 px-4 py-2 text-sm font-semibold text-fg">
+    <button type="button" data-consent-reject class="btn btn-secondary btn-sm">
       {t(locale, 'consent.reject')}
     </button>
   </div>

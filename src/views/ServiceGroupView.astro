@@ -76,47 +76,50 @@ const crumbs = breadcrumbJsonLd([
   <SiteHeader locale={locale} path={path} contactTopic={g.topic} />
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-4 pb-12 pt-10 sm:px-6 md:pt-14">
-      <nav aria-label="Breadcrumb" class="mb-8 font-mono text-xs text-muted">
+    <section class="container-page pb-12 pt-10 md:pt-14">
+      <nav aria-label="Breadcrumb" class="mb-8 text-sm text-muted">
         <a href={localizePath(locale, '/services')} class="hover:text-accent">{t(locale, 'nav.services')}</a>
         <span aria-hidden="true"> / </span>
         <span aria-current="page" class="text-fg">{pick(locale, g.short)}</span>
       </nav>
       <div class="grid gap-10 md:grid-cols-[1.4fr_1fr] md:items-end">
         <div>
-          <h1 class="text-4xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-5xl">{pick(locale, g.title)}</h1>
-          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{pick(locale, g.intro)}</p>
+          <p class="eyebrow">{pick(locale, g.short)}</p>
+          <h1 class="h-display mt-3">{pick(locale, g.title)}</h1>
+          <p class="lead mt-5">{pick(locale, g.intro)}</p>
           <div class="mt-8 flex flex-wrap gap-3">
             <WhatsAppButton locale={locale} topic={g.topic} location="service_hero" size="lg" />
-            <a href="#teklif" class="inline-flex items-center gap-2 rounded-full border border-fg/20 bg-card px-6 py-3.5 text-[0.95rem] font-semibold text-fg hover:border-accent hover:text-accent">
+            <a href="#teklif" class="btn btn-secondary btn-lg">
               {L('Form ile yaz', 'Use the form')}
             </a>
           </div>
         </div>
-        <aside class="rounded-2xl border border-border bg-card p-6">
-          <p class="label">{L('Neden bir mühendis?', 'Why an engineer?')}</p>
+        <aside class="card p-6">
+          <p class="label">{L('Çalışma şeklim', 'My approach')}</p>
           <p class="mt-3 text-[0.95rem] leading-relaxed text-fg">{pick(locale, g.angle)}</p>
         </aside>
       </div>
 
-      <ul class="mt-10 flex flex-wrap gap-2" role="list" aria-label={L('Bu sayfadaki hizmetler', 'Services on this page')}>
-        {g.services.map((s) => (
-          <li><a href={`#${s.id}`} class="inline-block rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-fg hover:border-accent hover:text-accent">{pick(locale, s.name)}</a></li>
-        ))}
-      </ul>
+      <div class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <p class="label" id="on-this-page">{L('Bu sayfada', 'On this page')}</p>
+        <ul class="flex flex-wrap gap-2" role="list" aria-labelledby="on-this-page">
+          {g.services.map((s) => (
+            <li><a href={`#${s.id}`} class="chip px-3 py-1 text-sm text-fg hover:border-border-strong">{pick(locale, s.name)}</a></li>
+          ))}
+        </ul>
+      </div>
     </section>
 
-    <div class="mx-auto max-w-6xl space-y-5 px-4 sm:px-6">
+    <div class="container-page space-y-5 pb-20 md:pb-24">
       {
-        g.services.map((s, i) => (
-          <section id={s.id} class="scroll-mt-24 rounded-2xl border border-border bg-card p-6 sm:p-9" aria-labelledby={`${s.id}-h`} data-reveal>
+        g.services.map((s) => (
+          <section id={s.id} class="card scroll-mt-24 p-6 sm:p-8" aria-labelledby={`${s.id}-h`}>
             <div class="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
               <div>
-                <span class="font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
-                <h2 id={`${s.id}-h`} class="mt-3 text-2xl font-semibold tracking-tight text-fg sm:text-3xl">{pick(locale, s.name)}</h2>
+                <h2 id={`${s.id}-h`} class="text-2xl font-semibold tracking-tight text-fg">{pick(locale, s.name)}</h2>
                 <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, s.summary)}</p>
                 {s.note && (
-                  <p class="mt-5 rounded-xl bg-accent-soft p-4 text-sm leading-relaxed text-fg">{pick(locale, s.note)}</p>
+                  <p class="mt-5 rounded-lg bg-accent-soft p-4 text-sm leading-relaxed text-fg">{pick(locale, s.note)}</p>
                 )}
                 <div class="mt-6">
                   <WhatsAppButton
@@ -124,14 +127,15 @@ const crumbs = breadcrumbJsonLd([
                     topic={s.topic}
                     location={`service_${s.id}`}
                     label={L('Bu hizmet için yaz', 'Ask about this')}
-                    variant="outline"
+                    variant="secondary"
+                    size="sm"
                   />
                 </div>
               </div>
-              <ul class="grid content-start gap-3 sm:grid-cols-2" role="list">
+              <ul class="grid content-start gap-x-6 gap-y-3 sm:grid-cols-2" role="list">
                 {s.items.map((it) => (
-                  <li class="flex gap-2.5 rounded-xl border border-border p-4 text-[0.95rem] text-fg">
-                    <Icon name="check" size={16} class="mt-0.5 shrink-0 text-accent" />
+                  <li class="flex gap-2.5 text-[0.95rem] leading-relaxed text-fg">
+                    <Icon name="check" size={16} class="mt-1 shrink-0 text-accent" />
                     {pick(locale, it)}
                   </li>
                 ))}
@@ -144,14 +148,16 @@ const crumbs = breadcrumbJsonLd([
 
     {
       work.length > 0 && (
-        <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
-          <SectionHead
-            label={L('Örnek işler', 'Examples')}
-            title={L('Bu alanda yaptıklarım', 'What I have done in this area')}
-            link={{ href: localizePath(locale, '/projects'), text: L('Tüm çalışmalar', 'All work') }}
-          />
-          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {work.map((entry) => <ProjectCard locale={locale} entry={entry} />)}
+        <section class="section section-alt">
+          <div class="container-page">
+            <SectionHead
+              label={L('Örnek işler', 'Examples')}
+              title={L('Bu alanda yaptıklarım', 'What I have done in this area')}
+              link={{ href: localizePath(locale, '/projects'), text: L('Tüm çalışmalar', 'All work') }}
+            />
+            <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {work.map((entry) => <ProjectCard locale={locale} entry={entry} />)}
+            </div>
           </div>
         </section>
       )
@@ -159,62 +165,70 @@ const crumbs = breadcrumbJsonLd([
 
     {
       groupConcepts.length > 0 && (
-        <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
-          <SectionHead
-            label={L('Konsept tasarımlar', 'Concept designs')}
-            title={L('Farklı sektörler için kurgu örnekleri', 'Layouts for different sectors')}
-            intro={L('Sektöre göre nasıl bir yapı kurduğumu gösteren tasarım çalışmaları.', 'Design studies showing how I structure a site or account for a sector.')}
-          />
-          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {groupConcepts.map((c) => <ConceptCard concept={c} locale={locale} />)}
+        <section class="section">
+          <div class="container-page">
+            <SectionHead
+              label={L('Konsept tasarımlar', 'Concept designs')}
+              title={L('Farklı sektörler için kurgu örnekleri', 'Layouts for different sectors')}
+              intro={L('Sektöre göre nasıl bir yapı kurduğumu gösteren tasarım çalışmaları.', 'Design studies showing how I structure a site or account for a sector.')}
+            />
+            <div class:list={['grid gap-5', groupConcepts.length === 1 ? 'max-w-md' : 'md:grid-cols-2 lg:grid-cols-3']}>
+              {groupConcepts.map((c) => <ConceptCard concept={c} locale={locale} />)}
+            </div>
           </div>
         </section>
       )
     }
 
-    <section class="mx-auto max-w-3xl px-4 pt-20 sm:px-6">
-      <h2 class="text-3xl font-semibold tracking-tight text-fg">{t(locale, 'packages.faqTitle')}</h2>
-      <div class="mt-6 divide-y divide-border border-y border-border">
-        {
-          g.faqs.map((f) => (
-            <details class="group py-5">
-              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 text-lg font-medium text-fg [&::-webkit-details-marker]:hidden">
-                {pick(locale, f.question)}
-                <span class="mt-1 font-mono text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-              </summary>
-              <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, f.answer)}</p>
-            </details>
-          ))
-        }
-      </div>
-    </section>
-
-    <section id="teklif" class="mx-auto mt-20 max-w-6xl scroll-mt-24 px-4 sm:px-6">
-      <div class="grid gap-10 rounded-2xl border border-border bg-card p-6 sm:p-10 md:grid-cols-[1fr_1.1fr]">
-        <div>
-          <p class="label">{t(locale, 'nav.contact')}</p>
-          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-fg">{L('Kısaca anlatın, size özel teklif hazırlayayım.', 'Tell me briefly and I will prepare a tailored quote.')}</h2>
-          <div class="mt-8"><ContactChannels locale={locale} topic={g.topic} location={`service_${g.id}_contact`} /></div>
+    <section class:list={['section', groupConcepts.length > 0 && 'border-t border-border']} aria-labelledby="faq-h">
+      <div class="container-page"><div class="max-w-3xl">
+        <h2 id="faq-h" class="h-section">{t(locale, 'packages.faqTitle')}</h2>
+        <div class="mt-8 divide-y divide-border border-y border-border">
+          {
+            g.faqs.map((f) => (
+              <details class="group py-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[1.05rem] font-semibold text-fg [&::-webkit-details-marker]:hidden">
+                  {pick(locale, f.question)}
+                  <span class="shrink-0 text-xl leading-none text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{pick(locale, f.answer)}</p>
+              </details>
+            ))
+          }
         </div>
-        <ContactForm locale={locale} service={formService[g.id]} location={`service_${g.id}`} />
+      </div></div>
+    </section>
+
+    <section id="teklif" class="section section-alt scroll-mt-24" aria-labelledby="teklif-h">
+      <div class="container-page grid gap-10 md:grid-cols-[1fr_1.1fr]">
+        <div>
+          <p class="eyebrow">{t(locale, 'nav.contact')}</p>
+          <h2 id="teklif-h" class="h-section mt-3">{L('Kısaca anlatın, size özel teklif hazırlayayım.', 'Tell me briefly and I will prepare a tailored quote.')}</h2>
+          <div class="mt-8"><ContactChannels locale={locale} topic={g.topic} location={`service_${g.id}_contact`} tone="light" /></div>
+        </div>
+        <div class="card p-6 sm:p-8">
+          <ContactForm locale={locale} service={formService[g.id]} location={`service_${g.id}`} />
+        </div>
       </div>
     </section>
 
-    <nav class="mx-auto mt-16 max-w-6xl px-4 sm:px-6" aria-label={L('Diğer hizmetler', 'Other services')}>
-      <p class="label">{L('Diğer hizmetler', 'Other services')}</p>
-      <ul class="mt-4 grid gap-4 sm:grid-cols-2" role="list">
-        {others.map((o) => (
-          <li>
-            <a href={localizePath(locale, `/services/${o.id}`)} class="group flex items-center justify-between rounded-2xl border border-border p-5 hover:border-fg/30">
-              <span>
-                <span class="block text-lg font-semibold text-fg">{pick(locale, o.short)}</span>
-                <span class="mt-1 block text-sm text-muted">{pick(locale, o.cardSummary)}</span>
-              </span>
-              <Icon name="arrow" size={18} class="shrink-0 text-accent transition-transform group-hover:translate-x-0.5" />
-            </a>
-          </li>
-        ))}
-      </ul>
+    <nav class="section" aria-label={L('Diğer hizmetler', 'Other services')}>
+      <div class="container-page">
+        <p class="label">{L('Diğer hizmetler', 'Other services')}</p>
+        <ul class="mt-4 grid gap-4 sm:grid-cols-2" role="list">
+          {others.map((o) => (
+            <li>
+              <a href={localizePath(locale, `/services/${o.id}`)} class="card card-link flex items-center justify-between gap-4 p-5">
+                <span>
+                  <span class="h-card block">{pick(locale, o.short)}</span>
+                  <span class="mt-1 block text-sm text-muted">{pick(locale, o.cardSummary)}</span>
+                </span>
+                <Icon name="arrow" size={18} class="shrink-0 text-accent" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   </main>
 

@@ -1,7 +1,7 @@
 ---
 /**
- * SiteFooter - dark ink footer: a short closing CTA, sitemap columns, contact
- * channels and social profiles.
+ * SiteFooter - solid ink footer: an optional closing CTA, sitemap columns,
+ * contact details and social profiles.
  */
 import { profile } from '../data/profile';
 import { t, localizePath, pick, type Locale } from '../data/i18n';
@@ -17,31 +17,48 @@ interface Props {
   locale: Locale;
   /** Hide the closing CTA block (contact page already is one). */
   hideCta?: boolean;
-  /** Page ends on a dark stage: no gap above the footer, just a hairline. */
+  /** Deprecated: the footer never adds top margin; pages own their bottom padding. */
   flush?: boolean;
 }
 
-const { locale, hideCta = false, flush = false } = Astro.props;
+const { locale, hideCta = false } = Astro.props;
 const L = (tr: string, en: string) => pick(locale, { tr, en });
 const year = new Date().getFullYear();
+
+// Short sector labels for the footer; falls back to the landing's service name.
+const sectorLabel: Record<string, string> = {
+  '/psikologlar-icin-instagram-reels': 'Psikolog ve terapistler',
+  '/guzellik-merkezleri-icin-web-sitesi-ve-reels': 'Güzellik merkezleri',
+  '/kafe-ve-restoranlar-icin-reels-ve-google-gorunurluk': 'Kafe ve restoranlar',
+  '/en/reels-for-therapists': 'Therapists and counsellors',
+  '/en/ai-video-ads': 'AI video ads',
+};
+const sectors = landings
+  .filter((l) => l.locale === locale)
+  .map((l) => ({ href: `${l.slug}/`, label: sectorLabel[l.slug] ?? l.serviceName.charAt(0).toUpperCase() + l.serviceName.slice(1) }));
 ---
 
-<footer class:list={['bg-ink text-on-ink', flush ? 'border-t border-white/10' : 'mt-24']}>
+<footer class="bg-ink text-on-ink">
   {
     !hideCta && (
-      <div class="mx-auto max-w-6xl border-b border-white/10 px-4 py-16 sm:px-6">
-        <p class="label !text-white/60">{L('Bir sonraki adım', 'Next step')}</p>
-        <div class="mt-4 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <h2 class="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            {L('Projenizi kısaca anlatın, size net bir yol haritasıyla döneyim.', 'Tell me about your project and I will come back with a clear plan.')}
-          </h2>
-          <div class="flex flex-wrap gap-3">
+      <div class="border-b border-white/10">
+      <div class="container-page py-14">
+        <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <div class="max-w-xl">
+            <h2 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+              {L('Projenizi kısaca anlatın, size net bir planla döneyim.', 'Tell me about your project and I will come back with a clear plan.')}
+            </h2>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-white/70">
+              {L('WhatsApp ya da e-posta ile yazabilirsiniz.', 'You can write on WhatsApp or by email.')}
+            </p>
+          </div>
+          <div class="flex shrink-0 flex-wrap gap-3 md:flex-nowrap md:justify-end">
             <WhatsAppButton locale={locale} location="footer" variant="light" size="lg" />
             <a
               href={mailtoHref(locale)}
               data-track="email_click"
               data-track-location="footer"
-              class="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[0.95rem] font-semibold hover:border-white"
+              class="btn btn-lg btn-outline-light"
             >
               <Icon name="mail" size={18} />
               {t(locale, 'cta.email')}
@@ -49,37 +66,24 @@ const year = new Date().getFullYear();
           </div>
         </div>
       </div>
+      </div>
     )
   }
 
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+  <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
     <div>
       <a href={localizePath(locale, '/')} class="inline-flex items-center gap-3 text-lg font-semibold tracking-tight">
-        <Logo size={40} class="text-on-ink" />
+        <Logo size={36} class="text-on-ink" />
         <span>{profile.name}</span>
       </a>
-      <p class="mt-2 text-sm leading-relaxed text-white/70">
-        {L('Bilgisayar Mühendisi. Yazılım, yapay zekâ ve dijital büyüme.', 'Computer Engineer. Software, AI and digital growth.')}
+      <p class="mt-3 max-w-xs text-sm leading-relaxed text-white/70">
+        {L('Bilgisayar Mühendisi. Web sitesi, reklam yönetimi ve video içerik.', 'Computer Engineer. Websites, ad management and video content.')}
         <br />{profile.location[locale]}
       </p>
-      {
-        profile.instagram.url && (
-          <a
-            href={profile.instagram.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="instagram_click"
-            data-track-location="footer"
-            class="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-semibold hover:border-white"
-          >
-            <Icon name="instagram" size={16} /> @{profile.instagram.handle}
-          </a>
-        )
-      }
     </div>
 
     <div>
-      <p class="label !text-white/60">{t(locale, 'nav.services')}</p>
+      <p class="label !text-white/55">{t(locale, 'nav.services')}</p>
       <ul class="mt-4 space-y-2.5 text-sm" role="list">
         {
           serviceGroups.map((g) => (
@@ -91,15 +95,22 @@ const year = new Date().getFullYear();
           ))
         }
       </ul>
+      {sectors.length > 0 && (
+        <>
+          <p class="label mt-8 !text-white/55">{L('Sektörlere özel', 'By industry')}</p>
+          <ul class="mt-4 space-y-2.5 text-sm" role="list">
+            {sectors.map((x) => (
+              <li><a href={x.href} class="text-white/80 hover:text-white">{x.label}</a></li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
 
     <div>
-      <p class="label !text-white/60">{L('Site', 'Site')}</p>
+      <p class="label !text-white/55">{L('Site', 'Site')}</p>
       <ul class="mt-4 space-y-2.5 text-sm" role="list">
         <li><a href={localizePath(locale, '/projects')} class="text-white/80 hover:text-white">{t(locale, 'nav.work')}</a></li>
-        {landings.filter((l) => l.locale === locale).map((l) => (
-          <li><a href={`${l.slug}/`} class="text-white/80 hover:text-white">{l.serviceName.charAt(0).toUpperCase() + l.serviceName.slice(1)}</a></li>
-        ))}
         <li><a href={localizePath(locale, '/about')} class="text-white/80 hover:text-white">{t(locale, 'nav.about')}</a></li>
         <li><a href={localizePath(locale, '/writing')} class="text-white/80 hover:text-white">{t(locale, 'nav.writing')}</a></li>
         <li><a href={localizePath(locale, '/cv')} class="text-white/80 hover:text-white">{t(locale, 'nav.cv')}</a></li>
@@ -108,7 +119,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div>
-      <p class="label !text-white/60">{t(locale, 'nav.contact')}</p>
+      <p class="label !text-white/55">{t(locale, 'nav.contact')}</p>
       <ul class="mt-4 space-y-2.5 text-sm" role="list">
         <li>
           <a href={mailtoHref(locale)} data-track="email_click" data-track-location="footer_list" class="break-all text-white/80 hover:text-white">
@@ -142,7 +153,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="border-t border-white/10">
-    <p class="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 py-6 text-xs text-white/55 sm:px-6">
+    <p class="container-page flex flex-wrap justify-between gap-2 py-6 text-xs text-white/55">
       <span>© {year} {profile.name}</span>
       <a href="#top" class="hover:text-white">{t(locale, 'footer.backToTop')} ↑</a>
     </p>

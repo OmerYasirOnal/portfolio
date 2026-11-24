@@ -1,16 +1,20 @@
 ---
-title: A2 Reklam · Sosyal Medya ve AI Video
-tagline_en: Instagram Reels for a signage company - real project stories, AI-animated scenes, a virtual presenter and a logo animation - with a Meta ads campaign being set up on top.
-tagline_tr: Tabela firmasının Instagram'ı için Reels üretimi - gerçek proje hikâyeleri, yapay zekâ ile hareketlendirilmiş sahneler, sanal sunucu ve logo animasyonu - üzerine kurulan Meta reklam kampanyası.
+title: A2 Reklam · Sosyal Medya ve Video
+tagline_en: Instagram Reels for a signage company, built from real project stories, AI-animated scenes, a virtual presenter and a logo animation.
+tagline_tr: Tabela firmasının Instagram'ı için Reels üretimi; gerçek proje hikâyeleri, yapay zekâ ile hareketlendirilmiş sahneler, sanal sunucu ve logo animasyonu.
 category: Content
 group: client
 image: a2reklam-video.jpg
 stack:
   - Instagram Reels Üretimi
-  - Yapay Zekâ ile Video (AI)
+  - Yapay Zekâ ile Video
   - Senaryo, Seslendirme & Kurgu
-  - Sanal Sunucu (Persona)
-  - Meta Ads Kurulumu
+  - Sanal Sunucu
+stack_en:
+  - Instagram Reels Production
+  - AI-assisted Video
+  - Script, Voice-over & Edit
+  - Virtual Presenter
 status_en: Live on Instagram · @a2_reklam
 status_tr: Instagram'da yayında · @a2_reklam
 links:
@@ -38,16 +42,16 @@ highlights_en:
   - Turned a real job into a story Reel - a family coffee roaster's 1972 history told through one illuminated hanging sign, from 3D design to installation - with caption, pinned comment and call to action.
   - Real project footage, with some scenes animated using AI and labelled as such in the caption; voice-over, motion text and edit produced end to end.
   - Earlier pieces for the same brand - a virtual-presenter promo and a logo reveal - all delivered in vertical 9:16 for Reels, Stories and WhatsApp status.
-  - A Meta (Instagram / Facebook) ads campaign is being set up to put these Reels in front of shop and chain-store owners in Istanbul; the account already runs on Google Ads, a site and conversion tracking I built.
+  - The same brand already runs on a website, conversion tracking and Google Ads that I built and manage, so the Reels sit inside one working system.
 highlights_tr:
   - Gerçek bir işi hikâye Reels'ine dönüştürdüm - 1972'den beri süren bir aile kahvecisinin hikâyesini, 3D tasarımdan montaja tek bir ışıklı asma tabelada anlattım; açıklama, sabit yorum ve harekete geçirici mesajla birlikte.
   - Görüntüler gerçek projeden; bazı sahneler yapay zekâ ile hareketlendirildi ve bu açıklamada belirtildi. Seslendirme, hareketli yazı ve kurgu uçtan uca benden.
   - Aynı marka için önceki işler - sanal sunuculu tanıtım ve logo animasyonu - hepsi Reels, Hikâye ve WhatsApp durumu için dikey 9:16.
-  - Bu Reels'leri İstanbul'daki dükkân ve çok şubeli işletme sahiplerinin önüne çıkaracak Meta (Instagram / Facebook) reklam kampanyası kuruluyor; hesap zaten kurduğum site, dönüşüm ölçümü ve Google Ads ile çalışıyor.
+  - Marka zaten kurduğum ve yönettiğim site, dönüşüm ölçümü ve Google Ads ile çalışıyor; Reels'ler bu sistemin içinde duruyor.
 problem_en: A signage company with a working website and Google Ads account had almost no video on Instagram, and no film crew or budget for one. Its best proof - finished signs on real storefronts - was sitting in a phone gallery.
 problem_tr: Sitesi ve Google Ads hesabı çalışan tabela firmasının Instagram'da neredeyse hiç videosu yoktu; çekim ekibi ya da bütçesi de yoktu. En güçlü kanıtı, gerçek dükkânlara asılmış tabelalar, telefon galerisinde duruyordu.
-what_i_did_en: I plan, script, voice and edit the brand's Reels from real project material and AI-assisted scenes, write the captions and calls to action, and am setting up the Meta ads layer so content, website and measurement work as one system.
-what_i_did_tr: Markanın Reels'lerini gerçek proje malzemesi ve yapay zekâ destekli sahnelerle planlıyor, senaryo, seslendirme ve kurgusunu yapıyor, açıklama ve çağrı metinlerini yazıyorum; içerik, site ve ölçüm tek sistem gibi çalışsın diye Meta reklam katmanını kuruyorum.
+what_i_did_en: I plan, script, voice and edit the brand's Reels from real project material and AI-assisted scenes, and write the captions and calls to action, so content, website and measurement work as one system.
+what_i_did_tr: Markanın Reels'lerini gerçek proje malzemesi ve yapay zekâ destekli sahnelerle planlıyor, senaryo, seslendirme ve kurgusunu yapıyor, açıklama ve çağrı metinlerini yazıyorum; içerik, site ve ölçüm tek sistem gibi çalışıyor.
 featured: true
 order: 2
 ---

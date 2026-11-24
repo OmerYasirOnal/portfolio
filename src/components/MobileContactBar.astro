@@ -15,10 +15,10 @@ interface Props {
 const { locale, topic = 'general' } = Astro.props;
 ---
 
-<div class="h-20 md:hidden" aria-hidden="true"></div>
+<div class="bg-ink md:hidden" style="height:calc(4.5rem + max(0.75rem, env(safe-area-inset-bottom)))" aria-hidden="true"></div>
 <nav
   aria-label={t(locale, 'cta.quickContact')}
-  class="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden"
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden"
 >
   <div class="mx-auto flex max-w-md gap-2.5">
     <a
@@ -28,7 +28,7 @@ const { locale, topic = 'general' } = Astro.props;
       data-track="whatsapp_click"
       data-track-location="mobile_bar"
       data-track-topic={topic}
-      class="flex flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-semibold text-on-accent"
+      class="btn btn-primary flex-1 !py-3 text-sm"
     >
       <Icon name="whatsapp" size={18} />
       {t(locale, 'cta.whatsappShort')}
@@ -37,7 +37,7 @@ const { locale, topic = 'general' } = Astro.props;
       href={mailtoHref(locale)}
       data-track="email_click"
       data-track-location="mobile_bar"
-      class="flex items-center justify-center gap-2 rounded-full border border-fg/20 bg-card px-4 py-3 text-sm font-semibold text-fg"
+      class="btn btn-secondary !py-3 text-sm"
     >
       <Icon name="mail" size={17} />
       {t(locale, 'cta.emailShort')}

@@ -38,31 +38,16 @@ const downloads = [
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-6 pb-20 pt-16" data-reveal>
-      <div class="overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-10">
-        <p class="inline-flex items-center gap-2 rounded-full border border-border bg-accent/8 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent">
-          <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
-          {profile.name}
-        </p>
-        <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
-          {t(locale, 'cv.title')}
-        </h1>
-        <p class="mt-4 max-w-2xl text-balance text-base leading-relaxed text-muted">
-          {t(locale, 'cv.intro')}
-        </p>
+    <section class="container-page section">
+      <div class="max-w-3xl">
+        <p class="eyebrow">{profile.name}</p>
+        <h1 class="h-display mt-3">{t(locale, 'cv.title')}</h1>
+        <p class="lead mt-5">{t(locale, 'cv.intro')}</p>
 
-        <div class="mt-8 flex flex-wrap items-center gap-4">
+        <div class="mt-8 flex flex-wrap items-center gap-3">
           {
             downloads.map((d) => (
-              <a
-                href={d.href}
-                download
-                class={
-                  d.primary
-                    ? 'inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-on-accent transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-                    : 'inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-semibold text-fg transition-all hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-                }
-              >
+              <a href={d.href} download class={d.primary ? 'btn btn-primary' : 'btn btn-secondary'}>
                 <svg
                   width="16"
                   height="16"
@@ -81,24 +66,21 @@ const downloads = [
           }
         </div>
 
-        <p class="mt-6 text-sm">
-          <a
-            href="/cv/omer-yasir-onal-showcase.pdf"
-            download
-            class="inline-flex items-center gap-1.5 rounded-full border border-border bg-accent/8 px-4 py-2 font-semibold text-accent transition-all hover:bg-accent hover:text-on-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {t(locale, 'cv.downloadShowcase')} <span aria-hidden="true">→</span>
-          </a>
-        </p>
-
-        <p class="mt-6 text-sm text-muted">
-          <a
-            href={mailto}
-            class="font-semibold text-fg underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {t(locale, 'cv.emailInstead')}
-          </a>
-        </p>
+        <ul class="mt-10 space-y-3 border-t border-border pt-6 text-sm" role="list">
+          <li>
+            <a href="/cv/omer-yasir-onal-showcase.pdf" download class="link-arrow">
+              {t(locale, 'cv.downloadShowcase')} <span aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href={mailto}
+              class="font-semibold text-fg underline decoration-border-strong underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+            >
+              {t(locale, 'cv.emailInstead')}
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
   </main>

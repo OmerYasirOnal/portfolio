@@ -5,6 +5,7 @@
  * from the visible site.
  */
 import { reels } from '../data/social';
+import { quranEpisodes, shortTitle, surahLabel } from '../data/quran-reels';
 import { profile } from '../data/profile';
 
 export interface LlmsProject {
@@ -81,7 +82,7 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('');
   lines.push('## Services');
   lines.push(
-    `Websites & software, Google / Meta ads & SEO / GEO, social media management & AI-assisted Reels and video. Quoted per project; ad spend is separate from fees: ${abs(site, '/en/services/')}`,
+    `Websites & software, Google / Meta ads & SEO and visibility in AI search, social media management & AI-assisted Reels and video. Quoted per project; ad spend is separate from fees: ${abs(site, '/en/services/')}`,
   );
   for (const sv of data.services) {
     lines.push(`- [${sv.name}](${abs(site, sv.path)}) (${sv.group}): ${sv.summary}`);
@@ -133,6 +134,12 @@ export function llmsTxt(data: LlmsData): string {
   lines.push('## Social media & AI video (recent Reels)');
   for (const r of reels) {
     lines.push(`- [${r.title.en}](${r.ready && r.project ? abs(site, `/en/projects/${r.project}/`) : r.url}): ${r.kind.en}, @${r.account}${r.date ? `, ${r.date}` : ''}${r.ready ? ' (produced, not yet posted)' : ''}`);
+  }
+  lines.push('');
+  lines.push("## Qur'an Reels (own series, in revelation order)");
+  lines.push(`- [Series index](${abs(site, '/en/kuran-reels/')}): one page per episode with video, description and the Arabic text (Tanzil)`);
+  for (const e of quranEpisodes) {
+    lines.push(`- [${surahLabel('en', e)} ${e.range}: ${shortTitle('en', e)}](${abs(site, `/en/kuran-reels/${e.slug}/`)}): revelation order ${e.nuzul}, chapter ${e.surahNo}`);
   }
   lines.push('');
   lines.push('## Contact');

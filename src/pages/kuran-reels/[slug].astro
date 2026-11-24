@@ -1,0 +1,12 @@
+---
+import QuranEpisodeView from '../../views/QuranEpisodeView.astro';
+import { quranEpisodes, type QuranEpisode } from '../../data/quran-reels';
+
+export function getStaticPaths() {
+  return quranEpisodes.map((episode) => ({ params: { slug: episode.slug }, props: { episode } }));
+}
+
+const { episode } = Astro.props as { episode: QuranEpisode };
+---
+
+<QuranEpisodeView locale="tr" episode={episode} />

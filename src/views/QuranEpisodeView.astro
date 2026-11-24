@@ -1,0 +1,464 @@
+---
+/**
+ * QuranEpisodeView - /kuran-reels/<slug>: one Kur'an Reels episode. Video
+ * first (a light YouTube facade when the video is public there, otherwise the
+ * cover linking to Instagram), then the owner's description, the Arabic text
+ * (Tanzil Project, unmodified), the transcript when there is one, and the
+ * previous / next episode in revelation order.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Icon from '../components/Icon.astro';
+import { localizePath, pick, t, type Locale } from '../data/i18n';
+import {
+  clip,
+  hookTitle,
+  shortTitle,
+  episodeNeighbours,
+  isoDuration,
+  surahLabel,
+  type QuranEpisode,
+} from '../data/quran-reels';
+import { breadcrumbJsonLd, canonicalHref, jsonLdScript } from '../lib/seo';
+
+interface Props {
+  locale: Locale;
+  episode: QuranEpisode;
+}
+
+const { locale, episode: ep } = Astro.props;
+const L = (tr: string, en: string) => pick(locale, { tr, en });
+const site = Astro.site!;
+const origin = new URL(site).origin;
+const hint = t(locale, 'social.opensNewTab');
+
+const seriesPath = localizePath(locale, '/kuran-reels');
+const path = localizePath(locale, `/kuran-reels/${ep.slug}`);
+const url = canonicalHref(path, site);
+const surah = surahLabel(locale, ep);
+const surahAnchor = `${seriesPath}/#sure-${ep.surahNo}`;
+
+const title = shortTitle(locale, ep);
+const hook = hookTitle(locale, ep);
+const showHook = hook.replace(/[.?!]$/, '').toLocaleLowerCase(locale) !== title.replace(/[.?!]$/, '').toLocaleLowerCase(locale);
+const heading = `${surah} ${ep.range}: ${title}`;
+
+// "Yoruma yaz." is an Instagram call to comment; it has no meaning on the site.
+const clean = (ps: string[]) => ps.map((p) => p.replace(/\s*Yoruma yaz\.\s*$/, '').trim()).filter(Boolean);
+const descIsFallback = locale === 'en' && !ep.descEn?.length;
+const norm = (x: string) => x.replace(/["“”'’.!?\s]+/g, ' ').trim().toLocaleLowerCase(locale);
+// Instagram caption lead lines carry a " | Müzzemmil Suresi 20" style suffix; keep the sentence only.
+const descAll = clean(locale === 'en' && !descIsFallback ? ep.descEn! : ep.descTr).map((p, i) =>
+  i === 0 && / \| /.test(p) ? p.split(' | ')[0].trim() : p,
+);
+const metaDescription = clip(descAll.join(' '), 160);
+// The hook already sits under the h1; do not repeat it as the first paragraph.
+const desc = showHook && descAll.length > 1 && norm(descAll[0]) === norm(hook) ? descAll.slice(1) : descAll;
+
+// Transcript: TR lines are sentences; EN lines are subtitle chunks, joined into sentences.
+const rawTranscript = locale === 'en' ? ep.transcriptEn : ep.transcriptTr;
+const transcript: string[] = [];
+if (rawTranscript?.length) {
+  let buf = '';
+  for (const line of rawTranscript) {
+    buf = buf ? `${buf} ${line.trim()}` : line.trim();
+    if (/[.?!…"”»]$/.test(buf)) {
+      transcript.push(buf);
+      buf = '';
+    }
+  }
+  if (buf) transcript.push(buf);
+}
+
+const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+const arNum = (n: number) => String(n).replace(/\d/g, (d) => AR_DIGITS[Number(d)]);
+const ayahs = ep.arabic.map((a) => ({ ...a, mark: `﴿${arNum(a.ayah)}﴾` }));
+
+const dateLocale = locale === 'tr' ? 'tr-TR' : 'en-GB';
+const pubDate = new Date(`${ep.pub.igDate}T12:00:00+03:00`).toLocaleDateString(dateLocale, {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Istanbul',
+});
+const dur = ep.durationSec ? Math.round(ep.durationSec) : null;
+const durLabel = dur ? `${Math.floor(dur / 60)}:${String(dur % 60).padStart(2, '0')}` : null;
+
+const meta = [
+  { k: L('Nüzul sırası', 'Revelation order'), v: String(ep.nuzul) },
+  { k: L('Mushaf', 'Chapter'), v: String(ep.surahNo) },
+  { k: L('Ayet', ep.ayahFrom === ep.ayahTo ? 'Verse' : 'Verses'), v: ep.range },
+  ...(durLabel ? [{ k: L('Süre', 'Length'), v: durLabel }] : []),
+  { k: L('Yayın', 'Published'), v: pubDate },
+];
+
+const { prev, next } = episodeNeighbours(ep.slug);
+const epTitle = (e: QuranEpisode) => `${surahLabel(locale, e)} ${e.range}: ${shortTitle(locale, e)}`;
+
+const yt = ep.youtubeEmbeddable && ep.youtubeId ? ep.youtubeId : null;
+// Scheduled on YouTube but not public at build time: the facade is rendered
+// hidden and a tiny script reveals it once the publish time has passed, so the
+// page does not wait for the next deploy.
+const ytLater = !yt && ep.youtubeId && ep.youtubeFrom ? ep.youtubeId : null;
+const coverAbs = new URL(ep.cover, site).toString();
+const seriesName = L("Kur'an Reels", "Qur'an Reels");
+
+const videoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: heading,
+  description: clip(desc.join(' '), 300),
+  thumbnailUrl: [coverAbs],
+  uploadDate: `${ep.pub.igDate}T00:00:00+03:00`,
+  ...(ep.durationSec ? { duration: isoDuration(ep.durationSec) } : {}),
+  inLanguage: 'tr',
+  ...(yt
+    ? { embedUrl: `https://www.youtube.com/embed/${yt}`, contentUrl: `https://www.youtube.com/watch?v=${yt}` }
+    : { url: ep.instagramUrl }),
+  ...(transcript.length ? { transcript: transcript.join(' ') } : {}),
+  creator: { '@type': 'Person', '@id': `${origin}/#person`, name: 'Ömer Yasir Önal', url: origin },
+  isPartOf: {
+    '@type': 'CreativeWorkSeries',
+    name: "Kur'an Reels",
+    url: canonicalHref(seriesPath, site),
+  },
+};
+const crumbs = breadcrumbJsonLd([
+  { name: seriesName, url: canonicalHref(seriesPath, site) },
+  { name: surah, url: `${canonicalHref(seriesPath, site)}#sure-${ep.surahNo}` },
+  { name: `${surah} ${ep.range}`, url },
+]);
+
+const pageTitle = `${surah} ${ep.range}: ${title} | ${seriesName}`;
+---
+
+<Base
+  title={pageTitle}
+  description={metaDescription}
+  path={path}
+  lang={locale}
+  ogImage={ep.cover}
+  ogType="article"
+  hideContactBar
+>
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(videoLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={jsonLdScript(crumbs)} />
+  <SiteHeader locale={locale} path={path} />
+
+  <main id="main">
+    <article class="container-page max-w-5xl pb-20 pt-10 md:pb-24 md:pt-14">
+      <nav aria-label="Breadcrumb" class="text-sm text-muted">
+        <a href={`${seriesPath}/`} class="inline-block py-1.5 hover:text-fg hover:underline">{seriesName}</a>
+        <span aria-hidden="true" class="mx-1.5">/</span>
+        <a href={surahAnchor} class="inline-block py-1.5 hover:text-fg hover:underline">{surah}</a>
+        <span aria-hidden="true" class="mx-1.5">/</span>
+        <span aria-current="page" class="text-fg">{ep.range}</span>
+      </nav>
+
+      <header class="mt-8 border-b border-border pb-8">
+        <p class="eyebrow">{seriesName} · {L('Nüzul sırasıyla', 'In revelation order')}</p>
+        <h1 class="h-display ep-title mt-3">{surah} <span class="whitespace-nowrap">{ep.range}:</span> {title}</h1>
+        {showHook && <p class="lead mt-3">{hook}</p>}
+        <dl class="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+          {
+            meta.map((m) => (
+              <div>
+                <dt class="label">{m.k}</dt>
+                <dd class="mt-1 text-sm font-medium text-fg">{m.v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </header>
+
+      <div class="mt-10 grid gap-10 md:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] md:items-start md:gap-14">
+        <div class="mx-auto w-full max-w-[19rem]">
+          <div class="phone phone--plain">
+            <div class="phone__screen">
+              {
+                yt ? (
+                  <a
+                    href={`https://www.youtube.com/shorts/${yt}`}
+                    class="yt-facade group absolute inset-0 block"
+                    data-yt={yt}
+                    data-yt-title={heading}
+                    aria-label={`${L('Videoyu oynat', 'Play the video')}: ${heading}`}
+                  >
+                    <img src={ep.cover} width="540" height="960" alt="" fetchpriority="high" decoding="async" />
+                    <span class="yt-play" aria-hidden="true">
+                      <Icon name="play" size={26} />
+                    </span>
+                  </a>
+                ) : (
+                  <>
+                    <a
+                      href={ep.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="absolute inset-0 block"
+                      data-track="instagram_click"
+                      data-track-location="quran_episode"
+                      data-yt-fallback={ytLater ? '' : undefined}
+                      aria-label={`${L('Instagram’da izle', 'Watch on Instagram')}: ${heading} (${hint})`}
+                    >
+                      <img src={ep.cover} width="540" height="960" alt="" fetchpriority="high" decoding="async" />
+                    </a>
+                    {ytLater && (
+                      <a
+                        href={`https://www.youtube.com/shorts/${ytLater}`}
+                        class="yt-facade group absolute inset-0 block"
+                        data-yt={ytLater}
+                        data-yt-title={heading}
+                        data-yt-from={ep.youtubeFrom}
+                        hidden
+                        aria-label={`${L('Videoyu oynat', 'Play the video')}: ${heading}`}
+                      >
+                        <img src={ep.cover} width="540" height="960" alt="" decoding="async" />
+                        <span class="yt-play" aria-hidden="true">
+                          <Icon name="play" size={26} />
+                        </span>
+                      </a>
+                    )}
+                  </>
+                )
+              }
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-3">
+            {
+              !yt && (
+                <a
+                  href={ep.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary"
+                  data-track="instagram_click"
+                  data-track-location="quran_episode"
+                  aria-label={`${L('Instagram’da izle', 'Watch on Instagram')} (${hint})`}
+                >
+                  <Icon name="instagram" size={16} />
+                  {L('Instagram’da izle', 'Watch on Instagram')}
+                </a>
+              )
+            }
+            {
+              yt && (
+                <a
+                  href={ep.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                  data-track="instagram_click"
+                  data-track-location="quran_episode"
+                  aria-label={`Instagram (${hint})`}
+                >
+                  <Icon name="instagram" size={15} />
+                  Instagram
+                </a>
+              )
+            }
+            {
+              ytLater && (
+                <a
+                  href={`https://www.youtube.com/shorts/${ytLater}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary"
+                  data-track="youtube_click"
+                  data-track-location="quran_episode"
+                  data-yt-from={ep.youtubeFrom}
+                  hidden
+                  aria-label={`YouTube (${hint})`}
+                >
+                  YouTube
+                  <Icon name="arrow-up-right" size={15} />
+                </a>
+              )
+            }
+            {
+              yt && (
+                <a
+                  href={`https://www.youtube.com/shorts/${yt}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                  data-track="youtube_click"
+                  data-track-location="quran_episode"
+                  aria-label={`YouTube (${hint})`}
+                >
+                  YouTube
+                  <Icon name="arrow-up-right" size={15} />
+                </a>
+              )
+            }
+          </div>
+        </div>
+
+        <div class="min-w-0">
+          <h2 class="h-card">{L('Bölüm hakkında', 'About this episode')}</h2>
+          {descIsFallback && <p class="label mt-2">Turkish only</p>}
+          <div class="mt-4 space-y-4 text-[1.0625rem] leading-relaxed text-fg" lang={descIsFallback ? 'tr' : undefined}>
+            {desc.map((p) => <p>{p}</p>)}
+          </div>
+          {
+            ep.refs.length > 0 && (
+              <div class="mt-8">
+                <h3 class="label">{L('Videoda anılan diğer ayetler', 'Other verses referenced in the video')}</h3>
+                <ul class="mt-3 flex flex-wrap gap-2" role="list">
+                  {ep.refs.map((r) => (
+                    <li class="chip">{r}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </div>
+      </div>
+
+      <section class="mt-14 border-t border-border pt-10" aria-labelledby="ar-h">
+        <h2 id="ar-h" class="h-section">{L('Ayetler (Arapça)', 'The verses (Arabic)')}</h2>
+        <p class="mt-2 text-sm text-muted">{surah} {ep.range}</p>
+        <div class="card mt-6 px-5 py-7 sm:px-8 sm:py-9">
+          <div dir="rtl" lang="ar" class="quran-ar">
+            {ep.besmele && <p class="quran-ar__besmele">{ep.besmele}</p>}
+            <p>
+              {
+                ayahs.map((a) => (
+                  <span>
+                    {a.text}{'\u00A0'}<span class="quran-ar__no">{a.mark}</span>{' '}
+                  </span>
+                ))
+              }
+            </p>
+          </div>
+        </div>
+        <p class="mt-3 text-sm text-muted">
+          {L('Kur’an metni', 'Qur’an text')}:
+          <a href="https://tanzil.net/" target="_blank" rel="noopener noreferrer" class="underline hover:text-fg">Tanzil Project (tanzil.net)</a>
+        </p>
+      </section>
+
+      {
+        transcript.length > 0 && (
+          <section class="mt-14 border-t border-border pt-10" aria-labelledby="tr-h">
+            <h2 id="tr-h" class="h-section">{L('Videodaki metin', 'Video transcript')}</h2>
+            <div class="mt-6 max-w-3xl space-y-3 leading-relaxed text-fg">
+              {transcript.map((line) => (
+                <p>{line}</p>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <nav class="mt-14 grid gap-4 border-t border-border pt-10 sm:grid-cols-2" aria-label={L('Bölümler arasında gezinme', 'Episode navigation')}>
+        {
+          prev ? (
+            <a href={localizePath(locale, `/kuran-reels/${prev.slug}/`)} class="card card-link block p-5" rel="prev">
+              <span class="label">{L('Önceki bölüm', 'Previous episode')}</span>
+              <span class="mt-2 block font-medium text-fg">{epTitle(prev)}</span>
+            </a>
+          ) : (
+            <span class="hidden sm:block" />
+          )
+        }
+        {
+          next && (
+            <a href={localizePath(locale, `/kuran-reels/${next.slug}/`)} class="card card-link block p-5 sm:text-right" rel="next">
+              <span class="label">{L('Sonraki bölüm', 'Next episode')}</span>
+              <span class="mt-2 block font-medium text-fg">{epTitle(next)}</span>
+            </a>
+          )
+        }
+      </nav>
+
+      <p class="mt-8">
+        <a href={`${seriesPath}/`} class="link-arrow">
+          {L('Tüm bölümler, nüzul sırasıyla', 'All episodes in revelation order')}
+          <Icon name="arrow" size={15} />
+        </a>
+      </p>
+    </article>
+  </main>
+
+  <SiteFooter locale={locale} />
+</Base>
+
+<style>
+  .ep-title {
+    font-size: clamp(1.85rem, 1.4rem + 1.5vw, 2.6rem);
+  }
+  .yt-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin: -2rem 0 0 -2rem;
+    border-radius: 9999px;
+    background: rgb(0 0 0 / 0.62);
+    color: #fff;
+    transition: background-color 0.2s ease;
+  }
+  .yt-facade:hover .yt-play,
+  .yt-facade:focus-visible .yt-play {
+    background: var(--color-accent);
+  }
+  .phone__screen :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .quran-ar {
+    font-family: 'Amiri', 'Noto Naskh Arabic', 'Geeza Pro', 'Traditional Arabic', serif;
+    font-size: clamp(1.5rem, 1.25rem + 0.9vw, 1.95rem);
+    line-height: 2.3;
+    color: var(--color-fg);
+    text-align: right;
+  }
+  @media (min-width: 768px) {
+    .quran-ar {
+      text-align: justify;
+      text-align-last: right;
+    }
+  }
+  .quran-ar__besmele {
+    margin-bottom: 1rem;
+    text-align: center;
+    text-align-last: center;
+  }
+  .quran-ar__no {
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  // Lite YouTube facade: the iframe (and YouTube's scripts) load only on click.
+  // Without JS the link opens the Short on YouTube.
+  // Scheduled YouTube premieres: reveal the player once the publish time passed.
+  const later = document.querySelectorAll<HTMLElement>('[data-yt-from]');
+  if (later.length && Date.now() >= Date.parse(later[0].dataset.ytFrom ?? '')) {
+    later.forEach((el) => (el.hidden = false));
+    document.querySelectorAll<HTMLElement>('[data-yt-fallback]').forEach((el) => (el.hidden = true));
+  }
+  document.querySelectorAll<HTMLAnchorElement>('a[data-yt]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&rel=0`;
+      f.title = a.dataset.ytTitle ?? 'YouTube';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture';
+      f.allowFullscreen = true;
+      a.replaceWith(f);
+      f.focus();
+    });
+  });
+</script>

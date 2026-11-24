@@ -11,6 +11,12 @@ stack:
   - Yerel SEO (341 Sayfa)
   - GTM / GA4 Ölçüm Altyapısı
   - Google Ads Kampanya Yönetimi
+stack_en:
+  - Astro & Cloudflare
+  - Multilingual Business Website (TR/EN/AR)
+  - Local SEO (341 Pages)
+  - GTM / GA4 Analytics
+  - Google Ads Campaign Management
 status_en: Live at a2reklam.com
 status_tr: a2reklam.com Yayında
 links:

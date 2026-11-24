@@ -55,10 +55,10 @@ const breadcrumbLd = breadcrumbJsonLd([
   <SiteHeader locale={locale} path={path} />
 
   <main id="main">
-    <article class="mx-auto max-w-3xl px-6 pb-20 pt-12">
+    <article class="mx-auto max-w-3xl px-5 pb-20 pt-12 sm:px-6">
       <a
         href={localizePath(locale, `/courses/${slug}`)}
-        class="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-accent"
       >
         <svg
           width="14"
@@ -76,17 +76,17 @@ const breadcrumbLd = breadcrumbJsonLd([
         {course.data.title}
       </a>
 
-      <header class="mt-6 border-b border-border/60 pb-8">
-        <p class="font-mono text-[0.7rem] uppercase tracking-widest text-muted">
-          <span class="text-accent/70">/</span>{t(locale, 'course.lessons').toLowerCase()}
+      <header class="mt-6 border-b border-border pb-8">
+        <p class="label">
+          {t(locale, 'course.lessons')}
           <span class="ml-2 tabular-nums">{index + 1} / {siblings.length}</span>
         </p>
-        <h1 class="mt-3 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+        <h1 class="h-display mt-3">
           {entry.data.title}
         </h1>
         {
           entry.data.description && (
-            <p class="mt-3 text-lg leading-relaxed text-muted">{entry.data.description}</p>
+            <p class="lead mt-4">{entry.data.description}</p>
           )
         }
       </header>
@@ -95,12 +95,12 @@ const breadcrumbLd = breadcrumbJsonLd([
         <Content />
       </div>
 
-      <nav class="mt-12 flex items-center justify-between gap-4 border-t border-border/60 pt-6" aria-label={t(locale, 'course.lessons')}>
+      <nav class="mt-12 flex items-center justify-between gap-4 border-t border-border pt-6" aria-label={t(locale, 'course.lessons')}>
         {
           prev ? (
             <a
               href={lessonHref(prev)}
-              class="group inline-flex items-center gap-1.5 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent underline-offset-4 hover:underline"
             >
               <span aria-hidden="true">←</span>
               {t(locale, 'lesson.prev')}: {prev.data.title}
@@ -113,7 +113,7 @@ const breadcrumbLd = breadcrumbJsonLd([
           next && (
             <a
               href={lessonHref(next)}
-              class="group inline-flex items-center gap-1.5 text-right font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent underline-offset-4 hover:underline text-right"
             >
               {t(locale, 'lesson.next')}: {next.data.title}
               <span aria-hidden="true">→</span>

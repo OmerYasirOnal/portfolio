@@ -38,7 +38,7 @@ const segments = [
 
 <div
   class:list={[
-    'inline-flex items-center rounded-lg border border-border p-0.5 font-mono text-xs font-semibold',
+    'inline-flex items-center rounded-lg border border-border p-0.5 text-xs font-semibold',
     className,
   ]}
   role="group"
@@ -52,9 +52,9 @@ const segments = [
         aria-current={seg.active ? 'true' : undefined}
         aria-label={seg.active ? undefined : seg.aria}
         class:list={[
-          'rounded-md px-2 py-1.5 text-xs leading-none transition-colors',
+          'rounded-md px-2 py-2 text-xs leading-none transition-colors sm:px-2.5',
           seg.active
-            ? 'bg-ink text-on-ink'
+            ? 'bg-accent-soft font-semibold text-accent'
             : 'text-muted hover:text-fg',
         ]}
       >

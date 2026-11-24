@@ -11,6 +11,12 @@ stack:
   - SwiftData & iCloud Eşitleme
   - Live Activity & WidgetKit
   - App Store Ürünü
+stack_en:
+  - SwiftUI (iPhone, iPad & Mac)
+  - Shared SwiftPM Business Logic
+  - SwiftData & iCloud Sync
+  - Live Activity & WidgetKit
+  - App Store Product
 status_en: Live on the App Store
 status_tr: App Store’da Yayında
 links:

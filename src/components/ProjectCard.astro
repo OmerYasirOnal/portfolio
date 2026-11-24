@@ -1,7 +1,7 @@
 ---
 /**
- * ProjectCard - work card. Leads with the outcome (tagline) and the real
- * screenshot; technology tags come second.
+ * ProjectCard - work card. Leads with the real screenshot and the outcome
+ * (tagline); technology tags come second. Calm: hover only darkens the border.
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -35,9 +35,9 @@ const live = data.links?.live ?? data.links?.appstore;
 const liveHost = live ? new URL(live).hostname.replace(/^www\./, '') : undefined;
 ---
 
-<article class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-fg/30">
+<article class="card card-link group relative flex h-full flex-col overflow-hidden">
   {
-    imageMeta ? (
+    imageMeta && (
       <div class="relative aspect-[16/10] overflow-hidden border-b border-border bg-bg">
         <Image
           src={imageMeta}
@@ -46,27 +46,24 @@ const liveHost = live ? new URL(live).hostname.replace(/^www\./, '') : undefined
           sizes={size === 'lg' ? '(min-width: 1024px) 560px, (min-width: 768px) 50vw, 92vw' : '(min-width: 1024px) 380px, (min-width: 768px) 50vw, 92vw'}
           loading={eager ? 'eager' : 'lazy'}
           fetchpriority={eager ? 'high' : 'auto'}
-          class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+          class="h-full w-full object-cover object-top"
         />
-      </div>
-    ) : (
-      <div class="flex aspect-[16/10] items-end border-b border-border bg-accent-soft p-5">
-        <span class="font-mono text-3xl font-semibold tracking-tight text-accent">{data.title}</span>
       </div>
     )
   }
 
   <div class="flex flex-1 flex-col p-5 sm:p-6">
-    <p class="label">{t(locale, `category.${data.category}`)} · {status}</p>
-    <H class="mt-2 text-xl font-semibold tracking-tight text-fg">
-      <a href={detailHref} class="after:absolute after:inset-0 after:content-['']">{data.title}</a>
+    <p class="label">{t(locale, `category.${data.category}`)}</p>
+    <H class="h-card mt-2">
+      <a href={detailHref} class="after:absolute after:inset-0 after:content-[''] group-hover:text-accent">{data.title}</a>
     </H>
     <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{tagline}</p>
+    {!live && status && <p class="mt-2 text-xs text-muted">{status}</p>}
 
     <ul class="mt-4 flex flex-wrap gap-1.5" role="list">
       {
-        data.stack.slice(0, size === 'lg' ? 5 : 3).map((tech) => (
-          <li class="rounded-md bg-bg px-2 py-1 font-mono text-[0.68rem] text-muted">{tech}</li>
+        (locale === 'en' && data.stack_en?.length ? data.stack_en : data.stack).slice(0, size === 'lg' ? 5 : 3).map((tech) => (
+          <li class="chip">{tech}</li>
         ))
       }
     </ul>
@@ -74,7 +71,7 @@ const liveHost = live ? new URL(live).hostname.replace(/^www\./, '') : undefined
     <div class="mt-auto flex items-center justify-between gap-3 pt-5 text-sm">
       <span class="inline-flex items-center gap-1.5 font-semibold text-accent">
         {t(locale, 'work.inspect')}
-        <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-0.5" />
+        <Icon name="arrow" size={15} />
       </span>
       {
         live && (
@@ -82,7 +79,7 @@ const liveHost = live ? new URL(live).hostname.replace(/^www\./, '') : undefined
             href={live}
             target="_blank"
             rel="noopener noreferrer"
-            class="relative z-10 inline-flex items-center gap-1 font-mono text-xs text-muted hover:text-accent"
+            class="relative z-10 inline-flex items-center gap-1 text-xs text-muted hover:text-accent"
             aria-label={`${data.title} - ${t(locale, data.links?.live ? 'link.live' : 'link.appstore')} (${t(locale, 'social.opensNewTab')})`}
           >
             {data.links?.live ? liveHost : 'App Store'}

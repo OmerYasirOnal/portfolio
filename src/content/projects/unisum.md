@@ -11,6 +11,12 @@ stack:
   - MySQL Veri Tabanı
   - JWT / bcrypt & Güvenlik
   - App Store Ürünü
+stack_en:
+  - SwiftUI Mobile App
+  - Node.js & Express REST API
+  - MySQL Database
+  - JWT / bcrypt & Security
+  - App Store Product
 status_en: Live on the App Store
 status_tr: App Store’da Yayında
 links:
